@@ -39,12 +39,33 @@ fun App() {
     NeulHaeRangTheme {
         Scaffold(
             content = {
-                AppNavGraph(
+                NavHost(
                     navController = navController,
+                    startDestination = NavItem.Main.route,
                     modifier = Modifier
                         .padding(it)
-                        .fillMaxSize()
-                )
+                        .fillMaxSize(),
+                ) {
+                    NavItem.values().forEach { item ->
+                        when (item) {
+                            NavItem.Main -> composable(item.route) {
+                                MainScreen(navController = navController)
+                            }
+
+                            NavItem.MyPage -> composable(item.route) {
+                                MyPageScreen()
+                            }
+
+                            NavItem.Social -> composable(item.route) {
+                                SocialScreen()
+                            }
+
+                            NavItem.ChecklistCreation -> composable(item.route) {
+                                ChecklistCreationScreen()
+                            }
+                        }
+                    }
+                }
             },
             bottomBar = {
                 NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer) {
@@ -65,35 +86,6 @@ fun App() {
                 }
             },
         )
-    }
-}
-
-/**
- * 라우트에 해당하는 스크린 지정
- * 스크린에 인자가 필요한 경우 추가
- */
-@Composable
-fun AppNavGraph(
-    navController: NavHostController,
-    modifier: Modifier
-) {
-    NavHost(
-        navController = navController,
-        startDestination = NavItem.Main.route,
-        modifier = modifier
-    ) {
-        composable(NavItem.Main.route) {
-            MainScreen(navController)
-        }
-        composable(NavItem.MyPage.route) {
-            MyPageScreen()
-        }
-        composable(NavItem.Social.route) {
-            SocialScreen()
-        }
-        composable(NavItem.ChecklistCreation.route) {
-            ChecklistCreationScreen()
-        }
     }
 }
 
