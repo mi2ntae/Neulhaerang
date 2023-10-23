@@ -1,7 +1,7 @@
 buildscript {
     val compileSDKVersion by extra(34)
     val targetSDKVersion by extra(33)
-    val coreKtxVersion by extra("1.9.0")
+    val coreKtxVersion by extra("1.10.1")
     val composeUiVersion by extra("1.8.0")
     val composeNavVersion by extra("2.7.4")
     val composeBomVersion by extra("2023.03.00")
