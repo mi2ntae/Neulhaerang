@@ -111,7 +111,9 @@ fun NavHostController.bottomNavigate(route: String) {
 
 fun NavHostController.stackNavigate(route: String) {
     this.navigate(route) {
+        popUpTo(this@stackNavigate.graph.findStartDestination().id) { saveState = true }
         launchSingleTop = true
+        restoreState = true
     }
 }
 

@@ -14,7 +14,7 @@ fun SocialScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Text(text = "소셜스크린")
     }
