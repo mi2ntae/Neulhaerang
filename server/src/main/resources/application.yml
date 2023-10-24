@@ -1,5 +1,18 @@
 spring:
+  profiles:
+    active: local
+    group:
+      local:
+        - common
+
+      prod :
+        - common
+---
+
+spring:
   config:
+    activate:
+      on-profile: common
     import: optional:file:.env[.properties]
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -8,7 +21,7 @@ spring:
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
