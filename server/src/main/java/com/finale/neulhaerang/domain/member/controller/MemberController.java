@@ -1,9 +1,13 @@
 package com.finale.neulhaerang.domain.member.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
+import com.finale.neulhaerang.domain.member.service.MemberService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,11 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/member")
 @Slf4j
 public class MemberController {
+	private final MemberService memberService;
+
 	@ApiOperation(value = "유저 프로필 조회", notes = "유저 프로필 조회")
 	@GetMapping("/status/{memberId}")
-	public ResponseEntity<UserProfileResDto> getUserProfileByUserId(@PathVariable long userId) {
-		UserDto userDto = userService.getUserProfileByUserId(userId);
-		return ResponseEntity.ok().body(UserProfileResDto.from(userDto));
+	public ResponseEntity<MemberStatusResDto> findStatusByMemberId(@PathVariable long memberId) {
+		return ResponseEntity.ok().body(memberService.findStatusByMemberId(memberId));
 	}
 
 }
