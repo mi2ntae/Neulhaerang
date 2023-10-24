@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.service.MemberService;
 
@@ -22,10 +23,16 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 
-	@ApiOperation(value = "유저 프로필 조회", notes = "유저 프로필 조회")
+	@ApiOperation(value = "멤버 상태 조회", notes = "멤버 상태 정보 조회")
 	@GetMapping("/status/{memberId}")
 	public ResponseEntity<MemberStatusResDto> findStatusByMemberId(@PathVariable long memberId) {
 		return ResponseEntity.ok().body(memberService.findStatusByMemberId(memberId));
+	}
+
+	@ApiOperation(value = "멤버 캐릭터 조회", notes = "멤버 캐릭터 정보 조회")
+	@GetMapping("/character/{memberId}")
+	public ResponseEntity<MemberCharacterResDto> findCharacterByMemberId(@PathVariable long memberId) {
+		return ResponseEntity.ok().body(memberService.findCharacterByMemberId(memberId));
 	}
 
 }
