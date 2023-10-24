@@ -6,12 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.ColumnDefault;
 
+import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.global.util.BaseTimeEntity;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +33,10 @@ public class Routine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "routine_id")
 	private long id;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
 
 	@Column(length = 100, nullable = false)
 	private String content;
