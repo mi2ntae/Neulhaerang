@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
-import com.finale.neulhaerang.global.util.BaseTimeEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
