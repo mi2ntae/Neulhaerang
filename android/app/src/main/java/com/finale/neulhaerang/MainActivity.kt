@@ -1,89 +1,51 @@
 package com.finale.neulhaerang
 
 
+import android.app.Activity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.finale.neulhaerang.navigation.AppBottomNavigationItem
-import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import com.finale.neulhaerang.ui.App
 
+/**
+ * 메인 엑티비티
+ * 푸시 알림이나 기기 연결 등의 설정이 들어감
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            NeulHaeRangTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
-                ) {
-                    App()
-                }
-            }
+            BackOnPressed()
+            App()
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/*
+ * 뒤로 가기 두 번 눌렀을 때 앱 종료
+ */
 @Composable
-fun App() {
-    val navController = rememberNavController()
-    val backStackEntry = navController.currentBackStackEntryAsState()
-    Scaffold(
-        content = {
-            NavHost(
-                navController = navController,
-                startDestination = AppBottomNavigationItem.values()[0].route,
-                modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize()
-            ) {
-                AppBottomNavigationItem.values()
-                    .forEach { item ->
-                        composable(route = item.route) {
-                            item.screen()
-                        }
-                    }
-            }
-        },
-        bottomBar = {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer) {
-                AppBottomNavigationItem.values().forEach {
-                    val isSelected = it.route == backStackEntry.value?.destination?.route
-                    NavigationBarItem(selected = isSelected,
-                        onClick = { navController.navigate(it.route) },
-                        icon = { Icon(imageVector = it.icon, contentDescription = it.title) },
-                        label = {
-                            Text(text = it.name, fontWeight = FontWeight.SemiBold)
-                        }
-                    )
-                }
-            }
-        },
-    )
+fun BackOnPressed() {
+    val context = LocalContext.current
+    var backPressedState by remember { mutableStateOf(true) }
+    var backPressedTime = 0L
+
+    BackHandler(enabled = backPressedState) {
+        if (System.currentTimeMillis() - backPressedTime <= 1000L) {
+            // 앱 종료
+            (context as Activity).finish()
+        } else {
+            backPressedState = true
+            Toast.makeText(context, "한 번 더 누르시면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
+    }
 }
-
-@Preview
-@Composable
-fun Preview() {
-    App()
-}
-
-

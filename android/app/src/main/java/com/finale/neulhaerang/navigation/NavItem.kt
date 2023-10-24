@@ -1,0 +1,29 @@
+package com.finale.neulhaerang.navigation
+
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.ui.graphics.vector.ImageVector
+
+/**
+ * 네비게이션을 위한 Item
+ * 모든 네비게이션 정보를 추가
+ * @param icon : nullable, ImageVector 형식
+ */
+enum class NavItem(
+    val description: String,
+    val route: String,
+    val icon: ImageVector?
+) {
+    Main("메인", "main", Icons.Rounded.Home),
+    MyPage("마이페이지", "mypage", Icons.Rounded.Person),
+    Social("소셜", "social", Icons.Rounded.LocationOn),
+    ChecklistCreation("체크리스트 생성", "checklist_creation", null),
+}
+
+/**
+ * 하단 네비게이션 아이템을 위한 리스트
+ * 메인, 마이페이지, 소셜(AR)의 3가지
+ */
+val BottomNavItems = listOf<NavItem>(NavItem.Main, NavItem.MyPage, NavItem.Social)
