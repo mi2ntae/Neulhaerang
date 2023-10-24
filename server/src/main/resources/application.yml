@@ -14,6 +14,28 @@ spring:
     activate:
       on-profile: common
     import: optional:file:.env[.properties]
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+logging:
+  config:
+    activate:
+      on-profile: common
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: DEBUG
+        sql: DEBUG
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8
@@ -25,3 +47,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        show_sql: true
