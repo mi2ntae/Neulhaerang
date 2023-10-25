@@ -1,11 +1,27 @@
 package com.finale.neulhaerang.ui.mypage
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.ui.Alignment.Companion.CenterVertically
+import com.finale.neulhaerang.ui.theme.Pink40
+import com.finale.neulhaerang.ui.theme.Pink80
 
 /**
  * MyPageHeader
@@ -16,13 +32,14 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MyPageHeader() {
     Column(modifier = Modifier
+        .fillMaxWidth()
         .background(MaterialTheme.colorScheme.primary)){
         Text("마이페이지 헤더입니당")
         CharacterInfo()
         Coin()
         Title()
-        Insta()
-        Level()
+        Share()
+        Level(2, 4, 16)
     }
 }
 
@@ -52,16 +69,58 @@ fun Coin(){
  */
 
 @Composable
-fun Insta(){
-    Text("인스타 자랑하기")
+fun Share(){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalArrangement = Arrangement.End
+    ){
+        IconButton(
+            onClick = {
+                /*TODO*/
+                // 공유 버튼 눌렀을 때, 인스타 공유하기 구현해야함
+            }) {
+            Icon(Icons.Outlined.Share, contentDescription = "인스타 자랑하기")
+        }
+    }
 }
 
 /**
  * Level
  * 레벨과 경험치를 표시하는 UI
+ * Input
+ *  - level : 현재 레벨
+ *  - curEx : 현재 경험치
+ *  - upEx : 레벨업 하기 위한 경험치
  */
 
 @Composable
-fun Level(){
-    Text("레벨과 경험치")
+fun Level(level : Int, curEx : Int, upEx : Int){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text("Lv.$level")
+
+        // 간격 설정
+        Spacer(modifier = Modifier.width(10.dp))
+
+        // 경험치를 보여주는 막대
+        LinearProgressIndicator(
+            modifier = Modifier
+                // 경험치 막대의 높이 설정
+                .height(8.dp)
+                .align(alignment = CenterVertically),
+
+            progress = curEx / upEx.toFloat(),
+            color = Pink40,
+            trackColor = Pink80,
+        )
+
+        // 간격 설정
+        Spacer(modifier = Modifier.width(10.dp))
+        Text("$curEx / $upEx")
+    }
 }
