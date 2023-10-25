@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "com.finale.neulhaerang"
-        minSdk = 24
-        targetSdk = rootProject.extra["targetSDKVersion"] as Int
+        minSdkVersion(rootProject.extra["minimumSDKVersion"] as Int)
+        targetSdkVersion(rootProject.extra["targetSDKVersion"] as Int)
         versionCode = 1
         versionName = "1.0"
 
