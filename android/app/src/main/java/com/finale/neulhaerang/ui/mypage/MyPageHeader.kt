@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import com.finale.neulhaerang.ui.theme.Pink40
@@ -64,25 +65,36 @@ fun Coin(){
 }
 
 /**
- * Insta
- * 인스타그램 자랑하기를 표시하는 UI
+ * Share
+ * SNS 자랑하기를 표시하는 UI
  */
 
 @Composable
 fun Share(){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.End
-    ){
-        IconButton(
-            onClick = {
-                /*TODO*/
-                // 공유 버튼 눌렀을 때, 인스타 공유하기 구현해야함
-            }) {
-            Icon(Icons.Outlined.Share, contentDescription = "인스타 자랑하기")
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp),
+            horizontalArrangement = Arrangement.End
+        ){
+            IconButton(
+                onClick = {
+                    /*TODO*/
+                    // 공유 버튼 눌렀을 때, 인스타 공유하기 구현해야함
+                }) {
+                Icon(Icons.Filled.Share, contentDescription = "인스타 자랑하기")
+            }
         }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+//                .padding(16.dp),
+            horizontalArrangement = Arrangement.End
+        ){
+            Text("자랑하기")
+        }
+
     }
 }
 
