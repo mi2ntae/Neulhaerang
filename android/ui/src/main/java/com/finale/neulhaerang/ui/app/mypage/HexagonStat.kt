@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.mypage
+package com.finale.neulhaerang.ui.app.mypage
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +10,6 @@ import androidx.compose.runtime.Composable
  */
 
 @Composable
-fun HexagonStat(){
+fun HexagonStat() {
     Text("육각 스텟 UI 입니당")
 }

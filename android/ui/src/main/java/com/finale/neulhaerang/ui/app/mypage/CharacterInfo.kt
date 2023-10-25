@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.mypage
+package com.finale.neulhaerang.ui.app.mypage
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,6 +9,6 @@ import androidx.compose.runtime.Composable
  *  정보를 보여주는 UI 입니다.
  */
 @Composable
-fun CharacterInfo(){
+fun CharacterInfo() {
     Text("캐릭터 정보입니당")
 }

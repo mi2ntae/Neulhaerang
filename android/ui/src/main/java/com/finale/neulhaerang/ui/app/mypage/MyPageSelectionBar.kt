@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.mypage
+package com.finale.neulhaerang.ui.app.mypage
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
