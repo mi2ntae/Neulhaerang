@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.checklistCreation
 
+import android.app.DatePickerDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,47 +24,40 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChecklistCreationScreen(navController: NavHostController) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-        TopAppBar(
-            title = { Text(text = "체크리스트 작성") },
-            navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "뒤로 가기")
-                }
-            },
-            actions = {
-                TextButton(
-                    onClick = { /*TODO*/ }
-                ) {
-                    Text(text = "취소", color = MaterialTheme.colorScheme.secondary)
-                }
-                TextButton(
-                    onClick = { /*TODO*/ }
-                ) {
-                    Text(text = "완료", color = MaterialTheme.colorScheme.primary)
-                }
-            },
-            colors = TopAppBarDefaults.mediumTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            )
+        TopAppBar(title = { Text(text = "체크리스트 작성") }, navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "뒤로 가기")
+            }
+        }, actions = {
+            TextButton(onClick = { /*TODO*/ }) {
+                Text(text = "취소", color = MaterialTheme.colorScheme.secondary)
+            }
+            TextButton(onClick = { /*TODO*/ }) {
+                Text(text = "완료", color = MaterialTheme.colorScheme.primary)
+            }
+        }, colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
         )
     }) {
         Content(
@@ -77,19 +72,19 @@ fun ChecklistCreationScreen(navController: NavHostController) {
 fun Content(modifier: Modifier = Modifier) {
     // 동작 확인용 변수
     // TODO ViewModel 구현
-    var isRoutine by remember { mutableStateOf(false) }
+    val (routine, setRoutine) = remember { mutableStateOf(false) }
+    val (selectedDate, setSelectedDate) = remember { mutableStateOf(LocalDate.now()) }
 
     Column(modifier = modifier) {
         Row {
             Text(text = "체크리스트 이름")
         }
         ChecklistCreationItem(name = "루틴", icon = Icons.Filled.Refresh) {
-            Switch(
-                checked = isRoutine,
-                onCheckedChange = { isRoutine = it })
+            Switch(checked = routine, onCheckedChange = setRoutine)
         }
-        RoutineCreation()
-        TodoCreation()
+        if (routine) RoutineCreation() else TodoCreation(
+            selectedDate = selectedDate, setSelectedDate = setSelectedDate
+        )
         Row {
             Text(text = "시간")
         }
@@ -101,10 +96,7 @@ fun Content(modifier: Modifier = Modifier) {
 
 @Composable
 fun ChecklistCreationItem(
-    modifier: Modifier = Modifier,
-    name: String,
-    icon: ImageVector,
-    content: @Composable () -> Unit
+    modifier: Modifier = Modifier, name: String, icon: ImageVector, content: @Composable () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -132,10 +124,21 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TodoCreation(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        Row {
-            Text(text = "날짜")
+fun TodoCreation(
+    modifier: Modifier = Modifier,
+    selectedDate: LocalDate,
+    setSelectedDate: (LocalDate) -> Unit
+) {
+    val context = LocalContext.current
+    val datePickerDialog = DatePickerDialog(context, { _, year, monthValue, dayOfMonth ->
+        setSelectedDate(
+            selectedDate.withYear(year).withMonth(monthValue).withDayOfMonth(dayOfMonth)
+        )
+    }, selectedDate.year, selectedDate.monthValue, selectedDate.dayOfMonth)
+
+    ChecklistCreationItem(modifier = modifier, name = "날짜", icon = Icons.Filled.DateRange) {
+        TextButton(onClick = { datePickerDialog.show() }) {
+            Text(text = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
     }
 }
