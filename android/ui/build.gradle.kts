@@ -45,15 +45,20 @@ android {
 
 dependencies {
 
+    // modules
+    implementation(project(":common"))
+
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleRuntimeKtxVertion"]}")
     implementation("androidx.activity:activity-compose:${rootProject.extra["composeUiVersion"]}")
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
+    // navigation
+    implementation("androidx.navigation:navigation-compose:${rootProject.extra["composeNavVersion"]}")
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

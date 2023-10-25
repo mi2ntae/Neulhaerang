@@ -7,6 +7,7 @@ buildscript {
     val composeNavVersion by extra("2.7.4")
     val composeBomVersion by extra("2023.03.00")
     val material3Version by extra("1.1.2")
+    val lifecycleRuntimeKtxVertion by extra("2.6.2")
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

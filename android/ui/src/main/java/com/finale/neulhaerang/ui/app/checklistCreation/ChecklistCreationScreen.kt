@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.checklistCreation
+package com.finale.neulhaerang.ui.app.checklistCreation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

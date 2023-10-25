@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.main
+package com.finale.neulhaerang.ui.app.main
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.finale.neulhaerang.navigation.NavItem
-import com.finale.neulhaerang.ui.stackNavigate
+import com.finale.neulhaerang.common.navigation.AppNavItem
+import com.finale.neulhaerang.ui.app.stackNavigate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,10 +35,10 @@ fun MainScreen(navController: NavHostController) {
 
 @Composable
 fun ChecklistCreationButton(navController: NavHostController) {
-    FloatingActionButton(onClick = { navController.stackNavigate(NavItem.ChecklistCreation.route) }) {
+    FloatingActionButton(onClick = { navController.stackNavigate(AppNavItem.ChecklistCreation.route) }) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = NavItem.ChecklistCreation.description,
+            contentDescription = AppNavItem.ChecklistCreation.description,
             modifier = Modifier
         )
     }
