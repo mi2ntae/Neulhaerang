@@ -1,6 +1,5 @@
 package com.finale.neulhaerang.ui.checklistCreation
 
-import android.app.DatePickerDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,19 +23,21 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,7 +73,7 @@ fun ChecklistCreationScreen(navController: NavHostController) {
 @Composable
 fun Content(modifier: Modifier = Modifier) {
     // 동작 확인용 변수
-    // TODO ViewModel 구현
+    // TODO: ViewModel 구현
     val (routine, setRoutine) = remember { mutableStateOf(false) }
     val (selectedDate, setSelectedDate) = remember { mutableStateOf(LocalDate.now()) }
 
@@ -123,21 +125,15 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoCreation(
     modifier: Modifier = Modifier,
     selectedDate: LocalDate,
     setSelectedDate: (LocalDate) -> Unit
 ) {
-    val context = LocalContext.current
-    val datePickerDialog = DatePickerDialog(context, { _, year, monthValue, dayOfMonth ->
-        setSelectedDate(
-            selectedDate.withYear(year).withMonth(monthValue).withDayOfMonth(dayOfMonth)
-        )
-    }, selectedDate.year, selectedDate.monthValue, selectedDate.dayOfMonth)
-
     ChecklistCreationItem(modifier = modifier, name = "날짜", icon = Icons.Filled.DateRange) {
-        TextButton(onClick = { datePickerDialog.show() }) {
+        TextButton(onClick = { }) {
             Text(text = selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
     }
@@ -145,8 +141,35 @@ fun TodoCreation(
 
 @Preview
 @Composable
-fun Preview() {
+fun ChecklistCreationScreenPreview() {
     NeulHaeRangTheme {
         ChecklistCreationScreen(navController = rememberNavController())
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun NHLDatePickerDialog() {
+    NeulHaeRangTheme {
+        val zoneId = ZoneId.systemDefault()
+        val text = "${zoneId.toString()}\n" +
+                "${
+                    LocalDate.now(ZoneOffset.UTC).atStartOfDay(ZoneId.systemDefault()).toInstant()
+                        .toEpochMilli()
+                }\n" + "${
+            LocalDate.now(ZoneOffset.UTC).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+        }\n" +
+                "${LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()}"
+
+        val localDate = LocalDate.now()
+        val datePickerState = rememberDatePickerState(
+//            localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+            localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        )
+        Column {
+            DatePicker(state = datePickerState)
+            Text(text = text)
+        }
     }
 }
