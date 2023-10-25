@@ -61,7 +61,7 @@ fun App() {
                             }
 
                             NavItem.ChecklistCreation -> composable(item.route) {
-                                ChecklistCreationScreen()
+                                ChecklistCreationScreen(navController = navController)
                             }
                         }
                     }

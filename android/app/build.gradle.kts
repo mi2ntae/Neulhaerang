@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "com.finale.neulhaerang"
-        minSdk = 24
-        targetSdk = rootProject.extra["targetSDKVersion"] as Int
+        minSdkVersion(rootProject.extra["minimumSDKVersion"] as Int)
+        targetSdkVersion(rootProject.extra["targetSDKVersion"] as Int)
         versionCode = 1
         versionName = "1.0"
 
@@ -64,7 +64,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
     // navigation
     implementation("androidx.navigation:navigation-compose:${rootProject.extra["composeNavVersion"]}")
     // test
