@@ -47,12 +47,12 @@ dependencies {
 
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation("androidx.activity:activity-compose:${rootProject.extra["composeUiVersion"]}")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleRuntimeKtxVertion"]}")
+    implementation("androidx.activity:activity-compose:${rootProject.extra["activityComposeVersion"]}")
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.ui:ui:${rootProject.extra["composeUiVersion"]}")
+    implementation("androidx.compose.ui:ui-graphics:${rootProject.extra["composeUiVersion"]}")
+    implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
     // test
     testImplementation("junit:junit:4.13.2")

@@ -1,26 +1,25 @@
-package com.finale.neulhaerang.ui.mypage
+package com.finale.neulhaerang.ui.app.mypage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.finale.neulhaerang.ui.theme.Pink40
 import com.finale.neulhaerang.ui.theme.Pink80
 
@@ -32,9 +31,11 @@ import com.finale.neulhaerang.ui.theme.Pink80
 
 @Composable
 fun MyPageHeader() {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .background(MaterialTheme.colorScheme.primary)){
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primary)
+    ) {
         Text("마이페이지 헤더입니당")
         CharacterInfo()
         Coin()
@@ -50,7 +51,7 @@ fun MyPageHeader() {
  */
 
 @Composable
-fun Title(){
+fun Title() {
     Text("칭호입니당")
 }
 
@@ -60,7 +61,7 @@ fun Title(){
  */
 
 @Composable
-fun Coin(){
+fun Coin() {
     Text("코인입니당")
 }
 
@@ -70,14 +71,14 @@ fun Coin(){
  */
 
 @Composable
-fun Share(){
+fun Share() {
     Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(2.dp),
+                .padding(8.dp),
             horizontalArrangement = Arrangement.End
-        ){
+        ) {
             IconButton(
                 onClick = {
                     /*TODO*/
@@ -89,9 +90,8 @@ fun Share(){
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-//                .padding(16.dp),
             horizontalArrangement = Arrangement.End
-        ){
+        ) {
             Text("자랑하기")
         }
 
@@ -108,7 +108,7 @@ fun Share(){
  */
 
 @Composable
-fun Level(level : Int, curEx : Int, upEx : Int){
+fun Level(level: Int, curEx: Int, upEx: Int) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -117,7 +117,7 @@ fun Level(level : Int, curEx : Int, upEx : Int){
         Text("Lv.$level")
 
         // 간격 설정
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
         // 경험치를 보여주는 막대
         LinearProgressIndicator(
@@ -132,7 +132,7 @@ fun Level(level : Int, curEx : Int, upEx : Int){
         )
 
         // 간격 설정
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(16.dp))
         Text("$curEx / $upEx")
     }
 }

@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui
+package com.finale.neulhaerang.ui.app
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,12 +20,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.finale.neulhaerang.navigation.BottomNavItems
-import com.finale.neulhaerang.navigation.NavItem
-import com.finale.neulhaerang.ui.checklistCreation.ChecklistCreationScreen
-import com.finale.neulhaerang.ui.main.MainScreen
-import com.finale.neulhaerang.ui.mypage.MyPageScreen
-import com.finale.neulhaerang.ui.social.SocialScreen
+import com.finale.neulhaerang.common.navigation.AppBottomAppNavItems
+import com.finale.neulhaerang.common.navigation.AppNavItem
+import com.finale.neulhaerang.ui.app.checklistCreation.ChecklistCreationScreen
+import com.finale.neulhaerang.ui.app.login.LoginScreen
+import com.finale.neulhaerang.ui.app.main.MainScreen
+import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
+import com.finale.neulhaerang.ui.app.social.SocialScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 
 /**
@@ -41,26 +42,29 @@ fun App() {
             content = {
                 NavHost(
                     navController = navController,
-                    startDestination = NavItem.Main.route,
+                    startDestination = AppNavItem.Login.route,
                     modifier = Modifier
                         .padding(it)
                         .fillMaxSize(),
                 ) {
-                    NavItem.values().forEach { item ->
+                    AppNavItem.values().forEach { item ->
                         when (item) {
-                            NavItem.Main -> composable(item.route) {
+                            AppNavItem.Login -> composable(item.route) {
+                                LoginScreen(navController = navController)
+                            }
+                            AppNavItem.Main -> composable(item.route) {
                                 MainScreen(navController = navController)
                             }
 
-                            NavItem.MyPage -> composable(item.route) {
+                            AppNavItem.MyPage -> composable(item.route) {
                                 MyPageScreen()
                             }
 
-                            NavItem.Social -> composable(item.route) {
+                            AppNavItem.Social -> composable(item.route) {
                                 SocialScreen()
                             }
 
-                            NavItem.ChecklistCreation -> composable(item.route) {
+                            AppNavItem.ChecklistCreation -> composable(item.route) {
                                 ChecklistCreationScreen(navController = navController)
                             }
                         }
@@ -69,7 +73,7 @@ fun App() {
             },
             bottomBar = {
                 NavigationBar(containerColor = MaterialTheme.colorScheme.primaryContainer) {
-                    BottomNavItems.forEach {
+                    AppBottomAppNavItems.forEach {
                         val isSelected = it.route == backStackEntry.value?.destination?.route
                         NavigationBarItem(
                             selected = isSelected,

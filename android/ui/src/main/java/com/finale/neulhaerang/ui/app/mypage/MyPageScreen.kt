@@ -1,5 +1,7 @@
-package com.finale.neulhaerang.ui.mypage
+package com.finale.neulhaerang.ui.app.mypage
 
+
+import BoxStat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +30,7 @@ fun MyPageScreen() {
             MyPageHeader()
             MyPageSelectionBar()
             HexagonStat()
-            BoxStat()
+            BoxStat("S+", "S", "B+", "A+", "C", "F")
             ClosetPage()
             TitlePage()
         }

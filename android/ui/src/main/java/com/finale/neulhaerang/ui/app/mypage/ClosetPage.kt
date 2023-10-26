@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.mypage
+package com.finale.neulhaerang.ui.app.mypage
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,6 +10,6 @@ import androidx.compose.runtime.Composable
  */
 
 @Composable
-fun ClosetPage(){
+fun ClosetPage() {
     Text("의상실 페이지입니당.")
 }

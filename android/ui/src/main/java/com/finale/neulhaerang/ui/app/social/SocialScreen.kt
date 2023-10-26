@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.social
+package com.finale.neulhaerang.ui.app.social
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

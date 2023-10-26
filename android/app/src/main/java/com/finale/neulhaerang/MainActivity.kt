@@ -13,7 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import com.finale.neulhaerang.ui.App
+import com.finale.neulhaerang.ui.app.App
 
 /**
  * 메인 엑티비티

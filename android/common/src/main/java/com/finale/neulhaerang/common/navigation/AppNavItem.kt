@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.navigation
+package com.finale.neulhaerang.common.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
@@ -11,11 +11,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * 모든 네비게이션 정보를 추가
  * @param icon : nullable, ImageVector 형식
  */
-enum class NavItem(
+enum class AppNavItem(
     val description: String,
     val route: String,
     val icon: ImageVector?
 ) {
+    Login("로그인","login",null),
     Main("메인", "main", Icons.Rounded.Home),
     MyPage("마이페이지", "mypage", Icons.Rounded.Person),
     Social("소셜", "social", Icons.Rounded.LocationOn),
@@ -26,4 +27,4 @@ enum class NavItem(
  * 하단 네비게이션 아이템을 위한 리스트
  * 메인, 마이페이지, 소셜(AR)의 3가지
  */
-val BottomNavItems = listOf<NavItem>(NavItem.Main, NavItem.MyPage, NavItem.Social)
+val AppBottomAppNavItems = listOf<AppNavItem>(AppNavItem.Main, AppNavItem.MyPage, AppNavItem.Social)
