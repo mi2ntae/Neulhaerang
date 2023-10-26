@@ -7,4 +7,11 @@
     <string name="ui_teunteun">튼튼력</string>
     <string name="ui_good_idea">창의력</string>
     <string name="ui_love">최애력</string>
+
+
+    <!-- 메인의 상태 관련 문자열 -->
+    <string name="main_tired">피로도</string>
+    <string name="main_lazy">나태함</string>
+
+
 </resources>
