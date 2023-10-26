@@ -17,11 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.ui.R
+import com.finale.neulhaerang.ui.theme.Typography
 
 @Composable
 fun LoginScreen(navController: NavHostController = rememberNavController()) {
@@ -38,10 +41,9 @@ fun LoginScreen(navController: NavHostController = rememberNavController()) {
         ) {
             Text(
                 text = "늘해랑",
+                style = Typography.displayLarge
             )
-
         }
-
         Image(painter = painterResource(id = R.drawable.kakao_login_large_wide),
             contentDescription = null,
             contentScale = ContentScale.FillWidth,
