@@ -117,7 +117,7 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
         Text("Lv.$level")
 
         // 간격 설정
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
         // 경험치를 보여주는 막대
         LinearProgressIndicator(
@@ -132,7 +132,7 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
         )
 
         // 간격 설정
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(16.dp))
         Text("$curEx / $upEx")
     }
 }
