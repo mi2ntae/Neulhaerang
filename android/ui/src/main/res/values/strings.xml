@@ -7,4 +7,35 @@
     <string name="ui_teunteun">튼튼력</string>
     <string name="ui_good_idea">창의력</string>
     <string name="ui_love">최애력</string>
+
+
+    <!-- 메인의 상태 관련 문자열 -->
+    <string name="main_tired">피로도</string>
+    <string name="main_lazy">나태함</string>
+
+    <!-- 요일을 나타내는 영어 축약형 -->
+    <string name="sunday">SUN</string>
+    <string name="monday">MON</string>
+    <string name="tuesday">TUE</string>
+    <string name="wednesday">WED</string>
+    <string name="thursday">THU</string>
+    <string name="friday">FRI</string>
+    <string name="saturday">SAT</string>
+
+
+    <!-- 월을 나타내는 문자열 -->
+    <string name="month_january">January</string>
+    <string name="month_february">February</string>
+    <string name="month_march">March</string>
+    <string name="month_april">April</string>
+    <string name="month_may">May</string>
+    <string name="month_june">June</string>
+    <string name="month_july">July</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">October</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+
+
 </resources>
