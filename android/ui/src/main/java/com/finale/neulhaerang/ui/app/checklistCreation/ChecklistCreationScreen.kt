@@ -39,7 +39,7 @@ import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalTime
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -83,8 +83,7 @@ fun Content(modifier: Modifier = Modifier) {
     // 동작 확인용 변수
     // TODO: ViewModel 구현
     val (routine, setRoutine) = remember { mutableStateOf(false) }
-    val (selectedDate, setSelectedDate) = remember { mutableStateOf(LocalDate.now()) }
-    val (selectedTime, setSelectedTime) = remember { mutableStateOf(LocalTime.now()) }
+    val (dateTime, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
 
     Column(modifier = modifier) {
         Row {
@@ -94,13 +93,13 @@ fun Content(modifier: Modifier = Modifier) {
             Switch(checked = routine, onCheckedChange = setRoutine)
         }
         if (routine) RoutineCreation() else TodoCreation(
-            localDate = selectedDate, setLocalDate = setSelectedDate
+            dateTime = dateTime, setDateTime = setDateTime
         )
         ChecklistCreationItem(name = "시간", icon = Icons.Filled.Schedule) {
             val showSheet = remember { mutableStateOf(false) }
 
             TextButton(onClick = { showSheet.component2()(true) }) {
-                Text(text = selectedTime.format(DateTimeFormatter.ofPattern("h:mm a")))
+                Text(text = dateTime.format(DateTimeFormatter.ofPattern("h:mm a")))
             }
         }
         Row {
@@ -141,24 +140,23 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoCreation(
-    modifier: Modifier = Modifier, localDate: LocalDate, setLocalDate: (LocalDate) -> Unit
+    modifier: Modifier = Modifier, dateTime: LocalDateTime, setDateTime: (LocalDateTime) -> Unit
 ) {
     val showSheet = rememberSaveable { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
-        localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+        dateTime.toInstant(ZoneOffset.UTC).toEpochMilli()
     )
 
     fun onOk() {
-        setLocalDate(
-            Instant.ofEpochMilli(datePickerState.selectedDateMillis as Long)
-                .atZone(ZoneId.systemDefault()).toLocalDate()
-        )
+        val inputDate = Instant.ofEpochMilli(datePickerState.selectedDateMillis as Long)
+            .atZone(ZoneId.systemDefault()).toLocalDate()
+        setDateTime(dateTime.with(inputDate))
         showSheet.component2()(false)
     }
 
     ChecklistCreationItem(modifier = modifier, name = "날짜", icon = Icons.Filled.DateRange) {
         TextButton(onClick = { showSheet.component2()(true) }) {
-            Text(text = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            Text(text = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
         // 날짜 피커 모달 바텀 시트
         NHLDatePicker(showSheet = showSheet, datePickerState = datePickerState, dateValidator = {
