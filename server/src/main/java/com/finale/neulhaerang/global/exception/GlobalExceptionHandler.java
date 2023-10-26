@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.finale.neulhaerang.global.exception.auth.NonValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.characterInfo.NonExistCharacterInfoException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,14 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(NonExistCharacterInfoException.class)
 	protected ResponseEntity<ErrorResponse> nonExistCharacterInfoException(NonExistCharacterInfoException e) {
+		log.error("character info not found", e);
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_EXIST_CHARACTERINFO.getErrorCode(), ErrorCode.NON_EXIST_CHARACTERINFO.getMessage());
+		return ResponseEntity.status(ErrorCode.NON_EXIST_CHARACTERINFO.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NonValidJwtTokenException.class)
+	protected ResponseEntity<ErrorResponse> nonValidJwtTokenException(NonValidJwtTokenException e) {
 		log.error("jwt error", e);
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_VALID_TOKEN.getErrorCode(), ErrorCode.NON_VALID_TOKEN.getMessage());
 		return ResponseEntity.status(ErrorCode.NON_VALID_TOKEN.getHttpStatus())
