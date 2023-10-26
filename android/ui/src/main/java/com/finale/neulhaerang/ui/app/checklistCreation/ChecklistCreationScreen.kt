@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,8 +34,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import java.time.LocalDate
-import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -128,9 +124,7 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodoCreation(
-    modifier: Modifier = Modifier,
-    selectedDate: LocalDate,
-    setSelectedDate: (LocalDate) -> Unit
+    modifier: Modifier = Modifier, selectedDate: LocalDate, setSelectedDate: (LocalDate) -> Unit
 ) {
     ChecklistCreationItem(modifier = modifier, name = "날짜", icon = Icons.Filled.DateRange) {
         TextButton(onClick = { }) {
@@ -144,32 +138,5 @@ fun TodoCreation(
 fun ChecklistCreationScreenPreview() {
     NeulHaeRangTheme {
         ChecklistCreationScreen(navController = rememberNavController())
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun NHLDatePickerDialog() {
-    NeulHaeRangTheme {
-        val zoneId = ZoneId.systemDefault()
-        val text = "${zoneId.toString()}\n" +
-                "${
-                    LocalDate.now(ZoneOffset.UTC).atStartOfDay(ZoneId.systemDefault()).toInstant()
-                        .toEpochMilli()
-                }\n" + "${
-            LocalDate.now(ZoneOffset.UTC).atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
-        }\n" +
-                "${LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()}"
-
-        val localDate = LocalDate.now()
-        val datePickerState = rememberDatePickerState(
-//            localDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
-            localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
-        )
-        Column {
-            DatePicker(state = datePickerState)
-            Text(text = text)
-        }
     }
 }
