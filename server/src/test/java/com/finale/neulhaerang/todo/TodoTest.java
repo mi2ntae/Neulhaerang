@@ -16,4 +16,20 @@ public class TodoTest {
 			.build();
 		assertThat(todo).isNotNull();
 	}
+	@Test
+	public void javaBean(){
+		// GIVEN
+		String content = "양치하기";
+		StatType statType = StatType.갓생력;
+
+		// WHEN
+		Todo todo = Todo.builder()
+			.content(content)
+			.statType(statType)
+			.build();
+
+		// THEN
+		assertThat(todo.getContent()).isEqualTo(content);
+		assertThat(todo.getStatType()).isEqualTo(statType);
+	}
 }
