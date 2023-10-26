@@ -76,7 +76,7 @@ fun Share() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(2.dp),
+                .padding(8.dp),
             horizontalArrangement = Arrangement.End
         ) {
             IconButton(
@@ -90,7 +90,6 @@ fun Share() {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-//                .padding(16.dp),
             horizontalArrangement = Arrangement.End
         ) {
             Text("자랑하기")
@@ -118,7 +117,7 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
         Text("Lv.$level")
 
         // 간격 설정
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
         // 경험치를 보여주는 막대
         LinearProgressIndicator(
@@ -133,7 +132,7 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
         )
 
         // 간격 설정
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(16.dp))
         Text("$curEx / $upEx")
     }
 }
