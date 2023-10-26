@@ -19,16 +19,16 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(NonExistCharacterInfoException.class)
-	protected ResponseEntity<ErrorResponse> nonExistCharacterInfoException(NonExistCharacterInfoException e) {
-		log.error("character info not found", e);
+	protected ResponseEntity<ErrorResponse> nonExistCharacterInfoException() {
+		log.error("character info not found");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_EXIST_CHARACTERINFO.getErrorCode(), ErrorCode.NON_EXIST_CHARACTERINFO.getMessage());
 		return ResponseEntity.status(ErrorCode.NON_EXIST_CHARACTERINFO.getHttpStatus())
 			.body(errorResponse);
 	}
 
 	@ExceptionHandler(NonValidJwtTokenException.class)
-	protected ResponseEntity<ErrorResponse> nonValidJwtTokenException(NonValidJwtTokenException e) {
-		log.error("jwt error", e);
+	protected ResponseEntity<ErrorResponse> nonValidJwtTokenException() {
+		log.error("jwt error");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_VALID_TOKEN.getErrorCode(), ErrorCode.NON_VALID_TOKEN.getMessage());
 		return ResponseEntity.status(ErrorCode.NON_VALID_TOKEN.getHttpStatus())
 			.body(errorResponse);
