@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +39,7 @@ import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -82,6 +84,7 @@ fun Content(modifier: Modifier = Modifier) {
     // TODO: ViewModel 구현
     val (routine, setRoutine) = remember { mutableStateOf(false) }
     val (selectedDate, setSelectedDate) = remember { mutableStateOf(LocalDate.now()) }
+    val (selectedTime, setSelectedTime) = remember { mutableStateOf(LocalTime.now()) }
 
     Column(modifier = modifier) {
         Row {
@@ -93,8 +96,12 @@ fun Content(modifier: Modifier = Modifier) {
         if (routine) RoutineCreation() else TodoCreation(
             localDate = selectedDate, setLocalDate = setSelectedDate
         )
-        Row {
-            Text(text = "시간")
+        ChecklistCreationItem(name = "시간", icon = Icons.Filled.Schedule) {
+            val showSheet = remember { mutableStateOf(false) }
+
+            TextButton(onClick = { showSheet.component2()(true) }) {
+                Text(text = selectedTime.format(DateTimeFormatter.ofPattern("h:mm a")))
+            }
         }
         Row {
             Text(text = "알림")
