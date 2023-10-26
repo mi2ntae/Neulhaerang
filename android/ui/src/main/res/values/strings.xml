@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 6가지 능력치에 관한 문자열 -->
+    <string name="ui_god_sang">갓생력</string>
+    <string name="ui_survive">생존력</string>
+    <string name="ui_in_ssa">인싸력</string>
+    <string name="ui_teunteun">튼튼력</string>
+    <string name="ui_good_idea">창의력</string>
+    <string name="ui_love">최애력</string>
+</resources>
