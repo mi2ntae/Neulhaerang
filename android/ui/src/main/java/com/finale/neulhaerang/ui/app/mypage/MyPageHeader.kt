@@ -76,7 +76,7 @@ fun Share() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(2.dp),
+                .padding(8.dp),
             horizontalArrangement = Arrangement.End
         ) {
             IconButton(
@@ -90,7 +90,6 @@ fun Share() {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-//                .padding(16.dp),
             horizontalArrangement = Arrangement.End
         ) {
             Text("자랑하기")
