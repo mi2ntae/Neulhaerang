@@ -23,7 +23,7 @@ spring:
     password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true
@@ -34,6 +34,11 @@ spring:
     password: ${REDIS_PASSWORD}
     ttl:
       refresh_token: 1209600000
+  jwt:
+    secret: ${JWT_KEY}
+    token:
+      access-expiration-time: 43200000   # 12hour
+      refresh-expiration-time: 604800000 # 7day
 
 
 logging:
@@ -47,5 +52,12 @@ logging:
           descriptor:
             sql: DEBUG
         sql: DEBUG
+
+oauth2:
+  config:
+    activate:
+      on-profile: common
+  kakao:
+    infoUrl: https://kapi.kakao.com
 
 ---
