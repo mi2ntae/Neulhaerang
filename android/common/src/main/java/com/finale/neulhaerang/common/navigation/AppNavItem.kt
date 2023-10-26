@@ -16,6 +16,7 @@ enum class AppNavItem(
     val route: String,
     val icon: ImageVector?
 ) {
+    Login("로그인","login",null),
     Main("메인", "main", Icons.Rounded.Home),
     MyPage("마이페이지", "mypage", Icons.Rounded.Person),
     Social("소셜", "social", Icons.Rounded.LocationOn),
