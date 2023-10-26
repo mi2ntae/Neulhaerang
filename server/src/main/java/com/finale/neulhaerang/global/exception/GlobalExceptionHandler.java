@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.finale.neulhaerang.global.exception.auth.NonValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.characterInfo.NonExistCharacterInfoException;
+import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
 
 import lombok.extern.slf4j.Slf4j;
 
