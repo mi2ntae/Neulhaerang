@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppBottomAppNavItems
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.ui.app.checklistCreation.ChecklistCreationScreen
+import com.finale.neulhaerang.ui.app.login.LoginScreen
 import com.finale.neulhaerang.ui.app.main.MainScreen
 import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
 import com.finale.neulhaerang.ui.app.social.SocialScreen
@@ -41,13 +42,16 @@ fun App() {
             content = {
                 NavHost(
                     navController = navController,
-                    startDestination = AppNavItem.Main.route,
+                    startDestination = AppNavItem.Login.route,
                     modifier = Modifier
                         .padding(it)
                         .fillMaxSize(),
                 ) {
                     AppNavItem.values().forEach { item ->
                         when (item) {
+                            AppNavItem.Login -> composable(item.route) {
+                                LoginScreen(navController = navController)
+                            }
                             AppNavItem.Main -> composable(item.route) {
                                 MainScreen(navController = navController)
                             }
