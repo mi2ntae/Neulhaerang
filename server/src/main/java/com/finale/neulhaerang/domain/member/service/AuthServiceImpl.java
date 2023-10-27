@@ -63,7 +63,7 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-	public TokenResDto refreshAccessToken(TokenReqDto tokenReqDto) throws NonValidJwtTokenException, ExpiredAuthException {
+	public TokenResDto reissueAccessToken(TokenReqDto tokenReqDto) throws NonValidJwtTokenException, ExpiredAuthException {
 		String deviceToken = tokenReqDto.getDeviceToken();
 		Optional<Device> optionalDevice = deviceRepository.findDeviceByDeviceToken(deviceToken);
 		if(optionalDevice.isEmpty()) {
@@ -81,8 +81,8 @@ public class AuthServiceImpl implements AuthService{
 			// 리프레쉬 토큰이 만료되어 로그인 다시 해야하는 경우
 			throw new ExpiredAuthException();
 		}
-		String accesToken = jwtTokenProvider.createAccessToken(deviceToken, optionalDevice.get().getMember().getId());
-		return TokenResDto.of(accesToken, tokenReqDto.getRefreshToken(), LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS));
+		String accessToken = jwtTokenProvider.createAccessToken(deviceToken, optionalDevice.get().getMember().getId());
+		return TokenResDto.of(accessToken, tokenReqDto.getRefreshToken(), LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS));
 	}
 
 	private Member kakaoLogin(LoginReqDto loginReqDto) {

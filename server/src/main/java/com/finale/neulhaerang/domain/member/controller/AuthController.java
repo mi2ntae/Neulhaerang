@@ -33,8 +33,8 @@ public class AuthController {
 
 	@ApiOperation(value = "엑세스 토큰 재발급", notes = "엑세스 토큰 만료로 인한 재발급")
 	@PostMapping("/refresh")
-	public ResponseEntity<TokenResDto> refreshAccessToken(@RequestBody TokenReqDto tokenReqDto) {
-		return ResponseEntity.ok().body(authService.refreshAccessToken(tokenReqDto));
+	public ResponseEntity<TokenResDto> reissueAccessToken(@RequestBody TokenReqDto tokenReqDto) {
+		return ResponseEntity.ok().body(authService.reissueAccessToken(tokenReqDto));
 	}
 
 }

@@ -10,5 +10,5 @@ import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
 public interface AuthService {
 	LoginResDto login(LoginReqDto loginReqDto);
 
-	TokenResDto refreshAccessToken(TokenReqDto tokenReqDto) throws NonValidJwtTokenException, ExpiredAuthException;
+	TokenResDto reissueAccessToken(TokenReqDto tokenReqDto) throws NonValidJwtTokenException, ExpiredAuthException;
 }
