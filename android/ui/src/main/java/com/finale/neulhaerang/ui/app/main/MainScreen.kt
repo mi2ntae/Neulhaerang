@@ -19,22 +19,38 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
+import com.finale.neulhaerang.data.Day
 import com.finale.neulhaerang.ui.app.stackNavigate
 import com.finale.neulhaerang.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
+    val days = listOf<Day>(
+        Day("월요일", 80),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100)
+    )
     Scaffold(
 //        containerColor = Color(0xFFBE1515),
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
-        }
-    ) { innerPadding ->
+        }) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
             AppHeader()
             StatusBar()
-            DayElement()
+//            DayElement(drawable = R.drawable.good, text = R.string.monday)
+            DaysRow(days = days)
         }
     }
 }
