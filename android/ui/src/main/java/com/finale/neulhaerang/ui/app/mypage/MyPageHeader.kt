@@ -39,7 +39,7 @@ fun MyPageHeader() {
         Coin()
         Title()
         Share()
-        Level(2, 4, 16)
+        Level(10, 9999, 9999)
     }
 }
 
@@ -130,6 +130,8 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
 
         // 간격 설정
         Spacer(modifier = Modifier.width(16.dp))
-        Text("$curEx / $upEx", style = Typography.bodySmall)
+        val curExperience = String.format("%4d", curEx)
+        val upExperience = String.format("%4d", upEx)
+        Text("$curExperience / $upExperience", style = Typography.bodySmall)
     }
 }
