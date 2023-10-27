@@ -1,7 +1,5 @@
 package com.finale.neulhaerang.ui.app.mypage
 
-
-import BoxStat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,9 +26,21 @@ fun MyPageScreen() {
         Column {
             Text("마이페이지입니당")
             MyPageHeader()
+
+            /*TODO*/
+            // Stat, Closet, Title 을 선택해서 보여줄 수 있는
+            // SelectionBar 구현 필요
             MyPageSelectionBar()
-            HexagonStat()
-            BoxStat("S+", "S", "B+", "A+", "C", "F")
+
+            /*TODO*/
+            // radar chart 구현해야함
+            // HexagonStat()
+
+            /*TODO*/
+            // 추후 SelectionBar 완성시 배치
+            // BoxStat("S+", "S", "B+", "A+", "C", "F")
+
+
             ClosetPage()
             TitlePage()
         }
