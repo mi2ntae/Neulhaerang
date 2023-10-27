@@ -26,16 +26,20 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
@@ -56,14 +60,23 @@ fun ChecklistCreationScreen(navController: NavHostController) {
             )
         }, navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "뒤로 가기")
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(id = R.string.go_back)
+                )
             }
         }, actions = {
             TextButton(onClick = { /*TODO*/ }) {
-                Text(text = "취소", color = MaterialTheme.colorScheme.secondary)
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    color = MaterialTheme.colorScheme.secondary
+                )
             }
             TextButton(onClick = { /*TODO*/ }) {
-                Text(text = "완료", color = MaterialTheme.colorScheme.primary)
+                Text(
+                    text = stringResource(id = R.string.complete),
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         }, colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -90,34 +103,41 @@ fun Content(modifier: Modifier = Modifier) {
 
     Column(modifier = modifier) {
         Row {
-            Text(text = "체크리스트 이름")
+            Text(text = stringResource(id = R.string.checklist_category_name))
         }
-        ChecklistCreationItem(name = "루틴", icon = Icons.Filled.Refresh) {
+        ChecklistCreationItem(
+            name = stringResource(id = R.string.checklist_category_routine),
+            icon = Icons.Filled.Refresh
+        ) {
             Switch(checked = routine, onCheckedChange = setRoutine)
         }
         if (routine) RoutineCreation() else TodoCreation(
             dateTime = dateTime, setDateTime = setDateTime
         )
-        ChecklistCreationItem(name = "시간", icon = Icons.Filled.Schedule) {
-            val showSheet = remember { mutableStateOf(false) }
+        ChecklistCreationItem(
+            name = stringResource(id = R.string.checklist_category_time),
+            icon = Icons.Filled.Schedule
+        ) {
+            var showSheet by remember { mutableStateOf(false) }
             val timePickerState = rememberTimePickerState(
-                initialHour = dateTime.hour,
-                initialMinute = dateTime.minute,
-                is24Hour = false
+                initialHour = dateTime.hour, initialMinute = dateTime.minute, is24Hour = false
             )
 
-            TextButton(onClick = { showSheet.component2()(true) }) {
+            TextButton(onClick = { showSheet = true }) {
                 Text(text = dateTime.format(DateTimeFormatter.ofPattern("h:mm a")))
             }
-            NHLTimePicker(showSheet = showSheet, timePickerState = timePickerState, onOk = {
-                setDateTime(
-                    dateTime.withHour(timePickerState.hour).withMinute(timePickerState.minute)
-                )
-                showSheet.component2()(false)
-            })
+            NHLTimePicker(
+                open = showSheet,
+                close = { showSheet = false },
+                timePickerState = timePickerState,
+                onOk = {
+                    setDateTime(
+                        dateTime.withHour(timePickerState.hour).withMinute(timePickerState.minute)
+                    )
+                })
         }
         Row {
-            Text(text = "알림")
+            Text(text = stringResource(id = R.string.checklist_category_notice))
         }
     }
 }
@@ -146,7 +166,7 @@ fun ChecklistCreationItem(
 fun RoutineCreation(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Row {
-            Text(text = "반복주기")
+            Text(text = stringResource(id = R.string.checklist_category_repeat))
         }
     }
 }
@@ -156,24 +176,31 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
 fun TodoCreation(
     modifier: Modifier = Modifier, dateTime: LocalDateTime, setDateTime: (LocalDateTime) -> Unit
 ) {
-    val showSheet = rememberSaveable { mutableStateOf(false) }
+    var showSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
         dateTime.toInstant(ZoneOffset.UTC).toEpochMilli()
     )
 
-    ChecklistCreationItem(modifier = modifier, name = "날짜", icon = Icons.Filled.DateRange) {
-        TextButton(onClick = { showSheet.component2()(true) }) {
+    ChecklistCreationItem(
+        modifier = modifier,
+        name = stringResource(id = R.string.checklist_category_date),
+        icon = Icons.Filled.DateRange
+    ) {
+        TextButton(onClick = { showSheet = true }) {
             Text(text = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
         // 날짜 피커 모달 바텀 시트
-        NHLDatePicker(showSheet = showSheet, datePickerState = datePickerState, dateValidator = {
-            it >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
-        }, onOk = {
-            val inputDate = Instant.ofEpochMilli(datePickerState.selectedDateMillis as Long)
-                .atZone(ZoneId.systemDefault()).toLocalDate()
-            setDateTime(dateTime.with(inputDate))
-            showSheet.component2()(false)
-        })
+        NHLDatePicker(open = showSheet,
+            close = { showSheet = false },
+            datePickerState = datePickerState,
+            dateValidator = {
+                it >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+            },
+            onOk = {
+                val inputDate = Instant.ofEpochMilli(datePickerState.selectedDateMillis as Long)
+                    .atZone(ZoneId.systemDefault()).toLocalDate()
+                setDateTime(dateTime.with(inputDate))
+            })
     }
 }
 
