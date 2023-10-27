@@ -5,9 +5,7 @@ package com.finale.neulhaerang.ui.app.fragment
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,59 +16,64 @@ import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 
 @Composable
 fun NHLDatePicker(
-    showSheet: MutableState<Boolean>,
+    open: Boolean,
+    close: () -> Unit,
     datePickerState: DatePickerState,
     dateValidator: (Long) -> Boolean = { true },
     onOk: () -> Unit
 ) {
-    PickerModalBottomSheet(showSheet = showSheet) {
-        DatePicker(state = datePickerState, dateValidator = dateValidator, title = {
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
-            ) {
-                TextButton(onClick = { onOk() }) { Text(text = "완료") }
-            }
-        })
-    }
-}
+    val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-@Composable
-fun NHLTimePicker(
-    showSheet: MutableState<Boolean>,
-    timePickerState: TimePickerState,
-    onOk: () -> Unit
-) {
-    PickerModalBottomSheet(showSheet = showSheet) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
-            ) { TextButton(onClick = { onOk() }) { Text(text = "완료") } }
-            TimeInput(state = timePickerState)
+    if (open) {
+        ModalBottomSheet(onDismissRequest = { close() }, sheetState = sheetState) {
+            DatePicker(state = datePickerState, dateValidator = dateValidator, title = {
+                Row(
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = {
+                        onOk()
+                        scope.launch { sheetState.hide() }.invokeOnCompletion { close() }
+                    }) { Text(text = "완료") }
+                }
+            })
         }
     }
 }
 
 @Composable
-fun PickerModalBottomSheet(
-    showSheet: MutableState<Boolean>, content: @Composable () -> Unit
+fun NHLTimePicker(
+    open: Boolean,
+    close: () -> Unit,
+    timePickerState: TimePickerState,
+    onOk: () -> Unit
 ) {
-    if (showSheet.component1()) {
-        ModalBottomSheet(
-            onDismissRequest = { showSheet.component2()(false) },
-            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-        ) {
-            content()
-            Spacer(modifier = Modifier.height(16.dp))
+    val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    if (open) {
+        ModalBottomSheet(onDismissRequest = { close() }, sheetState = sheetState) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = {
+                        onOk()
+                        scope.launch { sheetState.hide() }.invokeOnCompletion { close() }
+                    }) { Text(text = "완료") }
+                }
+                TimeInput(state = timePickerState)
+            }
         }
     }
 }
