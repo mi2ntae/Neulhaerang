@@ -14,6 +14,7 @@ import com.finale.neulhaerang.domain.member.dto.response.LoginResDto;
 import com.finale.neulhaerang.domain.member.dto.response.TokenResDto;
 import com.finale.neulhaerang.domain.member.entity.Device;
 import com.finale.neulhaerang.domain.member.entity.Member;
+import com.finale.neulhaerang.domain.member.feignclient.KakaoInfoFeignClient;
 import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
@@ -63,31 +64,41 @@ public class AuthServiceImpl implements AuthService{
 
 	@Override
 	public TokenResDto refreshAccessToken(TokenReqDto tokenReqDto) throws NonValidJwtTokenException, ExpiredAuthException {
-		String deviceToken = jwtTokenProvider.getSubject(tokenReqDto.getAccessToken());
-		long memberId = Long.parseLong(String.valueOf(jwtTokenProvider.getClaims(tokenReqDto.getAccessToken()).get("member")));
-		String refreshToken = tokenReqDto.getRefreshToken();
-		String savedRefreshToken = redisUtil.getData(tokenReqDto.getRefreshToken());
-		if(savedRefreshToken != null)  {
-			refreshToken = jwtTokenProvider.createRefreshToken(deviceToken);
-			if(!savedRefreshToken.equals(refreshToken)) {
-				throw new NonValidJwtTokenException();
-			}
-			redisUtil.setData(deviceToken, refreshToken, refreshExpirationTime);
-		} else {
+		String deviceToken = tokenReqDto.getDeviceToken();
+		Optional<Device> optionalDevice = deviceRepository.findDeviceByDeviceToken(deviceToken);
+		if(optionalDevice.isEmpty()) {
 			throw new ExpiredAuthException();
 		}
-		String accesToken = jwtTokenProvider.createAccessToken(deviceToken, memberId);
-		return TokenResDto.of(accesToken, refreshToken, LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS));
+
+		String refreshToken = tokenReqDto.getRefreshToken();
+		String savedRefreshToken = redisUtil.getData(deviceToken);
+		if(savedRefreshToken != null)  {
+			if(!savedRefreshToken.equals(refreshToken)) {
+				// 해당 디바이스로 저장된 리프레쉬 토큰이 아닐 때 -> 변조 가능성
+				throw new NonValidJwtTokenException();
+			}
+		} else {
+			// 리프레쉬 토큰이 만료되어 로그인 다시 해야하는 경우
+			throw new ExpiredAuthException();
+		}
+		String accesToken = jwtTokenProvider.createAccessToken(deviceToken, optionalDevice.get().getMember().getId());
+		return TokenResDto.of(accesToken, tokenReqDto.getRefreshToken(), LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS));
 	}
 
 	private Member kakaoLogin(LoginReqDto loginReqDto) {
 		KakaoUserResDto kakaoUserResDto = kakaoInfoFeignClient.getKakaoUserInfo("Bearer "+loginReqDto.getAccessToken(), "application/x-www-form-urlencoded");
 		Optional<Member> optionalMember = memberRepository.findMemberByKakaoId(kakaoUserResDto.getId());
+		Optional<Device> optionalDevice = deviceRepository.findDeviceByDeviceToken(loginReqDto.getDeviceToken());
 		if(optionalMember.isEmpty()) {
 			Member member = memberRepository.save(Member.of(kakaoUserResDto.getId(), kakaoUserResDto.getKakao_account().getProfile().getNickname()));
-			deviceRepository.save(Device.of(member, loginReqDto.getDeviceToken()));
+			if(optionalDevice.isEmpty()) {
+				deviceRepository.save(Device.of(member, loginReqDto.getDeviceToken()));
+			}
 			return member;
 		} else {
+			if(optionalDevice.isEmpty()) {
+				deviceRepository.save(Device.of(optionalMember.get(), loginReqDto.getDeviceToken()));
+			}
 			return optionalMember.get();
 		}
 	}

@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ExpiredAuthException.class)
 	protected ResponseEntity<ErrorResponse> expiredAuthException() {
-		log.error("refresh token expired");
+		log.error("refresh token expired login again");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(), ErrorCode.EXPIRED_AUTH.getMessage());
 		return ResponseEntity.status(ErrorCode.EXPIRED_AUTH.getHttpStatus())
 			.body(errorResponse);
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(NonValidJwtTokenException.class)
 	protected ResponseEntity<ErrorResponse> nonValidJwtTokenException() {
-		log.error("jwt error");
+		log.error("nonvalid jwt");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_VALID_TOKEN.getErrorCode(), ErrorCode.NON_VALID_TOKEN.getMessage());
 		return ResponseEntity.status(ErrorCode.NON_VALID_TOKEN.getHttpStatus())
 			.body(errorResponse);

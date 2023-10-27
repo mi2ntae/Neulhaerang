@@ -20,8 +20,8 @@ public class LoginResDto {
 		return LoginResDto.builder()
 			.memberId(member.getId())
 			.nickname(member.getNickname())
-			.accessToken(tokenResDto.getAccess_token())
-			.refresh_token(tokenResDto.getRefresh_token())
-			.expired_time(tokenResDto.getExpired_time()).build();
+			.accessToken(tokenResDto.getAccessToken())
+			.refresh_token(tokenResDto.getRefreshToken())
+			.expired_time(tokenResDto.getExpiredTime()).build();
 	}
 }
