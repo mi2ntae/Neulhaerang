@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 public class Todo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "routine_id")
+	@Column(name = "todo_id")
 	private long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
