@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,7 +34,7 @@ fun BoxStat(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colors.primary)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -48,7 +48,7 @@ fun BoxStat(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
-            ){
+            ) {
                 StatButton(stringResource(id = R.string.ui_god_sang), godSangStat)
                 StatButton(stringResource(id = R.string.ui_survive), surviveStat)
             }
@@ -56,14 +56,14 @@ fun BoxStat(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
-            ){
+            ) {
                 StatButton(stringResource(id = R.string.ui_in_ssa), inSsaStat)
                 StatButton(stringResource(id = R.string.ui_teunteun), teunteunStat)
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
-            ){
+            ) {
                 StatButton(stringResource(id = R.string.ui_good_idea), goodIdeaStat)
                 StatButton(stringResource(id = R.string.ui_love), LoveStat)
             }
@@ -77,13 +77,16 @@ fun BoxStat(
  *  클릭했을때, 변동량을 보여주기 위하여 button으로 설계함.
  */
 @Composable
-fun StatButton(name : String, grade : String){
-    ExtendedFloatingActionButton(onClick = {
-        /* TODO */
-        // 버튼을 눌렀을 때, 창을 띄워 변화량과 그래프를 볼 수 있게 해야함.
-    }) {
-        /* TODO */
-        // 아이콘 dependency 추가되면, 각각의 능력치 별로 알맞는 아이콘 추가해야함
-        Text(text = "$name $grade")
-    }
+fun StatButton(name: String, grade: String) {
+    ExtendedFloatingActionButton(
+        onClick = {
+            /* TODO */
+            // 버튼을 눌렀을 때, 창을 띄워 변화량과 그래프를 볼 수 있게 해야함.
+        },
+        text = {
+            /* TODO */
+            // 아이콘 dependency 추가되면, 각각의 능력치 별로 알맞는 아이콘 추가해야함
+            Text(text = "$name $grade")
+        }
+    )
 }
