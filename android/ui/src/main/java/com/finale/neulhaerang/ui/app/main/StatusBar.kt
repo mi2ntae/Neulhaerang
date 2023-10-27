@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -123,7 +123,7 @@ fun customProgressBar() {
 
                 // on below line we are adding
                 // font size to it.
-                style = Typography.labelLarge,
+                style = Typography.caption,
 
 
                 // on below line we are adding
