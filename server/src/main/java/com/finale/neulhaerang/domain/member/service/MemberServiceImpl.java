@@ -14,6 +14,7 @@ import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
+import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member loadMemberByDeviceToken(String deviceToken) throws NonExistDeviceException {
+	public Member loadMemberByDeviceToken(String deviceToken) throws NonExistDeviceException, NonExistMemberException {
+		log.info("받아온 토큰으로 Auth 생성을 위한 멤버 조회");
 		Optional<Device> optionalDevice = deviceRepository.findDeviceByDeviceToken(deviceToken);
 		if(optionalDevice.isEmpty()) {
 			throw new NonExistDeviceException();
@@ -53,7 +55,7 @@ public class MemberServiceImpl implements MemberService{
 
 		Optional<Member> optionalMember = memberRepository.findById(optionalDevice.get().getMember().getId());
 		if(optionalMember.isEmpty()) {
-			throw new NonExistDeviceException();
+			throw new NonExistMemberException();
 		}
 		return optionalMember.get();
 	}

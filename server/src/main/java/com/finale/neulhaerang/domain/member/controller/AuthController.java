@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finale.neulhaerang.domain.member.dto.request.LoginReqDto;
+import com.finale.neulhaerang.domain.member.dto.request.TokenReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.LoginResDto;
+import com.finale.neulhaerang.domain.member.dto.response.TokenResDto;
 import com.finale.neulhaerang.domain.member.service.AuthService;
 
 import io.swagger.annotations.Api;
@@ -27,6 +29,12 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<LoginResDto> login(@RequestBody LoginReqDto loginReqDto) {
 		return ResponseEntity.ok().body(authService.login(loginReqDto));
+	}
+
+	@ApiOperation(value = "엑세스 토큰 재발급", notes = "엑세스 토큰 만료로 인한 재발급")
+	@PostMapping("/refresh")
+	public ResponseEntity<TokenResDto> reissueAccessToken(@RequestBody TokenReqDto tokenReqDto) {
+		return ResponseEntity.ok().body(authService.reissueAccessToken(tokenReqDto));
 	}
 
 }

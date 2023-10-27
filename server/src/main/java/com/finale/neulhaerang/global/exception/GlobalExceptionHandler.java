@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
@@ -19,6 +20,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(ExpiredAuthException.class)
+	protected ResponseEntity<ErrorResponse> expiredAuthException() {
+		log.error("refresh token expired login again");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(), ErrorCode.EXPIRED_AUTH.getMessage());
+		return ResponseEntity.status(ErrorCode.EXPIRED_AUTH.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(NonExistMemberException.class)
 	protected ResponseEntity<ErrorResponse> nonExistMemberException() {
@@ -46,7 +55,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(NonValidJwtTokenException.class)
 	protected ResponseEntity<ErrorResponse> nonValidJwtTokenException() {
-		log.error("jwt error");
+		log.error("nonvalid jwt");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_VALID_TOKEN.getErrorCode(), ErrorCode.NON_VALID_TOKEN.getMessage());
 		return ResponseEntity.status(ErrorCode.NON_VALID_TOKEN.getHttpStatus())
 			.body(errorResponse);
