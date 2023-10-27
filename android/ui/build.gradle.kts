@@ -56,8 +56,8 @@ dependencies {
     implementation("androidx.compose.ui:ui:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.ui:ui-graphics:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["composeUiVersion"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["materialVersion"]}")
     implementation("androidx.compose.material:material-icons-extended:${rootProject.extra["materialVersion"]}")
+    implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
     // navigation
     implementation("androidx.navigation:navigation-compose:${rootProject.extra["composeNavVersion"]}")
     // test

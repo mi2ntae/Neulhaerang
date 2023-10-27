@@ -62,7 +62,7 @@ dependencies {
     implementation("androidx.activity:activity-compose:${rootProject.extra["activityComposeVersion"]}")
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
     implementation("androidx.compose.ui:ui-android:${rootProject.extra["composeUiVersion"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["materialVersion"]}")
+    implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

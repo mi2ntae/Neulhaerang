@@ -2,13 +2,13 @@ buildscript {
     val compileSDKVersion by extra(34)
     val targetSDKVersion by extra(33)
     val minimumSDKVersion by extra(26)
-
     val coreKtxVersion by extra("1.12.0")
     val activityComposeVersion by extra("1.8.0")
-    val composeUiVersion by extra("1.5.4")
     val composeNavVersion by extra("2.7.4")
     val composeBomVersion by extra("2023.03.00")
+    val material3Version by extra("1.1.2")
     val lifecycleRuntimeKtxVertion by extra("2.6.2")
+    val composeUiVersion by extra("1.5.4")
     val materialVersion by extra("1.5.4")
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
