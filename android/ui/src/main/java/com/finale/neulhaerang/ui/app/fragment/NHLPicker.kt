@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.finale.neulhaerang.ui.R
 import kotlinx.coroutines.launch
 
 @Composable
@@ -33,7 +35,9 @@ fun NHLDatePicker(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     if (open) {
-        ModalBottomSheet(onDismissRequest = { close() }, sheetState = sheetState) {
+        ModalBottomSheet(
+            onDismissRequest = { close() }, sheetState = sheetState, dragHandle = null
+        ) {
             DatePicker(state = datePickerState, dateValidator = dateValidator, title = {
                 Row(
                     modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
@@ -41,7 +45,7 @@ fun NHLDatePicker(
                     TextButton(onClick = {
                         onOk()
                         scope.launch { sheetState.hide() }.invokeOnCompletion { close() }
-                    }) { Text(text = "완료") }
+                    }) { Text(text = stringResource(id = R.string.complete)) }
                 }
             })
         }
@@ -50,16 +54,15 @@ fun NHLDatePicker(
 
 @Composable
 fun NHLTimePicker(
-    open: Boolean,
-    close: () -> Unit,
-    timePickerState: TimePickerState,
-    onOk: () -> Unit
+    open: Boolean, close: () -> Unit, timePickerState: TimePickerState, onOk: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     if (open) {
-        ModalBottomSheet(onDismissRequest = { close() }, sheetState = sheetState) {
+        ModalBottomSheet(
+            onDismissRequest = { close() }, sheetState = sheetState, dragHandle = null
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -70,7 +73,7 @@ fun NHLTimePicker(
                     TextButton(onClick = {
                         onOk()
                         scope.launch { sheetState.hide() }.invokeOnCompletion { close() }
-                    }) { Text(text = "완료") }
+                    }) { Text(text = stringResource(id = R.string.complete)) }
                 }
                 TimeInput(state = timePickerState)
             }
