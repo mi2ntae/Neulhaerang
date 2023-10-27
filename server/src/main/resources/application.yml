@@ -32,12 +32,11 @@ spring:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
-    ttl:
-      refresh_token: 1209600000
+
   jwt:
     secret: ${JWT_KEY}
     token:
-      access-expiration-time: 43200000   # 12hour
+      access-expiration-time: 1800000   # 30min
       refresh-expiration-time: 604800000 # 7day
 
 
