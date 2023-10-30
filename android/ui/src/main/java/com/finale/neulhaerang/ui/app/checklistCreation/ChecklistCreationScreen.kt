@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
@@ -100,6 +101,7 @@ fun Content(modifier: Modifier = Modifier) {
     // TODO: ViewModel 구현
     val (routine, setRoutine) = remember { mutableStateOf(false) }
     val (dateTime, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
+    val (alram, setAlram) = remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {
         Row {
@@ -136,8 +138,11 @@ fun Content(modifier: Modifier = Modifier) {
                     )
                 })
         }
-        Row {
-            Text(text = stringResource(id = R.string.checklist_category_notice))
+        ChecklistCreationItem(
+            name = stringResource(id = R.string.checklist_category_notice),
+            icon = Icons.Filled.Alarm
+        ) {
+            Switch(checked = alram, onCheckedChange = setAlram)
         }
     }
 }
