@@ -22,32 +22,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
-import com.finale.neulhaerang.data.Day
 import com.finale.neulhaerang.ui.app.stackNavigate
 import com.finale.neulhaerang.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
-    val days = listOf<Day>(
-        Day("월요일", 80),
-        Day("화요일", 100),
-        Day("수요일", 30),
-        Day("목요일", 50),
-        Day("화요일", 100),
-        Day("화요일", 100),
-        Day("수요일", 30),
-        Day("목요일", 50),
-        Day("화요일", 100),
-        Day("화요일", 100),
-        Day("수요일", 30),
-        Day("목요일", 50),
-        Day("화요일", 100)
-
-    )
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
     Scaffold(
@@ -55,18 +39,18 @@ fun MainScreen(navController: NavHostController) {
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
         }) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(
+            modifier = Modifier.padding(innerPadding)
+        ) {
             AppHeader()
             StatusBar()
-//            DayElement(drawable = R.drawable.good, text = R.string.monday)
-            DaysRow(days = days)
+            Calendar()
             Column(modifier = Modifier.fillMaxWidth()) {
                 TabRow(selectedTabIndex = tabIndex) {
                     tabs.forEachIndexed { index, title ->
                         Tab(text = { Text(title) },
                             selected = tabIndex == index,
-                            onClick = { tabIndex = index }
-                        )
+                            onClick = { tabIndex = index })
                     }
                 }
                 when (tabIndex) {
@@ -90,9 +74,11 @@ fun ChecklistCreationButton(navController: NavHostController) {
 }
 
 @Composable
-fun AppHeader() {
+fun AppHeader(modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
