@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(AccessForbiddenException.class)
 	protected ResponseEntity<ErrorResponse> accessForbiddenException() {
 		log.error("authentication fail request member is not login member");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(), ErrorCode.EXPIRED_AUTH.getMessage());
-		return ResponseEntity.status(ErrorCode.EXPIRED_AUTH.getHttpStatus())
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ACCESS_FORBIDDEN.getErrorCode(), ErrorCode.ACCESS_FORBIDDEN.getMessage());
+		return ResponseEntity.status(ErrorCode.ACCESS_FORBIDDEN.getHttpStatus())
 			.body(errorResponse);
 	}
 
