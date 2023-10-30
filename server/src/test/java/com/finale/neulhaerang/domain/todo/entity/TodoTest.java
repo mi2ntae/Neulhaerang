@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.todo;
+package com.finale.neulhaerang.domain.todo.entity;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -6,9 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.finale.neulhaerang.domain.routine.entity.StatType;
-import com.finale.neulhaerang.domain.todo.entity.Todo;
 
-public class TodoTest {
+class TodoTest {
 	@Test
 	@DisplayName("Todo Entity Build Test")
 	public void builder() {
