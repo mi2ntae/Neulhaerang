@@ -2,18 +2,23 @@ package com.finale.neulhaerang.ui.app.checklistCreation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,11 +40,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
@@ -99,7 +104,7 @@ fun ChecklistCreationScreen(navController: NavHostController) {
 fun Content(modifier: Modifier = Modifier) {
     // 동작 확인용 변수
     // TODO: ViewModel 구현
-    val (routine, setRoutine) = remember { mutableStateOf(false) }
+    val (routine, setRoutine) = remember { mutableStateOf(true) }
     val (dateTime, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
     val (alram, setAlram) = remember { mutableStateOf(false) }
 
@@ -149,7 +154,10 @@ fun Content(modifier: Modifier = Modifier) {
 
 @Composable
 fun ChecklistCreationItem(
-    modifier: Modifier = Modifier, name: String, icon: ImageVector, content: @Composable () -> Unit
+    modifier: Modifier = Modifier,
+    name: String,
+    icon: ImageVector,
+    content: @Composable() (() -> Unit)?
 ) {
     Row(
         modifier = modifier
@@ -158,20 +166,54 @@ fun ChecklistCreationItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(imageVector = icon, contentDescription = name)
             Spacer(modifier = Modifier.width(4.dp))
             Text(text = name)
         }
-        content()
+        if (content != null) {
+            content()
+        }
     }
 }
 
 @Composable
 fun RoutineCreation(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        Row {
-            Text(text = stringResource(id = R.string.checklist_category_repeat))
+    val selectedDays = rememberSaveable { mutableStateOf(List<Boolean>(7) { _ -> false }) }
+
+    Column(
+        modifier = modifier
+    ) {
+        ChecklistCreationItem(
+            name = stringResource(id = R.string.checklist_category_repeat),
+            icon = Icons.Filled.Alarm,
+            content = null
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            for (i in 0..6) {
+                val colors =
+                    if (selectedDays.value[i]) ButtonDefaults.buttonColors()
+                    else ButtonDefaults.outlinedButtonColors()
+                val border =
+                    if (selectedDays.value[i]) null
+                    else ButtonDefaults.outlinedButtonBorder
+
+                Button(
+                    onClick = {  },
+                    modifier = Modifier.size(40.dp),
+                    shape = CircleShape,
+                    colors = colors,
+                    border = border,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Text(text = stringArrayResource(id = R.array.day_of_week_array_short_kr)[i])
+                }
+            }
         }
     }
 }
@@ -213,6 +255,7 @@ fun TodoCreation(
 @Composable
 fun ChecklistCreationScreenPreview() {
     NeulHaeRangTheme {
-        ChecklistCreationScreen(navController = rememberNavController())
+//        ChecklistCreationScreen(navController = rememberNavController())
+        RoutineCreation()
     }
 }
