@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.finale.neulhaerang.ui.theme.Pink40
 import com.finale.neulhaerang.ui.theme.Pink80
+import com.finale.neulhaerang.ui.theme.Typography
 
 /**
  * MyPageHeader
@@ -38,7 +39,7 @@ fun MyPageHeader() {
         Coin()
         Title()
         Share()
-        Level(2, 4, 16)
+        Level(10, 9999, 9999)
     }
 }
 
@@ -89,9 +90,8 @@ fun Share() {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            Text("자랑하기")
+            Text("자랑하기", style = Typography.bodyMedium)
         }
-
     }
 }
 
@@ -111,7 +111,7 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
-        Text("Lv.$level")
+        Text("Lv.$level", style = Typography.bodySmall)
 
         // 간격 설정
         Spacer(modifier = Modifier.width(16.dp))
@@ -130,6 +130,8 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
 
         // 간격 설정
         Spacer(modifier = Modifier.width(16.dp))
-        Text("$curEx / $upEx")
+        val curExperience = String.format("%4d", curEx)
+        val upExperience = String.format("%4d", upEx)
+        Text("$curExperience / $upExperience", style = Typography.bodySmall)
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.finale.neulhaerang.ui.theme.Typography
 
 /**
  *  ClosetPage
@@ -37,16 +38,16 @@ fun ClosetPage() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
             Button(onClick = { setScreenState(1) }) {
-                Text(text = "표정", color = Color.White)
+                Text(text = "표정", color = Color.White, style = Typography.bodyLarge)
             }
             Button(onClick = { setScreenState(2) }) {
-                Text(text = "가방", color = Color.White)
+                Text(text = "가방", color = Color.White, style = Typography.bodyLarge)
             }
             Button(onClick = { setScreenState(3) }) {
-                Text(text = "스킨", color = Color.White)
+                Text(text = "스킨", color = Color.White, style = Typography.bodyLarge)
             }
             Button(onClick = { setScreenState(4) }) {
-                Text(text = "안경", color = Color.White)
+                Text(text = "안경", color = Color.White, style = Typography.bodyLarge)
             }
         }
         Row(
@@ -55,13 +56,13 @@ fun ClosetPage() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
             Button(onClick = { setScreenState(5) }) {
-                Text(text = "모자", color = Color.White)
+                Text(text = "모자", color = Color.White, style = Typography.bodyLarge)
             }
             Button(onClick = { setScreenState(6) }) {
-                Text(text = "무기", color = Color.White)
+                Text(text = "무기", color = Color.White, style = Typography.bodyLarge)
             }
             Button(onClick = { setScreenState(7) }) {
-                Text(text = "목도리", color = Color.White)
+                Text(text = "목도리", color = Color.White, style = Typography.bodyLarge)
             }
         }
 
@@ -169,9 +170,9 @@ fun ItemContent(item_type : String){
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text("$item_type 1")
-            Text("$item_type 2")
-            Text("$item_type 3")
+            Text(text = "$item_type 1", style = Typography.bodyMedium)
+            Text(text = "$item_type 2", style = Typography.bodyMedium)
+            Text(text = "$item_type 3", style = Typography.bodyMedium)
         }
         Row(
             modifier = Modifier
@@ -201,9 +202,9 @@ fun ItemContent(item_type : String){
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text("$item_type 4")
-            Text("$item_type 5")
-            Text("$item_type 6")
+            Text(text = "$item_type 4", style = Typography.bodyMedium)
+            Text(text = "$item_type 5", style = Typography.bodyMedium)
+            Text(text = "$item_type 6", style = Typography.bodyMedium)
         }
 
     }
