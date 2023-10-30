@@ -11,8 +11,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,7 +46,10 @@ fun MainScreen(navController: NavHostController) {
         Day("수요일", 30),
         Day("목요일", 50),
         Day("화요일", 100)
+
     )
+    var tabIndex by remember { mutableStateOf(0) }
+    val tabs = listOf("체크리스트", "우편함")
     Scaffold(
 //        containerColor = Color(0xFFBE1515),
         floatingActionButton = {
@@ -51,6 +60,20 @@ fun MainScreen(navController: NavHostController) {
             StatusBar()
 //            DayElement(drawable = R.drawable.good, text = R.string.monday)
             DaysRow(days = days)
+            Column(modifier = Modifier.fillMaxWidth()) {
+                TabRow(selectedTabIndex = tabIndex) {
+                    tabs.forEachIndexed { index, title ->
+                        Tab(text = { Text(title) },
+                            selected = tabIndex == index,
+                            onClick = { tabIndex = index }
+                        )
+                    }
+                }
+                when (tabIndex) {
+                    0 -> Test()
+                    1 -> Text(text = "2")
+                }
+            }
         }
     }
 }
@@ -83,4 +106,55 @@ fun AppHeader() {
 @Composable
 fun Preview() {
     MainScreen(navController = rememberNavController())
+}
+
+@Composable
+fun Test() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "늘해랑", style = Typography.titleLarge)
+    }
 }
