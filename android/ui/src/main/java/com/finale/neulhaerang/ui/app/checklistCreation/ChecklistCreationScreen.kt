@@ -1,7 +1,6 @@
 package com.finale.neulhaerang.ui.app.checklistCreation
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -29,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
@@ -88,9 +88,7 @@ fun Content(modifier: Modifier = Modifier) {
     val (alram, setAlram) = remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {
-        Row {
-            Text(text = stringResource(id = R.string.checklist_category_name))
-        }
+        CheckListNameInput()
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_routine),
             icon = Icons.Filled.Refresh
@@ -135,7 +133,6 @@ fun Content(modifier: Modifier = Modifier) {
 @Composable
 fun ChecklistCreationScreenPreview() {
     NeulHaeRangTheme {
-//        ChecklistCreationScreen(navController = rememberNavController())
-        RoutineCreation()
+        ChecklistCreationScreen(navController = rememberNavController())
     }
 }

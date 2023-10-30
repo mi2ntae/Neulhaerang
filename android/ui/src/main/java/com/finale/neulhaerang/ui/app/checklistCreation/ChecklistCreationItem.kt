@@ -94,7 +94,7 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
                     onClick = {
                         setSelectedDays(selectedDays.toMutableList().also { it[i] = !it[i] })
                     },
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier.size(48.dp),
                     shape = CircleShape,
                     colors = colors,
                     border = border,
