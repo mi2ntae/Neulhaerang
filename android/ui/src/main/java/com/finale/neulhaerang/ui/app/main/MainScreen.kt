@@ -70,8 +70,8 @@ fun MainScreen(navController: NavHostController) {
                     }
                 }
                 when (tabIndex) {
-                    0 -> Test()
-                    1 -> Text(text = "2")
+                    0 -> CheckList()
+                    1 -> Letter()
                 }
             }
         }
@@ -106,55 +106,4 @@ fun AppHeader() {
 @Composable
 fun Preview() {
     MainScreen(navController = rememberNavController())
-}
-
-@Composable
-fun Test() {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "설정", style = Typography.labelLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "늘해랑", style = Typography.titleLarge)
-    }
 }
