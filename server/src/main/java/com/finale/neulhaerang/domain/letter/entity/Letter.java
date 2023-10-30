@@ -1,11 +1,7 @@
 package com.finale.neulhaerang.domain.letter.entity;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +12,6 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
-import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.global.util.BaseTimeEntity;
 
 import lombok.AllArgsConstructor;
@@ -43,6 +38,6 @@ public class Letter extends BaseTimeEntity {
 	private String content;
 
 	@ColumnDefault("false")
-	@Column(name = "is_read", columnDefinition = "TINYINT(1)", nullable = false)
+	@Column(name = "is_read", nullable = false)
 	private boolean read;
 }
