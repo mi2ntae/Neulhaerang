@@ -91,8 +91,8 @@ public class JwtTokenProvider {
 
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		UserDetails userDetails = User.builder()
-			.username(String.valueOf(deviceToken))
-			.password(String.valueOf(member.getKakaoId()))
+			.username(String.valueOf(member.getId()))
+			.password(String.valueOf(member.getId()))
 			.authorities(grantedAuthorities).build();
 
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
