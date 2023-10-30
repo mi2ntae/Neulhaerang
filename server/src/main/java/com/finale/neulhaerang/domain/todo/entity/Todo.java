@@ -45,15 +45,15 @@ public class Todo {
 	private String content;
 
 	@ColumnDefault("false")
-	@Column(columnDefinition = "TINYINT(1)", nullable = false)
+	@Column(nullable = false)
 	private boolean alarm;
 
 	@ColumnDefault("false")
-	@Column(columnDefinition = "TINYINT(1)", nullable = false)
-	private boolean isCheck;
+	@Column(name = "is_check", nullable = false)
+	private boolean check;
 
 	@ColumnDefault("false")
-	@Column(columnDefinition = "TINYINT(1)", nullable = false)
+	@Column(nullable = false)
 	private boolean status;
 
 	@Enumerated(EnumType.STRING)

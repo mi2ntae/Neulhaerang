@@ -44,7 +44,7 @@ public class Routine {
 	private String repeated;
 
 	@ColumnDefault("false")
-	@Column(columnDefinition = "TINYINT(1)", nullable = false)
+	@Column(nullable = false)
 	private boolean alarm;
 
 	private LocalDateTime alarmTime;
