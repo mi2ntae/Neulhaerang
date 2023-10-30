@@ -71,4 +71,24 @@ public class TodoControllerTest {
 			.andExpect(status().isBadRequest())
 		;
 	}
+
+	@Test
+	@DisplayName("Todo 등록 시 잘못된 입력값이 등록된 경우 에러 발생 테스트")
+	public void When_InsertWrongInput_Expect_BadRequest() throws Exception{
+		// given
+		TodoCreateReqDto todoCreateReqDto = TodoCreateReqDto.builder()
+			.todoDate(LocalDateTime.of(2023,10,1,13,30))
+			.content("코딩테스트")
+			.statType(StatType.생존력)
+			.build();
+
+		// when, then
+		mockMvc.perform(post("/todo/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoCreateReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
 }
