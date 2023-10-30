@@ -28,6 +28,9 @@ public class TodoController {
 
 	@PostMapping
 	public ResponseEntity<?> createTodo(@RequestBody @Valid TodoCreateReqDto todoCreateReqDto){
+		if(todoCreateReqDto.getTodoDate().isBefore(LocalDateTime.now())){
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Input Date Is Before Today");
+		}
 		Todo todo = modelMapper.map(todoCreateReqDto, Todo.class);
 		todoRepository.save(todo);
 		return ResponseEntity.status(HttpStatus.CREATED).body(todo);
