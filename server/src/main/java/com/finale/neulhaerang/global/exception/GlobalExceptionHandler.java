@@ -1,12 +1,10 @@
 package com.finale.neulhaerang.global.exception;
 
-import java.net.BindException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -64,14 +62,6 @@ public class GlobalExceptionHandler {
 			ErrorCode.NON_VALID_TOKEN.getMessage());
 		return ResponseEntity.status(ErrorCode.NON_VALID_TOKEN.getHttpStatus())
 			.body(errorResponse);
-	}
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(BindException.class)
-	protected ResponseEntity<ErrorResponse> handleBindException(org.springframework.validation.BindException e) {
-		log.error("handle Bind Exception");
-		ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST.toString(), e.getBindingResult());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
 	}
 
 	@ExceptionHandler(BindException.class)
