@@ -31,6 +31,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        viewBinding = true
         compose = true
     }
     composeOptions {
@@ -70,4 +71,10 @@ dependencies {
     // debug
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeUiVersion"]}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
+    // viewbinding
+    implementation ("androidx.compose.ui:ui-viewbinding")
+
+    // fragment Kotlin
+    implementation ("androidx.fragment:fragment-ktx:1.4.1")
+
 }
