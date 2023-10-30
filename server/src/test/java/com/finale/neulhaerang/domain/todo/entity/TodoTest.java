@@ -11,20 +11,23 @@ class TodoTest {
 	@Test
 	@DisplayName("Todo Entity Build Test")
 	public void builder() {
+		// given // when
 		Todo todo = createTodo("양치하기", StatType.갓생력);
+
+		// then
 		assertThat(todo).isNotNull();
 	}
 	@Test
 	@DisplayName("Todo Entity Bean 주입 Test")
 	public void javaBean(){
-		// GIVEN
+		// given
 		String content = "양치하기";
 		StatType statType = StatType.갓생력;
 
-		// WHEN
+		// when
 		Todo todo = createTodo(content, statType);
 
-		// THEN
+		// then
 		assertThat(todo.getContent()).isEqualTo(content);
 		assertThat(todo.getStatType()).isEqualTo(statType);
 	}
