@@ -91,7 +91,7 @@ public class JwtTokenProvider {
 
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		UserDetails userDetails = User.builder()
-			.username(String.valueOf(member.getId()))
+			.username(String.valueOf(deviceToken))
 			.password(String.valueOf(member.getId()))
 			.authorities(grantedAuthorities).build();
 
