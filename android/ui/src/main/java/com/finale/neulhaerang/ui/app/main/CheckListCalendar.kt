@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -28,6 +30,25 @@ import com.finale.neulhaerang.ui.R
  *  CheckListCalendar
  *  루틴과 To do를 보여주는 캘린더
  */
+@Composable
+fun Calendar() {
+    val days = listOf<Day>(
+        Day("월요일", 80),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100)
+    )
+    DaysRow(days = days)
+}
 
 @Composable
 fun DayElement(
@@ -49,7 +70,6 @@ fun DayElement(
             contentAlignment = Alignment.Center
         ) {
             Image(
-
                 painter = painterResource(weather(progressDegree)),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
@@ -69,7 +89,8 @@ fun DaysRow(
     days: List<Day>
 ) {
     LazyRow(
-        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        modifier = modifier.padding(bottom = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(days) { item -> DayElement(item.day, item.progress) }
