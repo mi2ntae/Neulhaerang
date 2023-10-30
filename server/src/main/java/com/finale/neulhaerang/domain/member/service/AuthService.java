@@ -11,4 +11,6 @@ public interface AuthService {
 	LoginResDto login(LoginReqDto loginReqDto);
 
 	TokenResDto reissueAccessToken(TokenReqDto tokenReqDto) throws NonValidJwtTokenException, ExpiredAuthException;
+
+	void logout();
 }
