@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.domain.member.service;
+package com.finale.neulhaerang.domain.member.feignclient;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.FeignClientProperties;

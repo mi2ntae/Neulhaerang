@@ -1,47 +1,41 @@
 spring:
-  profiles:
-    active: local
-    group:
-      local:
-        - common
-      prod :
-        - common
----
-
-spring:
+  config:
+    import: optional:file:.env[.properties]
   jackson:
     deserialization:
       fail-on-unknown-properties: true
-  config:
-    activate:
-      on-profile: common
-    import: optional:file:.env[.properties]
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: org.h2.Driver
-    url: 'jdbc:h2:mem:testdb'
+    url: 'jdbc:h2:mem:~/testdb'
     username: sa
     password:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
-        show_sql: true
+  sql:
+    init:
+      mode: never
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
 
-logging:
+  jwt:
+    secret: ${JWT_KEY}
+    token:
+      access-expiration-time: 1800000   # 30min
+      refresh-expiration-time: 604800000 # 7day
+
+oauth2:
   config:
     activate:
       on-profile: common
-  level:
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: DEBUG
-        sql: DEBUG
-
----
+  kakao:
+    infoUrl: https://kapi.kakao.com

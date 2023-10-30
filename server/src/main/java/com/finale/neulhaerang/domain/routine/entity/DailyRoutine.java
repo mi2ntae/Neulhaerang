@@ -31,8 +31,8 @@ public class DailyRoutine {
 	@JoinColumn(name = "routine_id", nullable = false)
 	private Routine routine;
 
-	@Column(columnDefinition = "TINYINT(1)", nullable = false)
-	private boolean isCheck;
+	@Column(name = "is_check", nullable = false)
+	private boolean check;
 
 	@Column(nullable = false)
 	private LocalDate routineDate;

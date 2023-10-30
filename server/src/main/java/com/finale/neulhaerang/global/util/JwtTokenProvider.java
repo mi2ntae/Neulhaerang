@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,8 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtTokenProvider {
-
-	private final RedisTemplate<String, String> redisTemplate;
+	private final RedisUtil redisUtil;
 
 	@Value("${spring.jwt.secret}")
 	private String secretKey;
@@ -67,9 +65,8 @@ public class JwtTokenProvider {
 	/**
 	 * Refresh 토큰 생성
 	 */
-	public String createRefreshToken(String deviceToken, long memberId){
+	public String createRefreshToken(String deviceToken){
 		Claims claims = Jwts.claims().setSubject(deviceToken);
-		claims.put("member", String.valueOf(memberId));
 		Date now = new Date();
 		Date expireDate = new Date(now.getTime() + refreshExpirationTime);
 
@@ -81,13 +78,7 @@ public class JwtTokenProvider {
 			.compact();
 
 		// redis에 저장
-		// redisTemplate.opsForValue().set(
-		// 	deviceToken,
-		// 	refreshToken,
-		// 	refreshExpirationTime,
-		// 	TimeUnit.MILLISECONDS
-		// );
-
+		redisUtil.setData(deviceToken, refreshToken, refreshExpirationTime);
 		return refreshToken;
 	}
 
@@ -95,10 +86,7 @@ public class JwtTokenProvider {
 	 * 토큰으로부터 클레임을 만들고, 이를 통해 User 객체 생성해 Authentication 객체 반환
 	 */
 	public Authentication getAuthentication(String token) {
-		String deviceToken = Jwts.parser().
-			setSigningKey(secretKey)
-			.parseClaimsJws(token)
-			.getBody().getSubject();
+		String deviceToken = getSubject(token);
 		Member member = memberService.loadMemberByDeviceToken(deviceToken);
 
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -136,5 +124,18 @@ public class JwtTokenProvider {
 			log.error("JWT Exception");
 			throw new NonValidJwtTokenException();
 		}
+	}
+
+	public String getSubject(String accessToken) {
+		return Jwts.parser().
+			setSigningKey(secretKey)
+			.parseClaimsJws(accessToken)
+			.getBody().getSubject();
+	}
+
+	public Claims getClaims(String accessToken) {
+		return Jwts.parser().
+			setSigningKey(secretKey)
+			.parseClaimsJws(accessToken).getBody();
 	}
 }
