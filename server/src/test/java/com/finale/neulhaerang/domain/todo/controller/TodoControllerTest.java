@@ -55,4 +55,20 @@ public class TodoControllerTest {
 			.andExpect(jsonPath("status").value(false))
 		;
 	}
+
+	@Test
+	@DisplayName("Todo 등록 시 빈 값이 들어올 경우 에러 발생 테스트")
+	public void When_InsertEmptyInput_Expect_BadRequest() throws Exception {
+		// given
+		TodoCreateReqDto todoCreateReqDto = TodoCreateReqDto.builder().build();
+
+		// when, then
+		mockMvc.perform(post("/todo/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoCreateReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
 }
