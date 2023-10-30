@@ -1,6 +1,9 @@
 package com.finale.neulhaerang.ui.app.main
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -10,25 +13,44 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
+import com.finale.neulhaerang.data.Day
 import com.finale.neulhaerang.ui.app.stackNavigate
+import com.finale.neulhaerang.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
+    val days = listOf<Day>(
+        Day("월요일", 80),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100),
+        Day("화요일", 100),
+        Day("수요일", 30),
+        Day("목요일", 50),
+        Day("화요일", 100)
+    )
     Scaffold(
-        containerColor = Color(0xFFBE1515),
+//        containerColor = Color(0xFFBE1515),
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
-        }
-    ) { innerPadding ->
+        }) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            Text(text = "메인스크린")
+            AppHeader()
+            StatusBar()
+//            DayElement(drawable = R.drawable.good, text = R.string.monday)
+            DaysRow(days = days)
         }
     }
 }
@@ -42,6 +64,19 @@ fun ChecklistCreationButton(navController: NavHostController) {
             modifier = Modifier
         )
     }
+}
+
+@Composable
+fun AppHeader() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = "늘해랑", style = Typography.titleLarge)
+        Text(text = "설정", style = Typography.labelLarge)
+    }
+
 }
 
 @Preview

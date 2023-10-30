@@ -9,14 +9,41 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.finale.neulhaerang.global.exception.characterInfo.NonExistCharacterInfoException;
+import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
+import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
+import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(ExpiredAuthException.class)
+	protected ResponseEntity<ErrorResponse> expiredAuthException() {
+		log.error("refresh token expired login again");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(), ErrorCode.EXPIRED_AUTH.getMessage());
+		return ResponseEntity.status(ErrorCode.EXPIRED_AUTH.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NonExistMemberException.class)
+	protected ResponseEntity<ErrorResponse> nonExistMemberException() {
+		log.error("member not exist");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_EXIST_MEMBER.getErrorCode(), ErrorCode.NON_EXIST_MEMBER.getMessage());
+		return ResponseEntity.status(ErrorCode.NON_EXIST_MEMBER.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NonExistDeviceException.class)
+	protected ResponseEntity<ErrorResponse> nonExistDeviceException() {
+		log.error("login device is not valid");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_EXIST_DEVICE.getErrorCode(), ErrorCode.NON_EXIST_DEVICE.getMessage());
+		return ResponseEntity.status(ErrorCode.NON_EXIST_DEVICE.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(NonExistCharacterInfoException.class)
 	protected ResponseEntity<ErrorResponse> nonExistCharacterInfoException() {
@@ -28,20 +55,12 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(NonValidJwtTokenException.class)
 	protected ResponseEntity<ErrorResponse> nonValidJwtTokenException() {
-		log.error("jwt error");
+		log.error("nonvalid jwt");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_VALID_TOKEN.getErrorCode(), ErrorCode.NON_VALID_TOKEN.getMessage());
 		return ResponseEntity.status(ErrorCode.NON_VALID_TOKEN.getHttpStatus())
 			.body(errorResponse);
 	}
 
-	// @ExceptionHandler(CAuthenticationEntryPointException.class)
-	// @ResponseStatus(HttpStatus.BAD_REQUEST)
-	// protected ResponseEntity<ErrorResponse> authenticationEntryPointException(CAuthenticationEntryPointException e) {
-	// 	log.error("authentication exception");
-	// 	ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.BAD_REQUEST.toString(), e.getMessage());
-	// 	return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-	// 		.body(errorResponse);
-	// }
 
 	@ExceptionHandler(BindException.class)
 	protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {

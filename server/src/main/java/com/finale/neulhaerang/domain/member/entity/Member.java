@@ -14,7 +14,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
@@ -35,4 +34,9 @@ public class Member extends BaseTimeEntity {
 
 	private LocalDateTime withdrawalDate;
 
+	public static Member of(long kakaoId, String nickname) {
+		return Member.builder()
+			.nickname(nickname)
+			.kakaoId(kakaoId).build();
+	}
 }

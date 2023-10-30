@@ -25,8 +25,8 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.OAS_30)
-			// .securityContexts(newArrayList(this.securityContext()))
-			// .securitySchemes(newArrayList(this.apiKey()))
+			.securityContexts(newArrayList(this.securityContext()))
+			.securitySchemes(newArrayList(this.apiKey()))
 			.select()
 			.apis(RequestHandlerSelectors.any())
 			.paths(PathSelectors.ant("/**"))

@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.global.exception.characterInfo;
+package com.finale.neulhaerang.global.exception.member;
 
 public class NonExistCharacterInfoException extends RuntimeException{
 	public NonExistCharacterInfoException(){
