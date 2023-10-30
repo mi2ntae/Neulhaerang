@@ -157,7 +157,7 @@ fun ChecklistCreationItem(
     modifier: Modifier = Modifier,
     name: String,
     icon: ImageVector,
-    content: @Composable() (() -> Unit)?
+    content: @Composable (() -> Unit)?
 ) {
     Row(
         modifier = modifier
@@ -174,15 +174,13 @@ fun ChecklistCreationItem(
             Spacer(modifier = Modifier.width(4.dp))
             Text(text = name)
         }
-        if (content != null) {
-            content()
-        }
+        content?.let { it() }
     }
 }
 
 @Composable
 fun RoutineCreation(modifier: Modifier = Modifier) {
-    val selectedDays = rememberSaveable { mutableStateOf(List<Boolean>(7) { _ -> false }) }
+    val (selectedDays, setSelectedDays) = rememberSaveable { mutableStateOf(List(7) { _ -> false }) }
 
     Column(
         modifier = modifier
@@ -197,14 +195,16 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
         ) {
             for (i in 0..6) {
                 val colors =
-                    if (selectedDays.value[i]) ButtonDefaults.buttonColors()
+                    if (selectedDays[i]) ButtonDefaults.buttonColors()
                     else ButtonDefaults.outlinedButtonColors()
                 val border =
-                    if (selectedDays.value[i]) null
+                    if (selectedDays[i]) null
                     else ButtonDefaults.outlinedButtonBorder
 
                 Button(
-                    onClick = {  },
+                    onClick = {
+                        setSelectedDays(selectedDays.toMutableList().also { it[i] = !it[i] })
+                    },
                     modifier = Modifier.size(40.dp),
                     shape = CircleShape,
                     colors = colors,
