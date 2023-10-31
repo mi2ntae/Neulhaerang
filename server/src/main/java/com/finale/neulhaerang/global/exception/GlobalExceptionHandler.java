@@ -10,6 +10,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.NotExistAlarmTime;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
@@ -19,6 +20,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(NotExistAlarmTime.class)
+	protected ResponseEntity<ErrorResponse> notExistAlarmTime() {
+		log.error("not exist alarm time if get an alarm");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(),
+			ErrorCode.NOT_EXIST_ALARM_TIME.getMessage());
+		return ResponseEntity.status(ErrorCode.EXPIRED_AUTH.getHttpStatus())
+			.body(errorResponse);
+	}
+
 	@ExceptionHandler(ExpiredAuthException.class)
 	protected ResponseEntity<ErrorResponse> expiredAuthException() {
 		log.error("refresh token expired login again");
