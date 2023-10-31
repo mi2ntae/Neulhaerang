@@ -1,14 +1,18 @@
 package com.finale.neulhaerang.domain.routine.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
+import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
+import com.finale.neulhaerang.global.util.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,19 +21,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RoutineServiceImpl implements RoutineService {
 	private final RoutineRepository routineRepository;
+	private final AuthenticationHandler authenticationHandler;
+	private final MemberRepository memberRepository;
 
 	@Override
-	public void createRoutine(Member member, RoutineCreateReqDto routineCreateReqDto) {
+	public void createRoutine(RoutineCreateReqDto routineCreateReqDto) {
+		Optional<Member> member = memberRepository.findById(authenticationHandler.getLoginMemberId());
 		if (routineCreateReqDto.isAlarm()) {
 			if (routineCreateReqDto.getAlarmTime() == null) {
-				throw new NotExistAlarmTimeException(member);
+				throw new NotExistAlarmTimeException(member.get());
 			}
 		}
 		if (routineCreateReqDto.getRepeated().size() != 7) {
-			throw new InvalidRepeatedDateException(member);
+			throw new InvalidRepeatedDateException(member.get());
 		}
 		StringBuilder repeated = checkRepeatedDate(routineCreateReqDto);
-		Routine routine = Routine.create(routineCreateReqDto, member, repeated.toString());
+		Routine routine = Routine.create(routineCreateReqDto, member.get(), repeated.toString());
 		routineRepository.save(routine);
 	}
 
