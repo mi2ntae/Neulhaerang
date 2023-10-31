@@ -73,7 +73,7 @@ fun Calendar(
     val lastDay = selectedDate.lengthOfMonth()
     val days = IntRange(1, lastDay).toList()
     Row(
-        modifier = modifier.padding(top = 8.dp, start = 8.dp, end = 16.dp, bottom = 8.dp),
+        modifier = modifier.padding(start = 8.dp, end = 16.dp, top = 4.dp, bottom = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextButton(onClick = { showSheet = true }) {
