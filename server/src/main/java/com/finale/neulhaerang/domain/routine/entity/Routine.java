@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.domain.routine.entity;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,11 +49,22 @@ public class Routine {
 	@Column(nullable = false)
 	private boolean alarm;
 
-	private LocalDateTime alarmTime;
+	private LocalTime alarmTime;
 
 	private LocalDateTime deleteDate;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private StatType statType;
+
+	public static Routine create(RoutineCreateReqDto routineCreateReqDto, Member member, String repeated) {
+		return Routine.builder()
+			.member(member)
+			.repeated(repeated)
+			.content(routineCreateReqDto.getContent())
+			.alarm(routineCreateReqDto.isAlarm())
+			.alarmTime(routineCreateReqDto.isAlarm() ? routineCreateReqDto.getAlarmTime() : null)
+			.statType(routineCreateReqDto.getStatType())
+			.build();
+	}
 }

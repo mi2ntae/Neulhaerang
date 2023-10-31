@@ -11,6 +11,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
@@ -21,12 +22,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(InvalidTodoDateException.class)
+	protected ResponseEntity<ErrorResponse> invalidTodoDateException() {
+		log.error("create todo is fail. todo date is before today");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TODO_DATE.getErrorCode(),
+			ErrorCode.INVALID_TODO_DATE.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_TODO_DATE.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(AccessForbiddenException.class)
 	protected ResponseEntity<ErrorResponse> accessForbiddenException() {
 		log.error("authentication fail request member is not login member");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ACCESS_FORBIDDEN.getErrorCode(), ErrorCode.ACCESS_FORBIDDEN.getMessage());
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ACCESS_FORBIDDEN.getErrorCode(),
+			ErrorCode.ACCESS_FORBIDDEN.getMessage());
 		return ResponseEntity.status(ErrorCode.ACCESS_FORBIDDEN.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NotExistAlarmTimeException.class)
+	protected ResponseEntity<ErrorResponse> notExistAlarmTime() {
+		log.error("not exist alarm time if get an alarm");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(),
+			ErrorCode.NOT_EXIST_ALARM_TIME.getMessage());
+		return ResponseEntity.status(ErrorCode.EXPIRED_AUTH.getHttpStatus())
 			.body(errorResponse);
 	}
 
@@ -105,13 +124,5 @@ public class GlobalExceptionHandler {
 		log.error("Exception", e);
 		ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-	}
-
-	@ExceptionHandler(InvalidTodoDateException.class)
-	protected ResponseEntity<ErrorResponse> invalidTodoDateException() {
-		log.error("create todo is fail. todo date is before today");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TODO_DATE.getErrorCode(), ErrorCode.INVALID_TODO_DATE.getMessage());
-		return ResponseEntity.status(ErrorCode.INVALID_TODO_DATE.getHttpStatus())
-			.body(errorResponse);
 	}
 }
