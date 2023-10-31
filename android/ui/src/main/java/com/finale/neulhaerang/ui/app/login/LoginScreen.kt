@@ -17,13 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.ui.R
+import com.finale.neulhaerang.ui.app.navigation.initNavigate
 import com.finale.neulhaerang.ui.theme.Typography
 
 @Composable
@@ -40,8 +40,7 @@ fun LoginScreen(navController: NavHostController = rememberNavController()) {
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "늘해랑",
-                style = Typography.displayLarge
+                text = "늘해랑", style = Typography.displayLarge
             )
         }
         Image(painter = painterResource(id = R.drawable.kakao_login_large_wide),
@@ -50,7 +49,11 @@ fun LoginScreen(navController: NavHostController = rememberNavController()) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(48.dp)
-                .clickable { println("Button Clicked!") })
+                .clickable {
+                    /*TODO 로그인 기능*/
+                    println("Button Clicked!")
+                    navController.initNavigate(AppNavItem.Main.route)
+                })
     }
 }
 

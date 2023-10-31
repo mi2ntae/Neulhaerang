@@ -96,7 +96,7 @@ public class AuthServiceImpl implements AuthService{
 
 	private Member kakaoLogin(LoginReqDto loginReqDto) {
 		KakaoUserResDto kakaoUserResDto = kakaoInfoFeignClient.getKakaoUserInfo("Bearer "+loginReqDto.getAccessToken(), "application/x-www-form-urlencoded");
-		Optional<Member> optionalMember = memberRepository.findMemberByKakaoId(kakaoUserResDto.getId());
+		Optional<Member> optionalMember = memberRepository.findMemberByKakaoIdAndWithdrawalDateIsNull(kakaoUserResDto.getId());
 		Optional<Device> optionalDevice = deviceRepository.findDeviceByDeviceToken(loginReqDto.getDeviceToken());
 		if(optionalMember.isEmpty()) {
 			Member member = memberRepository.save(Member.of(kakaoUserResDto.getId(), kakaoUserResDto.getKakao_account().getProfile().getNickname()));

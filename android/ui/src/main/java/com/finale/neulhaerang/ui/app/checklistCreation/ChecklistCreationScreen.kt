@@ -1,16 +1,11 @@
 package com.finale.neulhaerang.ui.app.checklistCreation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,31 +18,21 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.ui.R
-import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
-import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,13 +83,12 @@ fun ChecklistCreationScreen(navController: NavHostController) {
 fun Content(modifier: Modifier = Modifier) {
     // 동작 확인용 변수
     // TODO: ViewModel 구현
-    val (routine, setRoutine) = remember { mutableStateOf(false) }
+    val (routine, setRoutine) = remember { mutableStateOf(true) }
     val (dateTime, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
+    val (alram, setAlram) = remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {
-        Row {
-            Text(text = stringResource(id = R.string.checklist_category_name))
-        }
+        CheckListNameInput()
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_routine),
             icon = Icons.Filled.Refresh
@@ -136,71 +120,12 @@ fun Content(modifier: Modifier = Modifier) {
                     )
                 })
         }
-        Row {
-            Text(text = stringResource(id = R.string.checklist_category_notice))
+        ChecklistCreationItem(
+            name = stringResource(id = R.string.checklist_category_notice),
+            icon = Icons.Filled.Alarm
+        ) {
+            Switch(checked = alram, onCheckedChange = setAlram)
         }
-    }
-}
-
-@Composable
-fun ChecklistCreationItem(
-    modifier: Modifier = Modifier, name: String, icon: ImageVector, content: @Composable () -> Unit
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = 4.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(imageVector = icon, contentDescription = name)
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(text = name)
-        }
-        content()
-    }
-}
-
-@Composable
-fun RoutineCreation(modifier: Modifier = Modifier) {
-    Column(modifier = modifier) {
-        Row {
-            Text(text = stringResource(id = R.string.checklist_category_repeat))
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TodoCreation(
-    modifier: Modifier = Modifier, dateTime: LocalDateTime, setDateTime: (LocalDateTime) -> Unit
-) {
-    var showSheet by rememberSaveable { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState(
-        dateTime.toInstant(ZoneOffset.UTC).toEpochMilli()
-    )
-
-    ChecklistCreationItem(
-        modifier = modifier,
-        name = stringResource(id = R.string.checklist_category_date),
-        icon = Icons.Filled.DateRange
-    ) {
-        TextButton(onClick = { showSheet = true }) {
-            Text(text = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-        }
-        // 날짜 피커 모달 바텀 시트
-        NHLDatePicker(open = showSheet,
-            close = { showSheet = false },
-            datePickerState = datePickerState,
-            dateValidator = {
-                it >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
-            },
-            onOk = {
-                val inputDate = Instant.ofEpochMilli(datePickerState.selectedDateMillis as Long)
-                    .atZone(ZoneId.systemDefault()).toLocalDate()
-                setDateTime(dateTime.with(inputDate))
-            })
     }
 }
 

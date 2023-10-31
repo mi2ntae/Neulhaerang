@@ -22,11 +22,13 @@ public class AuthenticationHandler {
 
 	public void checkMemberAuthentication(long memberId) throws NonExistMemberException, AccessForbiddenException {
 		long loginId = getLoginMemberId();
-		log.info("로그인한 사용자 ID : "+loginId);
-		log.info("받아온 사용자 ID : "+memberId);
 		Optional<Member> loginMember = memberRepository.findById(loginId);
-		if(loginMember.isEmpty()) throw new NonExistMemberException();
-		if(loginMember.get().getId() != memberId) throw new AccessForbiddenException();
+		if(loginMember.isEmpty()) {
+			throw new NonExistMemberException();
+		}
+		if(loginMember.get().getId() != memberId) {
+			throw new AccessForbiddenException();
+		}
 	}
 
 	public long getLoginDeviceId() {

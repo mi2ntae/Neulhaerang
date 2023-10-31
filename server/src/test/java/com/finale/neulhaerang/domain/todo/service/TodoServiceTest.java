@@ -5,13 +5,19 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.finale.neulhaerang.domain.member.entity.Member;
+import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
@@ -20,15 +26,28 @@ import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Transactional
 class TodoServiceTest {
 	@Autowired
 	private TodoRepository todoRepository;
+
+	@Autowired
+	private MemberRepository memberRepository;
 
 	@Autowired
 	private TodoService todoService;
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@BeforeAll
+	public void createTestMember() {
+		Member member = Member.builder()
+			.nickname("김유진")
+			.kakaoId(1234L).build();
+		memberRepository.save(member);
+	}
 
 	@Test
 	@DisplayName("Todo 등록 테스트")

@@ -17,6 +17,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,4 +60,13 @@ public class Todo {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private StatType statType;
+
+	public static Todo create(TodoCreateReqDto todoCreateReqDto, Member member) {
+		return Todo.builder()
+			.todoDate(todoCreateReqDto.getTodoDate())
+			.content(todoCreateReqDto.getContent())
+			.statType(todoCreateReqDto.getStatType())
+			.member(member)
+			.build();
+	}
 }
