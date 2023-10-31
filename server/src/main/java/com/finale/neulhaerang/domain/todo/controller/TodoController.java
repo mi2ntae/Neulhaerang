@@ -20,7 +20,8 @@ import lombok.RequiredArgsConstructor;
 public class TodoController {
 	private final TodoService todoService;
 	@PostMapping
-	public ResponseEntity<String> createTodo(@RequestBody @Valid TodoCreateReqDto todoCreateReqDto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(todoService.createTodo(todoCreateReqDto));
+	public ResponseEntity<Void> createTodo(@RequestBody @Valid TodoCreateReqDto todoCreateReqDto){
+		todoService.createTodo(todoCreateReqDto);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }
