@@ -12,16 +12,16 @@ class ChecklistCreationViewModel() : ViewModel() {
     private val _content = mutableStateOf("")
     private val _stat = mutableStateOf(Stat.GodSang)
     private val _routine = mutableStateOf(false)
-    private val _repeat = MutableList(7) { _ -> false }
+    private val _repeat = mutableStateOf(List(7) { _ -> false })
     private val _dateTime = mutableStateOf(LocalDateTime.now())
     private val _alarm = mutableStateOf(false)
 
-    val content = _content.value
-    val stat = _stat.value
-    val routine = _routine.value
-    val repeat = _repeat.toList()
-    val dateTime = _dateTime.value
-    val alarm = _alarm.value
+    val content = _content
+    val stat = _stat
+    val routine = _routine
+    val repeat = _repeat
+    val dateTime = _dateTime
+    val alarm = _alarm
 
     val dateMillis = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
 
@@ -42,7 +42,7 @@ class ChecklistCreationViewModel() : ViewModel() {
     }
 
     fun changeRepeat(index: Int) {
-        _repeat[index] = !_repeat[index]
+        _repeat.value = _repeat.value.toMutableList().also { it[index] = !it[index] }
     }
 
     fun changeDate(dateMillis: Long) {
