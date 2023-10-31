@@ -16,6 +16,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,13 +36,11 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
-    var tabIndex by remember { mutableStateOf(0) }
+    var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
-
     val currentDate = LocalDate.now()
     val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
     Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
-//        containerColor = Color(0xFFBE1515),
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
         }) { innerPadding ->
