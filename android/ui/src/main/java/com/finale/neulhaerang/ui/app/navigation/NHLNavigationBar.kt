@@ -36,8 +36,9 @@ fun NHLNavigationBar(navController: NavHostController) {
 }
 
 /**
- * bottom navigation을 위한 custom navigate
- * 뒤로가기 시 main으로 가도록 되어있음
+ * 최초의 navigation을 위한 custom navigate
+ * 시작 네비게이션인 로그인에서 메인스크린으로 넘어가는 함수
+ * 메인에서 뒤로갈 때 로그인 화면으로 돌아가지 않게 스택을 비우는 용도
  */
 fun NavHostController.initNavigate(route: String) {
     this.navigate(route) {
@@ -60,6 +61,9 @@ fun NavHostController.bottomNavigate(route: String) {
     }
 }
 
+/**
+ * 설정, 체크리스트 작성 등 스택 위로 띄우는 네비게이션 용도
+ */
 fun NavHostController.stackNavigate(route: String) {
     this.navigate(route) {
         saveState()
