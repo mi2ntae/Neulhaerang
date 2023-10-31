@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.finale.neulhaerang.domain.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-	Optional<Member> findMemberByKakaoId(long kakaoId);
+	Optional<Member> findMemberByKakaoIdAndWithdrawalDateIsNull(long kakaoId);
+
+	Optional<Member> findMemberByIdAndWithdrawalDateIsNull(long memberId);
 }
