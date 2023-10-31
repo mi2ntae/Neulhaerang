@@ -59,8 +59,8 @@ fun MainScreen(navController: NavHostController) {
                     }
                 }
                 when (tabIndex) {
-                    0 -> CheckList()
-                    1 -> Letter()
+                    0 -> CheckList(selectedDate = selectedDate.toLocalDate())
+                    1 -> Letter(selectedDate = selectedDate.toLocalDate())
                 }
             }
         }
