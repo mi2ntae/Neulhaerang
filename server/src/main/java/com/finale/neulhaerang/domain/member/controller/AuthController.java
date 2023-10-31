@@ -37,4 +37,11 @@ public class AuthController {
 		return ResponseEntity.ok().body(authService.reissueAccessToken(tokenReqDto));
 	}
 
+	@ApiOperation(value = "로그 아웃", notes = "로그 아웃")
+	@PostMapping("/logout")
+	public ResponseEntity<Void> logout() {
+		authService.logout();
+		return ResponseEntity.ok().build();
+	}
+
 }

@@ -19,6 +19,7 @@ import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
+import com.finale.neulhaerang.global.util.AuthenticationHandler;
 import com.finale.neulhaerang.global.util.JwtTokenProvider;
 import com.finale.neulhaerang.global.util.RedisUtil;
 
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService{
 	private final MemberRepository memberRepository;
 	private final DeviceRepository deviceRepository;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final AuthenticationHandler authenticationHandler;
 	private final RedisUtil redisUtil;
 
 	// Feign Client
@@ -83,6 +85,13 @@ public class AuthServiceImpl implements AuthService{
 		}
 		String accessToken = jwtTokenProvider.createAccessToken(deviceToken, optionalDevice.get().getMember().getId());
 		return TokenResDto.of(accessToken, tokenReqDto.getRefreshToken(), LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS));
+	}
+
+	@Override
+	public void logout() {
+		long deviceId = authenticationHandler.getLoginDeviceId();
+		redisUtil.deleteData(String.valueOf(deviceId));
+		log.info("로그아웃 완료");
 	}
 
 	private Member kakaoLogin(LoginReqDto loginReqDto) {
