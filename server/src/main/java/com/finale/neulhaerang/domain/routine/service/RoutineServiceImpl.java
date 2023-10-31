@@ -35,13 +35,9 @@ public class RoutineServiceImpl implements RoutineService {
 
 	private static StringBuilder checkRepeatedDate(RoutineCreateReqDto routineCreateReqDto) {
 		StringBuilder repeated = new StringBuilder();
-		routineCreateReqDto.getRepeated().forEach(r -> {
-			if (r) {
-				repeated.append("1");
-			} else {
-				repeated.append("0");
-			}
-		});
+		routineCreateReqDto.getRepeated().forEach(r ->
+			repeated.append(r ? "1" : "0")
+		);
 		return repeated;
 	}
 }
