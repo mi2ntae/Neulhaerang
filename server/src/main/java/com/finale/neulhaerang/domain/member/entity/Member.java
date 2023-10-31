@@ -39,4 +39,8 @@ public class Member extends BaseTimeEntity {
 			.nickname(nickname)
 			.kakaoId(kakaoId).build();
 	}
+
+	public void updateWithdrawalDate(LocalDateTime now) {
+		this.withdrawalDate = now;
+	}
 }

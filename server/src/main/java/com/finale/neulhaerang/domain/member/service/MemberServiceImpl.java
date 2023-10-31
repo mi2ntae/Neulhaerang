@@ -1,6 +1,10 @@
 package com.finale.neulhaerang.domain.member.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
@@ -15,6 +19,8 @@ import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
+import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.util.RedisUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +32,9 @@ public class MemberServiceImpl implements MemberService{
 	private final MemberRepository memberRepository;
 	private final DeviceRepository deviceRepository;
 	private final CharacterInfoRepository characterInfoRepository;
+	private final RedisUtil redisUtil;
+
+	private final AuthenticationHandler authenticationHandler;
 
 	// 멤버 상태 정보 조회 (나태도, 피로도) -> MongoDB에서 조회
 	@Override
@@ -52,11 +61,29 @@ public class MemberServiceImpl implements MemberService{
 		if(optionalDevice.isEmpty()) {
 			throw new NonExistDeviceException();
 		}
-
-		Optional<Member> optionalMember = memberRepository.findById(optionalDevice.get().getMember().getId());
+		Optional<Member> optionalMember = memberRepository.findMemberByIdAndWithdrawalDateIsNull(optionalDevice.get().getMember().getId());
 		if(optionalMember.isEmpty()) {
 			throw new NonExistMemberException();
 		}
 		return optionalMember.get();
+	}
+
+	@Transactional
+	@Override
+	public void removeMember() throws NonExistMemberException {
+		long memberId = authenticationHandler.getLoginMemberId();
+		Optional<Member> optionalMember = memberRepository.findMemberByIdAndWithdrawalDateIsNull(memberId);
+		if(optionalMember.isEmpty()) {
+			throw new NonExistMemberException();
+		}
+
+		Member member = optionalMember.get();
+		member.updateWithdrawalDate(LocalDateTime.now());
+
+		List<Device> devices = deviceRepository.findDevicesByMember_Id(member.getId());
+		devices.stream().forEach((device) -> {
+			redisUtil.deleteData(device.getDeviceToken());
+			deviceRepository.delete(device);
+		});
 	}
 }
