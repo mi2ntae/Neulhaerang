@@ -60,7 +60,6 @@ fun CustomProgressBar(amount: Int) {
                 .height(30.dp)
                 .background(Color.Gray)
                 .fillMaxWidth()
-//                .padding(start = 16.dp)
         ) {
             Box(
                 modifier = Modifier
