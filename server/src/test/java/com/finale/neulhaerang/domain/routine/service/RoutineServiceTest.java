@@ -18,6 +18,7 @@ import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
+import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
 
 @SpringBootTest
 @Transactional
@@ -102,11 +103,10 @@ class RoutineServiceTest {
 			.build();
 		// when
 		Member save = memberRepository.save(member);
-		routineService.createRoutine(save, routineCreateReqDto);
 
 		// then
-		assertThatThrownBy(() -> {
-		});
+		assertThatThrownBy(() -> routineService.createRoutine(save, routineCreateReqDto))
+			.isInstanceOf(NotExistAlarmTimeException.class);
 	}
 
 	private static Member createMember() {
