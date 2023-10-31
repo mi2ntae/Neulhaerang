@@ -19,7 +19,10 @@ public enum ErrorCode {
 	NON_EXIST_CHARACTERINFO(HttpStatus.INTERNAL_SERVER_ERROR, "C-001", "해당 사용자의 캐릭터 정보가 존재하지 않습니다."),
 
 	// 디바이스
-	NON_EXIST_DEVICE(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "등록되지 않은 디바이스입니다.");
+	NON_EXIST_DEVICE(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "등록되지 않은 디바이스입니다."),
+
+	// 투두리스트
+	INVALID_TODO_DATE(HttpStatus.BAD_REQUEST, "T-001", "등록 날짜가 유효하지 않습니다.");
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
 		this.httpStatus = httpStatus;
