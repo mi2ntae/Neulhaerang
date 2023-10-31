@@ -77,15 +77,15 @@ class RoutineServiceTest {
 			.statType(StatType.생존력)
 			.build();
 		// when
-		memberRepository.save(member);
-		routineService.createRoutine(member, routineCreateReqDto);
+		Member save = memberRepository.save(member);
+		routineService.createRoutine(save, routineCreateReqDto);
 
 		// then
 		List<Routine> routines = routineRepository.findAll();
 		assertThat(routines).hasSize(1)
 			.extracting("content", "repeated", "alarm", "alarmTime", "deleteDate", "statType", "member")
 			.containsExactlyInAnyOrder(
-				tuple("아침밥 챙겨랏 S2", "1110000", false, null, null, StatType.생존력, member)
+				tuple("아침밥 챙겨랏 S2", "1110000", false, null, null, StatType.생존력, save)
 			);
 	}
 
@@ -134,7 +134,6 @@ class RoutineServiceTest {
 
 	private static Member createMember() {
 		return Member.builder()
-			.id(1L)
 			.kakaoId(12345678)
 			.nickname("정은")
 			.build();
