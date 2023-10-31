@@ -54,7 +54,7 @@ class RoutineServiceTest {
 			.build();
 		// when
 		memberRepository.save(member);
-		routineService.createRoutine(member.getId(), routineCreateReqDto);
+		routineService.createRoutine(member, routineCreateReqDto);
 
 		// then
 		List<Routine> routines = routineRepository.findAll();
@@ -81,7 +81,7 @@ class RoutineServiceTest {
 			.build();
 		// when
 		memberRepository.save(member);
-		routineService.createRoutine(member.getId(), routineCreateReqDto);
+		routineService.createRoutine(member, routineCreateReqDto);
 
 		// then
 		List<Routine> routines = routineRepository.findAll();
