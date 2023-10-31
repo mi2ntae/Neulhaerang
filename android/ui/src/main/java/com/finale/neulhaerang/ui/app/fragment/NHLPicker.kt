@@ -47,7 +47,7 @@ fun NHLDatePicker(
                         scope.launch { sheetState.hide() }.invokeOnCompletion { close() }
                     }) { Text(text = stringResource(id = R.string.complete)) }
                 }
-            })
+            }, showModeToggle = false)
         }
     }
 }
