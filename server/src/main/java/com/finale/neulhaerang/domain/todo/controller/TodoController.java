@@ -1,7 +1,5 @@
 package com.finale.neulhaerang.domain.todo.controller;
 
-import java.time.LocalDateTime;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -23,9 +21,6 @@ public class TodoController {
 	private final TodoService todoService;
 	@PostMapping
 	public ResponseEntity<String> createTodo(@RequestBody @Valid TodoCreateReqDto todoCreateReqDto){
-		if(todoCreateReqDto.getTodoDate().isBefore(LocalDateTime.now())){
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Input Date Is Before Today");
-		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(todoService.createTodo(todoCreateReqDto));
 	}
 }
