@@ -3,6 +3,7 @@ package com.finale.neulhaerang
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import com.finale.neulhaerang.ui.app.App
+import com.kakao.sdk.common.util.Utility
 
 /**
  * 메인 엑티비티
@@ -26,6 +28,8 @@ class MainActivity : ComponentActivity() {
             BackOnPressed()
             App()
         }
+//        val keyHash = Utility.getKeyHash(this)
+//        Log.d("Hash", keyHash)
     }
 }
 
