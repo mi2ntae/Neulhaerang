@@ -22,6 +22,6 @@ public class TodoServiceImpl implements TodoService {
 	public String createTodo(TodoCreateReqDto todoCreateReqDto) {
 		Todo todo = modelMapper.map(todoCreateReqDto, Todo.class);
 		todoRepository.save(todo);
-		return "OK";
+		return "Create Success";
 	}
 }
