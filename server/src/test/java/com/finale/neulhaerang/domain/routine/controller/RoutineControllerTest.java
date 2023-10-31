@@ -51,6 +51,90 @@ class RoutineControllerTest {
 			.andExpect(status().isCreated());
 	}
 
+	@DisplayName("새로운 루틴 생성 시, Alarm는 필수 입니다. 값을 받지 않으면 자동으로 false 지정")
+	@Test
+	@WithUserDetails
+	void When_CreateRoutineWithoutAlarm_Expect_isCreate() throws Exception {
+		// given
+		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
+			.content("아침밥 먹고 가기")
+			.repeated(List.of(true, true, true, true, true, true, true))
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.statType(StatType.생존력)
+			.build();
+
+		// when // then
+		mockMvc.perform(post("/routine").with(csrf())
+				.content(objectMapper.writeValueAsString(routineCreateReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isCreated());
+	}
+
+	@DisplayName("새로운 루틴 생성 시, StatType는 필수 입니다.")
+	@Test
+	@WithUserDetails
+	void When_CreateRoutineWithoutStatType_Expect_isCreate() throws Exception {
+		// given
+		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
+			.content("아침밥 먹고 가기")
+			.repeated(List.of(true, true, true, true, true, true, true))
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.build();
+
+		// when // then
+		mockMvc.perform(post("/routine").with(csrf())
+				.content(objectMapper.writeValueAsString(routineCreateReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("새로운 루틴 생성 시, Content는 필수 입니다.")
+	@Test
+	@WithUserDetails
+	void When_CreateRoutineWithoutContent_Expect_isCreate() throws Exception {
+		// given
+		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
+			.repeated(List.of(true, true, true, true, true, true, true))
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.statType(StatType.생존력)
+			.build();
+
+		// when // then
+		mockMvc.perform(post("/routine").with(csrf())
+				.content(objectMapper.writeValueAsString(routineCreateReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("새로운 루틴 생성 시, Repeated는 필수 입니다.")
+	@Test
+	@WithUserDetails
+	void When_CreateRoutineWithoutRepeated_Expect_isCreate() throws Exception {
+		// given
+		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
+			.content("아침밥 먹고 가기")
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.statType(StatType.생존력)
+			.build();
+
+		// when // then
+		mockMvc.perform(post("/routine").with(csrf())
+				.content(objectMapper.writeValueAsString(routineCreateReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
 	private static RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
 		List<Boolean> repeated, StatType statType) {
 		return RoutineCreateReqDto.builder()
