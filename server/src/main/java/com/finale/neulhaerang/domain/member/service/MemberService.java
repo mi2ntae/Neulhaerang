@@ -14,4 +14,5 @@ public interface MemberService {
 
 	Member loadMemberByDeviceToken(String deviceToken) throws NonExistDeviceException, NonExistMemberException;
 
+	void removeMember();
 }
