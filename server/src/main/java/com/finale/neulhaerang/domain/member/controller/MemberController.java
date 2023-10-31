@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.domain.member.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,20 +28,20 @@ public class MemberController {
 	@ApiOperation(value = "멤버 상태 조회", notes = "멤버 상태 정보 조회")
 	@GetMapping("/status/{memberId}")
 	public ResponseEntity<MemberStatusResDto> findStatusByMemberId(@PathVariable long memberId) {
-		return ResponseEntity.ok().body(memberService.findStatusByMemberId(memberId));
+		return ResponseEntity.status(HttpStatus.OK).body(memberService.findStatusByMemberId(memberId));
 	}
 
 	@ApiOperation(value = "멤버 캐릭터 조회", notes = "멤버 캐릭터 정보 조회")
 	@GetMapping("/character/{memberId}")
 	public ResponseEntity<MemberCharacterResDto> findCharacterByMemberId(@PathVariable long memberId) {
-		return ResponseEntity.ok().body(memberService.findCharacterByMemberId(memberId));
+		return ResponseEntity.status(HttpStatus.OK).body(memberService.findCharacterByMemberId(memberId));
 	}
 
 	@ApiOperation(value = "회원 탈퇴", notes = "로그인한 회원 탈퇴")
 	@PatchMapping("/withdrawl")
 	public ResponseEntity<Void> removeMember() {
 		memberService.removeMember();
-		return ResponseEntity.ok().build();
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 }
