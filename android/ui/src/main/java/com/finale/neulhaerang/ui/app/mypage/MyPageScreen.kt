@@ -1,12 +1,16 @@
 package com.finale.neulhaerang.ui.app.mypage
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.finale.neulhaerang.ui.app.navigation.NHLNavigationBar
 
 /**
  *  MyPageScreen
@@ -15,12 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
  *
  */
 @Composable
-fun MyPageScreen() {
-    Box(
+fun MyPageScreen(navController: NavHostController) {
+    Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Column {
+            .fillMaxSize(),
+        bottomBar = { NHLNavigationBar(navController = navController) }
+    ) { innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding)) {
             Text("마이페이지입니당")
             MyPageHeader()
 
@@ -47,5 +52,5 @@ fun MyPageScreen() {
 @Preview
 @Composable
 fun Preview() {
-    MyPageScreen()
+    MyPageScreen(navController = rememberNavController())
 }

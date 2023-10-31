@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
-import com.finale.neulhaerang.ui.app.stackNavigate
+import com.finale.neulhaerang.ui.app.navigation.NHLNavigationBar
+import com.finale.neulhaerang.ui.app.navigation.stackNavigate
 import com.finale.neulhaerang.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,7 +35,7 @@ import com.finale.neulhaerang.ui.theme.Typography
 fun MainScreen(navController: NavHostController) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
-    Scaffold(
+    Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
 //        containerColor = Color(0xFFBE1515),
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
