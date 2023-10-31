@@ -52,8 +52,6 @@ class RoutineServiceTest {
 	void When_CreateRoutineWithAlarm_Expect_isCreated() {
 
 		// given
-		Member member = createMember();
-
 		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
 			List.of(true, true, true, false, false, false, false), StatType.생존력);
 		// when
@@ -104,20 +102,11 @@ class RoutineServiceTest {
 	void When_CreateRoutineWithoutInvalidSizeRepeatedList_Expect_isBadRequest() {
 
 		// given
-		Member member = createMember();
-
 		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
 			List.of(true, true, true, false, false, false), StatType.생존력);
 		// when // then
 		assertThatThrownBy(() -> routineService.createRoutine(routineCreateReqDto))
 			.isInstanceOf(InvalidRepeatedDateException.class);
-	}
-
-	private static Member createMember() {
-		return Member.builder()
-			.kakaoId(12345678)
-			.nickname("정은")
-			.build();
 	}
 
 	private static RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
