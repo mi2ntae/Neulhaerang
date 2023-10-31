@@ -42,13 +42,8 @@ class RoutineServiceTest {
 		// given
 		Member member = createMember();
 
-		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
-			.content("아침밥 챙겨랏 S2")
-			.alarm(true)
-			.alarmTime(LocalTime.of(8, 30, 0))
-			.repeated(List.of(true, true, true, false, false, false, false))
-			.statType(StatType.생존력)
-			.build();
+		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
+			List.of(true, true, true, false, false, false, false), StatType.생존력);
 		// when
 		Member save = memberRepository.save(member);
 		routineService.createRoutine(save, routineCreateReqDto);
@@ -69,13 +64,8 @@ class RoutineServiceTest {
 		// given
 		Member member = createMember();
 
-		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
-			.content("아침밥 챙겨랏 S2")
-			.alarm(false)
-			.alarmTime(LocalTime.of(8, 30, 0))
-			.repeated(List.of(true, true, true, false, false, false, false))
-			.statType(StatType.생존력)
-			.build();
+		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", false, LocalTime.of(8, 30, 0),
+			List.of(true, true, true, false, false, false, false), StatType.생존력);
 		// when
 		Member save = memberRepository.save(member);
 		routineService.createRoutine(save, routineCreateReqDto);
@@ -96,12 +86,8 @@ class RoutineServiceTest {
 		// given
 		Member member = createMember();
 
-		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
-			.content("아침밥 챙겨랏 S2")
-			.alarm(true)
-			.repeated(List.of(true, true, true, false, false, false, false))
-			.statType(StatType.생존력)
-			.build();
+		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, null,
+			List.of(true, true, true, false, false, false, false), StatType.생존력);
 		// when
 		Member save = memberRepository.save(member);
 
@@ -117,13 +103,8 @@ class RoutineServiceTest {
 		// given
 		Member member = createMember();
 
-		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
-			.content("아침밥 챙겨랏 S2")
-			.alarm(false)
-			.alarmTime(LocalTime.of(8, 30, 0))
-			.repeated(List.of(true, true, true, false, false, false))
-			.statType(StatType.생존력)
-			.build();
+		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
+			List.of(true, true, true, false, false, false), StatType.생존력);
 		// when
 		Member save = memberRepository.save(member);
 
@@ -139,4 +120,14 @@ class RoutineServiceTest {
 			.build();
 	}
 
+	private static RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
+		List<Boolean> repeated, StatType statType) {
+		return RoutineCreateReqDto.builder()
+			.content(content)
+			.alarm(alarm)
+			.alarmTime(alarmTime)
+			.repeated(repeated)
+			.statType(statType)
+			.build();
+	}
 }
