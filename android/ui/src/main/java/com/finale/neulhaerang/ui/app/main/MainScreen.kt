@@ -29,12 +29,17 @@ import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.ui.app.navigation.NHLNavigationBar
 import com.finale.neulhaerang.ui.app.navigation.stackNavigate
 import com.finale.neulhaerang.ui.theme.Typography
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
+
+    val currentDate = LocalDate.now()
+    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
     Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
 //        containerColor = Color(0xFFBE1515),
         floatingActionButton = {
@@ -45,7 +50,7 @@ fun MainScreen(navController: NavHostController) {
         ) {
             AppHeader()
             StatusBar()
-            Calendar()
+            Calendar(currentDate = currentDate, selectedDate = selectedDate.toLocalDate(), setDateTime = setDateTime)
             Column(modifier = Modifier.fillMaxWidth()) {
                 TabRow(selectedTabIndex = tabIndex) {
                     tabs.forEachIndexed { index, title ->
