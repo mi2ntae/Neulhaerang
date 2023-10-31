@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 
 import lombok.Builder;
@@ -19,8 +20,8 @@ public class RoutineCreateReqDto {
 	private String content;
 	@NotNull
 	private List<Boolean> repeated;
-	@NotNull
 	private boolean alarm;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalTime alarmTime;
 	@NotNull
 	private StatType statType;
