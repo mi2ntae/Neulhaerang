@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 
@@ -18,9 +17,8 @@ import lombok.NoArgsConstructor;
 public class RoutineCreateReqDto {
 	@NotBlank
 	private String content;
-	@Size(min = 1)
 	@NotNull
-	private List<String> repeated;
+	private List<Boolean> repeated;
 	@NotNull
 	private boolean alarm;
 	private LocalTime alarmTime;
@@ -28,7 +26,7 @@ public class RoutineCreateReqDto {
 	private StatType statType;
 
 	@Builder
-	private RoutineCreateReqDto(String content, List<String> repeated, boolean alarm, LocalTime alarmTime,
+	private RoutineCreateReqDto(String content, List<Boolean> repeated, boolean alarm, LocalTime alarmTime,
 		StatType statType) {
 		this.content = content;
 		this.repeated = repeated;
