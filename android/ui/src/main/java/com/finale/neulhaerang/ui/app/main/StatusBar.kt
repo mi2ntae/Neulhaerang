@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.main
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,23 +29,24 @@ import com.finale.neulhaerang.ui.theme.Typography
  */
 @Composable
 fun StatusBar(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.padding(bottom = 16.dp, start = 16.dp, end = 16.dp)) {
-        Row {
-            Text(text = stringResource(id = R.string.main_tired))
-            CustomProgressBar()
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row {
-            Text(text = stringResource(id = R.string.main_lazy))
-            CustomProgressBar()
-        }
+    Column(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
+        ProgressBarElement(R.string.main_tired, 50)
+        Spacer(modifier = Modifier.height(4.dp))
+        ProgressBarElement(R.string.main_lazy, 30)
     }
+}
 
+@Composable
+fun ProgressBarElement(@StringRes statusName: Int, amount: Int) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(text = stringResource(statusName))
+        CustomProgressBar(amount)
+    }
 }
 
 // on below line we are creating a function for custom progress bar.
 @Composable
-fun CustomProgressBar() {
+fun CustomProgressBar(amount: Int) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,7 +54,6 @@ fun CustomProgressBar() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        val progress = 50
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(15.dp))
@@ -74,11 +75,11 @@ fun CustomProgressBar() {
                     )
                     // on below line we are specifying width for the inner box
 //                    .width(300.dp * progress / 100)
-                    .fillMaxWidth(1f * progress / 100)
+                    .fillMaxWidth(1f * amount / 100)
             )
             // on below line we are creating a text for our box
             Text(
-                text = "$progress %",
+                text = "$amount %",
                 modifier = Modifier.align(Alignment.Center),
                 style = Typography.labelLarge,
 //                fontWeight = FontWeight.Bold,
