@@ -14,6 +14,7 @@ import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
+import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -104,5 +105,13 @@ public class GlobalExceptionHandler {
 		log.error("Exception", e);
 		ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage());
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+	}
+
+	@ExceptionHandler(InvalidTodoDateException.class)
+	protected ResponseEntity<ErrorResponse> invalidTodoDateException() {
+		log.error("create todo is fail. todo date is before today");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TODO_DATE.getErrorCode(), ErrorCode.INVALID_TODO_DATE.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_TODO_DATE.getHttpStatus())
+			.body(errorResponse);
 	}
 }
