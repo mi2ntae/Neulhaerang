@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -122,7 +123,7 @@ fun DaysRow(
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp),
         modifier = modifier.padding(bottom = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+//        horizontalArrangement = Arrangement.spacedBy(4.dp),
         state = listState
     ) {
 //        items(days) { item -> DayElement(item.day, item.progress) }
@@ -147,22 +148,30 @@ fun DayElement(
     selectedDate: LocalDate,
     setDateTime: (LocalDateTime) -> Unit
 ) {
+    val isSelected = selectedDate.dayOfMonth == day
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier,
+
+        modifier = modifier
+            .clip(RoundedCornerShape(8.dp))
+            .background(if (isSelected) Color.Gray else Color.Transparent)
+            .padding(horizontal = 4.dp),
     ) {
         Text(
             text = stringResource(
                 changeDaysOfWeekToStringRes(
                     daysOfWeek.getDisplayName(
-                        java.time.format.TextStyle.FULL,
-                        Locale.KOREAN
+                        java.time.format.TextStyle.FULL, Locale.KOREAN
                     )
                 )
-            ),
-            style = Typography.bodyMedium
+            ), style = if (isSelected) Typography.bodyMedium.merge(
+                TextStyle(
+                    Color(0xFFFFFFFF), fontWeight = FontWeight.Bold
+                )
+            ) else Typography.bodyMedium
         )
+
         Box(
             modifier = modifier
                 .size(48.dp)
@@ -193,7 +202,14 @@ fun DayElement(
                     .background(Color.Transparent)
             )
         }
-        Text(text = day.toString(), style = Typography.bodyMedium)
+        Text(
+            text = day.toString(), style = if (isSelected) Typography.bodyMedium.merge(
+                TextStyle(
+                    Color(0xFFFFFFFF), fontWeight = FontWeight.Bold
+                )
+            ) else Typography.bodyMedium
+        )
+
     }
 }
 
