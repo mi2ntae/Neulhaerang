@@ -1,0 +1,20 @@
+### 루틴 신규 생성
+POST localhost:8080/routine
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVyIjoiMSIsImlhdCI6MTY5ODczODQzMSwiZXhwIjoxNjk4NzQwMjMxfQ.UkCM_RRCZpcOMPbPX4mI371ij9z7J8n744TVTyKmA20
+
+{
+  "content": "인생 똑바로 살아",
+  "repeated": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ],
+  "alarm": true,
+  "alarmTime": "08:30",
+  "statType": "갓생력"
+}
