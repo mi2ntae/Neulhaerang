@@ -1,7 +1,7 @@
 ### 루틴 신규 생성
 POST localhost:8080/routine
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVyIjoiMSIsImlhdCI6MTY5ODczODQzMSwiZXhwIjoxNjk4NzQwMjMxfQ.UkCM_RRCZpcOMPbPX4mI371ij9z7J8n744TVTyKmA20
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVyIjoiMSIsImlhdCI6MTY5ODczOTI3NSwiZXhwIjoxNjk4NzQxMDc1fQ.jeBk04gsJF0mlRfv3RH05Q7igrDDjo8ml1VhCifANFs
 
 {
   "content": "인생 똑바로 살아",
