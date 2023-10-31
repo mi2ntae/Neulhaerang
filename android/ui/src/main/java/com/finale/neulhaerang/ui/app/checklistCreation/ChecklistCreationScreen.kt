@@ -27,17 +27,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.finale.neulhaerang.domain.ChecklistCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChecklistCreationScreen(navController: NavHostController) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {
             Text(
@@ -73,30 +76,34 @@ fun ChecklistCreationScreen(navController: NavHostController) {
         Content(
             modifier = Modifier
                 .padding(paddingValues = it)
-                .fillMaxSize()
+                .fillMaxSize(),
+            viewModel = viewModel
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Content(modifier: Modifier = Modifier) {
-    // 동작 확인용 변수
-    // TODO: ViewModel 구현
-    val (routine, setRoutine) = remember { mutableStateOf(true) }
-    val (dateTime, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
-    val (alram, setAlram) = remember { mutableStateOf(false) }
-
+fun Content(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel) {
     Column(modifier = modifier) {
-        CheckListNameInput()
+        CheckListCreationContentInput(
+            content = viewModel.content.value,
+            changeContent = viewModel::changeContent,
+            clearContent = viewModel::clearContent,
+            stat = viewModel.stat.value,
+            changeStat = viewModel::changeStat
+        )
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_routine),
             icon = Icons.Filled.Refresh
         ) {
-            Switch(checked = routine, onCheckedChange = setRoutine)
+            Switch(checked = viewModel.routine.value, onCheckedChange = viewModel::changeRoutine)
         }
-        if (routine) RoutineCreation() else TodoCreation(
-            dateTime = dateTime, setDateTime = setDateTime
+        if (viewModel.routine.value) RoutineCreation(viewModel = viewModel)
+        else TodoCreation(
+            dateTime = viewModel.dateTime.value,
+            dateMillis = viewModel.dateMillis,
+            changeDateTime = viewModel::changeDate
         )
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_time),
@@ -104,27 +111,24 @@ fun Content(modifier: Modifier = Modifier) {
         ) {
             var showSheet by remember { mutableStateOf(false) }
             val timePickerState = rememberTimePickerState(
-                initialHour = dateTime.hour, initialMinute = dateTime.minute, is24Hour = false
+                initialHour = viewModel.timeHour,
+                initialMinute = viewModel.timeMinute,
+                is24Hour = false
             )
 
             TextButton(onClick = { showSheet = true }) {
-                Text(text = dateTime.format(DateTimeFormatter.ofPattern("h:mm a")))
+                Text(text = viewModel.dateTime.value.format(DateTimeFormatter.ofPattern("h:mm a")))
             }
-            NHLTimePicker(
-                open = showSheet,
+            NHLTimePicker(open = showSheet,
                 close = { showSheet = false },
                 timePickerState = timePickerState,
-                onOk = {
-                    setDateTime(
-                        dateTime.withHour(timePickerState.hour).withMinute(timePickerState.minute)
-                    )
-                })
+                onOk = { viewModel.changeTime(timePickerState.hour, timePickerState.minute) })
         }
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_notice),
             icon = Icons.Filled.Alarm
         ) {
-            Switch(checked = alram, onCheckedChange = setAlram)
+            Switch(checked = viewModel.alarm.value, onCheckedChange = viewModel::changeAlarm)
         }
     }
 }

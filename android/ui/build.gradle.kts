@@ -48,6 +48,7 @@ dependencies {
     // modules
     implementation(project(":common"))
     implementation(project(":data"))
+    implementation(project(":domain"))
 
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")

@@ -13,7 +13,6 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedIconButton
@@ -32,9 +31,13 @@ import androidx.compose.ui.unit.dp
 import com.finale.neulhaerang.common.Stat
 
 @Composable
-fun CheckListNameInput() {
-    var value by remember { mutableStateOf("") }
-    val (stat, setStat) = remember { mutableStateOf(Stat.GodSang) }
+fun CheckListCreationContentInput(
+    content: String,
+    changeContent: (String) -> Unit,
+    clearContent: () -> Unit,
+    stat: Stat,
+    changeStat: (Stat) -> Unit,
+) {
     var showDialog by remember { mutableStateOf(false) }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -42,12 +45,13 @@ fun CheckListNameInput() {
             Icon(imageVector = Icons.Filled.QuestionMark, contentDescription = "icon")
         }
         Spacer(modifier = Modifier.width(8.dp))
-        TextField(value = value,
-            onValueChange = { value = it },
+        TextField(
+            value = content,
+            onValueChange = changeContent,
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(text = "할 일을 입력해 주세요") },
             trailingIcon = {
-                IconButton(onClick = { value = "" }) {
+                IconButton(onClick = clearContent) {
                     Icon(imageVector = Icons.Outlined.Cancel, contentDescription = "clear")
                 }
             },
@@ -60,14 +64,15 @@ fun CheckListNameInput() {
             )
         )
         if (showDialog) {
-            StatDialog(onDismiss = { showDialog = false }, stat, setStat)
+            StatDialog(
+                onDismiss = { showDialog = false }, stat, changeStat
+            )
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StatDialog(onDismiss: () -> Unit = {}, stat: Stat, setStat: (Stat) -> Unit) {
+fun StatDialog(onDismiss: () -> Unit = {}, stat: Stat, changeStat: (Stat) -> Unit) {
     AlertDialog(onDismissRequest = onDismiss, confirmButton = {}, title = {
         Text(text = "스탯을 골라주세요")
     }, text = {
@@ -82,7 +87,7 @@ fun StatDialog(onDismiss: () -> Unit = {}, stat: Stat, setStat: (Stat) -> Unit) 
                     else ButtonDefaults.outlinedButtonBorder
 
                     Button(
-                        onClick = { setStat(it); onDismiss() },
+                        onClick = { changeStat(it); onDismiss() },
                         colors = colors,
                         border = border,
                         contentPadding = PaddingValues(0.dp)
