@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,25 +26,28 @@ class TodoServiceTest {
 	@Autowired
 	private TodoService todoService;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
 	@Test
 	@DisplayName("Todo 등록 테스트")
 	public void When_InsertTodo_Expect_IsOk() {
 		// given
-		LocalDateTime date = LocalDateTime.of(2023, 12, 1, 13, 30);
-		String content = "코딩테스트";
-		StatType statType = StatType.생존력;
 		TodoCreateReqDto todoCreateReqDto = TodoCreateReqDto.builder()
-			.todoDate(date)
-			.content(content)
-			.statType(statType)
+			.todoDate(LocalDateTime.of(2023, 12, 1, 13, 30))
+			.content("코딩테스트")
+			.statType(StatType.생존력)
 			.build();
+		Todo todo = modelMapper.map(todoCreateReqDto, Todo.class);
 
 		// when
 		todoService.createTodo(todoCreateReqDto);
 
 		// then
 		List<Todo> todoList = todoRepository.findAll();
-		assertThat(todoList).hasSize(1)
-			.extracting("content").contains(content);
+		assertThat(todoList).hasSize(1);
+		assertThat(todoList.get(0)).usingRecursiveComparison()
+			.ignoringFields("id", "member")
+			.isEqualTo(todo);
 	}
 }
