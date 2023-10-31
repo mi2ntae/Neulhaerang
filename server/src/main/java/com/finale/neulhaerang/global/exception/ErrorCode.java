@@ -14,7 +14,7 @@ public enum ErrorCode {
 
 	// 멤버
 	NON_EXIST_MEMBER(HttpStatus.INTERNAL_SERVER_ERROR, "M-001", "해당 사용자가 존재하지 않습니다."),
-	
+
 	// 캐릭터 정보
 	NON_EXIST_CHARACTERINFO(HttpStatus.INTERNAL_SERVER_ERROR, "C-001", "해당 사용자의 캐릭터 정보가 존재하지 않습니다."),
 
@@ -26,6 +26,7 @@ public enum ErrorCode {
 
 	// 루틴
 	NOT_EXIST_ALARM_TIME(HttpStatus.BAD_REQUEST, "R-001", "알람을 받는 경우 알람 시간을 지정해야합니다."),
+	INVALID_REPEATED_DATE(HttpStatus.BAD_REQUEST, "R-002", "반복 날짜를 담은 리스트는 길이가 7이어야 합니다."),
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {

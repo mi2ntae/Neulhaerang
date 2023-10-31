@@ -10,6 +10,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
+import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
@@ -22,6 +23,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(InvalidRepeatedDateException.class)
+	protected ResponseEntity<ErrorResponse> InvalidRepeatedDateException() {
+		log.error("The repeat date information is incorrect. for all days of the week.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_REPEATED_DATE.getErrorCode(),
+			ErrorCode.INVALID_REPEATED_DATE.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_REPEATED_DATE.getHttpStatus())
+			.body(errorResponse);
+	}
+
 	@ExceptionHandler(InvalidTodoDateException.class)
 	protected ResponseEntity<ErrorResponse> invalidTodoDateException() {
 		log.error("create todo is fail. todo date is before today");
@@ -43,9 +53,9 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(NotExistAlarmTimeException.class)
 	protected ResponseEntity<ErrorResponse> notExistAlarmTime() {
 		log.error("not exist alarm time if get an alarm");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(),
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_ALARM_TIME.getErrorCode(),
 			ErrorCode.NOT_EXIST_ALARM_TIME.getMessage());
-		return ResponseEntity.status(ErrorCode.EXPIRED_AUTH.getHttpStatus())
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_ALARM_TIME.getHttpStatus())
 			.body(errorResponse);
 	}
 
