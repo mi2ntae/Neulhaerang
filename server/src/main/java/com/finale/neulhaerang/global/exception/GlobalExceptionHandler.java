@@ -10,7 +10,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
-import com.finale.neulhaerang.global.exception.common.NotExistAlarmTime;
+import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-	@ExceptionHandler(NotExistAlarmTime.class)
+	@ExceptionHandler(NotExistAlarmTimeException.class)
 	protected ResponseEntity<ErrorResponse> notExistAlarmTime() {
 		log.error("not exist alarm time if get an alarm");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.EXPIRED_AUTH.getErrorCode(),
