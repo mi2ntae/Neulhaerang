@@ -18,6 +18,7 @@ import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
+import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
 
 @SpringBootTest
@@ -45,7 +46,7 @@ class RoutineServiceTest {
 			.content("아침밥 챙겨랏 S2")
 			.alarm(true)
 			.alarmTime(LocalTime.of(8, 30, 0))
-			.repeated(List.of("월", "화", "수"))
+			.repeated(List.of(true, true, true, false, false, false, false))
 			.statType(StatType.생존력)
 			.build();
 		// when
@@ -72,7 +73,7 @@ class RoutineServiceTest {
 			.content("아침밥 챙겨랏 S2")
 			.alarm(false)
 			.alarmTime(LocalTime.of(8, 30, 0))
-			.repeated(List.of("월", "화", "수"))
+			.repeated(List.of(true, true, true, false, false, false, false))
 			.statType(StatType.생존력)
 			.build();
 		// when
@@ -98,7 +99,7 @@ class RoutineServiceTest {
 		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
 			.content("아침밥 챙겨랏 S2")
 			.alarm(true)
-			.repeated(List.of("월", "화", "수"))
+			.repeated(List.of(true, true, true, false, false, false, false))
 			.statType(StatType.생존력)
 			.build();
 		// when
@@ -107,6 +108,28 @@ class RoutineServiceTest {
 		// then
 		assertThatThrownBy(() -> routineService.createRoutine(save, routineCreateReqDto))
 			.isInstanceOf(NotExistAlarmTimeException.class);
+	}
+
+	@DisplayName("루틴을 생성 시, 반복 날짜 정보를 담은 리스트의 크기가 7이 아니면 에러가 납니다.")
+	@Test
+	void When_CreateRoutineWithoutInvalidSizeRepeatedList_Expect_isBadRequest() {
+
+		// given
+		Member member = createMember();
+
+		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
+			.content("아침밥 챙겨랏 S2")
+			.alarm(false)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.repeated(List.of(true, true, true, false, false, false))
+			.statType(StatType.생존력)
+			.build();
+		// when
+		Member save = memberRepository.save(member);
+
+		// then
+		assertThatThrownBy(() -> routineService.createRoutine(save, routineCreateReqDto))
+			.isInstanceOf(InvalidRepeatedDateException.class);
 	}
 
 	private static Member createMember() {
