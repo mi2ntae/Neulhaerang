@@ -15,12 +15,21 @@ import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException
 import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
+import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(InvalidTodoDateException.class)
+	protected ResponseEntity<ErrorResponse> invalidTodoDateException() {
+		log.error("create todo is fail. todo date is before today");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TODO_DATE.getErrorCode(),
+			ErrorCode.INVALID_TODO_DATE.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_TODO_DATE.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(AccessForbiddenException.class)
 	protected ResponseEntity<ErrorResponse> accessForbiddenException() {
