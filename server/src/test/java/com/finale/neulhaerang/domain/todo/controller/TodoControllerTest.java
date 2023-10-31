@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,7 +22,7 @@ import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class TodoControllerTest {
+class TodoControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -48,11 +47,7 @@ public class TodoControllerTest {
 			)
 			.andDo(print())
 			.andExpect(status().isCreated())
-			.andExpect(header().string(HttpHeaders.CONTENT_TYPE, "application/json"))
-			.andExpect(jsonPath("id").exists())
-			.andExpect(jsonPath("alarm").value(false))
-			.andExpect(jsonPath("check").value(false))
-			.andExpect(jsonPath("status").value(false))
+			.andExpect(content().string("Create Success"))
 		;
 	}
 
