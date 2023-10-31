@@ -16,6 +16,7 @@ import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
+import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -31,7 +32,7 @@ class TodoServiceTest {
 
 	@Test
 	@DisplayName("Todo 등록 테스트")
-	public void When_InsertTodo_Expect_IsOk() {
+	public void When_CreateTodo_Expect_IsOk() {
 		// given
 		TodoCreateReqDto todoCreateReqDto = TodoCreateReqDto.builder()
 			.todoDate(LocalDateTime.of(2023, 12, 1, 13, 30))
@@ -49,5 +50,20 @@ class TodoServiceTest {
 		assertThat(todoList.get(0)).usingRecursiveComparison()
 			.ignoringFields("id", "member")
 			.isEqualTo(todo);
+	}
+
+	@Test
+	@DisplayName("Todo 등록 시 오늘보다 이전 날짜에 등록 요청이 온 경우 exception 발생 테스트")
+	public void When_InsertWrongInput_Expect_BadRequest() {
+		// given
+		TodoCreateReqDto todoCreateReqDto = TodoCreateReqDto.builder()
+			.todoDate(LocalDateTime.of(2023,10,1,13,30))
+			.content("코딩테스트")
+			.statType(StatType.생존력)
+			.build();
+
+		// when, then
+		assertThatThrownBy(() -> todoService.createTodo(todoCreateReqDto))
+			.isInstanceOf(InvalidTodoDateException.class);
 	}
 }
