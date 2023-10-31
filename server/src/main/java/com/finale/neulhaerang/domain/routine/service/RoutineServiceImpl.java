@@ -34,12 +34,14 @@ public class RoutineServiceImpl implements RoutineService {
 	}
 
 	private static StringBuilder checkRepeatedDate(RoutineCreateReqDto routineCreateReqDto) {
-		StringBuilder repeated = new StringBuilder("0000000");
-		for (int i = 0; i < 7; i++) {
-			if (routineCreateReqDto.getRepeated().get(i)) {
-				repeated.setCharAt(i, '1');
+		StringBuilder repeated = new StringBuilder();
+		routineCreateReqDto.getRepeated().forEach(r -> {
+			if (r) {
+				repeated.append("1");
+			} else {
+				repeated.append("0");
 			}
-		}
+		});
 		return repeated;
 	}
 }
