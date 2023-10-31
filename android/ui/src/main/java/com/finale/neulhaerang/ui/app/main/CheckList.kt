@@ -20,10 +20,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.ui.theme.Typography
+import java.time.LocalDate
 
 
 @Composable
-fun CheckList() {
+fun CheckList(selectedDate: LocalDate) {
     val checklists = listOf<CheckList>(
         CheckList("안녕", true),
         CheckList("물 8잔 마시기", false),
@@ -38,6 +39,7 @@ fun CheckList() {
             .verticalScroll(rememberScrollState(0))
             .padding(16.dp),
     ) {
+        Text(text = selectedDate.toString())
         Routine(checklists)
         Spacer(modifier = Modifier.height(16.dp))
         TodoList(checklists)
