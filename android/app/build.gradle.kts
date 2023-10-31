@@ -72,4 +72,6 @@ dependencies {
     // debug
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeUiVersion"]}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
+//kakao login
+    implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
 }
