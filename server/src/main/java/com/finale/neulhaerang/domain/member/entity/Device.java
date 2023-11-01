@@ -32,7 +32,7 @@ public class Device {
 	@Column(nullable = false)
 	private String deviceToken;
 
-	public static Device of(Member member, String deviceToken) {
+	public static Device create(Member member, String deviceToken) {
 		return Device.builder()
 			.member(member)
 			.deviceToken(deviceToken).build();
