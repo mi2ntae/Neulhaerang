@@ -37,4 +37,11 @@ public class DailyRoutine {
 	@Column(nullable = false)
 	private LocalDate routineDate;
 
+	public static DailyRoutine create(Routine routine, LocalDate date) {
+		return DailyRoutine.builder()
+			.routine(routine)
+			.check(false)
+			.routineDate(date)
+			.build();
+	}
 }
