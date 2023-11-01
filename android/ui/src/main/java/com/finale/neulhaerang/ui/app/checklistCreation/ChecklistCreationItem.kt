@@ -36,9 +36,7 @@ import com.finale.neulhaerang.domain.ChecklistCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -68,7 +66,9 @@ fun ChecklistCreationItem(
 }
 
 @Composable
-fun RoutineCreation(modifier: Modifier = Modifier) {
+fun RoutineCreation(
+    modifier: Modifier = Modifier,
+) {
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
     Column(
@@ -109,12 +109,11 @@ fun RoutineCreation(modifier: Modifier = Modifier) {
 @Composable
 fun TodoCreation(
     modifier: Modifier = Modifier,
-    dateTime: LocalDateTime,
-    dateMillis: Long,
-    changeDateTime: (Long) -> Unit,
 ) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     var showSheet by rememberSaveable { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState(dateMillis)
+    val datePickerState = rememberDatePickerState(viewModel.dateMillis)
 
     ChecklistCreationItem(
         modifier = modifier,
@@ -122,7 +121,7 @@ fun TodoCreation(
         icon = Icons.Filled.DateRange
     ) {
         TextButton(onClick = { showSheet = true }) {
-            Text(text = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            Text(text = viewModel.dateText)
         }
         // 날짜 피커 모달 바텀 시트
         NHLDatePicker(open = showSheet,
@@ -131,6 +130,6 @@ fun TodoCreation(
             dateValidator = {
                 it >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
             },
-            onOk = { datePickerState.selectedDateMillis?.let { changeDateTime(it) } })
+            onOk = { datePickerState.selectedDateMillis?.let { viewModel.changeDate(it) } })
     }
 }
