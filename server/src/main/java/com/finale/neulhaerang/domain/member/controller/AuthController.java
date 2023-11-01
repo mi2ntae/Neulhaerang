@@ -45,4 +45,10 @@ public class AuthController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
+	@ApiOperation(value = "연결 확인", notes = "연결 확인")
+	@PostMapping("/check")
+	public ResponseEntity<String> check() {
+		return ResponseEntity.status(HttpStatus.OK).body("I'm Healthy");
+	}
+
 }
