@@ -25,7 +25,7 @@ class ChecklistCreationViewModel() : ViewModel() {
     val dateTime: State<LocalDateTime> = _dateTime
     val alarm: State<Boolean> = _alarm
 
-    val dateMillis: Long = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
+    val dateMilli: Long = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
     val dateText: String = _dateTime.value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     val timeHour: Int = _dateTime.value.hour
     val timeMinute: Int = _dateTime.value.minute

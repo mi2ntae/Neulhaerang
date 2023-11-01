@@ -113,7 +113,7 @@ fun TodoCreation(
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
     var showSheet by rememberSaveable { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState(viewModel.dateMillis)
+    val datePickerState = rememberDatePickerState(viewModel.dateMilli)
 
     ChecklistCreationItem(
         modifier = modifier,

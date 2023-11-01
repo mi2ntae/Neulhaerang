@@ -101,7 +101,7 @@ fun Content(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel
         if (viewModel.routine.value) RoutineCreation()
         else TodoCreation(
             dateTime = viewModel.dateTime.value,
-            dateMillis = viewModel.dateMillis,
+            dateMillis = viewModel.dateMilli,
             changeDateTime = viewModel::changeDate
         )
         ChecklistCreationItem(
