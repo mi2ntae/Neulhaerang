@@ -8,7 +8,6 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 class ChecklistCreationViewModel() : ViewModel() {
     private val _content = mutableStateOf("")
@@ -26,7 +25,6 @@ class ChecklistCreationViewModel() : ViewModel() {
     val alarm: State<Boolean> = _alarm
 
     val dateMilli: Long = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
-    val dateText: String = _dateTime.value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     val timeHour: Int = _dateTime.value.hour
     val timeMinute: Int = _dateTime.value.minute
 

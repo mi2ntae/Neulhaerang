@@ -98,12 +98,7 @@ fun Content(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel
         ) {
             Switch(checked = viewModel.routine.value, onCheckedChange = viewModel::changeRoutine)
         }
-        if (viewModel.routine.value) RoutineCreation()
-        else TodoCreation(
-            dateTime = viewModel.dateTime.value,
-            dateMillis = viewModel.dateMilli,
-            changeDateTime = viewModel::changeDate
-        )
+        if (viewModel.routine.value) RoutineCreation() else TodoCreation()
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_time),
             icon = Icons.Filled.Schedule

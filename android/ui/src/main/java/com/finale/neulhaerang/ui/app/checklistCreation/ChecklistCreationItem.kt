@@ -37,6 +37,7 @@ import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import java.time.LocalDate
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -83,12 +84,10 @@ fun RoutineCreation(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             for (i in 0..6) {
-                val colors =
-                    if (viewModel.repeat.value[i]) ButtonDefaults.buttonColors()
-                    else ButtonDefaults.outlinedButtonColors()
-                val border =
-                    if (viewModel.repeat.value[i]) null
-                    else ButtonDefaults.outlinedButtonBorder
+                val colors = if (viewModel.repeat.value[i]) ButtonDefaults.buttonColors()
+                else ButtonDefaults.outlinedButtonColors()
+                val border = if (viewModel.repeat.value[i]) null
+                else ButtonDefaults.outlinedButtonBorder
 
                 Button(
                     onClick = { viewModel.changeRepeat(i) },
@@ -121,7 +120,7 @@ fun TodoCreation(
         icon = Icons.Filled.DateRange
     ) {
         TextButton(onClick = { showSheet = true }) {
-            Text(text = viewModel.dateText)
+            Text(text = viewModel.dateTime.value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
         // 날짜 피커 모달 바텀 시트
         NHLDatePicker(open = showSheet,
