@@ -12,6 +12,10 @@ import retrofit2.create
 import retrofit2.http.POST
 
 
+/**
+ * retrofit2를 사용한 API 서비스
+ * companion object (static)의 instance로 사용(싱글톤)
+ */
 interface APIs {
     @POST("auth/check")
     fun postCheck(): Call<String>
@@ -24,7 +28,6 @@ interface APIs {
                 .baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
-
                 .build()
             return retrofit.create()
         }
@@ -33,6 +36,10 @@ interface APIs {
     }
 }
 
+/**
+ * 테스트를 위한 오브젝트
+ * auth/check api가 string을 반환해서 사용함
+ */
 object APIsPostCheck {
     fun postCheck() {
         val postCheck = APIs.instance.postCheck()
