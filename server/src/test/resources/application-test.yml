@@ -39,3 +39,7 @@ oauth2:
       on-profile: common
   kakao:
     infoUrl: https://kapi.kakao.com
+
+schedules:
+  cron:
+    daily-routine: "0 0 0 * * *" # 매일 정각

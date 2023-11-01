@@ -1,6 +1,6 @@
 package com.finale.neulhaerang.domain.routine.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import javax.persistence.Column;
@@ -51,7 +51,7 @@ public class Routine {
 
 	private LocalTime alarmTime;
 
-	private LocalDateTime deleteDate;
+	private LocalDate deleteDate;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
