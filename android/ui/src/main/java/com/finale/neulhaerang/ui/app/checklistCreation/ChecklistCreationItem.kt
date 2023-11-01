@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.domain.ChecklistCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
@@ -45,7 +46,7 @@ fun ChecklistCreationItem(
     modifier: Modifier = Modifier,
     name: String,
     icon: ImageVector,
-    content: @Composable (() -> Unit)?
+    content: @Composable (() -> Unit)?,
 ) {
     Row(
         modifier = modifier
@@ -67,7 +68,9 @@ fun ChecklistCreationItem(
 }
 
 @Composable
-fun RoutineCreation(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel) {
+fun RoutineCreation(modifier: Modifier = Modifier) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     Column(
         modifier = modifier
     ) {
@@ -108,7 +111,7 @@ fun TodoCreation(
     modifier: Modifier = Modifier,
     dateTime: LocalDateTime,
     dateMillis: Long,
-    changeDateTime: (Long) -> Unit
+    changeDateTime: (Long) -> Unit,
 ) {
     var showSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(dateMillis)
