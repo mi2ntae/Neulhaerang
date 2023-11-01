@@ -58,8 +58,8 @@ dependencies {
     implementation(project(":ui"))
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleRuntimeKtxVertion"]}")
     implementation("androidx.activity:activity-compose:${rootProject.extra["activityComposeVersion"]}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["lifecycleVersion"]}")
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
     implementation("androidx.compose.ui:ui-android:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")

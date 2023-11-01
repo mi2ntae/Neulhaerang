@@ -36,7 +36,7 @@ dependencies {
 
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleRuntimeKtxVertion"]}")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
     // test
     testImplementation("junit:junit:4.13.2")

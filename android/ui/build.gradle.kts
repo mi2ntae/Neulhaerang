@@ -52,7 +52,8 @@ dependencies {
 
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleRuntimeKtxVertion"]}")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["lifecycleVersion"]}")
     implementation("androidx.activity:activity-compose:${rootProject.extra["activityComposeVersion"]}")
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
     implementation("androidx.compose.ui:ui:${rootProject.extra["composeUiVersion"]}")
