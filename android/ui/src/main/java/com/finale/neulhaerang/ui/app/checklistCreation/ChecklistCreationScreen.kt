@@ -45,8 +45,6 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChecklistCreationScreen(navController: NavHostController) {
-    val viewModel = viewModel<ChecklistCreationViewModel>()
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -74,23 +72,18 @@ fun ChecklistCreationScreen(navController: NavHostController) {
             modifier = Modifier
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
-                .fillMaxSize(),
-            viewModel = viewModel
+                .fillMaxSize()
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Content(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel) {
+fun Content(modifier: Modifier = Modifier) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     Column(modifier = modifier) {
-        CheckListCreationContentInput(
-            content = viewModel.content.value,
-            changeContent = viewModel::changeContent,
-            clearContent = viewModel::clearContent,
-            stat = viewModel.stat.value,
-            changeStat = viewModel::changeStat
-        )
+        CheckListCreationContentInput()
         Spacer(modifier = Modifier.height(8.dp))
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_routine),
