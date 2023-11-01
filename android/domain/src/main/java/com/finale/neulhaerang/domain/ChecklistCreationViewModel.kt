@@ -8,6 +8,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 class ChecklistCreationViewModel() : ViewModel() {
     private val _content = mutableStateOf("")
@@ -18,15 +19,16 @@ class ChecklistCreationViewModel() : ViewModel() {
     private val _alarm = mutableStateOf(false)
 
     val content: State<String> = _content
-    val stat = _stat
-    val routine = _routine
-    val repeat = _repeat
-    val dateTime = _dateTime
-    val alarm = _alarm
+    val stat: State<Stat> = _stat
+    val routine: State<Boolean> = _routine
+    val repeat: State<List<Boolean>> = _repeat
+    val dateTime: State<LocalDateTime> = _dateTime
+    val alarm: State<Boolean> = _alarm
 
-    val dateMillis = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
-    val timeHour = _dateTime.value.hour
-    val timeMinute = _dateTime.value.minute
+    val dateMillis: Long = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
+    val dateText: String = _dateTime.value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    val timeHour: Int = _dateTime.value.hour
+    val timeMinute: Int = _dateTime.value.minute
 
     fun changeContent(input: String) {
         _content.value = input
