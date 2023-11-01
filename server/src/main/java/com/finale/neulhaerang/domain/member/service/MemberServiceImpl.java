@@ -48,15 +48,15 @@ public class MemberServiceImpl implements MemberService{
 		Optional<MemberStat> optionalMemberStat = memberStatRepository.findMemberStatByMemberId(memberId);
 		if(!optionalMemberStat.isPresent()) throw new NotExistMemberException();
 
-		int nataeSum = optionalMemberStat.get().getRecords().stream()
+		int sumOfIndolence = optionalMemberStat.get().getRecords().stream()
 			.filter(record -> record.getStatType().equals(StatType.나태도))
 			.filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)))
 			.map(record -> record.getWeight()).reduce(0, Integer::sum);
-		int pigonSum = optionalMemberStat.get().getRecords().stream()
+		int sumOfTiredness = optionalMemberStat.get().getRecords().stream()
 			.filter(record -> record.getStatType().equals(StatType.피곤도))
 			.filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)))
 			.map(record -> record.getWeight()).reduce(0, Integer::sum);
-		return MemberStatusResDto.create(nataeSum, pigonSum);
+		return MemberStatusResDto.create(sumOfIndolence, sumOfTiredness);
 	}
 
 	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용

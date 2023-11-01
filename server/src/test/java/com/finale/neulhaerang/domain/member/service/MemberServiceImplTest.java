@@ -37,7 +37,7 @@ class MemberServiceImplTest {
 
 	@Test
 	@DisplayName("회원 탈퇴를 진행할 경우, Member의 withdrawalDate에 값이 설정된다.")
-	void When_RemoveMember() {
+	void When_RemoveMember_WithdrawalDateIsNotNull() {
 		// given
 		Member member = memberRepository.save(createMember());
 
@@ -50,7 +50,7 @@ class MemberServiceImplTest {
 
 	@Test
 	@DisplayName("회원 탈퇴를 진행할 경우, 존재하지 않는 멤버를 삭제하면 에러가 난다.")
-	void When_RemoveNotExistMember() {
+	void When_RemoveNotExistMember_ThrowException() {
 		// given
 		Member member = memberRepository.save(createMember());
 
