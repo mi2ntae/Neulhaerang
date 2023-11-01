@@ -52,7 +52,7 @@ class RoutineSchedulerTest {
 
 		List<Routine> routines = List.of(routine1, routine2, routine3);
 		routineRepository.saveAll(routines);
-		LocalDate date = LocalDate.of(2023, 8, 19);
+		LocalDate date = LocalDate.of(2023, 11, 1);
 
 		// when
 		routineScheduler.createDailyRoutine(date);
