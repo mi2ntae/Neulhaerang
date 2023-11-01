@@ -5,9 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.finale.neulhaerang.domain.member.document.MemberStat;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.service.MemberService;
@@ -41,6 +44,14 @@ public class MemberController {
 	@PatchMapping("/withdrawl")
 	public ResponseEntity<Void> removeMember() {
 		memberService.removeMember();
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
+	@ApiOperation(value = "테스트", notes = "Mongo 테스트")
+	@PostMapping("/mongo")
+	public ResponseEntity<Void> mongo(@RequestBody MemberStat memberStat) {
+		memberService.testInsert(memberStat);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 

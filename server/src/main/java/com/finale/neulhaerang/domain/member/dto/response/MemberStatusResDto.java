@@ -8,4 +8,11 @@ import lombok.Getter;
 public class MemberStatusResDto {
 	private int indolence;
 	private int tiredness;
+
+	public static MemberStatusResDto create(int indolence, int tiredness) {
+		return MemberStatusResDto.builder()
+			.indolence(indolence)
+			.tiredness(tiredness)
+			.build();
+	}
 }
