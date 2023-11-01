@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
-import com.finale.neulhaerang.domain.routine.dto.response.RoutineResDto;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
@@ -44,7 +43,7 @@ public class RoutineServiceImpl implements RoutineService {
 	}
 
 	@Override
-	public List<RoutineResDto> findRoutineByMemberAndDate(LocalDate date) {
+	public List<?> findRoutineByMemberAndDate(LocalDate date) {
 		return null;
 	}
 
