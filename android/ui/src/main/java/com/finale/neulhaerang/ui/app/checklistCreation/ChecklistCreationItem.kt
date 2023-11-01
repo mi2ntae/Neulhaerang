@@ -31,11 +31,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.domain.ChecklistCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
@@ -45,7 +45,7 @@ fun ChecklistCreationItem(
     modifier: Modifier = Modifier,
     name: String,
     icon: ImageVector,
-    content: @Composable (() -> Unit)?
+    content: @Composable (() -> Unit)?,
 ) {
     Row(
         modifier = modifier
@@ -67,7 +67,11 @@ fun ChecklistCreationItem(
 }
 
 @Composable
-fun RoutineCreation(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel) {
+fun RoutineCreation(
+    modifier: Modifier = Modifier,
+) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     Column(
         modifier = modifier
     ) {
@@ -80,12 +84,10 @@ fun RoutineCreation(modifier: Modifier = Modifier, viewModel: ChecklistCreationV
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             for (i in 0..6) {
-                val colors =
-                    if (viewModel.repeat.value[i]) ButtonDefaults.buttonColors()
-                    else ButtonDefaults.outlinedButtonColors()
-                val border =
-                    if (viewModel.repeat.value[i]) null
-                    else ButtonDefaults.outlinedButtonBorder
+                val colors = if (viewModel.repeat.value[i]) ButtonDefaults.buttonColors()
+                else ButtonDefaults.outlinedButtonColors()
+                val border = if (viewModel.repeat.value[i]) null
+                else ButtonDefaults.outlinedButtonBorder
 
                 Button(
                     onClick = { viewModel.changeRepeat(i) },
@@ -106,12 +108,11 @@ fun RoutineCreation(modifier: Modifier = Modifier, viewModel: ChecklistCreationV
 @Composable
 fun TodoCreation(
     modifier: Modifier = Modifier,
-    dateTime: LocalDateTime,
-    dateMillis: Long,
-    changeDateTime: (Long) -> Unit
 ) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     var showSheet by rememberSaveable { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState(dateMillis)
+    val datePickerState = rememberDatePickerState(viewModel.dateMilli)
 
     ChecklistCreationItem(
         modifier = modifier,
@@ -119,7 +120,7 @@ fun TodoCreation(
         icon = Icons.Filled.DateRange
     ) {
         TextButton(onClick = { showSheet = true }) {
-            Text(text = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            Text(text = viewModel.dateTime.value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
         // 날짜 피커 모달 바텀 시트
         NHLDatePicker(open = showSheet,
@@ -128,6 +129,6 @@ fun TodoCreation(
             dateValidator = {
                 it >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
             },
-            onOk = { datePickerState.selectedDateMillis?.let { changeDateTime(it) } })
+            onOk = { datePickerState.selectedDateMillis?.let { viewModel.changeDate(it) } })
     }
 }

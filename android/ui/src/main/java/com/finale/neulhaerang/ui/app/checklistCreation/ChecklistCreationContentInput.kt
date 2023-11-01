@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.checklistCreation
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.outlined.Cancel
@@ -28,16 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.domain.ChecklistCreationViewModel
 
 @Composable
-fun CheckListCreationContentInput(
-    content: String,
-    changeContent: (String) -> Unit,
-    clearContent: () -> Unit,
-    stat: Stat,
-    changeStat: (Stat) -> Unit,
-) {
+fun CheckListCreationContentInput() {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     var showDialog by remember { mutableStateOf(false) }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -46,12 +46,12 @@ fun CheckListCreationContentInput(
         }
         Spacer(modifier = Modifier.width(8.dp))
         TextField(
-            value = content,
-            onValueChange = changeContent,
+            value = viewModel.content.value,
+            onValueChange = viewModel::changeContent,
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(text = "할 일을 입력해 주세요") },
             trailingIcon = {
-                IconButton(onClick = clearContent) {
+                IconButton(onClick = viewModel::clearContent) {
                     Icon(imageVector = Icons.Outlined.Cancel, contentDescription = "clear")
                 }
             },
@@ -64,30 +64,32 @@ fun CheckListCreationContentInput(
             )
         )
         if (showDialog) {
-            StatDialog(
-                onDismiss = { showDialog = false }, stat, changeStat
-            )
+            StatDialog(onDismiss = { showDialog = false })
         }
     }
 }
 
 @Composable
-fun StatDialog(onDismiss: () -> Unit = {}, stat: Stat, changeStat: (Stat) -> Unit) {
+fun StatDialog(onDismiss: () -> Unit = {}) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     AlertDialog(onDismissRequest = onDismiss, confirmButton = {}, title = {
         Text(text = "스탯을 골라주세요")
     }, text = {
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2), contentPadding = PaddingValues(8.dp)
+            columns = GridCells.Fixed(2),// contentPadding = PaddingValues(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Stat.values().forEach {
                 item {
-                    val colors = if (it == stat) ButtonDefaults.buttonColors()
+                    val colors = if (it == viewModel.stat.value) ButtonDefaults.buttonColors()
                     else ButtonDefaults.outlinedButtonColors()
-                    val border = if (it == stat) null
+                    val border = if (it == viewModel.stat.value) null
                     else ButtonDefaults.outlinedButtonBorder
 
                     Button(
-                        onClick = { changeStat(it); onDismiss() },
+                        onClick = { viewModel.changeStat(it); onDismiss() },
+                        shape = RoundedCornerShape(8.dp),
                         colors = colors,
                         border = border,
                         contentPadding = PaddingValues(0.dp)

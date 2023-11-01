@@ -18,15 +18,15 @@ class ChecklistCreationViewModel() : ViewModel() {
     private val _alarm = mutableStateOf(false)
 
     val content: State<String> = _content
-    val stat = _stat
-    val routine = _routine
-    val repeat = _repeat
-    val dateTime = _dateTime
-    val alarm = _alarm
+    val stat: State<Stat> = _stat
+    val routine: State<Boolean> = _routine
+    val repeat: State<List<Boolean>> = _repeat
+    val dateTime: State<LocalDateTime> = _dateTime
+    val alarm: State<Boolean> = _alarm
 
-    val dateMillis = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
-    val timeHour = _dateTime.value.hour
-    val timeMinute = _dateTime.value.minute
+    val dateMilli: Long = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
+    val timeHour: Int = _dateTime.value.hour
+    val timeMinute: Int = _dateTime.value.minute
 
     fun changeContent(input: String) {
         _content.value = input
@@ -60,5 +60,10 @@ class ChecklistCreationViewModel() : ViewModel() {
 
     fun changeAlarm(input: Boolean) {
         _alarm.value = input
+    }
+
+    fun makeChecklist() {
+        /*TODO 리퀘스트 엔티티 생성*/
+        /*TODO API 통신*/
     }
 }

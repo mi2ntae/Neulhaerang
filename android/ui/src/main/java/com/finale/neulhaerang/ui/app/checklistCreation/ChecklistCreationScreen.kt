@@ -45,8 +45,6 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChecklistCreationScreen(navController: NavHostController) {
-    val viewModel = viewModel<ChecklistCreationViewModel>()
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -75,22 +73,21 @@ fun ChecklistCreationScreen(navController: NavHostController) {
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
                 .fillMaxSize(),
-            viewModel = viewModel
+            navController = navController
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Content(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel) {
+fun Content(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+) {
+    val viewModel = viewModel<ChecklistCreationViewModel>()
+
     Column(modifier = modifier) {
-        CheckListCreationContentInput(
-            content = viewModel.content.value,
-            changeContent = viewModel::changeContent,
-            clearContent = viewModel::clearContent,
-            stat = viewModel.stat.value,
-            changeStat = viewModel::changeStat
-        )
+        CheckListCreationContentInput()
         Spacer(modifier = Modifier.height(8.dp))
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_routine),
@@ -98,12 +95,7 @@ fun Content(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel
         ) {
             Switch(checked = viewModel.routine.value, onCheckedChange = viewModel::changeRoutine)
         }
-        if (viewModel.routine.value) RoutineCreation(viewModel = viewModel)
-        else TodoCreation(
-            dateTime = viewModel.dateTime.value,
-            dateMillis = viewModel.dateMillis,
-            changeDateTime = viewModel::changeDate
-        )
+        if (viewModel.routine.value) RoutineCreation() else TodoCreation()
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_time),
             icon = Icons.Filled.Schedule
@@ -131,7 +123,10 @@ fun Content(modifier: Modifier = Modifier, viewModel: ChecklistCreationViewModel
         }
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                viewModel.makeChecklist()
+                navController.popBackStack()
+            },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
