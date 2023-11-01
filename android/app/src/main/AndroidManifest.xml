@@ -4,11 +4,16 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-    <uses-feature android:name="android.hardware.camera.ar" android:required="true" />
-    <uses-feature android:name="com.google.ar.core.depth" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.ar"
+        android:required="true" />
+    <uses-feature
+        android:name="com.google.ar.core.depth"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -36,12 +41,14 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- Redirect URI: "kakao${NATIVE_APP_KEY}://oauth" -->
-                <data android:host="oauth"
-                    android:scheme="kakao${NATIVE_APP_KEY}" />
+                <data
+                    android:host="oauth"
+                    android:scheme="${KAKAO_NATIVE_APP_KEY}" />
             </intent-filter>
         </activity>
     </application>

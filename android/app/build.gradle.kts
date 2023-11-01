@@ -21,12 +21,12 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", getApiKey("kakao.native.app.key"))
-        buildConfigField("String", "NATIVE_APP_KEY", getApiKey("native.app.key"))
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\""+getApiKey("kakao.native.app.key")+"\"")
+        buildConfigField("String", "NATIVE_APP_KEY", "\""+getApiKey("native.app.key")+"\"")
 
-//        manifestPlaceholders["NATIVE_APP_KEY"] = getCon
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getApiKey("kakao.native.app.key")
+        manifestPlaceholders["NATIVE_APP_KEY"] = getApiKey("native.app.key")
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -84,6 +84,6 @@ dependencies {
     // debug
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeUiVersion"]}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
-//kakao login
+    //kakao login
     implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
 }
