@@ -4,7 +4,7 @@ spring:
     group:
       local:
         - common
-      prod :
+      prod:
         - common
 ---
 
@@ -38,6 +38,10 @@ spring:
     token:
       access-expiration-time: 1800000   # 30min
       refresh-expiration-time: 604800000 # 7day
+
+schedules:
+  cron:
+    daily-routine: "0 0 0 * * *" # 매일 정각
 
 
 logging:
