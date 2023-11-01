@@ -12,11 +12,11 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
-import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.NotValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
-import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
-import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
-import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
+import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
+import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
+import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -69,39 +69,39 @@ public class GlobalExceptionHandler {
 			.body(errorResponse);
 	}
 
-	@ExceptionHandler(NonExistMemberException.class)
-	protected ResponseEntity<ErrorResponse> nonExistMemberException() {
+	@ExceptionHandler(NotExistMemberException.class)
+	protected ResponseEntity<ErrorResponse> notExistMemberException() {
 		log.error("member not exist");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_EXIST_MEMBER.getErrorCode(),
-			ErrorCode.NON_EXIST_MEMBER.getMessage());
-		return ResponseEntity.status(ErrorCode.NON_EXIST_MEMBER.getHttpStatus())
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_MEMBER.getErrorCode(),
+			ErrorCode.NOT_EXIST_MEMBER.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_MEMBER.getHttpStatus())
 			.body(errorResponse);
 	}
 
-	@ExceptionHandler(NonExistDeviceException.class)
-	protected ResponseEntity<ErrorResponse> nonExistDeviceException() {
+	@ExceptionHandler(NotExistDeviceException.class)
+	protected ResponseEntity<ErrorResponse> notExistDeviceException() {
 		log.error("login device is not valid");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_EXIST_DEVICE.getErrorCode(),
-			ErrorCode.NON_EXIST_DEVICE.getMessage());
-		return ResponseEntity.status(ErrorCode.NON_EXIST_DEVICE.getHttpStatus())
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_DEVICE.getErrorCode(),
+			ErrorCode.NOT_EXIST_DEVICE.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_DEVICE.getHttpStatus())
 			.body(errorResponse);
 	}
 
-	@ExceptionHandler(NonExistCharacterInfoException.class)
-	protected ResponseEntity<ErrorResponse> nonExistCharacterInfoException() {
+	@ExceptionHandler(NotExistCharacterInfoException.class)
+	protected ResponseEntity<ErrorResponse> notExistCharacterInfoException() {
 		log.error("character info not found");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_EXIST_CHARACTERINFO.getErrorCode(),
-			ErrorCode.NON_EXIST_CHARACTERINFO.getMessage());
-		return ResponseEntity.status(ErrorCode.NON_EXIST_CHARACTERINFO.getHttpStatus())
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_CHARACTERINFO.getErrorCode(),
+			ErrorCode.NOT_EXIST_CHARACTERINFO.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_CHARACTERINFO.getHttpStatus())
 			.body(errorResponse);
 	}
 
-	@ExceptionHandler(NonValidJwtTokenException.class)
-	protected ResponseEntity<ErrorResponse> nonValidJwtTokenException() {
-		log.error("nonvalid jwt");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_VALID_TOKEN.getErrorCode(),
-			ErrorCode.NON_VALID_TOKEN.getMessage());
-		return ResponseEntity.status(ErrorCode.NON_VALID_TOKEN.getHttpStatus())
+	@ExceptionHandler(NotValidJwtTokenException.class)
+	protected ResponseEntity<ErrorResponse> notValidJwtTokenException() {
+		log.error("notvalid jwt");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_VALID_TOKEN.getErrorCode(),
+			ErrorCode.NOT_VALID_TOKEN.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_VALID_TOKEN.getHttpStatus())
 			.body(errorResponse);
 	}
 

@@ -43,8 +43,7 @@ public class SecurityConfig {
 			.and()
 			//TODO: 허용할 주소 추가
 			.authorizeRequests()
-			.antMatchers("/auth/login").permitAll()
-			.antMatchers("/auth/refresh").permitAll()
+			.antMatchers("/auth/**").permitAll()
 			.antMatchers( "/v3/api-docs","/swagger*/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
