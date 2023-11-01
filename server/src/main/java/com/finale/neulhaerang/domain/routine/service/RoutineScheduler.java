@@ -33,7 +33,6 @@ public class RoutineScheduler {
 		int dayOfWeekValue = date.getDayOfWeek().getValue() - 1;
 		dayOfVaule.setCharAt(dayOfWeekValue, '1');
 		List<Routine> routinesOfDay = routineRepository.findRoutinesByDayOfValue(dayOfVaule.toString(), date);
-		System.out.println(routinesOfDay);
 
 		// dailyRoutine에 저장합니다.
 		routinesOfDay.forEach(r -> {
