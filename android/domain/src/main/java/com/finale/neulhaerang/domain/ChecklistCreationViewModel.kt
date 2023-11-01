@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.data.APIsPostCheck
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -65,5 +66,6 @@ class ChecklistCreationViewModel() : ViewModel() {
     fun makeChecklist() {
         /*TODO 리퀘스트 엔티티 생성*/
         /*TODO API 통신*/
+        APIsPostCheck.postCheck()
     }
 }
