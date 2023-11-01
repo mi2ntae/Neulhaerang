@@ -61,4 +61,9 @@ class ChecklistCreationViewModel() : ViewModel() {
     fun changeAlarm(input: Boolean) {
         _alarm.value = input
     }
+
+    fun makeChecklist() {
+        /*TODO 리퀘스트 엔티티 생성*/
+        /*TODO API 통신*/
+    }
 }

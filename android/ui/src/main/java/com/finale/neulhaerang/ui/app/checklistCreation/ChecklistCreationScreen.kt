@@ -72,14 +72,18 @@ fun ChecklistCreationScreen(navController: NavHostController) {
             modifier = Modifier
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
-                .fillMaxSize()
+                .fillMaxSize(),
+            navController = navController
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Content(modifier: Modifier = Modifier) {
+fun Content(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+) {
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
     Column(modifier = modifier) {
@@ -119,7 +123,10 @@ fun Content(modifier: Modifier = Modifier) {
         }
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                viewModel.makeChecklist()
+                navController.popBackStack()
+            },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
