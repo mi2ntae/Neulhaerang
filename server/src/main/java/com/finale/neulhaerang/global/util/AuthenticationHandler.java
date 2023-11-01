@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
-import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
+import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthenticationHandler {
 	private final MemberRepository memberRepository;
 
-	public void checkMemberAuthentication(long memberId) throws NonExistMemberException, AccessForbiddenException {
+	public void checkMemberAuthentication(long memberId) throws NotExistMemberException, AccessForbiddenException {
 		long loginId = getLoginMemberId();
 		Optional<Member> loginMember = memberRepository.findById(loginId);
 		if(loginMember.isEmpty()) {
-			throw new NonExistMemberException();
+			throw new NotExistMemberException();
 		}
 		if(loginMember.get().getId() != memberId) {
 			throw new AccessForbiddenException();

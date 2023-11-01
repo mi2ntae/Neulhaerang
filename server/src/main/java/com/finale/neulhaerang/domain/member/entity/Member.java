@@ -34,7 +34,7 @@ public class Member extends BaseTimeEntity {
 
 	private LocalDateTime withdrawalDate;
 
-	public static Member of(long kakaoId, String nickname) {
+	public static Member create(long kakaoId, String nickname) {
 		return Member.builder()
 			.nickname(nickname)
 			.kakaoId(kakaoId).build();
