@@ -36,10 +36,10 @@ class DailyRoutineRepositoryTest extends BaseTest {
 		LocalDate date = LocalDate.of(2023, 8, 19);
 		LocalDate otherDate = LocalDate.of(2023, 8, 8);
 
-		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date);
-		DailyRoutine dailyRoutine2 = createDailyRoutine(routine2, false, date);
-		DailyRoutine dailyRoutine3 = createDailyRoutine(routine2, true, otherDate);
-		DailyRoutine dailyRoutine4 = createDailyRoutine(routine3, false, date);
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date, false);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routine2, false, date, false);
+		DailyRoutine dailyRoutine3 = createDailyRoutine(routine2, true, otherDate, false);
+		DailyRoutine dailyRoutine4 = createDailyRoutine(routine3, false, date, false);
 		dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2, dailyRoutine3, dailyRoutine4));
 
 		// when
@@ -69,31 +69,31 @@ class DailyRoutineRepositoryTest extends BaseTest {
 		LocalDate date = LocalDate.of(2023, 8, 19);
 		LocalDate otherDate = LocalDate.of(2023, 8, 8);
 
-		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date);
-		DailyRoutine dailyRoutine2 = createDailyRoutine(routine2, false, date);
-		DailyRoutine dailyRoutine3 = createDailyRoutine(routine2, true, otherDate);
-		DailyRoutine dailyRoutine4 = createDailyRoutine(routine3, false, date);
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date, false);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routine2, false, date, false);
+		DailyRoutine dailyRoutine3 = createDailyRoutine(routine2, true, otherDate, false);
+		DailyRoutine dailyRoutine4 = createDailyRoutine(routine3, false, date, true);
 		dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2, dailyRoutine3, dailyRoutine4));
 
 		// when
-		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_Member(
+		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(
 			date, member);
 
 		// then
-		assertThat(dailyRoutines).hasSize(3)
+		assertThat(dailyRoutines).hasSize(2)
 			.extracting("routine", "check", "routineDate")
 			.containsExactlyInAnyOrder(
 				tuple(routine1, true, date),
-				tuple(routine2, false, date),
-				tuple(routine3, false, date)
+				tuple(routine2, false, date)
 			);
 	}
 
-	private DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date) {
+	private DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date, boolean status) {
 		return DailyRoutine.builder()
 			.routine(routine)
 			.check(check)
 			.routineDate(date)
+			.status(status)
 			.build();
 	}
 

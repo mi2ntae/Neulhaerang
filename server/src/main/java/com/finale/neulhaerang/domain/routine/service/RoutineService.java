@@ -9,4 +9,6 @@ public interface RoutineService {
 	void createRoutine(RoutineCreateReqDto routineCreateReqDto);
 
 	List<?> findRoutineByMemberAndDate(LocalDate date);
+
+	void modifyDailyRoutineCheckByDailyRoutineId(Long dailyRoutineId);
 }

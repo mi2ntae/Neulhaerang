@@ -37,11 +37,19 @@ public class DailyRoutine {
 	@Column(nullable = false)
 	private LocalDate routineDate;
 
+	@Column(nullable = false)
+	private boolean status;
+
 	public static DailyRoutine create(Routine routine, LocalDate date) {
 		return DailyRoutine.builder()
 			.routine(routine)
 			.check(false)
 			.routineDate(date)
+			.status(false)
 			.build();
+	}
+
+	public void updateCheck() {
+		this.check = !this.check;
 	}
 }
