@@ -217,6 +217,26 @@ class TodoControllerTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("Todo 수정 요청 테스트")
+	public void When_ModifyTodo_Expect_IsOk() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, LocalDateTime.now().plusDays(1), true
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
