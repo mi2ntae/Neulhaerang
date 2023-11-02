@@ -3,6 +3,8 @@ package com.finale.neulhaerang.domain.member.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,12 +13,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
+import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.CharacterInfoRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
+import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 
@@ -39,7 +44,7 @@ class MemberServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("회원 상태 정보를 조회할 경우 MemberStatusResDto 형식으로 결과를 반환한다.")
+	@DisplayName("회원 상태 정보를 조회할 경우, MemberStatusResDto 형식으로 결과를 반환한다.")
 	void When_FindMemberStatus_Expect_MemberStatusDto() {
 		// given when
 		Member member = this.testMember;
@@ -49,9 +54,9 @@ class MemberServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("존재하지 않는 회원 상태 정보를 조회할 경우 예외를 발생시킨다.")
+	@DisplayName("존재하지 않는 회원 상태 정보를 조회할 경우, 예외를 발생시킨다.")
 	void When_FindNotExistMemberStatus_Expect_ThrowException() {
-		// given when
+		// given
 		Member member = this.testMember;
 
 		// when
@@ -62,7 +67,7 @@ class MemberServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("회원 캐릭터 정보를 조회할 경우 MemberCharacterResDto 형식으로 결과를 반환하고 저장된 캐릭터 정보를 가진다.")
+	@DisplayName("회원 캐릭터 정보를 조회할 경우, MemberCharacterResDto 형식으로 결과를 반환하고 저장된 캐릭터 정보를 가진다.")
 	void When_FindMemberCharacterInfo_Expect_MemberCharacterDto() {
 		// given
 		Member member = this.testMember;
@@ -79,7 +84,7 @@ class MemberServiceImplTest {
 	}
 
 	@Test
-	@DisplayName("캐릭터 정보가 등록되지 않은 회원의 캐릭터 정보를 조회할 경우 예외를 발생시킨다.")
+	@DisplayName("캐릭터 정보가 등록되지 않은 회원의 캐릭터 정보를 조회할 경우, 예외를 발생시킨다.")
 	void When_FindMemberNotExistCharacterInfo_Expect_ThrowException() {
 		// given when
 		Member member = this.testMember;
@@ -118,6 +123,52 @@ class MemberServiceImplTest {
 		// then
 		assertThatThrownBy(() -> memberService.removeMember()).isInstanceOf(NotExistMemberException.class);
 	}
+
+	@Test
+	@DisplayName("회원 스탯 전체 조회를 진행할 경우, List<StatListResDto> 형식으로 결과를 반환하며 길이가 6이다.")
+	void When_FindStats_Expect_StatListResDto() {
+		// given when
+		Member member = this.testMember;
+
+		// then
+		assertSoftly(s -> {
+			s.assertThat(memberService.findAllStatsByMemberId(member.getId())).hasSize(6);
+			s.assertThat(memberService.findAllStatsByMemberId(member.getId()).get(0)).isInstanceOf(StatListResDto.class);
+		});
+	}
+
+	@Test
+	@DisplayName("회원 스탯 전체 조회를 진행할 경우, 존재하지 않는 멤버의 스탯을 조회하면 예외를 발생시킨다.")
+	void When_FindStatsNotExistMember_Expect_ThrowException() {
+		// given
+		Member member = this.testMember;
+
+		// when
+		long memberId = member.getId()-1;	// 0
+
+		// then
+		assertThatThrownBy(() -> memberService.findAllStatsByMemberId(memberId)).isInstanceOf(NotExistMemberException.class);
+	}
+
+	@Test
+	@DisplayName("회원 스탯 전체 조회를 진행할 경우, 모든 스탯이 0인 경우에도 조회가 가능해야함.")
+	void When_FindStatsIfZero_Expect_StatListResDto() {
+		// given
+		Member member = this.testMember;
+
+		// when
+		memberService.createStat(StatRecord.builder()
+			.statType(StatType.갓생력)
+			.recordedDate(LocalDateTime.now())
+			.reason("a")
+			.weight(0).build()
+		);
+
+		// then
+		assertSoftly(s -> {
+			s.assertThat(memberService.findAllStatsByMemberId(member.getId())).hasSize(6);
+			s.assertThat(memberService.findAllStatsByMemberId(member.getId()).get(0)).isInstanceOf(StatListResDto.class);
+		});	}
 
 	private static Member createMember() {
 		return Member.builder()
