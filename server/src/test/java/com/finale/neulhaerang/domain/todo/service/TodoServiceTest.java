@@ -13,6 +13,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.global.exception.todo.AlreadyRemoveTodoException;
+import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 import com.finale.neulhaerang.global.util.BaseTest;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 import com.finale.neulhaerang.domain.todo.dto.response.TodoListResDto;
@@ -106,6 +108,21 @@ class TodoServiceTest extends BaseTest {
 
 		// when
 		assertThat(todoList).isEmpty();
+	}
+
+	@Test
+	@DisplayName("해당 Todo의 check 상태 변경 테스트")
+	public void When_ModifyTodoCheck_Expect_isOk(){
+		// given
+		Todo todo = createTodo("아침 일찍 일어나기",StatType.갓생력,LocalDateTime.now());
+		todoRepository.save(todo);
+
+		// when
+		todoService.modifyTodoCheckByTodoId(todo.getId());
+
+		// then
+		Todo checkTodo = todoRepository.findById(todo.getId()).get();
+		assertThat(checkTodo.isCheck()).isEqualTo(true);
 	}
 
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
