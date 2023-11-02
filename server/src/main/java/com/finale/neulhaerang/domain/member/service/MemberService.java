@@ -5,7 +5,6 @@ import java.util.List;
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
-import com.finale.neulhaerang.domain.member.dto.response.StatChangeRecordResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
@@ -25,5 +24,5 @@ public interface MemberService {
 
 	List<StatListResDto> findAllStatsByMemberId(long memberId) throws NotExistMemberException;
 
-	StatChangeRecordResDto findStatChangeRecordLastDaysByStatNo(int statKind);
+	int[] findStatChangeRecordLastDaysByStatType(int statType);
 }

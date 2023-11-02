@@ -15,7 +15,6 @@ import com.finale.neulhaerang.domain.member.document.MemberStat;
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
-import com.finale.neulhaerang.domain.member.dto.response.StatChangeRecordResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Device;
@@ -151,8 +150,8 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public StatChangeRecordResDto findStatChangeRecordLastDaysByStatNo(int statKind) throws InvalidStatKindException, NotExistMemberException{
-		if(statKind < 0 || statKind >= VALID_STAT_NUMS) {
+	public int[] findStatChangeRecordLastDaysByStatType(int statType) throws InvalidStatKindException, NotExistMemberException{
+		if(statType < 0 || statType >= VALID_STAT_NUMS) {
 			throw new InvalidStatKindException();
 		}
 
@@ -166,7 +165,7 @@ public class MemberServiceImpl implements MemberService{
 
 		int[] changeRecords = new int[STAT_CHANGE_RECORD_DAYS+1];
 
-		memberStat.getRecords().stream().filter(r -> r.getStatType().ordinal() == statKind)
+		memberStat.getRecords().stream().filter(r -> r.getStatType().ordinal() == statType)
 			.forEach(record -> {
 				if (record.getRecordedDate()
 					.toLocalDate()
@@ -185,7 +184,7 @@ public class MemberServiceImpl implements MemberService{
 		for(int i = 0; i < STAT_CHANGE_RECORD_DAYS-1; i++) {
 			changeRecords[i+1] += changeRecords[i];
 		}
-		return StatChangeRecordResDto.from(Arrays.copyOfRange(changeRecords, 0, STAT_CHANGE_RECORD_DAYS));
+		return Arrays.copyOfRange(changeRecords, 0, STAT_CHANGE_RECORD_DAYS);
 	}
 
 	private String getLevelByScore(int score) {

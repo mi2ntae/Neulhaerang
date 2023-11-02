@@ -146,8 +146,8 @@ class MemberServiceImplTest extends BaseTest {
 
 		// when then
 		assertSoftly(s -> {
-			s.assertThat(memberService.findStatChangeRecordLastDaysByStatNo(statNo)).isInstanceOf(StatChangeRecordResDto.class);
-			s.assertThat(memberService.findStatChangeRecordLastDaysByStatNo(statNo).getWeights()).hasSize(numberOfStatFindDay);
+			s.assertThat(memberService.findStatChangeRecordLastDaysByStatType(statNo)).isInstanceOf(StatChangeRecordResDto.class);
+			s.assertThat(memberService.findStatChangeRecordLastDaysByStatType(statNo).getWeights()).hasSize(numberOfStatFindDay);
 		});
 	}
 
@@ -158,7 +158,7 @@ class MemberServiceImplTest extends BaseTest {
 		int statNo = -1;	// 올바르지 않은 스탯 종류
 
 		// when then
-		assertThatThrownBy(() -> memberService.findStatChangeRecordLastDaysByStatNo(statNo)).isInstanceOf(
+		assertThatThrownBy(() -> memberService.findStatChangeRecordLastDaysByStatType(statNo)).isInstanceOf(
 			InvalidStatKindException.class);
 	}
 

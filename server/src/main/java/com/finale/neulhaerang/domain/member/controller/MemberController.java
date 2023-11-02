@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
-import com.finale.neulhaerang.domain.member.dto.response.StatChangeRecordResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.service.MemberService;
 
@@ -58,9 +58,9 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "멤버 특정 스탯 동향 조회", notes = "멤버 특정 스탯 동향 조회")
-	@GetMapping("/stat/record/{statKind}")
-	public ResponseEntity<StatChangeRecordResDto> findStatChangeRecordLastDaysByStatNo(@PathVariable int statKind) {
-		return ResponseEntity.status(HttpStatus.OK).body(memberService.findStatChangeRecordLastDaysByStatNo(statKind));
+	@GetMapping("/stat")
+	public ResponseEntity<int[]> findStatChangeRecordLastDaysByStatType(@RequestParam int statType) {
+		return ResponseEntity.status(HttpStatus.OK).body(memberService.findStatChangeRecordLastDaysByStatType(statType));
 	}
 
 	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
