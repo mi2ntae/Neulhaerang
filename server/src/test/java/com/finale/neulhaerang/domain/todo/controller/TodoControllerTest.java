@@ -196,6 +196,22 @@ class TodoControllerTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("오늘 이전의 Todo 삭제 요청시 실패 테스트")
+	public void When_RemoveTodoBeforeToday_Expect_IsOk() throws Exception {
+		// given
+		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now().minusDays(1));
+		todoRepository.save(todo);
+
+		// when, then
+		mockMvc.perform(patch("/todo/remove/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
