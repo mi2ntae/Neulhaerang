@@ -21,6 +21,7 @@ public class RoutineModifyReqDto {
 	private String content;
 	@NotNull
 	private List<Boolean> repeated;
+	@NotNull
 	private boolean alarm;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalTime alarmTime;
