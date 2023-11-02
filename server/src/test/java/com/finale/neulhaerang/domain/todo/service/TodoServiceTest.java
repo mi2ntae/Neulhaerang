@@ -125,6 +125,17 @@ class TodoServiceTest extends BaseTest {
 		assertThat(checkTodo.isCheck()).isEqualTo(true);
 	}
 
+	@Test
+	@DisplayName("해당 Todo의 check 상태 변경시 존재하지 않는 Todo일 경우 예외 발생 테스트")
+	public void When_ModifyNotExistTodoCheck_Expect_NotExistTodoException(){
+		// given
+		Long todoId = 123L;
+
+		// when, then
+		assertThatThrownBy(() -> todoService.modifyTodoCheckByTodoId(todoId))
+			.isInstanceOf(NotExistTodoException.class);
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
