@@ -7,5 +7,5 @@ data class LoginResDto(
     val nickname: String,
     val accessToken: String,
     val refreshToken: String,
-    val expiredTime: String,
+    val expiredTime: LocalDateTime,
 )
