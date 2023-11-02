@@ -351,6 +351,25 @@ class RoutineServiceTest extends BaseTest {
 			.isInstanceOf(NotExistRoutineException.class);
 	}
 
+	@DisplayName("루틴 삭제 시, 해당 데일리 루틴이 존재하지 않으면 에러가 납니다.")
+	@Test
+	void When_RemoveRoutineWithNotExistDailyRoutine_Expect_NotExistDailyRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine saveRoutine = routineRepository.save(routine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(0L)
+			.routineId(saveRoutine.getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(NotExistDailyRoutineException.class);
+	}
+
 	private RoutineModifyReqDto createRoutineModifyDto(Long routineId, boolean alarm, LocalTime alarmTime,
 		String content, List<Boolean> repeated) {
 
