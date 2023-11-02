@@ -15,7 +15,6 @@ import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 import com.finale.neulhaerang.domain.todo.dto.response.TodoListResDto;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
-import com.finale.neulhaerang.global.exception.todo.AlreadyRemoveTodoException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 import com.finale.neulhaerang.global.util.AuthenticationHandler;
@@ -55,10 +54,10 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public void modifyTodoCheckByTodoId(Long todoId) {
-		Todo todo = todoRepository.findById(todoId)
+		Todo todo = todoRepository.findTodoByIdAndStatusIsFalse(todoId)
 			.orElseThrow(NotExistTodoException::new);
-		if(todo.isStatus()) {
-			throw new AlreadyRemoveTodoException();
+		if(todo.getTodoDate().toLocalDate().isBefore(LocalDate.now())){
+			throw new InvalidTodoDateException();
 		}
 		todo.updateCheck();
 	}
