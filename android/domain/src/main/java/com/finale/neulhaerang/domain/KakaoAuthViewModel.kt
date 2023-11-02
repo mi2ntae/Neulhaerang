@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.finale.neulhaerang.data.api.APIs
+import com.finale.neulhaerang.data.api.AuthApi
 import com.finale.neulhaerang.data.model.request.LoginReqDto
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -41,7 +41,7 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
             } else if (token != null) {
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
                 viewModelScope.launch {
-                    val response = APIs.instance.login(
+                    val response = AuthApi.instance.login(
                         LoginReqDto(
                             "kakao",
                             token.accessToken,
