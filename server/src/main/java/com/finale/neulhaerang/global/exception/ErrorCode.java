@@ -21,6 +21,9 @@ public enum ErrorCode {
 	// 디바이스
 	NOT_EXIST_DEVICE(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "등록되지 않은 디바이스입니다."),
 
+	// 스탯
+	INVALID_STAT_KIND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "존재하지 않는 스탯입니다."),
+
 	// 투두리스트
 	INVALID_TODO_DATE(HttpStatus.BAD_REQUEST, "T-001", "등록 날짜가 유효하지 않습니다."),
 	NOT_EXIST_TODO(HttpStatus.BAD_REQUEST, "T-002", "해당 체크리스트가 존재하지 않습니다."),
