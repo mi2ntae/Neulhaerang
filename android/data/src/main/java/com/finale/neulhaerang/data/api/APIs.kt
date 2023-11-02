@@ -30,27 +30,16 @@ interface APIs {
     @POST("auth/check")
     suspend fun postCheck(): String
 
-    @POST("auth/login")
-    suspend fun login(@Body loginReqDto: LoginReqDto): LoginResDto
-
-    // member 관련 함수
-    // ar 관련 함수
-    // todo 관련 함수
-    // title 관련 함수
-    // item 관련 함수
-    // routine 관련 함수
-
     companion object {
         private const val BASE_URL = "http://k9a502.p.ssafy.io:8080/"
 //        private val gson: Gson = GsonBuilder().setLenient().create()
         private val gson: Gson = GsonBuilder().setLenient().registerTypeAdapter(LocalDateTime::class.java, GsonDateFormatAdapter()).create()
-        private fun create(): APIs {
-            val retrofit = Retrofit.Builder()
+        private fun create():Retrofit {
+            return Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
-            return retrofit.create()
         }
 
         // 처음 instance 사용할 때 초기화
