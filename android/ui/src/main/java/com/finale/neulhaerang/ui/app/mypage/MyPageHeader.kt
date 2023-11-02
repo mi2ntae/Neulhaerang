@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,10 +35,9 @@ fun MyPageHeader() {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Text("마이페이지 헤더입니당")
-        CharacterInfo()
-        Coin()
+        Coin(140)
         Title()
+        CharacterInfo()
         Share()
         Level(10, 9999, 9999)
     }
@@ -50,7 +50,7 @@ fun MyPageHeader() {
 
 @Composable
 fun Title() {
-    Text("칭호입니당")
+
 }
 
 /**
@@ -59,8 +59,17 @@ fun Title() {
  */
 
 @Composable
-fun Coin() {
-    Text("코인입니당")
+fun Coin(coin: Int) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Icon(Icons.Filled.AttachMoney, contentDescription = "코인 아이콘")
+        Text("$coin")
+    }
+
 }
 
 /**
