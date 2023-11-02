@@ -19,6 +19,7 @@ import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
@@ -96,6 +97,9 @@ public class RoutineServiceImpl implements RoutineService {
 		Optional<Routine> optionalRoutine = routineRepository.findById(routineModifyReqDto.getRoutineId());
 		if (optionalRoutine.isEmpty()) {
 			throw new NotExistRoutineException(member.get(), routineModifyReqDto.getRoutineId());
+		}
+		if (!optionalRoutine.get().getDeleteDate().isAfter(LocalDate.now())) {
+			throw new AlreadyRemoveRoutineException(member.get(), optionalRoutine.get());
 		}
 		if (routineModifyReqDto.isAlarm()) {
 			if (routineModifyReqDto.getAlarmTime() == null) {
