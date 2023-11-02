@@ -34,6 +34,7 @@ dependencies {
 
     // valid
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.4'
+    testImplementation 'junit:junit:4.13.1'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
