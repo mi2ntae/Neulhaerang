@@ -37,7 +37,6 @@ fun MyPageScreen(navController: NavHostController) {
         bottomBar = { NHLNavigationBar(navController = navController) }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            Text("마이페이지입니당")
             MyPageHeader()
             Column(modifier = Modifier.fillMaxWidth()) {
                 TabRow(selectedTabIndex = tabIndex) {

@@ -34,7 +34,6 @@ fun MyPageHeader() {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        Text("마이페이지 헤더입니당")
         CharacterInfo()
         Coin()
         Title()
@@ -50,7 +49,7 @@ fun MyPageHeader() {
 
 @Composable
 fun Title() {
-    Text("칭호입니당")
+
 }
 
 /**
@@ -60,7 +59,7 @@ fun Title() {
 
 @Composable
 fun Coin() {
-    Text("코인입니당")
+
 }
 
 /**
