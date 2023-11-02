@@ -37,6 +37,10 @@ dependencies {
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")
+    // retrofit2
+    implementation("com.squareup.retrofit2:retrofit:${rootProject.extra["retrofit2Version"]}")
+    implementation("com.squareup.retrofit2:converter-gson:${rootProject.extra["retrofit2Version"]}")
+    implementation("com.squareup.retrofit2:converter-scalars:${rootProject.extra["retrofit2Version"]}")
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

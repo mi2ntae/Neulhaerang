@@ -9,6 +9,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,5 +38,11 @@ public class TodoController {
 	public ResponseEntity<List<TodoListResDto>> findTodoByDate(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd")
 		LocalDate todoDate){
 		return ResponseEntity.status(HttpStatus.OK).body(todoService.findTodoByDate(todoDate));
+	}
+
+	@PatchMapping("/check/{todoId}")
+	public ResponseEntity<Void> modifyTodoCheckByTodoId(@PathVariable Long todoId){
+		todoService.modifyTodoCheckByTodoId(todoId);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

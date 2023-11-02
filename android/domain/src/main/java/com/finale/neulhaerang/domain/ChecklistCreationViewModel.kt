@@ -3,7 +3,10 @@ package com.finale.neulhaerang.domain
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.data.api.APIs
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -65,5 +68,6 @@ class ChecklistCreationViewModel() : ViewModel() {
     fun makeChecklist() {
         /*TODO 리퀘스트 엔티티 생성*/
         /*TODO API 통신*/
+        viewModelScope.launch { println(APIs.instance.postCheck()) }
     }
 }
