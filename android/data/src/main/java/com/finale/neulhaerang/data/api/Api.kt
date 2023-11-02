@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.data.api
 
 import com.finale.neulhaerang.data.util.GsonDateFormatAdapter
+import com.finale.neulhaerang.data.util.GsonTimeFormatAdapter
 import com.finale.neulhaerang.data.util.ResponseResultAdapter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -8,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 
 /**
@@ -18,7 +20,9 @@ interface Api {
     companion object {
         private const val BASE_URL = "http://k9a502.p.ssafy.io/api/"
         private val gson: Gson = GsonBuilder().setLenient()
-            .registerTypeAdapter(LocalDateTime::class.java, GsonDateFormatAdapter()).create()
+            .registerTypeAdapter(LocalDateTime::class.java, GsonDateFormatAdapter())
+            .registerTypeAdapter(LocalTime::class.java, GsonTimeFormatAdapter())
+            .create()
 
         private fun create(): Retrofit {
             return Retrofit.Builder()
