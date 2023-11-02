@@ -196,6 +196,28 @@ class TodoServiceTest extends BaseTest {
 			.isInstanceOf(InvalidTodoDateException.class);
 	}
 
+	@Test
+	@DisplayName("Todo id로 해당 Todo 수정 테스트")
+	public void When_ModifyTodo_Expect_isOk(){
+		// given
+		LocalDateTime localDateTime = LocalDateTime.now();
+		Todo todo = createTodo("헬스가기",StatType.튼튼력,localDateTime);
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, LocalDateTime.now().plusDays(1), true
+		);
+
+		// when
+		todoService.modifyTodoByTodoId(todo.getId(), todoModifyReqDto);
+
+		// then
+		Todo modifyTodo = todoRepository.findById(todo.getId()).get();
+		assertThat(modifyTodo)
+			.extracting("content","alarm","statType","todoDate")
+			.contains("산책하기",true,StatType.튼튼력, localDateTime.plusDays(1))
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
