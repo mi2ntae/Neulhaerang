@@ -1,9 +1,11 @@
 package com.finale.neulhaerang.domain.routine.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +33,9 @@ public class RoutineController {
 	}
 
 	@GetMapping
-	public ResponseEntity<String> findRoutineByMemberAndDate(@RequestParam LocalDate date) {
-		return ResponseEntity.status(HttpStatus.OK).body("");
+	public ResponseEntity<List<?>> findRoutineByMemberAndDate(
+		@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+		List<?> routineByMemberAndDate = routineService.findRoutineByMemberAndDate(date);
+		return ResponseEntity.status(HttpStatus.OK).body(routineByMemberAndDate);
 	}
 }

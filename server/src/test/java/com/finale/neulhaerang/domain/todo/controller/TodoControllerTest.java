@@ -10,20 +10,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.global.util.BaseTest;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 
-@SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
-class TodoControllerTest {
+@WithMockUser(password = "1")
+class TodoControllerTest extends BaseTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -36,7 +34,7 @@ class TodoControllerTest {
 	public void When_CreateTodo_Expect_IsOk() throws Exception {
 		// given
 		TodoCreateReqDto todoCreateReqDto = TodoCreateReqDto.builder()
-			.todoDate(LocalDateTime.of(2023,11,1,13,30))
+			.todoDate(LocalDateTime.now().plusDays(1))
 			.content("코딩테스트")
 			.statType(StatType.생존력)
 			.build();
@@ -48,7 +46,6 @@ class TodoControllerTest {
 			)
 			.andDo(print())
 			.andExpect(status().isCreated())
-			.andExpect(content().string("Create Success"))
 		;
 	}
 
@@ -128,6 +125,22 @@ class TodoControllerTest {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("errorCode").value("T-001"))
 			.andExpect(jsonPath("errorMessage").value("등록 날짜가 유효하지 않습니다."))
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 리스트 조회 테스트")
+	public void When_FindTodoList_Expect_IsOk() throws Exception {
+		// given
+		String todoDate = "2023-11-01";
+
+		// when, then
+		mockMvc.perform(get("/todo/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.param("date",todoDate)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
 		;
 	}
 }

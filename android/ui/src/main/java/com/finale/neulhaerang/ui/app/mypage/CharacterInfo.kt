@@ -1,6 +1,5 @@
 package com.finale.neulhaerang.ui.app.mypage
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 /**
@@ -10,5 +9,5 @@ import androidx.compose.runtime.Composable
  */
 @Composable
 fun CharacterInfo() {
-    Text("캐릭터 정보입니당")
+
 }

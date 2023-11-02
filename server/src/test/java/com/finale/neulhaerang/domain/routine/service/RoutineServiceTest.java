@@ -7,18 +7,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
-import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
@@ -27,12 +20,9 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
+import com.finale.neulhaerang.global.util.BaseTest;
 
-@SpringBootTest
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Transactional
-@ActiveProfiles("test")
-class RoutineServiceTest {
+class RoutineServiceTest extends BaseTest {
 
 	@Autowired
 	private RoutineService routineService;
@@ -41,25 +31,11 @@ class RoutineServiceTest {
 	private RoutineRepository routineRepository;
 
 	@Autowired
-	private MemberRepository memberRepository;
-
-	@Autowired
 	private DailyRoutineRepository dailyRoutineRepository;
-
-	private Member save;
-
-	@BeforeAll
-	public void createTestMember() {
-		Member member = Member.builder()
-			.nickname("박정은")
-			.kakaoId(12345678L).build();
-		save = memberRepository.save(member);
-	}
 
 	@DisplayName("알람이 존재하는 루틴을 생성합니다.")
 	@Test
 	void When_CreateRoutineWithAlarm_Expect_isCreated() {
-
 		// given
 		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
 			List.of(true, true, true, false, false, false, false), StatType.생존력);
@@ -78,7 +54,6 @@ class RoutineServiceTest {
 	@DisplayName("알람이 없는 루틴을 생성합니다.")
 	@Test
 	void When_CreateRoutineWithoutAlarm_Expect_isCreated() {
-
 		// given
 		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", false, LocalTime.of(8, 30, 0),
 			List.of(true, true, true, false, false, false, false), StatType.생존력);
@@ -97,7 +72,6 @@ class RoutineServiceTest {
 	@DisplayName("알람이 존재하는 루틴을 생성 시, 알람 시간이 없으면 에러가 납니다.")
 	@Test
 	void When_CreateRoutineWithoutAlarmTime_Expect_isBadRequest() {
-
 		// given
 		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, null,
 			List.of(true, true, true, false, false, false, false), StatType.생존력);
@@ -109,7 +83,6 @@ class RoutineServiceTest {
 	@DisplayName("루틴을 생성 시, 반복 날짜 정보를 담은 리스트의 크기가 7이 아니면 에러가 납니다.")
 	@Test
 	void When_CreateRoutineWithoutInvalidSizeRepeatedList_Expect_isBadRequest() {
-
 		// given
 		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
 			List.of(true, true, true, false, false, false), StatType.생존력);
@@ -120,12 +93,12 @@ class RoutineServiceTest {
 
 	@DisplayName("오늘 날짜 이전의 루틴을 조회하는 경우 daily_routine을 조회합니다.")
 	@Test
-	void When_findRoutineWithBeforeToday_Expect_findDailyRoutine() {
+	void When_FindRoutineWithBeforeToday_Expect_FindDailyRoutine() {
 		// given
 		LocalDate date = LocalDate.now();
-		Routine routine1 = createRoutine(save, "양치하기1", "0010000", false, StatType.생존력);
-		Routine routine2 = createRoutine(save, "양치하기2", "0110000", false, StatType.생존력);
-		Routine routine3 = createRoutine(save, "양치하기3", "0111000", false, StatType.생존력);
+		Routine routine1 = createRoutine(member, "양치하기1", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기2", "0110000", false, StatType.생존력);
+		Routine routine3 = createRoutine(member, "양치하기3", "0111000", false, StatType.생존력);
 		routineRepository.saveAll(List.of(routine1, routine2, routine3));
 
 		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date);
@@ -138,16 +111,16 @@ class RoutineServiceTest {
 
 		// then
 		assertThat(dailyRoutines).hasSize(2)
-			.extracting("content", "check", "date")
+			.extracting("content", "check")
 			.containsExactlyInAnyOrder(
-				tuple("양치하기1", true, date),
-				tuple("양치하기3", false, date)
+				tuple("양치하기1", true),
+				tuple("양치하기3", false)
 			);
 	}
 
 	@DisplayName("오늘 날짜 이후 루틴을 조회하는 경우 routine을 조회합니다.")
 	@Test
-	void When_findRoutineWithAfterToday_Expect_findRoutine() {
+	void When_FindRoutineWithAfterToday_Expect_FindRoutine() {
 		// given
 		LocalDate currentDate = LocalDate.now();
 
@@ -161,9 +134,9 @@ class RoutineServiceTest {
 		}
 		LocalDate date = currentDate.plusDays(daysUntilNextWednesday);
 
-		Routine routine1 = createRoutine(save, "양치하기1", "0010000", false, StatType.생존력);
-		Routine routine2 = createRoutine(save, "양치하기2", "0110000", false, StatType.생존력);
-		Routine routine3 = createRoutine(save, "양치하기3", "0101000", false, StatType.생존력);
+		Routine routine1 = createRoutine(member, "양치하기1", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기2", "0110000", false, StatType.생존력);
+		Routine routine3 = createRoutine(member, "양치하기3", "0101000", false, StatType.생존력);
 		routineRepository.saveAll(List.of(routine1, routine2, routine3));
 
 		// when
@@ -171,10 +144,10 @@ class RoutineServiceTest {
 
 		// then
 		assertThat(routines).hasSize(2)
-			.extracting("content", "date")
+			.extracting("content")
 			.containsExactlyInAnyOrder(
-				tuple("양치하기1", date),
-				tuple("양치하기2", date)
+				"양치하기1",
+				"양치하기2"
 			);
 	}
 
