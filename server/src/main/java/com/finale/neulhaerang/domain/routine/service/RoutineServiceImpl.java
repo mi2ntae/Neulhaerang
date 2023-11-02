@@ -17,8 +17,8 @@ import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
-import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
-import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
+import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.util.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
@@ -61,12 +61,17 @@ public class RoutineServiceImpl implements RoutineService {
 				.collect(Collectors.toList());
 		} else {
 			Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
-			List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_Member(
+			List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(
 				date, member);
 			return dailyRoutines.stream()
 				.map(DailyRoutineResDto::from)
 				.collect(Collectors.toList());
 		}
+	}
+
+	@Override
+	public void modifyDailyRoutineCheckByDailyRoutineId(Long dailyRoutineId) {
+
 	}
 
 	private static StringBuilder checkRepeatedDate(RoutineCreateReqDto routineCreateReqDto) {
