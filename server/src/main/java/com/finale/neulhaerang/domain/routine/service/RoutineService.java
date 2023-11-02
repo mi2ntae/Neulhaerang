@@ -11,4 +11,6 @@ public interface RoutineService {
 	List<?> findRoutineByMemberAndDate(LocalDate date);
 
 	void modifyDailyRoutineCheckByDailyRoutineId(Long dailyRoutineId);
+
+	void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(Long routineId);
 }
