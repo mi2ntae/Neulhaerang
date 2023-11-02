@@ -8,22 +8,13 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.finale.neulhaerang.domain.member.entity.Member;
-import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.global.util.BaseTest;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@Transactional
-class DailyRoutineRepositoryTest {
-	@Autowired
-	private MemberRepository memberRepository;
+class DailyRoutineRepositoryTest extends BaseTest {
 
 	@Autowired
 	private RoutineRepository routineRepository;
@@ -35,14 +26,10 @@ class DailyRoutineRepositoryTest {
 	@Test
 	void When_GetDateAndRoutines_Expect_GetDailyRoutines() {
 		// given
-		Member member = Member.builder()
-			.nickname("박정은")
-			.kakaoId(12345678L).build();
-		Member save = memberRepository.save(member);
 
-		Routine routine1 = createRoutine(save, "양치하기", "0010000", false, StatType.생존력);
-		Routine routine2 = createRoutine(save, "양치하기2", "0110000", false, StatType.생존력);
-		Routine routine3 = createRoutine(save, "양치하기3", "0101000", false, StatType.생존력);
+		Routine routine1 = createRoutine("양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine("양치하기2", "0110000", false, StatType.생존력);
+		Routine routine3 = createRoutine("양치하기3", "0101000", false, StatType.생존력);
 
 		List<Routine> routines = List.of(routine1, routine2, routine3);
 		routineRepository.saveAll(routines);
@@ -72,14 +59,10 @@ class DailyRoutineRepositoryTest {
 	@Test
 	void When_FindDailyRoutineByDate_Expect_FindDailyRoutineByDate() {
 		// given
-		Member member = Member.builder()
-			.nickname("박정은")
-			.kakaoId(12345678L).build();
-		Member save = memberRepository.save(member);
 
-		Routine routine1 = createRoutine(save, "양치하기", "0010000", false, StatType.생존력);
-		Routine routine2 = createRoutine(save, "양치하기2", "0110000", false, StatType.생존력);
-		Routine routine3 = createRoutine(save, "양치하기3", "0101000", false, StatType.생존력);
+		Routine routine1 = createRoutine("양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine("양치하기2", "0110000", false, StatType.생존력);
+		Routine routine3 = createRoutine("양치하기3", "0101000", false, StatType.생존력);
 
 		List<Routine> routines = List.of(routine1, routine2, routine3);
 		routineRepository.saveAll(routines);
@@ -94,7 +77,7 @@ class DailyRoutineRepositoryTest {
 
 		// when
 		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_Member(
-			date, save);
+			date, member);
 
 		// then
 		assertThat(dailyRoutines).hasSize(3)
@@ -106,7 +89,7 @@ class DailyRoutineRepositoryTest {
 			);
 	}
 
-	private static DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date) {
+	private DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date) {
 		return DailyRoutine.builder()
 			.routine(routine)
 			.check(check)
@@ -114,10 +97,10 @@ class DailyRoutineRepositoryTest {
 			.build();
 	}
 
-	private static Routine createRoutine(Member save, String content, String repeated, boolean alarm,
+	private Routine createRoutine(String content, String repeated, boolean alarm,
 		StatType statType) {
 		return Routine.builder()
-			.member(save)
+			.member(member)
 			.content(content)
 			.repeated(repeated)
 			.alarm(alarm)
