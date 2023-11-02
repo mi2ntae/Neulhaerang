@@ -26,6 +26,7 @@ import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineExcep
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
@@ -368,6 +369,29 @@ class RoutineServiceTest extends BaseTest {
 		assertThatThrownBy(
 			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
 			.isInstanceOf(NotExistDailyRoutineException.class);
+	}
+
+	@DisplayName("데일리 루틴이 해당 루틴과 관계가 없으면 에러가 납니다.")
+	@Test
+	void When_RemoveRoutineWithNotEqualRoutine_Expect_NotExistRelationWithRoutine() {
+		Routine routine1 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		List<Routine> routines = routineRepository.saveAll(List.of(routine1, routine2));
+
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routines.get(0), true, false);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routines.get(1), true, false);
+		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2));
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(routines.get(0).getId())
+			.routineId(dailyRoutines.get(1).getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(NotExistRelationWithRoutineException.class);
 	}
 
 	private RoutineModifyReqDto createRoutineModifyDto(Long routineId, boolean alarm, LocalTime alarmTime,
