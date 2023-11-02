@@ -17,7 +17,9 @@ import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
+import com.finale.neulhaerang.global.exception.todo.AlreadyRemoveTodoException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
+import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +41,24 @@ public class GlobalExceptionHandler {
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TODO_DATE.getErrorCode(),
 			ErrorCode.INVALID_TODO_DATE.getMessage());
 		return ResponseEntity.status(ErrorCode.INVALID_TODO_DATE.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NotExistTodoException.class)
+	protected ResponseEntity<ErrorResponse> notExistTodoException() {
+		log.error("todo is not exist");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_TODO.getErrorCode(),
+			ErrorCode.NOT_EXIST_TODO.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_TODO.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(AlreadyRemoveTodoException.class)
+	protected ResponseEntity<ErrorResponse> alreadyRemoveTodoException() {
+		log.error("todo is already removed");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ALREADY_REMOVE_TODO.getErrorCode(),
+			ErrorCode.ALREADY_REMOVE_TODO.getMessage());
+		return ResponseEntity.status(ErrorCode.ALREADY_REMOVE_TODO.getHttpStatus())
 			.body(errorResponse);
 	}
 

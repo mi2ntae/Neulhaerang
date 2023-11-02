@@ -69,4 +69,8 @@ public class Todo {
 			.member(member)
 			.build();
 	}
+
+	public void updateCheck(){
+		this.check = !check;
+	}
 }

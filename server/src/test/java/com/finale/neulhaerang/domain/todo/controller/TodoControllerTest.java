@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.todo.entity.Todo;
+import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.util.BaseTest;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 
@@ -28,6 +30,9 @@ class TodoControllerTest extends BaseTest {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private TodoRepository todoRepository;
 
 	@Test
 	@DisplayName("Todo 등록 테스트")
@@ -142,5 +147,45 @@ class TodoControllerTest extends BaseTest {
 			.andDo(print())
 			.andExpect(status().isOk())
 		;
+	}
+
+	@Test
+	@DisplayName("Todo 완료 혹은 미완료 요청 테스트")
+	public void When_ModifyTodoCheck_Expect_IsOk() throws Exception {
+		// given
+		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now());
+		todoRepository.save(todo);
+
+		// when, then
+		mockMvc.perform(patch("/todo/check/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 완료 혹은 미완료 요청 실패 테스트")
+	public void When_ModifyTodoCheck_Expect_BadRequest() throws Exception {
+		// given
+		Long todoId = 123L;
+
+		// when, then
+		mockMvc.perform(patch("/todo/check/{todoId}", todoId)
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
+
+	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
+		return Todo.builder()
+			.member(member)
+			.todoDate(todoDate)
+			.content(content)
+			.statType(statType)
+			.build();
 	}
 }

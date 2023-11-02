@@ -2,6 +2,7 @@ package com.finale.neulhaerang.domain.todo.dto.response;
 
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 
@@ -19,6 +20,7 @@ public class TodoListResDto {
 	private boolean alarm;
 	private boolean check;
 	private StatType statType;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalTime alarmTime;
 
 	public static TodoListResDto from(Todo todo){

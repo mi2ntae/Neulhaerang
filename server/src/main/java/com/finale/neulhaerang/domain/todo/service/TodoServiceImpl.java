@@ -15,7 +15,9 @@ import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 import com.finale.neulhaerang.domain.todo.dto.response.TodoListResDto;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
+import com.finale.neulhaerang.global.exception.todo.AlreadyRemoveTodoException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
+import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 import com.finale.neulhaerang.global.util.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
@@ -49,5 +51,15 @@ public class TodoServiceImpl implements TodoService {
 		return todoList.stream()
 			.map(TodoListResDto::from)
 			.collect(Collectors.toList());
+	}
+
+	@Override
+	public void modifyTodoCheckByTodoId(Long todoId) {
+		Todo todo = todoRepository.findById(todoId)
+			.orElseThrow(NotExistTodoException::new);
+		if(todo.isStatus()) {
+			throw new AlreadyRemoveTodoException();
+		}
+		todo.updateCheck();
 	}
 }
