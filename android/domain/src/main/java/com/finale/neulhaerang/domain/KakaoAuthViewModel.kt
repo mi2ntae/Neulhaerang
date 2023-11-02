@@ -3,7 +3,6 @@ package com.finale.neulhaerang.domain
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
@@ -24,7 +23,6 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
     val isLoggedIn = MutableStateFlow<Boolean>(false)
     fun kakaoLogin() {
         viewModelScope.launch {
-            handleKakaoLogin()
             isLoggedIn.emit(handleKakaoLogin())
         }
     }
