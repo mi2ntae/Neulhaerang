@@ -13,7 +13,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.finale.neulhaerang.domain.routine.entity.StatType;
-import com.finale.neulhaerang.global.exception.todo.AlreadyRemoveTodoException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 import com.finale.neulhaerang.global.util.BaseTest;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
@@ -126,20 +125,10 @@ class TodoServiceTest extends BaseTest {
 	}
 
 	@Test
-	@DisplayName("해당 Todo의 check 상태 변경시 존재하지 않는 Todo일 경우 예외 발생 테스트")
+	@DisplayName("해당 Todo의 check 상태 변경시 존재하지 않거나 삭제 된 Todo일 경우 예외 발생 테스트")
 	public void When_ModifyNotExistTodoCheck_Expect_NotExistTodoException(){
 		// given
 		Long todoId = 123L;
-
-		// when, then
-		assertThatThrownBy(() -> todoService.modifyTodoCheckByTodoId(todoId))
-			.isInstanceOf(NotExistTodoException.class);
-	}
-
-	@Test
-	@DisplayName("해당 Todo의 check 상태 변경시 이미 삭제 된 Todo일 경우 예외 발생 테스트")
-	public void When_ModifyRemoveTodoCheck_Expect_AlreadyRemoveTodoException(){
-		// given
 		Todo todo = Todo.builder()
 			.member(member)
 			.todoDate(LocalDateTime.now())
@@ -150,8 +139,60 @@ class TodoServiceTest extends BaseTest {
 		todoRepository.save(todo);
 
 		// when, then
+		assertThatThrownBy(() -> todoService.modifyTodoCheckByTodoId(todoId))
+			.isInstanceOf(NotExistTodoException.class);
 		assertThatThrownBy(() -> todoService.modifyTodoCheckByTodoId(todo.getId()))
-			.isInstanceOf(AlreadyRemoveTodoException.class);
+			.isInstanceOf(NotExistTodoException.class);
+	}
+
+	@Test
+	@DisplayName("오늘보다 이전 날짜의 Todo 체크시 예외 발생 테스트")
+	public void When_ModifyTodoCheckBeforeToday_Expect_InvalidTodoDateException(){
+		// given
+		Todo todo = createTodo("아침 일찍 일어나기",StatType.갓생력,LocalDateTime.now().minusDays(1));
+		todoRepository.save(todo);
+
+		// when, then
+		assertThatThrownBy(() -> todoService.modifyTodoCheckByTodoId(todo.getId()))
+			.isInstanceOf(InvalidTodoDateException.class);
+	}
+
+	@Test
+	@DisplayName("Todo id로 해당 Todo 삭제 테스트")
+	public void When_RemoveTodo_Expect_isOk(){
+		// given
+		Todo todo = createTodo("알고리즘 풀기",StatType.창의력,LocalDateTime.now());
+		todoRepository.save(todo);
+
+		// when
+		todoService.removeTodoByTodoId(todo.getId());
+
+		// then
+		Todo removeTodo = todoRepository.findById(todo.getId()).get();
+		assertThat(removeTodo.isStatus()).isEqualTo(true);
+	}
+
+	@Test
+	@DisplayName("Todo 삭제시 존재하지 않는 Todo일 경우 예외 발생 테스트")
+	public void When_RemoveNotExistTodo_Expect_NotExistTodoException(){
+		// given
+		Long todoId = 123L;
+
+		// when, then
+		assertThatThrownBy(() -> todoService.removeTodoByTodoId(todoId))
+			.isInstanceOf(NotExistTodoException.class);
+	}
+
+	@Test
+	@DisplayName("오늘보다 이전 날짜의 Todo 삭제시 예외 발생 테스트")
+	public void When_RemoveTodoBeforeToday_Expect_InvalidTodoDateException(){
+		// given
+		Todo todo = createTodo("알고리즘 풀기",StatType.창의력,LocalDateTime.now().minusDays(1));
+		todoRepository.save(todo);
+
+		// when, then
+		assertThatThrownBy(() -> todoService.removeTodoByTodoId(todo.getId()))
+			.isInstanceOf(InvalidTodoDateException.class);
 	}
 
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
