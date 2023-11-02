@@ -32,6 +32,14 @@ spring:
     token:
       access-expiration-time: 1800000   # 30min
       refresh-expiration-time: 604800000 # 7day
+  data:
+    mongodb:
+      host: ${MONGO_HOST}
+      port: 27017
+      authentication-database: admin
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+      database: ${MONGO_DATABASE}
 
 oauth2:
   config:
