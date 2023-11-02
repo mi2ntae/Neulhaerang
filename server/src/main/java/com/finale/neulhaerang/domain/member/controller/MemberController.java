@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
+import com.finale.neulhaerang.domain.member.dto.response.StatChangeRecordResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.service.MemberService;
 
@@ -54,6 +55,12 @@ public class MemberController {
 	@GetMapping("/stat/{memberId}")
 	public ResponseEntity<List<StatListResDto>> findAllStatsByMemberId(@PathVariable long memberId) {
 		return ResponseEntity.status(HttpStatus.OK).body(memberService.findAllStatsByMemberId(memberId));
+	}
+
+	@ApiOperation(value = "멤버 특정 스탯 동향 조회", notes = "멤버 특정 스탯 동향 조회")
+	@GetMapping("/stat/record/{statKind}")
+	public ResponseEntity<StatChangeRecordResDto> findStatChangeRecordLastDaysByStatNo(@PathVariable int statKind) {
+		return ResponseEntity.status(HttpStatus.OK).body(memberService.findStatChangeRecordLastDaysByStatNo(statKind));
 	}
 
 	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
