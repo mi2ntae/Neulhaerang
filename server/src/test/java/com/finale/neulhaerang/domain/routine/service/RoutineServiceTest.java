@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineRemoveReqDto;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
@@ -287,6 +288,45 @@ class RoutineServiceTest extends BaseTest {
 		assertThatThrownBy(
 			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto))
 			.isInstanceOf(InvalidRepeatedDateException.class);
+	}
+
+	@DisplayName("루틴을 삭제합니다.")
+	@Test
+	void When_RemoveRoutine_Expect_RemoveRoutineAndDailyRoutine() {
+		// given
+		Routine routine1 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		List<Routine> routines = routineRepository.saveAll(List.of(routine1, routine2));
+
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routines.get(0), true, false);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routines.get(1), true, false);
+		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2));
+
+		RoutineRemoveReqDto routineRemoveReqDto1 = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(routines.get(0).getId())
+			.routineId(dailyRoutines.get(0).getId())
+			.never(true)
+			.build();
+
+		RoutineRemoveReqDto routineRemoveReqDto2 = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(routines.get(1).getId())
+			.routineId(dailyRoutines.get(1).getId())
+			.never(false)
+			.build();
+
+		// when
+		routineService.removeRoutineByRoutineId(routineRemoveReqDto1);
+		routineService.removeRoutineByRoutineId(routineRemoveReqDto2);
+
+		// then
+		List<DailyRoutine> allOfDailyRoutine = dailyRoutineRepository.findAll();
+		List<Routine> allOfRoutine = routineRepository.findAll();
+		assertThat(allOfDailyRoutine).hasSize(0);
+		assertThat(allOfRoutine).hasSize(1)
+			.extracting("id", "content", "repeated", "alarm")
+			.containsExactlyInAnyOrder(
+				tuple(routines.get(1).getId(), "양치하기", "0010000", false)
+			);
 	}
 
 	private RoutineModifyReqDto createRoutineModifyDto(Long routineId, boolean alarm, LocalTime alarmTime,
