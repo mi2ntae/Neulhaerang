@@ -3,6 +3,7 @@ package com.finale.neulhaerang.domain.routine.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
+import com.finale.neulhaerang.domain.routine.dto.response.DailyRoutineResDto;
+import com.finale.neulhaerang.domain.routine.dto.response.RoutineResDto;
+import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
+import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
@@ -24,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class RoutineServiceImpl implements RoutineService {
 	private final RoutineRepository routineRepository;
 	private final AuthenticationHandler authenticationHandler;
+	private final DailyRoutineRepository dailyRoutineRepository;
 	private final MemberRepository memberRepository;
 
 	@Override
@@ -44,7 +50,23 @@ public class RoutineServiceImpl implements RoutineService {
 
 	@Override
 	public List<?> findRoutineByMemberAndDate(LocalDate date) {
-		return null;
+		if (date.isAfter(LocalDate.now())) {
+			StringBuilder dayOfVaule = new StringBuilder("_______");
+			int dayOfWeekValue = date.getDayOfWeek().getValue() - 1;
+			dayOfVaule.setCharAt(dayOfWeekValue, '1');
+			List<Routine> routines = routineRepository.findRoutinesByDayOfValue(dayOfVaule.toString(),
+				date);
+			return routines.stream()
+				.map(RoutineResDto::from)
+				.collect(Collectors.toList());
+		} else {
+			Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
+			List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_Member(
+				date, member);
+			return dailyRoutines.stream()
+				.map(DailyRoutineResDto::from)
+				.collect(Collectors.toList());
+		}
 	}
 
 	private static StringBuilder checkRepeatedDate(RoutineCreateReqDto routineCreateReqDto) {
