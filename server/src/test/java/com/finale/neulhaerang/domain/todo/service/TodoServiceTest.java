@@ -180,6 +180,18 @@ class TodoServiceTest extends BaseTest {
 			.isInstanceOf(NotExistTodoException.class);
 	}
 
+	@Test
+	@DisplayName("오늘보다 이전 날짜의 Todo 삭제시 예외 발생 테스트")
+	public void When_RemoveTodoBeforeToday_Expect_InvalidTodoDateException(){
+		// given
+		Todo todo = createTodo("알고리즘 풀기",StatType.창의력,LocalDateTime.now().minusDays(1));
+		todoRepository.save(todo);
+
+		// when, then
+		assertThatThrownBy(() -> todoService.removeTodoByTodoId(todo.getId()))
+			.isInstanceOf(InvalidTodoDateException.class);
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
