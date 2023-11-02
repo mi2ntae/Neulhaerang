@@ -1,9 +1,10 @@
 package com.finale.neulhaerang.ui.app
 
-import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,43 +23,42 @@ import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 /**
  * 메인 앱
  */
-@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App() {
-    val navController = rememberNavController()
-
     val viewModel = viewModel<KakaoAuthViewModel>()
+    val isLoggedIn = viewModel.isLoggedIn.collectAsState()
+    Log.i("KakaoAuthViewModel", "로그인 되었나요? " + isLoggedIn.value)
+
+    NeulHaeRangTheme {
+        if (isLoggedIn.value) AppMain()
+        else LoginScreen()
+    }
+}
+
+@Composable
+fun AppMain() {
+    val navController = rememberNavController()
 
     NeulHaeRangTheme {
         NavHost(
             navController = navController,
-            startDestination = if(viewModel.isLoggedIn.value) AppNavItem.Main.route else AppNavItem.Login.route,
+            startDestination = AppNavItem.Main.route,
             modifier = Modifier.fillMaxSize(),
         ) {
-            AppNavItem.values().forEach { item ->
-                when (item) {
-                    AppNavItem.Login -> composable(item.route) {
-                        LoginScreen(navController = navController)
-                    }
-
-                    AppNavItem.Main -> composable(item.route) {
-                        MainScreen(navController = navController)
-                    }
-
-                    AppNavItem.MyPage -> composable(item.route) {
-                        MyPageScreen(navController = navController)
-                    }
-
-                    AppNavItem.Social -> composable(item.route) {
-                        SocialScreen()
-                    }
-
-                    AppNavItem.ChecklistCreation -> composable(item.route) {
-                        ChecklistCreationScreen(navController = navController)
-                    }
-                }
+            composable(route = AppNavItem.Main.route) {
+                MainScreen(navController)
             }
+            composable(route = AppNavItem.MyPage.route) {
+                MyPageScreen(navController = navController)
+            }
+            composable(route = AppNavItem.Social.route) {
+                SocialScreen()
+            }
+            composable(route = AppNavItem.ChecklistCreation.route) {
+                ChecklistCreationScreen(navController = navController)
+            }
+
         }
     }
 }
