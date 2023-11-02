@@ -237,6 +237,28 @@ class TodoControllerTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("Todo 오늘 이전의 날짜로 수정 요청 올 경우 BadRequest 테스트")
+	public void When_ModifyTodoBeforeToday_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, LocalDateTime.now().minusDays(1), true
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("errorCode").value("T-001"))
+			.andExpect(jsonPath("errorMessage").value("날짜가 유효하지 않습니다."))
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
