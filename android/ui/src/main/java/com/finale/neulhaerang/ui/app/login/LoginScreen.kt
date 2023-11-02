@@ -27,9 +27,7 @@ import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.theme.Typography
 
 @Composable
-fun LoginScreen(
-    navController: NavHostController = rememberNavController()
-) {
+fun LoginScreen() {
     val viewModel = viewModel<KakaoAuthViewModel>()
 
     Column(
@@ -54,9 +52,6 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .padding(48.dp)
                 .clickable {
-                    /*TODO 로그인 기능*/
-                    println("Button Clicked!")
-//                    navController.initNavigate(AppNavItem.Main.route)
                     viewModel.kakaoLogin()
                 })
     }
