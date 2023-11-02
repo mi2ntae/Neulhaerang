@@ -45,4 +45,10 @@ public class TodoController {
 		todoService.modifyTodoCheckByTodoId(todoId);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
+
+	@PatchMapping("/remove/{todoId}")
+	public ResponseEntity<Void> removeTodoByTodoId(@PathVariable Long todoId){
+		todoService.removeTodoByTodoId(todoId);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
 }
