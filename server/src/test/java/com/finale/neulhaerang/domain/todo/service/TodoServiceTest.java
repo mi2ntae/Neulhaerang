@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -85,12 +86,12 @@ class TodoServiceTest extends BaseTest {
 		assertThat(todoList).hasSize(3)
 			.extracting("content","statType","alarm","check","alarmTime")
 			.containsExactly(
-				tuple("찬구랑 점심먹기",StatType.인싸력,false,false,"12:30"),
-				tuple("양치하기",StatType.갓생력,false,false,"13:30"),
-				tuple("산책가기",StatType.튼튼력,false,false,"14:50")
+				tuple("찬구랑 점심먹기",StatType.인싸력,false,false, LocalTime.of(12,30)),
+				tuple("양치하기",StatType.갓생력,false,false,LocalTime.of(13,30)),
+				tuple("산책가기",StatType.튼튼력,false,false,LocalTime.of(14,50))
 			)
 			.doesNotContain(
-				tuple("코딩테스트",StatType.생존력,false,false,"10:30")
+				tuple("코딩테스트",StatType.생존력,false,false,LocalTime.of(10,30))
 			);
 	}
 
@@ -104,7 +105,7 @@ class TodoServiceTest extends BaseTest {
 		List<TodoListResDto> todoList = todoService.findTodoByDate(todoDate);
 
 		// when
-		assertThat(todoList).isNull();
+		assertThat(todoList).isEmpty();
 	}
 
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
