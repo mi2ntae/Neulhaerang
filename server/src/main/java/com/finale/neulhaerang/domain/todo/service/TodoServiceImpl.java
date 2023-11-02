@@ -46,7 +46,7 @@ public class TodoServiceImpl implements TodoService {
 		LocalDateTime startDate = todoDate.atStartOfDay();
 		LocalDateTime endDate = todoDate.atTime(LocalTime.MAX);
 
-		List<Todo> todoList = todoRepository.findTodosByMemberAndTodoDateIsBetween(member, startDate, endDate);
+		List<Todo> todoList = todoRepository.findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(member, startDate, endDate);
 
 		return todoList.stream()
 			.map(TodoListResDto::from)
@@ -61,5 +61,15 @@ public class TodoServiceImpl implements TodoService {
 			throw new AlreadyRemoveTodoException();
 		}
 		todo.updateCheck();
+	}
+
+	@Override
+	public void removeTodoByTodoId(Long todoId) {
+		Todo todo = todoRepository.findById(todoId)
+			.orElseThrow(NotExistTodoException::new);
+		if(todo.getTodoDate().toLocalDate().isBefore(LocalDate.now())){
+			throw new InvalidTodoDateException();
+		}
+		todo.updateStatus();
 	}
 }
