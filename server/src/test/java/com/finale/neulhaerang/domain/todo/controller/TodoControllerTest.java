@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.todo.dto.request.TodoModifyReqDto;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.util.BaseTest;
@@ -184,7 +185,7 @@ class TodoControllerTest extends BaseTest {
 
 	@Test
 	@DisplayName("Todo 삭제 요청 테스트")
-	public void When_RemoveTodo_Expect_BadRequest() throws Exception {
+	public void When_RemoveTodo_Expect_IsOk() throws Exception {
 		// given
 		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now());
 		todoRepository.save(todo);
@@ -200,7 +201,7 @@ class TodoControllerTest extends BaseTest {
 
 	@Test
 	@DisplayName("오늘 이전의 Todo 삭제 요청시 실패 테스트")
-	public void When_RemoveTodoBeforeToday_Expect_IsOk() throws Exception {
+	public void When_RemoveTodoBeforeToday_Expect_BadRequest() throws Exception {
 		// given
 		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now().minusDays(1));
 		todoRepository.save(todo);
@@ -216,11 +217,142 @@ class TodoControllerTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("Todo 수정 요청 테스트")
+	public void When_ModifyTodo_Expect_IsOk() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, LocalDateTime.now().plusDays(1), true
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 오늘 이전의 날짜로 수정 요청 올 경우 BadRequest 테스트")
+	public void When_ModifyTodoBeforeToday_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, LocalDateTime.now().minusDays(1), true
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("errorCode").value("T-001"))
+			.andExpect(jsonPath("errorMessage").value("날짜가 유효하지 않습니다."))
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 수정 시 내용에 빈 값이 들어올 경우 테스트")
+	public void When_ModifyTodoEmptyContent_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"", StatType.튼튼력, LocalDateTime.now().plusDays(1), false
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 수정 시 날짜에 빈 값이 들어올 경우 테스트")
+	public void When_ModifyTodoEmptyTodoDate_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, null, false
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 수정 시 알람에 빈 값이 들어올 경우 테스트")
+	public void When_ModifyTodoEmptyAlarm_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, LocalDateTime.now().plusDays(1), null
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 수정 시 스탯타입에 빈 값이 들어올 경우 테스트")
+	public void When_ModifyTodoEmptyStatType_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", null, LocalDateTime.now().plusDays(1), true
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
 			.todoDate(todoDate)
 			.content(content)
+			.statType(statType)
+			.build();
+	}
+
+	private TodoModifyReqDto createTodoModifyReqDto(String content, StatType statType, LocalDateTime todoDate, Boolean alarm){
+		return TodoModifyReqDto.builder()
+			.alarm(alarm)
+			.content(content)
+			.todoDate(todoDate)
 			.statType(statType)
 			.build();
 	}
