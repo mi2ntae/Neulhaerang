@@ -1,5 +1,7 @@
 package com.finale.neulhaerang.domain.routine.service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -38,6 +40,11 @@ public class RoutineServiceImpl implements RoutineService {
 		StringBuilder repeated = checkRepeatedDate(routineCreateReqDto);
 		Routine routine = Routine.create(routineCreateReqDto, member.get(), repeated.toString());
 		routineRepository.save(routine);
+	}
+
+	@Override
+	public List<?> findRoutineByMemberAndDate(LocalDate date) {
+		return null;
 	}
 
 	private static StringBuilder checkRepeatedDate(RoutineCreateReqDto routineCreateReqDto) {

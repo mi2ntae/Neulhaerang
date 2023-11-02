@@ -4,7 +4,7 @@ spring:
     group:
       local:
         - common
-      prod :
+      prod:
         - common
 ---
 
@@ -45,6 +45,10 @@ spring:
       username: ${MONGO_USER}
       password: ${MONGO_PASSWORD}
       database: ${MONGO_DATABASE}
+
+schedules:
+  cron:
+    daily-routine: "0 0 0 * * *" # 매일 정각
 
 
 logging:
