@@ -8,5 +8,5 @@ import com.finale.neulhaerang.domain.todo.dto.response.TodoListResDto;
 
 public interface TodoService {
 	void createTodo(TodoCreateReqDto todoCreateReqDto);
-	List<TodoListResDto> findTodo(LocalDate todoDate);
+	List<TodoListResDto> findTodoByDate(LocalDate todoDate);
 }

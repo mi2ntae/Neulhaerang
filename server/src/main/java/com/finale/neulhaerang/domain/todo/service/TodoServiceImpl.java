@@ -38,7 +38,7 @@ public class TodoServiceImpl implements TodoService {
 	}
 
 	@Override
-	public List<TodoListResDto> findTodo(LocalDate todoDate) {
+	public List<TodoListResDto> findTodoByDate(LocalDate todoDate) {
 		Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
 
 		LocalDateTime startDate = todoDate.atStartOfDay();

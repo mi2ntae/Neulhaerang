@@ -79,7 +79,7 @@ class TodoServiceTest extends BaseTest {
 		LocalDate todoDate = LocalDate.of(2023,11,1);
 
 		// when
-		List<TodoListResDto> todoList = todoService.findTodo(todoDate);
+		List<TodoListResDto> todoList = todoService.findTodoByDate(todoDate);
 
 		// then
 		assertThat(todoList).hasSize(3)
@@ -101,7 +101,7 @@ class TodoServiceTest extends BaseTest {
 		LocalDate todoDate = LocalDate.of(2023,12,1);
 
 		// then
-		List<TodoListResDto> todoList = todoService.findTodo(todoDate);
+		List<TodoListResDto> todoList = todoService.findTodoByDate(todoDate);
 
 		// when
 		assertThat(todoList).isNull();

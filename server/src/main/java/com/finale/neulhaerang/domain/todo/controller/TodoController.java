@@ -33,8 +33,8 @@ public class TodoController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<TodoListResDto>> findTodo(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd")
+	public ResponseEntity<List<TodoListResDto>> findTodoByDate(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd")
 		LocalDate todoDate){
-		return ResponseEntity.status(HttpStatus.OK).body(todoService.findTodo(todoDate));
+		return ResponseEntity.status(HttpStatus.OK).body(todoService.findTodoByDate(todoDate));
 	}
 }
