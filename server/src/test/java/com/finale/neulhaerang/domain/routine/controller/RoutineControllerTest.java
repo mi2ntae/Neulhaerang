@@ -1,9 +1,11 @@
 package com.finale.neulhaerang.domain.routine.controller;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.routine.service.RoutineService;
 import com.finale.neulhaerang.global.util.BaseTest;
 
 @AutoConfigureMockMvc
@@ -29,6 +33,9 @@ class RoutineControllerTest extends BaseTest {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@MockBean
+	private RoutineService routineService;
 
 	@DisplayName("새로운 루틴을 생성합니다.")
 	@Test
@@ -106,7 +113,20 @@ class RoutineControllerTest extends BaseTest {
 			.andExpect(status().isBadRequest());
 	}
 
-	private static RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
+	@DisplayName("루틴을 조회합니다. 루틴은 List 형태여야 합니다.")
+	@Test
+	void When_FindRoutineAfterToday_Expect_RoutineList() throws Exception {
+		// given
+		when(routineService.findRoutineByMemberAndDate(LocalDate.now())).thenReturn(List.of());
+		// when // then
+		mockMvc.perform(
+				get("/routine?date=2023-08-19")
+			)
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
+
+	private RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
 		List<Boolean> repeated, StatType statType) {
 		return RoutineCreateReqDto.builder()
 			.content(content)
