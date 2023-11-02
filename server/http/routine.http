@@ -1,7 +1,7 @@
 ### 루틴 신규 생성
 POST localhost:8080/routine
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVyIjoiMSIsImlhdCI6MTY5ODczOTI3NSwiZXhwIjoxNjk4NzQxMDc1fQ.jeBk04gsJF0mlRfv3RH05Q7igrDDjo8ml1VhCifANFs
+Authorization: Bearer {accessToken}
 
 {
   "content": "인생 똑바로 살아",
@@ -17,4 +17,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibWVtYmVyIjoiMSIsImlhd
   "alarm": true,
   "alarmTime": "08:30",
   "statType": "갓생력"
+}
+
+### 루틴 수정
+PATCH localhost:8080/routine
+Content-Type: application/json
+Authorization: Bearer {accessToken}
+
+{
+  "alarm": false,
+  "content": "테스트 코드 작성하기",
+  "repeated": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "routineId": 1
 }

@@ -18,6 +18,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -66,5 +67,12 @@ public class Routine {
 			.alarmTime(routineCreateReqDto.isAlarm() ? routineCreateReqDto.getAlarmTime() : null)
 			.statType(routineCreateReqDto.getStatType())
 			.build();
+	}
+
+	public void updateContentAndAlarmAndAlarmTimeAndRepeated(RoutineModifyReqDto routineModifyReqDto, String repeated) {
+		this.repeated = repeated;
+		this.content = routineModifyReqDto.getContent();
+		this.alarm = routineModifyReqDto.isAlarm();
+		this.alarmTime = routineModifyReqDto.isAlarm() ? routineModifyReqDto.getAlarmTime() : null;
 	}
 }

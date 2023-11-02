@@ -7,7 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.finale.neulhaerang.domain.routine.entity.StatType;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class RoutineCreateReqDto {
+public class RoutineModifyReqDto {
+	@NotNull
+	private Long routineId;
 	@NotBlank
 	private String content;
 	@NotNull
@@ -24,16 +25,14 @@ public class RoutineCreateReqDto {
 	private boolean alarm;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalTime alarmTime;
-	@NotNull
-	private StatType statType;
 
 	@Builder
-	private RoutineCreateReqDto(String content, List<Boolean> repeated, boolean alarm, LocalTime alarmTime,
-		StatType statType) {
+	private RoutineModifyReqDto(Long routineId, String content, List<Boolean> repeated, boolean alarm,
+		LocalTime alarmTime) {
+		this.routineId = routineId;
 		this.content = content;
 		this.repeated = repeated;
 		this.alarm = alarm;
 		this.alarmTime = alarmTime;
-		this.statType = statType;
 	}
 }
