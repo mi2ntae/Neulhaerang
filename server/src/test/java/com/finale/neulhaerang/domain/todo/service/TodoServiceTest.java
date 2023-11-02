@@ -169,6 +169,17 @@ class TodoServiceTest extends BaseTest {
 		assertThat(removeTodo.isStatus()).isEqualTo(true);
 	}
 
+	@Test
+	@DisplayName("Todo 삭제시 존재하지 않는 Todo일 경우 예외 발생 테스트")
+	public void When_RemoveNotExistTodo_Expect_NotExistTodoException(){
+		// given
+		Long todoId = 123L;
+
+		// when, then
+		assertThatThrownBy(() -> todoService.removeTodoByTodoId(todoId))
+			.isInstanceOf(NotExistTodoException.class);
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
