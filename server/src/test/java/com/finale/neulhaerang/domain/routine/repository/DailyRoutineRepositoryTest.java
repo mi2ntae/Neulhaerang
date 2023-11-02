@@ -68,6 +68,44 @@ class DailyRoutineRepositoryTest {
 			);
 	}
 
+	@DisplayName("로그인 한 사용자의 date 날짜에 해당하는 dailyRoutine 리스트를 반환합니다.")
+	@Test
+	void When_FindDailyRoutineByDate_Expect_FindDailyRoutineByDate() {
+		// given
+		Member member = Member.builder()
+			.nickname("박정은")
+			.kakaoId(12345678L).build();
+		Member save = memberRepository.save(member);
+
+		Routine routine1 = createRoutine(save, "양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine(save, "양치하기2", "0110000", false, StatType.생존력);
+		Routine routine3 = createRoutine(save, "양치하기3", "0101000", false, StatType.생존력);
+
+		List<Routine> routines = List.of(routine1, routine2, routine3);
+		routineRepository.saveAll(routines);
+		LocalDate date = LocalDate.of(2023, 8, 19);
+		LocalDate otherDate = LocalDate.of(2023, 8, 8);
+
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routine2, false, date);
+		DailyRoutine dailyRoutine3 = createDailyRoutine(routine2, true, otherDate);
+		DailyRoutine dailyRoutine4 = createDailyRoutine(routine3, false, date);
+		dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2, dailyRoutine3, dailyRoutine4));
+
+		// when
+		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_Member(
+			date, save);
+
+		// then
+		assertThat(dailyRoutines).hasSize(3)
+			.extracting("routine", "check", "routineDate")
+			.containsExactlyInAnyOrder(
+				tuple(routine1, true, date),
+				tuple(routine2, false, date),
+				tuple(routine3, false, date)
+			);
+	}
+
 	private static DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date) {
 		return DailyRoutine.builder()
 			.routine(routine)
