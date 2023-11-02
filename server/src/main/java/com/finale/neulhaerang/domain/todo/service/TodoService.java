@@ -10,4 +10,5 @@ public interface TodoService {
 	void createTodo(TodoCreateReqDto todoCreateReqDto);
 	List<TodoListResDto> findTodoByDate(LocalDate todoDate);
 	void modifyTodoCheckByTodoId(Long todoId);
+	void removeTodoByTodoId(Long todoId);
 }
