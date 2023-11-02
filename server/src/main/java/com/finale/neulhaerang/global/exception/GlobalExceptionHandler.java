@@ -18,9 +18,11 @@ import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoExcep
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 
@@ -36,6 +38,24 @@ public class GlobalExceptionHandler {
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_STAT_KIND.getErrorCode(),
 			ErrorCode.INVALID_STAT_KIND.getMessage());
 		return ResponseEntity.status(ErrorCode.INVALID_STAT_KIND.getHttpStatus())
+			.body(errorResponse);
+	}
+	
+	@ExceptionHandler(AlreadyRemoveRoutineException.class)
+	protected ResponseEntity<ErrorResponse> alreadyRemoveRoutineException() {
+		log.error("The routine is already removed.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ALREADY_REMOVE_ROUTINE.getErrorCode(),
+			ErrorCode.ALREADY_REMOVE_ROUTINE.getMessage());
+		return ResponseEntity.status(ErrorCode.ALREADY_REMOVE_ROUTINE.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NotExistRoutineException.class)
+	protected ResponseEntity<ErrorResponse> notExistRoutineException() {
+		log.error("There is no routine with that id.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_ROUTINE.getErrorCode(),
+			ErrorCode.NOT_EXIST_ROUTINE.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_ROUTINE.getHttpStatus())
 			.body(errorResponse);
 	}
 

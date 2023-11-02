@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
 import com.finale.neulhaerang.domain.routine.service.RoutineService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,12 @@ public class RoutineController {
 	@PatchMapping("/check/{routineId}")
 	public ResponseEntity<Void> modifyRoutineCheckByDailyRoutineId(@PathVariable Long routineId) {
 		routineService.modifyDailyRoutineCheckByDailyRoutineId(routineId);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PatchMapping
+	public ResponseEntity<Void> modifyRoutineByRoutineId(@RequestBody @Valid RoutineModifyReqDto routineModifyReqDto) {
+		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

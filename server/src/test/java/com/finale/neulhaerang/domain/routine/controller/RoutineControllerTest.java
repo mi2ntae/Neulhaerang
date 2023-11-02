@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.routine.service.RoutineService;
 import com.finale.neulhaerang.global.util.BaseTest;
@@ -135,6 +136,113 @@ class RoutineControllerTest extends BaseTest {
 			)
 			.andDo(print())
 			.andExpect(status().isOk());
+	}
+
+	@DisplayName("루틴을 수정합니다.")
+	@Test
+	void When_ModifyRoutine_Expect_IsOk() throws Exception {
+		// given
+		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
+			.routineId(1L)
+			.content("아침부터 일어나기")
+			.repeated(List.of(true, true, true, true, true, true, true))
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine")
+					.content(objectMapper.writeValueAsString(routineModifyReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
+
+	@DisplayName("루틴을 수정 시, routineId 값은 필수입니다.")
+	@Test
+	void When_ModifyRoutine_Expect_IsBadRequest() throws Exception {
+		// given
+		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
+			.content("아침부터 일어나기")
+			.repeated(List.of(true, true, true, true, true, true, true))
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine")
+					.content(objectMapper.writeValueAsString(routineModifyReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("루틴을 수정 시, content 값은 필수입니다.")
+	@Test
+	void When_ModifyRoutineWithoutContnet_Expect_IsBadRequest() throws Exception {
+		// given
+		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
+			.routineId(1L)
+			.repeated(List.of(true, true, true, true, true, true, true))
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine")
+					.content(objectMapper.writeValueAsString(routineModifyReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("루틴을 수정 시, content 값은 공백이면 안됩니다.")
+	@Test
+	void When_ModifyRoutineWithBlankContnet_Expect_IsBadRequest() throws Exception {
+		// given
+		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
+			.routineId(1L)
+			.content(" ")
+			.repeated(List.of(true, true, true, true, true, true, true))
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine")
+					.content(objectMapper.writeValueAsString(routineModifyReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("루틴을 수정 시, repeated는 필수입니다.")
+	@Test
+	void When_ModifyRoutineWithoutRepeated_Expect_IsBadRequest() throws Exception {
+		// given
+		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
+			.routineId(1L)
+			.content("양치걸")
+			.alarm(true)
+			.alarmTime(LocalTime.of(8, 30, 0))
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine")
+					.content(objectMapper.writeValueAsString(routineModifyReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
 	}
 
 	private RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
