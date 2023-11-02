@@ -3,6 +3,7 @@ package com.finale.neulhaerang.domain.member.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,18 @@ class MemberServiceImplTest {
 	@Autowired
 	private CharacterInfoRepository characterInfoRepository;
 
+	private static Member testMember;
+
+	@BeforeAll
+	static void createTestMember(@Autowired MemberRepository memberRepository) {
+		testMember = memberRepository.save(createMember());
+	}
+
 	@Test
 	@DisplayName("회원 상태 정보를 조회할 경우 MemberStatusResDto 형식으로 결과를 반환한다.")
 	void When_FindMemberStatus_Expect_MemberStatusDto() {
 		// given when
-		Member member = memberRepository.save(createMember());
+		Member member = this.testMember;
 
 		// then
 		assertThat(memberService.findStatusByMemberId(member.getId())).isInstanceOf(MemberStatusResDto.class);
@@ -44,7 +52,7 @@ class MemberServiceImplTest {
 	@DisplayName("존재하지 않는 회원 상태 정보를 조회할 경우 예외를 발생시킨다.")
 	void When_FindNotExistMemberStatus_Expect_ThrowException() {
 		// given when
-		Member member = memberRepository.save(createMember());
+		Member member = this.testMember;
 
 		// when
 		long memberId = member.getId()-1; // 0
@@ -57,7 +65,7 @@ class MemberServiceImplTest {
 	@DisplayName("회원 캐릭터 정보를 조회할 경우 MemberCharacterResDto 형식으로 결과를 반환하고 저장된 캐릭터 정보를 가진다.")
 	void When_FindMemberCharacterInfo_Expect_MemberCharacterDto() {
 		// given
-		Member member = memberRepository.save(createMember());
+		Member member = this.testMember;
 		CharacterInfo characterInfo = characterInfoRepository.save(createCharacterInfo(member));
 
 		// when
@@ -74,7 +82,7 @@ class MemberServiceImplTest {
 	@DisplayName("캐릭터 정보가 등록되지 않은 회원의 캐릭터 정보를 조회할 경우 예외를 발생시킨다.")
 	void When_FindMemberNotExistCharacterInfo_Expect_ThrowException() {
 		// given when
-		Member member = memberRepository.save(createMember());
+		Member member = this.testMember;
 
 		// then
 		assertThatThrownBy(() -> memberService.findCharacterByMemberId(member.getId())).isInstanceOf(
@@ -89,20 +97,20 @@ class MemberServiceImplTest {
 	@DisplayName("회원 탈퇴를 진행할 경우, Member의 withdrawalDate에 값이 설정된다.")
 	void When_RemoveMember_Expect_WithdrawalDateIsNotNull() {
 		// given
-		Member member = memberRepository.save(createMember());
+		Long memberId = this.testMember.getId();
 
 		// when
 		memberService.removeMember();
 
 		// then
-		assertThat(member.getWithdrawalDate()).isNotNull();
+		assertThat(memberRepository.findById(memberId).get().getWithdrawalDate()).isNotNull();
 	}
 
 	@Test
 	@DisplayName("회원 탈퇴를 진행할 경우, 존재하지 않는 멤버를 삭제하면 예외를 발생시킨다.")
 	void When_RemoveNotExistMember_Expect_ThrowException() {
 		// given
-		Member member = memberRepository.save(createMember());
+		Member member = this.testMember;
 
 		// when
 		memberRepository.delete(member);
