@@ -162,13 +162,14 @@ class RoutineServiceTest extends BaseTest {
 		routineRepository.save(routine);
 		boolean original = true;
 		DailyRoutine dailyRoutine = createDailyRoutine(routine, original, false);
+		DailyRoutine save = dailyRoutineRepository.save(dailyRoutine);
 
 		// when
 		routineService.modifyDailyRoutineCheckByDailyRoutineId(dailyRoutine.getId());
 
 		// then
-		Optional<DailyRoutine> save = dailyRoutineRepository.findById(dailyRoutine.getId());
-		assertThat(save.get().isCheck()).isEqualTo(!original);
+		Optional<DailyRoutine> optionalDailyRoutine = dailyRoutineRepository.findById(save.getId());
+		assertThat(optionalDailyRoutine.get().isCheck()).isEqualTo(!original);
 	}
 
 	@DisplayName("daily routine의 check 값을 변경합니다. 이때 존재하지 않는 daily routine이라면 에러가 발생합니다.")
@@ -194,7 +195,6 @@ class RoutineServiceTest extends BaseTest {
 
 	private static DailyRoutine createDailyRoutine(Routine routine, boolean original, boolean status) {
 		return DailyRoutine.builder()
-			.id(1L)
 			.routine(routine)
 			.check(original)
 			.routineDate(LocalDate.now())
