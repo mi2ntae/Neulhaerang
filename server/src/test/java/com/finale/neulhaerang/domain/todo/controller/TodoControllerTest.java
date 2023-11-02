@@ -319,6 +319,26 @@ class TodoControllerTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("Todo 수정 시 스탯타입에 빈 값이 들어올 경우 테스트")
+	public void When_ModifyTodoEmptyStatType_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("헬스가기",StatType.튼튼력, LocalDateTime.now());
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", null, LocalDateTime.now().plusDays(1), true
+		);
+
+		// when, thdn
+		mockMvc.perform(patch("/todo/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.writeValueAsString(todoModifyReqDto))
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
