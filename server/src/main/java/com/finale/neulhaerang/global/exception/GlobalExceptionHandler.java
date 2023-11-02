@@ -20,6 +20,7 @@ import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineExcep
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
@@ -29,6 +30,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(NotExistRelationWithRoutineException.class)
+	protected ResponseEntity<ErrorResponse> notExistRelationWithRoutineException() {
+		log.error("This daily routine is not related to that routine.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_RELATION_WITH_ROUTINE.getErrorCode(),
+			ErrorCode.NOT_EXIST_RELATION_WITH_ROUTINE.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_RELATION_WITH_ROUTINE.getHttpStatus())
+			.body(errorResponse);
+	}
+
 	@ExceptionHandler(AlreadyRemoveRoutineException.class)
 	protected ResponseEntity<ErrorResponse> alreadyRemoveRoutineException() {
 		log.error("The routine is already removed.");

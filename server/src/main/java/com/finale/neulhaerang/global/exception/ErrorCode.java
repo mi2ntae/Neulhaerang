@@ -32,6 +32,7 @@ public enum ErrorCode {
 	ALREADY_REMOVE_DAILY_ROUTINE(HttpStatus.BAD_REQUEST, "R-004", "해당 데일리 루틴은 이미 삭제되었습니다."),
 	NOT_EXIST_ROUTINE(HttpStatus.BAD_REQUEST, "R-005", "해당 id를 가진 루틴은 존재하지 않습니다."),
 	NOT_EXIST_DAILY_ROUTINE(HttpStatus.BAD_REQUEST, "R-006", "해당 id를 가진 데일리 루틴은 존재하지 않습니다."),
+	NOT_EXIST_RELATION_WITH_ROUTINE(HttpStatus.BAD_REQUEST, "R-007", "해당 id를 가진 루틴과 관련이 없습니다."),
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
