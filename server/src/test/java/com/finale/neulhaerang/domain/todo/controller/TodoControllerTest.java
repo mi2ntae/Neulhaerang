@@ -177,6 +177,8 @@ class TodoControllerTest extends BaseTest {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("errorCode").value("T-002"))
+			.andExpect(jsonPath("errorMessage").value("해당 체크리스트가 존재하지 않습니다."))
 		;
 	}
 
@@ -209,6 +211,8 @@ class TodoControllerTest extends BaseTest {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("errorCode").value("T-001"))
+			.andExpect(jsonPath("errorMessage").value("날짜가 유효하지 않습니다."))
 		;
 	}
 
