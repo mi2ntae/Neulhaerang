@@ -1,8 +1,13 @@
 package com.finale.neulhaerang.domain.todo.repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
+	List<Todo> findTodosByMemberAndTodoDateIsBetween(Member member, LocalDateTime startDate, LocalDateTime endDate);
 }
