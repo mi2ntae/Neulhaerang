@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.todo.dto.request.TodoModifyReqDto;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.util.BaseTest;
@@ -184,7 +185,7 @@ class TodoControllerTest extends BaseTest {
 
 	@Test
 	@DisplayName("Todo 삭제 요청 테스트")
-	public void When_RemoveTodo_Expect_BadRequest() throws Exception {
+	public void When_RemoveTodo_Expect_IsOk() throws Exception {
 		// given
 		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now());
 		todoRepository.save(todo);
@@ -200,7 +201,7 @@ class TodoControllerTest extends BaseTest {
 
 	@Test
 	@DisplayName("오늘 이전의 Todo 삭제 요청시 실패 테스트")
-	public void When_RemoveTodoBeforeToday_Expect_IsOk() throws Exception {
+	public void When_RemoveTodoBeforeToday_Expect_BadRequest() throws Exception {
 		// given
 		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now().minusDays(1));
 		todoRepository.save(todo);
@@ -221,6 +222,15 @@ class TodoControllerTest extends BaseTest {
 			.member(member)
 			.todoDate(todoDate)
 			.content(content)
+			.statType(statType)
+			.build();
+	}
+
+	private TodoModifyReqDto createTodoModifyReqDto(String content, StatType statType, LocalDateTime todoDate, Boolean alarm){
+		return TodoModifyReqDto.builder()
+			.alarm(alarm)
+			.content(content)
+			.todoDate(todoDate)
 			.statType(statType)
 			.build();
 	}
