@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.finale.neulhaerang.domain.member.document.MemberStat;
+import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
@@ -66,18 +67,19 @@ public class MemberServiceImpl implements MemberService{
 		return MemberStatusResDto.create(sumOfIndolence, sumOfTiredness);
 	}
 
-	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
+	// MongoDB에 스탯 업데이트
 	@Override
-	public void testInsert(MemberStat memberStat) {
-		Optional<MemberStat> optionalMemberStat = memberStatRepository.findMemberStatByMemberId(memberStat.getMemberId());
-		MemberStat memberStat2;
+	public void createStat(StatRecord statRecord) {
+		log.info("MongoDB에 스탯 내역 추가");
+		Optional<MemberStat> optionalMemberStat = memberStatRepository.findMemberStatByMemberId(authenticationHandler.getLoginMemberId());
+		MemberStat memberStat;
 		if(optionalMemberStat.isEmpty()) {
-			memberStat2 = MemberStat.create(memberStat.getMemberId());
+			memberStat = MemberStat.create(authenticationHandler.getLoginMemberId());
 		} else {
-			memberStat2 = optionalMemberStat.get();
+			memberStat = optionalMemberStat.get();
 		}
-		memberStat2.addRecord(memberStat.getRecords().get(0));
-		memberStatRepository.save(memberStat2);
+		memberStat.addRecord(statRecord);
+		memberStatRepository.save(memberStat);
 	}
 
 	// 멤버 캐릭터 조회

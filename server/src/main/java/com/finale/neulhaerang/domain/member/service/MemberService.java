@@ -2,7 +2,7 @@ package com.finale.neulhaerang.domain.member.service;
 
 import java.util.List;
 
-import com.finale.neulhaerang.domain.member.document.MemberStat;
+import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
@@ -20,7 +20,7 @@ public interface MemberService {
 
 	void removeMember() throws NotExistMemberException;
 
-	void testInsert(MemberStat memberStat);
+	void createStat(StatRecord statRecord);
 
 	List<StatListResDto> findAllStatsByMemberId(long memberId) throws NotExistMemberException;
 }
