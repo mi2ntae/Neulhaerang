@@ -94,6 +94,19 @@ class TodoServiceTest extends BaseTest {
 			);
 	}
 
+	@Test
+	@DisplayName("해당 날짜에 Todo가 없을 경우 null 반환 테스트")
+	public void When_FindTodo_Expect_Null() {
+		// given
+		LocalDate todoDate = LocalDate.of(2023,12,1);
+
+		// then
+		List<TodoListResDto> todoList = todoService.findTodo(todoDate);
+
+		// when
+		assertThat(todoList).isNull();
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
