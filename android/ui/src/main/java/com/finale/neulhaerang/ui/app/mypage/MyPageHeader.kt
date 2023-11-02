@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,9 +35,9 @@ fun MyPageHeader() {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        CharacterInfo()
-        Coin()
+        Coin(140)
         Title()
+        CharacterInfo()
         Share()
         Level(10, 9999, 9999)
     }
@@ -58,7 +59,16 @@ fun Title() {
  */
 
 @Composable
-fun Coin() {
+fun Coin(coin: Int) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Icon(Icons.Filled.AttachMoney, contentDescription = "코인 아이콘")
+        Text("$coin")
+    }
 
 }
 
