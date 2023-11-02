@@ -57,7 +57,9 @@ public class TodoServiceImpl implements TodoService {
 	public void modifyTodoCheckByTodoId(Long todoId) {
 		Todo todo = todoRepository.findById(todoId)
 			.orElseThrow(NotExistTodoException::new);
-		if(todo.isStatus()) throw new AlreadyRemoveTodoException();
-		todo.modifyCheck();
+		if(todo.isStatus()) {
+			throw new AlreadyRemoveTodoException();
+		}
+		todo.updateCheck();
 	}
 }
