@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.todo.entity.Todo;
+import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.util.BaseTest;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 
@@ -28,6 +30,9 @@ class TodoControllerTest extends BaseTest {
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private TodoRepository todoRepository;
 
 	@Test
 	@DisplayName("Todo 등록 테스트")
@@ -142,5 +147,14 @@ class TodoControllerTest extends BaseTest {
 			.andDo(print())
 			.andExpect(status().isOk())
 		;
+	}
+
+	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
+		return Todo.builder()
+			.member(member)
+			.todoDate(todoDate)
+			.content(content)
+			.statType(statType)
+			.build();
 	}
 }
