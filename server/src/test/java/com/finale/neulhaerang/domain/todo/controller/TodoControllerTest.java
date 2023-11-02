@@ -127,4 +127,20 @@ class TodoControllerTest extends BaseTest {
 			.andExpect(jsonPath("errorMessage").value("등록 날짜가 유효하지 않습니다."))
 		;
 	}
+
+	@Test
+	@DisplayName("Todo 리스트 조회 테스트")
+	public void When_FindTodoList_Expect_IsOk() throws Exception {
+		// given
+		String todoDate = "2023-11-01";
+
+		// when, then
+		mockMvc.perform(get("/todo/")
+				.contentType(MediaType.APPLICATION_JSON)
+				.param("date",todoDate)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+		;
+	}
 }
