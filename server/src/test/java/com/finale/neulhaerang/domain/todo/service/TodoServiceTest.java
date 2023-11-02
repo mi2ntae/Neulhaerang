@@ -136,6 +136,24 @@ class TodoServiceTest extends BaseTest {
 			.isInstanceOf(NotExistTodoException.class);
 	}
 
+	@Test
+	@DisplayName("해당 Todo의 check 상태 변경시 이미 삭제 된 Todo일 경우 예외 발생 테스트")
+	public void When_ModifyRemoveTodoCheck_Expect_AlreadyRemoveTodoException(){
+		// given
+		Todo todo = Todo.builder()
+			.member(member)
+			.todoDate(LocalDateTime.now())
+			.content("일찍 일어나기")
+			.statType(StatType.갓생력)
+			.status(true)
+			.build();
+		todoRepository.save(todo);
+
+		// when, then
+		assertThatThrownBy(() -> todoService.modifyTodoCheckByTodoId(todo.getId()))
+			.isInstanceOf(AlreadyRemoveTodoException.class);
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
