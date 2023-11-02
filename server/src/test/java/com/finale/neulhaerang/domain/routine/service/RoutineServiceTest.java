@@ -21,6 +21,7 @@ import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
@@ -242,22 +243,21 @@ class RoutineServiceTest extends BaseTest {
 			.isInstanceOf(NotExistRoutineException.class);
 	}
 
-	// 해당 루틴 내용을 아예 바꾸고 싶을 수 있음.
-	// @DisplayName("루틴 수정 시, 해당 루틴이 이미 삭제되었다면 에러가 납니다.")
-	// @Test
-	// void When_ModifyAlreadyRemovedRoutine_Expect_AlreadyRemoveRoutineException() {
-	// 	// given
-	// 	Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력, LocalDate.now());
-	// 	Routine save = routineRepository.save(routine);
-	//
-	// 	RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(save.getId(), true,
-	// 		LocalTime.of(8, 10, 0), "양치 꼭 하기", List.of(true, true, true, true, true, true, true));
-	//
-	// 	// when // then
-	// 	assertThatThrownBy(
-	// 		() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto))
-	// 		.isInstanceOf(AlreadyRemoveRoutineException.class);
-	// }
+	@DisplayName("루틴 수정 시, 해당 루틴이 이미 삭제되었다면 에러가 납니다.")
+	@Test
+	void When_ModifyAlreadyRemovedRoutine_Expect_AlreadyRemoveRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력, LocalDate.now());
+		Routine save = routineRepository.save(routine);
+
+		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(save.getId(), true,
+			LocalTime.of(8, 10, 0), "양치 꼭 하기", List.of(true, true, true, true, true, true, true));
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto))
+			.isInstanceOf(AlreadyRemoveRoutineException.class);
+	}
 
 	@DisplayName("알람이 존재하는 루틴을 수정 시, 알람 시간이 없으면 에러가 납니다.")
 	@Test
