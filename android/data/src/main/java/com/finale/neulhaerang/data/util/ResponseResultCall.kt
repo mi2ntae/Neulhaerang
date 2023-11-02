@@ -38,20 +38,10 @@ class ResponseResultCall<T>(
 
                 if (response.isSuccessful) {
                     // 성공
-                    if (body != null) {
-                        // null이 아닌 경우
-                        callback.onResponse(
-                            this@ResponseResultCall,
-                            Response.success(ResponseResult.Success(code, body))
-                        )
-                    } else {
-                        // null인 경우
-                        callback.onResponse(
-                            this@ResponseResultCall,
-//                            Response.success(ResponseResult.Failure(code, message, null))
-                            Response.success(ResponseResult.NullSuccess(code))
-                        )
-                    }
+                    callback.onResponse(
+                        this@ResponseResultCall,
+                        Response.success(ResponseResult.Success(code, body))
+                    )
                 } else {
                     // 실패
                     val errorBody = error!!.string()
