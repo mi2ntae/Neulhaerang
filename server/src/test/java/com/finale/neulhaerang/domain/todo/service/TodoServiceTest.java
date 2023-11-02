@@ -65,4 +65,13 @@ class TodoServiceTest extends BaseTest {
 		assertThatThrownBy(() -> todoService.createTodo(todoCreateReqDto))
 			.isInstanceOf(InvalidTodoDateException.class);
 	}
+
+	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
+		return Todo.builder()
+			.member(member)
+			.todoDate(todoDate)
+			.content(content)
+			.statType(statType)
+			.build();
+	}
 }
