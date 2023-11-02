@@ -218,6 +218,22 @@ class TodoServiceTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("Todo 수정시 이전 날짜로 변경할 경우 예외처리 테스트")
+	public void When_ModifyTodoBeforeToday_Expect_InvalidTodoDateException(){
+		// given
+		LocalDateTime localDateTime = LocalDateTime.now();
+		Todo todo = createTodo("헬스가기",StatType.튼튼력,localDateTime);
+		todoRepository.save(todo);
+		TodoModifyReqDto todoModifyReqDto = createTodoModifyReqDto(
+			"산책하기", StatType.튼튼력, LocalDateTime.now().minusDays(1), true
+		);
+
+		// when, then
+		assertThatThrownBy(() -> todoService.modifyTodoByTodoId(todo.getId(), todoModifyReqDto))
+			.isInstanceOf(InvalidTodoDateException.class);
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
