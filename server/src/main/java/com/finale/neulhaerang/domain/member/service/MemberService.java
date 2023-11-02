@@ -1,8 +1,11 @@
 package com.finale.neulhaerang.domain.member.service;
 
+import java.util.List;
+
 import com.finale.neulhaerang.domain.member.document.MemberStat;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
+import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
@@ -15,7 +18,9 @@ public interface MemberService {
 
 	Member loadMemberByDeviceToken(String deviceToken) throws NotExistDeviceException, NotExistMemberException;
 
-	void removeMember();
+	void removeMember() throws NotExistMemberException;
 
 	void testInsert(MemberStat memberStat);
+
+	List<StatListResDto> findAllStatsByMemberId(long memberId) throws NotExistMemberException;
 }
