@@ -9,5 +9,5 @@ import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-	List<Todo> findTodosByMemberAndTodoDateIsBetween(Member member, LocalDateTime startDate, LocalDateTime endDate);
+	List<Todo> findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(Member member, LocalDateTime startDate, LocalDateTime endDate);
 }
