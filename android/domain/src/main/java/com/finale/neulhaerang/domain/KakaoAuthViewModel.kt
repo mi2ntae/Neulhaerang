@@ -49,10 +49,10 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                             token.accessToken,
                             "testtest"
                         )
-                    ).onSuccess {
-                        Log.i("heejeong", it!!.toString())
-                    }.onFailure {
-                        Log.e("heejeong", "서버 로그인 실패! %n${it.message}")
+                    ).onSuccess { (_, data) ->
+                        Log.i("heejeong", data.toString())
+                    }.onFailure { (_, message, _) ->
+                        Log.e("heejeong", "서버 로그인 실패! %n$message")
                     }
 
                 }

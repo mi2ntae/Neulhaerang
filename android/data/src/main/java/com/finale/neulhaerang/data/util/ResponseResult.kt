@@ -2,7 +2,7 @@ package com.finale.neulhaerang.data.util
 
 /**
  * API 통신을 위한 wrapper 클래스
- * 데이터를 가지는 성공과 널이 오는 성공, 실패로 이루어짐
+ * 성공과 실패로 이루어짐
  * onSuccess 로 성공 시의 처리를, onFailure 로 실패 시의 처리를 하면 됨
  *
  * @property code http 상태 코드
@@ -10,8 +10,7 @@ package com.finale.neulhaerang.data.util
 sealed interface ResponseResult<out T> {
     val code: Int
 
-    data class Success<T>(override val code: Int, val data: T) : ResponseResult<T>
-    data class NullSuccess(override val code: Int) : ResponseResult<Nothing>
+    data class Success<T>(override val code: Int, val data: T?) : ResponseResult<T>
     data class Failure(
         override val code: Int,
         val message: String,
@@ -19,23 +18,28 @@ sealed interface ResponseResult<out T> {
     ) : ResponseResult<Nothing>
 }
 
+/**
+ * ResponseResult가 성공했을 때의 함수
+ * @param action ( code, data? ) -> Unit
+ */
 inline fun <T> ResponseResult<T>.onSuccess(
-    action: (data: T?) -> Unit,
+    action: (ResponseResult.Success<T>) -> Unit,
 ): ResponseResult<T> {
-    when (this) {
-        is ResponseResult.Success -> action(this.data)
-        is ResponseResult.NullSuccess -> action(null)
-        else -> {}
+    if (this is ResponseResult.Success) {
+        action(this)
     }
     return this
 }
 
+/**
+ * ResponseResult가 실패했을 때의 함수
+ * @param action ( code, message, throwable? ) -> Unit
+ */
 inline fun <T> ResponseResult<T>.onFailure(
     action: (error: ResponseResult.Failure) -> Unit,
 ): ResponseResult<T> {
-    when (this) {
-        is ResponseResult.Failure -> action(this)
-        else -> {}
+    if (this is ResponseResult.Failure) {
+        action(this)
     }
     return this
 }
