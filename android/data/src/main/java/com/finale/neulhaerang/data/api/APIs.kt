@@ -1,11 +1,14 @@
 package com.finale.neulhaerang.data.api
 
+import com.finale.neulhaerang.data.model.request.LoginReqDto
+import com.finale.neulhaerang.data.model.response.LoginResDto
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.create
+import retrofit2.http.Body
 import retrofit2.http.POST
 
 
@@ -17,6 +20,9 @@ interface APIs {
     // auth 관련 함수
     @POST("auth/check")
     suspend fun postCheck(): String
+
+    @POST("auth/login")
+    suspend fun login(@Body loginReqDto: LoginReqDto): LoginResDto
 
     // member 관련 함수
     // ar 관련 함수
