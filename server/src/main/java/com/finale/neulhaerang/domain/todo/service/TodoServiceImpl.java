@@ -3,8 +3,8 @@ package com.finale.neulhaerang.domain.todo.service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,14 +45,9 @@ public class TodoServiceImpl implements TodoService {
 		LocalDateTime endDate = todoDate.atTime(LocalTime.MAX);
 
 		List<Todo> todoList = todoRepository.findTodosByMemberAndTodoDateIsBetween(member, startDate, endDate);
-		List<TodoListResDto> todoResDtoList = new ArrayList<>();
-		for (Todo todo : todoList) {
-			String alarmTime = todo.getTodoDate().getHour()+":"+todo.getTodoDate().getMinute();
-			todoResDtoList.add(TodoListResDto.of(todo, alarmTime));
-		}
-		if(todoResDtoList.size()==0){
-			return null;
-		}
-		return todoResDtoList;
+
+		return todoList.stream()
+			.map(TodoListResDto::from)
+			.collect(Collectors.toList());
 	}
 }
