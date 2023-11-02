@@ -149,6 +149,22 @@ class TodoControllerTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("Todo 완료 혹은 미완료 요청 테스트")
+	public void When_ModifyTodoCheck_Expect_IsOk() throws Exception {
+		// given
+		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now());
+		todoRepository.save(todo);
+
+		// when, then
+		mockMvc.perform(patch("/todo/check/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
