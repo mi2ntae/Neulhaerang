@@ -129,7 +129,7 @@ class TodoControllerTest extends BaseTest {
 			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("errorCode").value("T-001"))
-			.andExpect(jsonPath("errorMessage").value("등록 날짜가 유효하지 않습니다."))
+			.andExpect(jsonPath("errorMessage").value("날짜가 유효하지 않습니다."))
 		;
 	}
 
@@ -177,6 +177,22 @@ class TodoControllerTest extends BaseTest {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
+		;
+	}
+
+	@Test
+	@DisplayName("Todo 삭제 요청 테스트")
+	public void When_RemoveTodo_Expect_BadRequest() throws Exception {
+		// given
+		Todo todo = createTodo("일찍 일어나기",StatType.갓생력, LocalDateTime.now());
+		todoRepository.save(todo);
+
+		// when, then
+		mockMvc.perform(patch("/todo/remove/{todoId}", todo.getId())
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
 		;
 	}
 
