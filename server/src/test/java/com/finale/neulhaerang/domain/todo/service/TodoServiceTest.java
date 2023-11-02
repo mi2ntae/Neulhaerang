@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.todo.dto.request.TodoModifyReqDto;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 import com.finale.neulhaerang.global.util.BaseTest;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
@@ -200,6 +201,15 @@ class TodoServiceTest extends BaseTest {
 			.member(member)
 			.todoDate(todoDate)
 			.content(content)
+			.statType(statType)
+			.build();
+	}
+
+	private TodoModifyReqDto createTodoModifyReqDto(String content, StatType statType, LocalDateTime todoDate, Boolean alarm){
+		return TodoModifyReqDto.builder()
+			.alarm(alarm)
+			.content(content)
+			.todoDate(todoDate)
 			.statType(statType)
 			.build();
 	}
