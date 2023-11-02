@@ -154,6 +154,21 @@ class TodoServiceTest extends BaseTest {
 			.isInstanceOf(AlreadyRemoveTodoException.class);
 	}
 
+	@Test
+	@DisplayName("Todo id로 해당 Todo 삭제 테스트")
+	public void When_RemoveTodo_Expect_isOk(){
+		// given
+		Todo todo = createTodo("알고리즘 풀기",StatType.창의력,LocalDateTime.now());
+		todoRepository.save(todo);
+
+		// when
+		todoService.removeTodoByTodoId(todo.getId());
+
+		// then
+		Todo removeTodo = todoRepository.findById(todo.getId()).get();
+		assertThat(removeTodo.isStatus()).isEqualTo(true);
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
