@@ -22,6 +22,7 @@ import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutine
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
 import com.finale.neulhaerang.global.util.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class RoutineServiceImpl implements RoutineService {
 		if (routineCreateReqDto.getRepeated().size() != 7) {
 			throw new InvalidRepeatedDateException(member.get());
 		}
-		StringBuilder repeated = checkRepeatedDate(routineCreateReqDto);
+		StringBuilder repeated = checkRepeatedDate(routineCreateReqDto.getRepeated());
 		Routine routine = Routine.create(routineCreateReqDto, member.get(), repeated.toString());
 		routineRepository.save(routine);
 	}
@@ -91,12 +92,27 @@ public class RoutineServiceImpl implements RoutineService {
 	@Override
 	public void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(
 		RoutineModifyReqDto routineModifyReqDto) {
-
+		Optional<Member> member = memberRepository.findById(authenticationHandler.getLoginMemberId());
+		Optional<Routine> optionalRoutine = routineRepository.findById(routineModifyReqDto.getRoutineId());
+		if (optionalRoutine.isEmpty()) {
+			throw new NotExistRoutineException(member.get(), routineModifyReqDto.getRoutineId());
+		}
+		if (routineModifyReqDto.isAlarm()) {
+			if (routineModifyReqDto.getAlarmTime() == null) {
+				throw new NotExistAlarmTimeException(member.get());
+			}
+		}
+		if (routineModifyReqDto.getRepeated().size() != 7) {
+			throw new InvalidRepeatedDateException(member.get());
+		}
+		StringBuilder repeated = checkRepeatedDate(routineModifyReqDto.getRepeated());
+		optionalRoutine.get()
+			.updateContentAndAlarmAndAlarmTimeAndRepeated(routineModifyReqDto, repeated.toString());
 	}
 
-	private static StringBuilder checkRepeatedDate(RoutineCreateReqDto routineCreateReqDto) {
+	private static StringBuilder checkRepeatedDate(List<Boolean> repeat) {
 		StringBuilder repeated = new StringBuilder();
-		routineCreateReqDto.getRepeated().forEach(r ->
+		repeat.forEach(r ->
 			repeated.append(r ? "1" : "0")
 		);
 		return repeated;
