@@ -73,4 +73,8 @@ public class Todo {
 	public void updateCheck(){
 		this.check = !check;
 	}
+
+	public void updateStatus() {
+		this.status = true;
+	}
 }
