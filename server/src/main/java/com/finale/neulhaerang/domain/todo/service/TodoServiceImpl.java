@@ -65,7 +65,7 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public void removeTodoByTodoId(Long todoId) {
-		Todo todo = todoRepository.findById(todoId)
+		Todo todo = todoRepository.findTodoByIdAndStatusIsFalse(todoId)
 			.orElseThrow(NotExistTodoException::new);
 		if(todo.getTodoDate().toLocalDate().isBefore(LocalDate.now())){
 			throw new InvalidTodoDateException();
