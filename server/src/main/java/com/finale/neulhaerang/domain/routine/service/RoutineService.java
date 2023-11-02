@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
 
 public interface RoutineService {
 	void createRoutine(RoutineCreateReqDto routineCreateReqDto);
@@ -12,5 +13,5 @@ public interface RoutineService {
 
 	void modifyDailyRoutineCheckByDailyRoutineId(Long dailyRoutineId);
 
-	void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(Long routineId);
+	void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(RoutineModifyReqDto routineModifyReqDto);
 }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
 import com.finale.neulhaerang.domain.routine.dto.response.DailyRoutineResDto;
 import com.finale.neulhaerang.domain.routine.dto.response.RoutineResDto;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
@@ -85,6 +86,12 @@ public class RoutineServiceImpl implements RoutineService {
 				optionalDailyRoutine.get());
 		}
 		optionalDailyRoutine.get().updateCheck();
+	}
+
+	@Override
+	public void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(
+		RoutineModifyReqDto routineModifyReqDto) {
+
 	}
 
 	private static StringBuilder checkRepeatedDate(RoutineCreateReqDto routineCreateReqDto) {
