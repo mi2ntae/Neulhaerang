@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RoutineModifyReqDto {
-	@NotBlank
+	@NotNull
 	private Long routineId;
 	@NotBlank
 	private String content;
