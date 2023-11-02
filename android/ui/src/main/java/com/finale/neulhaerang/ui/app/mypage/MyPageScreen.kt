@@ -1,11 +1,19 @@
 package com.finale.neulhaerang.ui.app.mypage
 
+import BoxStat
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -20,33 +28,40 @@ import com.finale.neulhaerang.ui.app.navigation.NHLNavigationBar
  */
 @Composable
 fun MyPageScreen(navController: NavHostController) {
+    var tabIndex by remember { mutableIntStateOf(0) }
+    val tabs = listOf("능력치", "의상실", "칭호")
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         bottomBar = { NHLNavigationBar(navController = navController) }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
-            Text("마이페이지입니당")
             MyPageHeader()
-
-            /*TODO*/
-            // Stat, Closet, Title 을 선택해서 보여줄 수 있는
-            // SelectionBar 구현 필요
-            MyPageSelectionBar()
-
-            /*TODO*/
-            // radar chart 구현해야함
-            // HexagonStat()
-
-            /*TODO*/
-            // 추후 SelectionBar 완성시 배치
-            // BoxStat("S+", "S", "B+", "A+", "C", "F")
-
-
-            ClosetPage()
-            TitlePage()
+            Column(modifier = Modifier.fillMaxWidth()) {
+                TabRow(selectedTabIndex = tabIndex) {
+                    tabs.forEachIndexed { index, title ->
+                        Tab(text = { Text(title) },
+                            selected = tabIndex == index,
+                            onClick = { tabIndex = index })
+                    }
+                }
+                when (tabIndex) {
+                    0 -> StatPage()
+                    1 -> ClosetPage()
+                    2 -> TitlePage()
+                }
+            }
         }
     }
+}
+
+@Composable
+fun StatPage(){
+    /*TODO*/
+    // radar chart 구현해야함
+    // HexagonStat()
+    BoxStat("S+", "S", "B+", "A+", "C", "F")
 }
 
 @Preview

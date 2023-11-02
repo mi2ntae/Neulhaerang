@@ -9,21 +9,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.finale.neulhaerang.domain.member.entity.Member;
-import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.global.util.BaseTest;
 
-@ActiveProfiles("test")
-@SpringBootTest
-@Transactional
-class RoutineRepositoryTest {
-	@Autowired
-	private MemberRepository memberRepository;
+class RoutineRepositoryTest extends BaseTest {
 
 	@Autowired
 	private RoutineRepository routineRepository;
@@ -32,15 +23,11 @@ class RoutineRepositoryTest {
 	@Test
 	void When_GetDateAndDayOfValue_Expect_GetListOfRoutine() {
 		// given
-		Member member = Member.builder()
-			.nickname("박정은")
-			.kakaoId(12345678L).build();
-		Member save = memberRepository.save(member);
 
-		Routine routine1 = createRoutine(save, "양치하기1", "0010000", false, StatType.생존력, null);
-		Routine routine2 = createRoutine(save, "양치하기2", "0110000", false, StatType.갓생력, LocalDate.of(2023, 8, 20));
-		Routine routine3 = createRoutine(save, "양치하기3", "0111000", false, StatType.최애력, LocalDate.of(2023, 8, 19));
-		Routine routine4 = createRoutine(save, "양치하기4", "0101000", false, StatType.인싸력, null);
+		Routine routine1 = createRoutine("양치하기1", "0010000", false, StatType.생존력, null);
+		Routine routine2 = createRoutine("양치하기2", "0110000", false, StatType.갓생력, LocalDate.of(2023, 8, 20));
+		Routine routine3 = createRoutine("양치하기3", "0111000", false, StatType.최애력, LocalDate.of(2023, 8, 19));
+		Routine routine4 = createRoutine("양치하기4", "0101000", false, StatType.인싸력, null);
 
 		routineRepository.saveAll(List.of(routine1, routine2, routine3, routine4));
 
@@ -58,10 +45,10 @@ class RoutineRepositoryTest {
 			);
 	}
 
-	private static Routine createRoutine(Member save, String content, String repeated, boolean alarm,
+	private Routine createRoutine(String content, String repeated, boolean alarm,
 		StatType statType, LocalDate deleteDate) {
 		return Routine.builder()
-			.member(save)
+			.member(member)
 			.content(content)
 			.repeated(repeated)
 			.alarm(alarm)

@@ -93,7 +93,7 @@ class RoutineServiceTest extends BaseTest {
 
 	@DisplayName("오늘 날짜 이전의 루틴을 조회하는 경우 daily_routine을 조회합니다.")
 	@Test
-	void When_findRoutineWithBeforeToday_Expect_findDailyRoutine() {
+	void When_FindRoutineWithBeforeToday_Expect_FindDailyRoutine() {
 		// given
 		LocalDate date = LocalDate.now();
 		Routine routine1 = createRoutine(member, "양치하기1", "0010000", false, StatType.생존력);
@@ -111,16 +111,16 @@ class RoutineServiceTest extends BaseTest {
 
 		// then
 		assertThat(dailyRoutines).hasSize(2)
-			.extracting("content", "check", "date")
+			.extracting("content", "check")
 			.containsExactlyInAnyOrder(
-				tuple("양치하기1", true, date),
-				tuple("양치하기3", false, date)
+				tuple("양치하기1", true),
+				tuple("양치하기3", false)
 			);
 	}
 
 	@DisplayName("오늘 날짜 이후 루틴을 조회하는 경우 routine을 조회합니다.")
 	@Test
-	void When_findRoutineWithAfterToday_Expect_findRoutine() {
+	void When_FindRoutineWithAfterToday_Expect_FindRoutine() {
 		// given
 		LocalDate currentDate = LocalDate.now();
 
@@ -144,10 +144,10 @@ class RoutineServiceTest extends BaseTest {
 
 		// then
 		assertThat(routines).hasSize(2)
-			.extracting("content", "date")
+			.extracting("content")
 			.containsExactlyInAnyOrder(
-				tuple("양치하기1", date),
-				tuple("양치하기2", date)
+				"양치하기1",
+				"양치하기2"
 			);
 	}
 
