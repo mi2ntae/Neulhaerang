@@ -10,6 +10,7 @@ buildscript {
     val lifecycleVersion by extra("2.6.2")
     val composeUiVersion by extra("1.5.4")
     val materialVersion by extra("1.5.4")
+    val retrofit2Version by extra("2.9.0")
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
