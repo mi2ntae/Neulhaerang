@@ -2,6 +2,8 @@ package com.finale.neulhaerang.domain.member.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,8 +12,10 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.finale.neulhaerang.domain.member.document.MemberStat;
+import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
+import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Device;
 import com.finale.neulhaerang.domain.member.entity.Member;
@@ -41,6 +45,10 @@ public class MemberServiceImpl implements MemberService{
 
 	private final AuthenticationHandler authenticationHandler;
 
+	private static final int STAT_NUMS = 6;
+	private int[] scores = new int[] {90,80,70,60,50};	// A+, A, B+, B, C+
+	private String[] levels = new String[] {"A+", "A", "B+", "B", "C+", "C"};
+
 	// 멤버 상태 정보 조회 (나태도, 피로도) -> MongoDB에서 조회
 	@Override
 	public MemberStatusResDto findStatusByMemberId(long memberId) {
@@ -59,18 +67,19 @@ public class MemberServiceImpl implements MemberService{
 		return MemberStatusResDto.create(sumOfIndolence, sumOfTiredness);
 	}
 
-	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
+	// MongoDB에 스탯 업데이트
 	@Override
-	public void testInsert(MemberStat memberStat) {
-		Optional<MemberStat> optionalMemberStat = memberStatRepository.findMemberStatByMemberId(memberStat.getMemberId());
-		MemberStat memberStat2;
+	public void createStat(StatRecord statRecord) {
+		log.info("MongoDB에 스탯 내역 추가");
+		Optional<MemberStat> optionalMemberStat = memberStatRepository.findMemberStatByMemberId(authenticationHandler.getLoginMemberId());
+		MemberStat memberStat;
 		if(optionalMemberStat.isEmpty()) {
-			memberStat2 = MemberStat.create(memberStat.getMemberId());
+			memberStat = MemberStat.create(authenticationHandler.getLoginMemberId());
 		} else {
-			memberStat2 = optionalMemberStat.get();
+			memberStat = optionalMemberStat.get();
 		}
-		memberStat2.addRecord(memberStat.getRecords().get(0));
-		memberStatRepository.save(memberStat2);
+		memberStat.addRecord(statRecord);
+		memberStatRepository.save(memberStat);
 	}
 
 	// 멤버 캐릭터 조회
@@ -115,5 +124,35 @@ public class MemberServiceImpl implements MemberService{
 			redisUtil.deleteData(device.getDeviceToken());
 			deviceRepository.delete(device);
 		});
+	}
+
+	@Override
+	public List<StatListResDto> findAllStatsByMemberId(long memberId) throws NotExistMemberException {
+		Optional<MemberStat> optionalMemberStat = memberStatRepository.findMemberStatByMemberId(memberId);
+		if(!optionalMemberStat.isPresent()) {
+			throw new NotExistMemberException();
+		}
+
+		MemberStat memberStat = optionalMemberStat.get();
+		int[] stats = new int[STAT_NUMS];
+		memberStat.getRecords().stream()
+			.filter(record -> !record.getStatType().equals(StatType.피곤도) && !record.getStatType().equals(StatType.나태도))
+			.forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
+
+		List<StatListResDto> statListResDtos = new ArrayList<>();
+		Arrays.stream(stats).forEach(stat -> statListResDtos.add(StatListResDto.builder()
+			.score(stat)
+			.level(getLevelByScore(stat)).build())
+		);
+		return statListResDtos;
+	}
+
+	private String getLevelByScore(int score) {
+		for(int i = 0; i < scores.length; i++) {
+			if(score >= scores[i]) {
+				return levels[i];
+			}
+		}
+		return levels[levels.length-1];
 	}
 }

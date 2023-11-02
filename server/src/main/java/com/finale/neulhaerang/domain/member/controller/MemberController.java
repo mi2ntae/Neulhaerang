@@ -1,5 +1,7 @@
 package com.finale.neulhaerang.domain.member.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.finale.neulhaerang.domain.member.document.MemberStat;
+import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
+import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.service.MemberService;
 
 import io.swagger.annotations.Api;
@@ -47,12 +50,19 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
+	@ApiOperation(value = "멤버 스탯 전체 조회", notes = "멤버 전체 스탯을 조회")
+	@GetMapping("/stat/{memberId}")
+	public ResponseEntity<List<StatListResDto>> findAllStatsByMemberId(@PathVariable long memberId) {
+		return ResponseEntity.status(HttpStatus.OK).body(memberService.findAllStatsByMemberId(memberId));
+	}
+
 	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
 	@ApiOperation(value = "테스트", notes = "Mongo 테스트")
 	@PostMapping("/mongo")
-	public ResponseEntity<Void> mongo(@RequestBody MemberStat memberStat) {
-		memberService.testInsert(memberStat);
+	public ResponseEntity<Void> mongo(@RequestBody StatRecord statRecord) {
+		memberService.createStat(statRecord);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
+
 
 }
