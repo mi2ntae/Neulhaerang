@@ -18,7 +18,7 @@ import com.finale.neulhaerang.domain.member.feignclient.KakaoInfoFeignClient;
 import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
-import com.finale.neulhaerang.global.exception.common.NonValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.NotValidJwtTokenException;
 import com.finale.neulhaerang.global.util.AuthenticationHandler;
 import com.finale.neulhaerang.global.util.JwtTokenProvider;
 import com.finale.neulhaerang.global.util.RedisUtil;
@@ -65,7 +65,8 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-	public TokenResDto reissueAccessToken(TokenReqDto tokenReqDto) throws NonValidJwtTokenException, ExpiredAuthException {
+	public TokenResDto reissueAccessToken(TokenReqDto tokenReqDto) throws
+		NotValidJwtTokenException, ExpiredAuthException {
 		String deviceToken = tokenReqDto.getDeviceToken();
 		Optional<Device> optionalDevice = deviceRepository.findDeviceByDeviceToken(deviceToken);
 		if(optionalDevice.isEmpty()) {
@@ -77,7 +78,7 @@ public class AuthServiceImpl implements AuthService{
 		if(savedRefreshToken != null)  {
 			if(!savedRefreshToken.equals(refreshToken)) {
 				// 해당 디바이스로 저장된 리프레쉬 토큰이 아닐 때 -> 변조 가능성
-				throw new NonValidJwtTokenException();
+				throw new NotValidJwtTokenException();
 			}
 		} else {
 			// 리프레쉬 토큰이 만료되어 로그인 다시 해야하는 경우
@@ -99,14 +100,14 @@ public class AuthServiceImpl implements AuthService{
 		Optional<Member> optionalMember = memberRepository.findMemberByKakaoIdAndWithdrawalDateIsNull(kakaoUserResDto.getId());
 		Optional<Device> optionalDevice = deviceRepository.findDeviceByDeviceToken(loginReqDto.getDeviceToken());
 		if(optionalMember.isEmpty()) {
-			Member member = memberRepository.save(Member.of(kakaoUserResDto.getId(), kakaoUserResDto.getKakao_account().getProfile().getNickname()));
+			Member member = memberRepository.save(Member.create(kakaoUserResDto.getId(), kakaoUserResDto.getKakao_account().getProfile().getNickname()));
 			if(optionalDevice.isEmpty()) {
-				deviceRepository.save(Device.of(member, loginReqDto.getDeviceToken()));
+				deviceRepository.save(Device.create(member, loginReqDto.getDeviceToken()));
 			}
 			return member;
 		} else {
 			if(optionalDevice.isEmpty()) {
-				deviceRepository.save(Device.of(optionalMember.get(), loginReqDto.getDeviceToken()));
+				deviceRepository.save(Device.create(optionalMember.get(), loginReqDto.getDeviceToken()));
 			}
 			return optionalMember.get();
 		}

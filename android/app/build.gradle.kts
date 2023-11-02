@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -18,8 +20,13 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
 
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\""+getApiKey("kakao.native.app.key")+"\"")
+        buildConfigField("String", "NATIVE_APP_KEY", "\""+getApiKey("native.app.key")+"\"")
+
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = getApiKey("kakao.native.app.key")
+        manifestPlaceholders["NATIVE_APP_KEY"] = getApiKey("native.app.key")
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,6 +45,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -49,6 +57,10 @@ android {
     }
 }
 
+fun getApiKey(propertyKey: String): String {
+    return gradleLocalProperties(rootDir).getProperty(propertyKey)
+}
+
 dependencies {
 
     // modules
@@ -58,8 +70,8 @@ dependencies {
     implementation(project(":ui"))
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleRuntimeKtxVertion"]}")
     implementation("androidx.activity:activity-compose:${rootProject.extra["activityComposeVersion"]}")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${rootProject.extra["lifecycleVersion"]}")
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
     implementation("androidx.compose.ui:ui-android:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
@@ -72,4 +84,6 @@ dependencies {
     // debug
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeUiVersion"]}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
+    //kakao login
+    implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
 }

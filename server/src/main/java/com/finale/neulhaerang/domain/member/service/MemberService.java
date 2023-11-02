@@ -1,18 +1,21 @@
 package com.finale.neulhaerang.domain.member.service;
 
+import com.finale.neulhaerang.domain.member.document.MemberStat;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.entity.Member;
-import com.finale.neulhaerang.global.exception.member.NonExistCharacterInfoException;
-import com.finale.neulhaerang.global.exception.member.NonExistDeviceException;
-import com.finale.neulhaerang.global.exception.member.NonExistMemberException;
+import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
+import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
+import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 
 public interface MemberService {
 	MemberStatusResDto findStatusByMemberId(long memberId);
 
-	MemberCharacterResDto findCharacterByMemberId(long memberId) throws NonExistCharacterInfoException;
+	MemberCharacterResDto findCharacterByMemberId(long memberId) throws NotExistCharacterInfoException;
 
-	Member loadMemberByDeviceToken(String deviceToken) throws NonExistDeviceException, NonExistMemberException;
+	Member loadMemberByDeviceToken(String deviceToken) throws NotExistDeviceException, NotExistMemberException;
 
 	void removeMember();
+
+	void testInsert(MemberStat memberStat);
 }

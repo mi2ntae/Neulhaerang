@@ -19,15 +19,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.finale.neulhaerang.common.navigation.AppNavItem
+import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.R
-import com.finale.neulhaerang.ui.app.navigation.initNavigate
 import com.finale.neulhaerang.ui.theme.Typography
 
 @Composable
-fun LoginScreen(navController: NavHostController = rememberNavController()) {
+fun LoginScreen(
+    navController: NavHostController = rememberNavController()
+) {
+    val viewModel = viewModel<KakaoAuthViewModel>()
+
     Column(
         modifier = Modifier
             .background(Color.White)
@@ -52,7 +56,8 @@ fun LoginScreen(navController: NavHostController = rememberNavController()) {
                 .clickable {
                     /*TODO 로그인 기능*/
                     println("Button Clicked!")
-                    navController.initNavigate(AppNavItem.Main.route)
+//                    navController.initNavigate(AppNavItem.Main.route)
+                    viewModel.kakaoLogin()
                 })
     }
 }

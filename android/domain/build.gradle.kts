@@ -44,10 +44,11 @@ android {
 }
 
 dependencies {
-
+    // module
+    implementation(project(":common"))
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleRuntimeKtxVertion"]}")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")
     implementation("androidx.activity:activity-compose:${rootProject.extra["activityComposeVersion"]}")
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
     implementation("androidx.compose.ui:ui:${rootProject.extra["composeUiVersion"]}")
@@ -58,4 +59,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    //kakao login
+    implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
 }
