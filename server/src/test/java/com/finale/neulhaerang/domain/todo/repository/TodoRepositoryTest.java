@@ -26,18 +26,25 @@ class TodoRepositoryTest extends BaseTest {
 		Todo todo1 = this.createTodo("todo1",StatType.생존력,LocalDateTime.now());
 		Todo todo2 = this.createTodo("todo2",StatType.인싸력,LocalDateTime.now());
 		Todo todo3 = this.createTodo("todo3",StatType.갓생력,LocalDateTime.now());
-		Todo todo4 = this.createTodo("todo4",StatType.튼튼력,LocalDateTime.now());
-		Todo todo5 = this.createTodo("todo5",StatType.창의력,LocalDateTime.of(2023,10,30,13,30));
+		Todo todo4 = this.createTodo("todo4",StatType.창의력,LocalDateTime.of(2023,10,30,13,30));
+		Todo todo5 = Todo.builder()
+			.member(member)
+			.todoDate(LocalDateTime.now())
+			.content("todo5")
+			.statType(StatType.최애력)
+			.status(true)
+			.build();
 		todoRepository.saveAll(List.of(todo1, todo2, todo3, todo4, todo5));
 
 		// when
-		List<Todo> todoList = todoRepository.findTodosByMemberAndTodoDateIsBetween(
+		List<Todo> todoList = todoRepository.findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(
 			member,LocalDate.now().atStartOfDay(),LocalDate.now().atTime(LocalTime.MAX));
 
 		// then
-		assertThat(todoList).hasSize(4);
+		assertThat(todoList).hasSize(3);
 		for(Todo todo:todoList){
 			assertThat(todo.getTodoDate().toLocalDate()).isEqualTo(LocalDate.now());
+			assertThat(todo.isStatus()).isEqualTo(false);
 		}
 	}
 

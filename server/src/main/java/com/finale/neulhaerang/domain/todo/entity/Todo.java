@@ -18,6 +18,7 @@ import org.hibernate.annotations.ColumnDefault;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
+import com.finale.neulhaerang.domain.todo.dto.request.TodoModifyReqDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -72,5 +73,16 @@ public class Todo {
 
 	public void updateCheck(){
 		this.check = !check;
+	}
+
+	public void updateStatus() {
+		this.status = true;
+	}
+
+	public void updateTodo(TodoModifyReqDto todoModifyReqDto) {
+		this.content = todoModifyReqDto.getContent();
+		this.alarm = todoModifyReqDto.getAlarm();
+		this.todoDate = todoModifyReqDto.getTodoDate();
+		this.statType = todoModifyReqDto.getStatType();
 	}
 }

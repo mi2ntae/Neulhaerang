@@ -39,7 +39,7 @@ class RoutineControllerTest extends BaseTest {
 
 	@DisplayName("새로운 루틴을 생성합니다.")
 	@Test
-	void When_CreateRoutine_Expect_isCreate() throws Exception {
+	void When_CreateRoutine_Expect_IsCreate() throws Exception {
 		// given
 		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
 			List.of(true, true, true, false, false, false, false), StatType.생존력);
@@ -55,7 +55,7 @@ class RoutineControllerTest extends BaseTest {
 
 	@DisplayName("새로운 루틴 생성 시, StatType는 필수 입니다.")
 	@Test
-	void When_CreateRoutineWithoutStatType_Expect_isCreate() throws Exception {
+	void When_CreateRoutineWithoutStatType_Expect_IsBadRequest() throws Exception {
 		// given
 		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
 			.content("아침밥 먹고 가기")
@@ -75,7 +75,7 @@ class RoutineControllerTest extends BaseTest {
 
 	@DisplayName("새로운 루틴 생성 시, Content는 필수 입니다.")
 	@Test
-	void When_CreateRoutineWithoutContent_Expect_isCreate() throws Exception {
+	void When_CreateRoutineWithoutContent_Expect_IsBadRequest() throws Exception {
 		// given
 		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
 			.repeated(List.of(true, true, true, true, true, true, true))
@@ -95,7 +95,7 @@ class RoutineControllerTest extends BaseTest {
 
 	@DisplayName("새로운 루틴 생성 시, Repeated는 필수 입니다.")
 	@Test
-	void When_CreateRoutineWithoutRepeated_Expect_isCreate() throws Exception {
+	void When_CreateRoutineWithoutRepeated_Expect_IsBadRequest() throws Exception {
 		// given
 		RoutineCreateReqDto routineCreateReqDto = RoutineCreateReqDto.builder()
 			.content("아침밥 먹고 가기")
@@ -121,6 +121,17 @@ class RoutineControllerTest extends BaseTest {
 		// when // then
 		mockMvc.perform(
 				get("/routine?date=2023-08-19")
+			)
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
+
+	@DisplayName("데일리 루틴의 체크 여부를 변경합니다.")
+	@Test
+	void When_ModifyRoutineCheck_Expect_IsOk() throws Exception {
+		// given // when // then
+		mockMvc.perform(
+				patch("/routine/check/1")
 			)
 			.andDo(print())
 			.andExpect(status().isOk());
