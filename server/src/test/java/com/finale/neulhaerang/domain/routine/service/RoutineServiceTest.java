@@ -6,6 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,10 @@ import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
-import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
-import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
+import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
+import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
 class RoutineServiceTest extends BaseTest {
@@ -151,7 +154,55 @@ class RoutineServiceTest extends BaseTest {
 			);
 	}
 
-	private static RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
+	@DisplayName("daily routine의 check 값을 변경합니다.")
+	@Test
+	void When_ModifyDailyRoutineCheck_Expect_OppositeDailyRoutineCheck() {
+		// given
+		Routine routine = createRoutine(member, "양치하기1", "0010000", false, StatType.생존력);
+		routineRepository.save(routine);
+		boolean original = true;
+		DailyRoutine dailyRoutine = createDailyRoutine(routine, original, false);
+
+		// when
+		routineService.modifyDailyRoutineCheckByDailyRoutineId(dailyRoutine.getId());
+
+		// then
+		Optional<DailyRoutine> save = dailyRoutineRepository.findById(dailyRoutine.getId());
+		assertThat(save.get().isCheck()).isEqualTo(!original);
+	}
+
+	@DisplayName("daily routine의 check 값을 변경합니다. 이때 존재하지 않는 daily routine이라면 에러가 발생합니다.")
+	@Test
+	void When_ModifyDailyRoutineCheckWithNotExistId_Expect_NotExistDailyRoutineException() {
+		// given // when // then
+		assertThatThrownBy(() -> routineService.modifyDailyRoutineCheckByDailyRoutineId(1L))
+			.isInstanceOf(NotExistDailyRoutineException.class);
+	}
+
+	@DisplayName("daily routine의 check 값을 변경합니다. 이때 이미 삭제된 daily routine이라면 에러가 발생합니다.")
+	@Test
+	void When_ModifyDailyRoutineCheckWithAlreadyRemoveRoutine_Expect_AlreadyRemoveDailyRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기1", "0010000", false, StatType.생존력);
+		routineRepository.save(routine);
+		DailyRoutine dailyRoutine = createDailyRoutine(routine, true, true);
+		DailyRoutine save = dailyRoutineRepository.save(dailyRoutine);
+		// when // then
+		assertThatThrownBy(() -> routineService.modifyDailyRoutineCheckByDailyRoutineId(save.getId()))
+			.isInstanceOf(AlreadyRemoveDailyRoutineException.class);
+	}
+
+	private static DailyRoutine createDailyRoutine(Routine routine, boolean original, boolean status) {
+		return DailyRoutine.builder()
+			.id(1L)
+			.routine(routine)
+			.check(original)
+			.routineDate(LocalDate.now())
+			.status(status)
+			.build();
+	}
+
+	private RoutineCreateReqDto createRoutine(String content, boolean alarm, LocalTime alarmTime,
 		List<Boolean> repeated, StatType statType) {
 		return RoutineCreateReqDto.builder()
 			.content(content)
@@ -162,7 +213,7 @@ class RoutineServiceTest extends BaseTest {
 			.build();
 	}
 
-	private static Routine createRoutine(Member save, String content, String repeated, boolean alarm,
+	private Routine createRoutine(Member save, String content, String repeated, boolean alarm,
 		StatType statType) {
 		return Routine.builder()
 			.member(save)
@@ -173,7 +224,7 @@ class RoutineServiceTest extends BaseTest {
 			.build();
 	}
 
-	private static DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date) {
+	private DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date) {
 		return DailyRoutine.builder()
 			.routine(routine)
 			.check(check)
