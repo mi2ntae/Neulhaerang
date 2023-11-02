@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(AlreadyRemoveTodoException.class)
 	protected ResponseEntity<ErrorResponse> alreadyRemoveTodoException() {
-		log.error("todo is not exist");
+		log.error("todo is already removed");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ALREADY_REMOVE_TODO.getErrorCode(),
 			ErrorCode.ALREADY_REMOVE_TODO.getMessage());
 		return ResponseEntity.status(ErrorCode.ALREADY_REMOVE_TODO.getHttpStatus())
