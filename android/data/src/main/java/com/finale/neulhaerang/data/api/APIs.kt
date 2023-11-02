@@ -1,7 +1,7 @@
 package com.finale.neulhaerang.data.api
 
-import com.finale.neulhaerang.data.model.request.LoginReqDto
-import com.finale.neulhaerang.data.model.response.LoginResDto
+import com.finale.neulhaerang.data.util.ResponseResult
+import com.finale.neulhaerang.data.util.ResponseResultAdapter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
@@ -31,12 +31,13 @@ interface APIs {
     suspend fun postCheck(): String
 
     companion object {
-        private const val BASE_URL = "http://k9a502.p.ssafy.io:8080/"
+        private const val BASE_URL = "http://k9a502.p.ssafy.io/api/"
 //        private val gson: Gson = GsonBuilder().setLenient().create()
         private val gson: Gson = GsonBuilder().setLenient().registerTypeAdapter(LocalDateTime::class.java, GsonDateFormatAdapter()).create()
         private fun create():Retrofit {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addCallAdapterFactory(ResponseResultAdapter.Factory())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
