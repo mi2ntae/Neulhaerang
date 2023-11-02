@@ -7,13 +7,13 @@ import com.finale.neulhaerang.domain.todo.entity.Todo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
 public class TodoListResDto {
 	private String content;
 	private boolean alarm;
