@@ -77,14 +77,15 @@ public class RoutineServiceImpl implements RoutineService {
 	@Override
 	public void modifyDailyRoutineCheckByDailyRoutineId(Long dailyRoutineId) {
 		Optional<DailyRoutine> optionalDailyRoutine = dailyRoutineRepository.findById(dailyRoutineId);
+		Optional<Member> optionalMember = memberRepository.findById(authenticationHandler.getLoginMemberId());
 		if (optionalDailyRoutine.isEmpty()) {
 			throw new NotExistDailyRoutineException(
-				memberRepository.getReferenceById(authenticationHandler.getLoginMemberId()), dailyRoutineId);
+				optionalMember.get(), dailyRoutineId);
 		}
 
 		if (optionalDailyRoutine.get().isStatus()) {
 			throw new AlreadyRemoveDailyRoutineException(
-				memberRepository.getReferenceById(authenticationHandler.getLoginMemberId()),
+				optionalMember.get(),
 				optionalDailyRoutine.get());
 		}
 		optionalDailyRoutine.get().updateCheck();
