@@ -1,5 +1,7 @@
 package com.finale.neulhaerang.domain.todo.dto.response;
 
+import java.time.LocalTime;
+
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 
@@ -17,15 +19,15 @@ public class TodoListResDto {
 	private boolean alarm;
 	private boolean check;
 	private StatType statType;
-	private String alarmTime;
+	private LocalTime alarmTime;
 
-	public static TodoListResDto of(Todo todo, String alarmTime){
+	public static TodoListResDto from(Todo todo){
 		return TodoListResDto.builder()
 			.content(todo.getContent())
 			.alarm(todo.isAlarm())
 			.check(todo.isCheck())
 			.statType(todo.getStatType())
-			.alarmTime(alarmTime)
+			.alarmTime(todo.getTodoDate().toLocalTime())
 			.build();
 	}
 }
