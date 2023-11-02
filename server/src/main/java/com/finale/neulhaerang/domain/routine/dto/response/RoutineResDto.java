@@ -3,7 +3,11 @@ package com.finale.neulhaerang.domain.routine.dto.response;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class RoutineResDto {
 	private Long routineId;
 
