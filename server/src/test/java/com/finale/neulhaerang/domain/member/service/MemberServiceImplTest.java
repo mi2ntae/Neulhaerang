@@ -3,6 +3,8 @@ package com.finale.neulhaerang.domain.member.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
@@ -18,6 +21,7 @@ import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.CharacterInfoRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
+import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 
@@ -140,11 +144,31 @@ class MemberServiceImplTest {
 		Member member = this.testMember;
 
 		// when
-		long memberId = member.getId()-1;
+		long memberId = member.getId()-1;	// 0
 
 		// then
 		assertThatThrownBy(() -> memberService.findAllStatsByMemberId(memberId)).isInstanceOf(NotExistMemberException.class);
 	}
+
+	@Test
+	@DisplayName("회원 스탯 전체 조회를 진행할 경우, 모든 스탯이 0인 경우에도 조회가 가능해야함.")
+	void When_FindStatsIfZero_Expect_StatListResDto() {
+		// given
+		Member member = this.testMember;
+
+		// when
+		memberService.createStat(StatRecord.builder()
+			.statType(StatType.갓생력)
+			.recordedDate(LocalDateTime.now())
+			.reason("a")
+			.weight(0).build()
+		);
+
+		// then
+		assertSoftly(s -> {
+			s.assertThat(memberService.findAllStatsByMemberId(member.getId())).hasSize(6);
+			s.assertThat(memberService.findAllStatsByMemberId(member.getId()).get(0)).isInstanceOf(StatListResDto.class);
+		});	}
 
 	private static Member createMember() {
 		return Member.builder()
