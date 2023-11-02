@@ -12,5 +12,6 @@ import com.finale.neulhaerang.domain.routine.entity.Routine;
 public interface DailyRoutineRepository extends JpaRepository<DailyRoutine, Long> {
 	List<DailyRoutine> findDailyRoutinesByRoutineDateAndRoutineIn(LocalDate routineDate, List<Routine> routines);
 
-	List<DailyRoutine> findDailyRoutinesByRoutineDateAndRoutine_Member(LocalDate routineDate, Member member);
+	List<DailyRoutine> findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(LocalDate routineDate,
+		Member member);
 }

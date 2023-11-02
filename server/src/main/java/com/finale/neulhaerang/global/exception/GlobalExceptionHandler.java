@@ -11,14 +11,16 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
-import com.finale.neulhaerang.global.exception.common.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.common.NotValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
-import com.finale.neulhaerang.global.exception.todo.AlreadyRemoveTodoException;
+import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
+import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 
@@ -37,8 +39,26 @@ public class GlobalExceptionHandler {
 			.body(errorResponse);
 	}
 
+	@ExceptionHandler(AlreadyRemoveDailyRoutineException.class)
+	protected ResponseEntity<ErrorResponse> alreadyRemoveDailyRoutineException() {
+		log.error("The daily routine is already removed.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ALREADY_REMOVE_DAILY_ROUTINE.getErrorCode(),
+			ErrorCode.ALREADY_REMOVE_DAILY_ROUTINE.getMessage());
+		return ResponseEntity.status(ErrorCode.ALREADY_REMOVE_DAILY_ROUTINE.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NotExistDailyRoutineException.class)
+	protected ResponseEntity<ErrorResponse> notExistDailyRoutineException() {
+		log.error("There is no daily routine with that id.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_DAILY_ROUTINE.getErrorCode(),
+			ErrorCode.NOT_EXIST_DAILY_ROUTINE.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_DAILY_ROUTINE.getHttpStatus())
+			.body(errorResponse);
+	}
+
 	@ExceptionHandler(InvalidRepeatedDateException.class)
-	protected ResponseEntity<ErrorResponse> InvalidRepeatedDateException() {
+	protected ResponseEntity<ErrorResponse> invalidRepeatedDateException() {
 		log.error("The repeat date information is incorrect. for all days of the week.");
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_REPEATED_DATE.getErrorCode(),
 			ErrorCode.INVALID_REPEATED_DATE.getMessage());
@@ -61,15 +81,6 @@ public class GlobalExceptionHandler {
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_TODO.getErrorCode(),
 			ErrorCode.NOT_EXIST_TODO.getMessage());
 		return ResponseEntity.status(ErrorCode.NOT_EXIST_TODO.getHttpStatus())
-			.body(errorResponse);
-	}
-
-	@ExceptionHandler(AlreadyRemoveTodoException.class)
-	protected ResponseEntity<ErrorResponse> alreadyRemoveTodoException() {
-		log.error("todo is already removed");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ALREADY_REMOVE_TODO.getErrorCode(),
-			ErrorCode.ALREADY_REMOVE_TODO.getMessage());
-		return ResponseEntity.status(ErrorCode.ALREADY_REMOVE_TODO.getHttpStatus())
 			.body(errorResponse);
 	}
 

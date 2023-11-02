@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
+import com.finale.neulhaerang.domain.todo.dto.request.TodoModifyReqDto;
 import com.finale.neulhaerang.domain.todo.dto.response.TodoListResDto;
 import com.finale.neulhaerang.domain.todo.service.TodoService;
 
@@ -43,6 +44,18 @@ public class TodoController {
 	@PatchMapping("/check/{todoId}")
 	public ResponseEntity<Void> modifyTodoCheckByTodoId(@PathVariable Long todoId){
 		todoService.modifyTodoCheckByTodoId(todoId);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PatchMapping("/remove/{todoId}")
+	public ResponseEntity<Void> removeTodoByTodoId(@PathVariable Long todoId){
+		todoService.removeTodoByTodoId(todoId);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PatchMapping("/{todoId}")
+	public ResponseEntity<Void> modifyTodoByTodoId(@PathVariable Long todoId, @RequestBody @Valid TodoModifyReqDto todoModifyReqDto){
+		todoService.modifyTodoByTodoId(todoId, todoModifyReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

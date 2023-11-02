@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.global.exception.common;
+package com.finale.neulhaerang.global.exception.routine;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
 
