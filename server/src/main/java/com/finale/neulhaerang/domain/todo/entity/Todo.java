@@ -70,7 +70,7 @@ public class Todo {
 			.build();
 	}
 
-	public void modifyCheck(){
+	public void updateCheck(){
 		this.check = !check;
 	}
 }
