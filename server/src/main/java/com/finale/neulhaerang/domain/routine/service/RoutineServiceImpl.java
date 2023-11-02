@@ -12,6 +12,7 @@ import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineRemoveReqDto;
 import com.finale.neulhaerang.domain.routine.dto.response.DailyRoutineResDto;
 import com.finale.neulhaerang.domain.routine.dto.response.RoutineResDto;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
@@ -113,6 +114,11 @@ public class RoutineServiceImpl implements RoutineService {
 		StringBuilder repeated = checkRepeatedDate(routineModifyReqDto.getRepeated());
 		optionalRoutine.get()
 			.updateContentAndAlarmAndAlarmTimeAndRepeated(routineModifyReqDto, repeated.toString());
+	}
+
+	@Override
+	public void removeRoutineByRoutineId(RoutineRemoveReqDto routineRemoveReqDto) {
+		
 	}
 
 	private static StringBuilder checkRepeatedDate(List<Boolean> repeat) {
