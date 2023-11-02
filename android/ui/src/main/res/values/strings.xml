@@ -45,13 +45,13 @@
 
     <!-- 요일을 나타내는 문자열 배열 -->
     <string-array name="day_of_week_array_short_kr">
-        <item>일</item>
         <item>월</item>
         <item>화</item>
         <item>수</item>
         <item>목</item>
         <item>금</item>
         <item>토</item>
+        <item>일</item>
     </string-array>
 
     <!-- 체크리스트 항목용 문자열-->
