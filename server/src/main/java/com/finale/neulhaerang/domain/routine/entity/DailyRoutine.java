@@ -44,4 +44,8 @@ public class DailyRoutine {
 			.routineDate(date)
 			.build();
 	}
+
+	public void updateCheck() {
+		this.check = !this.check;
+	}
 }
