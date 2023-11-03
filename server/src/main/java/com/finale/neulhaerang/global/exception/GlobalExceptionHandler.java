@@ -11,7 +11,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
-import com.finale.neulhaerang.global.exception.common.NotValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.InValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.InValidPageIndexException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
@@ -32,6 +33,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(InValidPageIndexException.class)
+	protected ResponseEntity<ErrorResponse> inValidPageIndexException() {
+		log.error("page number is not valid");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_PAGE_INDEX.getErrorCode(),
+			ErrorCode.INVALID_PAGE_INDEX.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_PAGE_INDEX.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(InvalidStatKindException.class)
 	protected ResponseEntity<ErrorResponse> invalidStatKindException() {
@@ -178,12 +188,12 @@ public class GlobalExceptionHandler {
 			.body(errorResponse);
 	}
 
-	@ExceptionHandler(NotValidJwtTokenException.class)
+	@ExceptionHandler(InValidJwtTokenException.class)
 	protected ResponseEntity<ErrorResponse> notValidJwtTokenException() {
 		log.error("notvalid jwt");
-		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_VALID_TOKEN.getErrorCode(),
-			ErrorCode.NOT_VALID_TOKEN.getMessage());
-		return ResponseEntity.status(ErrorCode.NOT_VALID_TOKEN.getHttpStatus())
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TOKEN.getErrorCode(),
+			ErrorCode.INVALID_TOKEN.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_TOKEN.getHttpStatus())
 			.body(errorResponse);
 	}
 

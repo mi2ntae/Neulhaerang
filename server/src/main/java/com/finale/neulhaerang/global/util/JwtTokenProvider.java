@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.service.MemberService;
-import com.finale.neulhaerang.global.exception.common.NotValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.InValidJwtTokenException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -119,10 +119,10 @@ public class JwtTokenProvider {
 		} catch(ExpiredJwtException e) {
 			// 토큰, 리프레쉬 토큰 재발행
 			log.error("Expired JWT");
-			throw new NotValidJwtTokenException();
+			throw new InValidJwtTokenException();
 		} catch(JwtException e) {
 			log.error("JWT Exception");
-			throw new NotValidJwtTokenException();
+			throw new InValidJwtTokenException();
 		}
 	}
 

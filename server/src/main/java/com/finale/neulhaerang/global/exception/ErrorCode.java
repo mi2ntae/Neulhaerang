@@ -7,13 +7,16 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 	// 인증
-	NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, "A-001", "잘못된 형식의 토큰입니다."),
+	INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A-001", "잘못된 형식의 토큰입니다."),
 	AUTHENTICATION_ENTRY_POINT(HttpStatus.BAD_REQUEST, "A-002", "잘못된 접근입니다."),
 	EXPIRED_AUTH(HttpStatus.UNAUTHORIZED, "A-003", "유효하지 않은 인증 정보입니다. 다시 로그인해주세요."),
 	ACCESS_FORBIDDEN(HttpStatus.FORBIDDEN, "A-004", "해당 요청에 대한 권한이 존재하지 않습니다."),
 
 	// 멤버
 	NOT_EXIST_MEMBER(HttpStatus.INTERNAL_SERVER_ERROR, "M-001", "해당 사용자가 존재하지 않습니다."),
+
+	// 공통
+	INVALID_PAGE_INDEX(HttpStatus.BAD_REQUEST, "C-001", "올바르지 않은 페이지 번호입니다."),
 
 	// 캐릭터 정보
 	NOT_EXIST_CHARACTERINFO(HttpStatus.INTERNAL_SERVER_ERROR, "C-001", "해당 사용자의 캐릭터 정보가 존재하지 않습니다."),
