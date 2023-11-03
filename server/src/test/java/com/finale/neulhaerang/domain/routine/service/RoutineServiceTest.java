@@ -23,6 +23,7 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
+import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
@@ -337,6 +338,28 @@ class RoutineServiceTest extends BaseTest {
 			);
 	}
 
+	@DisplayName("루틴 삭제 시, 이미 삭제된 루틴이라면 에러를 반환합니다.")
+	@Test
+	void When_RemoveRoutineWithAlreadyRemovedRoutine_Expect_AlreadyRemoveRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력, LocalDate.of(2023, 8, 19));
+		Routine saveRoutine = routineRepository.save(routine);
+
+		DailyRoutine dailyRoutine = createDailyRoutine(saveRoutine, true, false);
+		DailyRoutine saveDailyRoutine = dailyRoutineRepository.save(dailyRoutine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(saveDailyRoutine.getId())
+			.routineId(saveRoutine.getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(AlreadyRemoveRoutineException.class);
+	}
+
 	@DisplayName("루틴 삭제 시, 해당 루틴이 존재하지 않으면 에러가 납니다.")
 	@Test
 	void When_RemoveRoutineWithNotExistRoutine_Expect_NotExistRoutineException() {
@@ -400,7 +423,28 @@ class RoutineServiceTest extends BaseTest {
 			.isInstanceOf(NotExistDailyRoutineException.class);
 	}
 
-	@DisplayName("데일리 루틴이 해당 루틴과 관계가 없으면 에러가 납니다.")
+	@DisplayName("루틴 삭제 시, 데일리 루틴의 날짜가 오늘 이전이라면 삭제가 불가능합니다.")
+	@Test
+	void When_RemoveRoutineWithBeforeToday_Expect_CanNotRemoveBeforeTodayException() {
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine saveRoutine = routineRepository.save(routine);
+
+		DailyRoutine dailyRoutine = createDailyRoutine(saveRoutine, true, false, LocalDate.now().minusDays(1));
+		DailyRoutine saveDailyRoutine = dailyRoutineRepository.save(dailyRoutine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(saveDailyRoutine.getId())
+			.routineId(saveRoutine.getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(CanNotRemoveBeforeTodayException.class);
+	}
+
+	@DisplayName("루틴 삭제 시, 데일리 루틴이 해당 루틴과 관계가 없으면 에러가 납니다.")
 	@Test
 	void When_RemoveRoutineWithNotEqualRoutine_Expect_NotExistRelationWithRoutine() {
 		Routine routine1 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
@@ -440,6 +484,15 @@ class RoutineServiceTest extends BaseTest {
 			.routine(routine)
 			.check(original)
 			.routineDate(LocalDate.now())
+			.status(status)
+			.build();
+	}
+
+	private DailyRoutine createDailyRoutine(Routine routine, boolean original, boolean status, LocalDate routineDate) {
+		return DailyRoutine.builder()
+			.routine(routine)
+			.check(original)
+			.routineDate(routineDate)
 			.status(status)
 			.build();
 	}
