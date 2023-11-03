@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
+import com.finale.neulhaerang.domain.member.dto.response.MemberProfileResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatRecordListResDto;
@@ -28,4 +29,6 @@ public interface MemberService {
 	int[] findStatChangeRecordLastDaysByStatType(int statType);
 
 	List<StatRecordListResDto> findStatChangeRecordByStatType(int statType, int page);
+
+	MemberProfileResDto findMemberProfileByMemberId(long memberId);
 }
