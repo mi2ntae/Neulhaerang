@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.domain.todo.controller;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.finale.neulhaerang.domain.todo.dto.request.TodoCreateReqDto;
 import com.finale.neulhaerang.domain.todo.dto.request.TodoModifyReqDto;
+import com.finale.neulhaerang.domain.todo.dto.response.CheckRatioListResDto;
 import com.finale.neulhaerang.domain.todo.dto.response.TodoListResDto;
 import com.finale.neulhaerang.domain.todo.service.TodoService;
 
@@ -57,5 +59,10 @@ public class TodoController {
 	public ResponseEntity<Void> modifyTodoByTodoId(@PathVariable Long todoId, @RequestBody @Valid TodoModifyReqDto todoModifyReqDto){
 		todoService.modifyTodoByTodoId(todoId, todoModifyReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@GetMapping("/done")
+	public ResponseEntity<List<CheckRatioListResDto>> findCheckRatioByMonth(@RequestParam("yearMonth") YearMonth yearMonth){
+		return ResponseEntity.status(HttpStatus.OK).body(todoService.findCheckRatioByMonth(yearMonth));
 	}
 }
