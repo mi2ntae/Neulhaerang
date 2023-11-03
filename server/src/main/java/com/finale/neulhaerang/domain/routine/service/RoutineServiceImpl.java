@@ -12,6 +12,7 @@ import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineRemoveReqDto;
 import com.finale.neulhaerang.domain.routine.dto.response.DailyRoutineResDto;
 import com.finale.neulhaerang.domain.routine.dto.response.RoutineResDto;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
@@ -20,9 +21,11 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
+import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
 import com.finale.neulhaerang.global.util.AuthenticationHandler;
 
@@ -99,7 +102,9 @@ public class RoutineServiceImpl implements RoutineService {
 		if (optionalRoutine.isEmpty()) {
 			throw new NotExistRoutineException(member.get(), routineModifyReqDto.getRoutineId());
 		}
-		if (!optionalRoutine.get().getDeleteDate().isAfter(LocalDate.now())) {
+		if (optionalRoutine.get().getDeleteDate() != null && !optionalRoutine.get()
+			.getDeleteDate()
+			.isAfter(LocalDate.now())) {
 			throw new AlreadyRemoveRoutineException(member.get(), optionalRoutine.get());
 		}
 		if (routineModifyReqDto.isAlarm()) {
@@ -113,6 +118,48 @@ public class RoutineServiceImpl implements RoutineService {
 		StringBuilder repeated = checkRepeatedDate(routineModifyReqDto.getRepeated());
 		optionalRoutine.get()
 			.updateContentAndAlarmAndAlarmTimeAndRepeated(routineModifyReqDto, repeated.toString());
+	}
+
+	@Override
+	public void removeRoutineByRoutineId(RoutineRemoveReqDto routineRemoveReqDto) {
+		Optional<DailyRoutine> optionalDailyRoutine = dailyRoutineRepository.findById(
+			routineRemoveReqDto.getDailyRoutineId());
+		if (optionalDailyRoutine.isEmpty()) {
+			throw new NotExistDailyRoutineException(
+				memberRepository.findById(authenticationHandler.getLoginMemberId()).get(),
+				routineRemoveReqDto.getDailyRoutineId());
+		}
+		if (optionalDailyRoutine.get().isStatus()) {
+			throw new AlreadyRemoveDailyRoutineException(
+				memberRepository.findById(authenticationHandler.getLoginMemberId()).get(),
+				optionalDailyRoutine.get());
+		}
+		if (optionalDailyRoutine.get().getRoutineDate().isBefore(LocalDate.now())) {
+			throw new CanNotRemoveBeforeTodayException(
+				memberRepository.findById(authenticationHandler.getLoginMemberId()).get(),
+				optionalDailyRoutine.get());
+		}
+		optionalDailyRoutine.get().updateStatus();
+		if (!routineRemoveReqDto.isNever()) {
+			return;
+		}
+		Optional<Routine> optionalRoutine = routineRepository.findById(routineRemoveReqDto.getRoutineId());
+		if (optionalRoutine.isEmpty()) {
+			throw new NotExistRoutineException(
+				memberRepository.findById(authenticationHandler.getLoginMemberId()).get(),
+				routineRemoveReqDto.getRoutineId());
+		}
+		if (!optionalRoutine.get().equals(optionalDailyRoutine.get().getRoutine())) {
+			throw new NotExistRelationWithRoutineException(
+				memberRepository.findById(authenticationHandler.getLoginMemberId()).get(), optionalDailyRoutine.get(),
+				optionalRoutine.get());
+		}
+		if (optionalRoutine.get().getDeleteDate() != null) {
+			throw new AlreadyRemoveRoutineException(
+				memberRepository.findById(authenticationHandler.getLoginMemberId()).get(),
+				optionalRoutine.get());
+		}
+		optionalRoutine.get().updateDeleteDate(LocalDate.now());
 	}
 
 	private static StringBuilder checkRepeatedDate(List<Boolean> repeat) {

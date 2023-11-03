@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineRemoveReqDto;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.routine.service.RoutineService;
 import com.finale.neulhaerang.global.util.BaseTest;
@@ -239,6 +240,64 @@ class RoutineControllerTest extends BaseTest {
 		mockMvc.perform(
 				patch("/routine")
 					.content(objectMapper.writeValueAsString(routineModifyReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("루틴을 삭제합니다.")
+	@Test
+	void When_RemoveRoutine_Expect_IsOk() throws Exception {
+		// given
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(1L)
+			.routineId(1L)
+			.never(true)
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine/remove")
+					.content(objectMapper.writeValueAsString(routineRemoveReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
+
+	@DisplayName("루틴을 삭제 시, routineId는 필수입니다.")
+	@Test
+	void When_ModifyRoutineWithoutRoutineId_Expect_IsBadRequest() throws Exception {
+		// given
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(1L)
+			.never(true)
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine/remove")
+					.content(objectMapper.writeValueAsString(routineRemoveReqDto))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("루틴을 삭제 시, dailyRoutineId는 필수입니다.")
+	@Test
+	void When_ModifyRoutineWithoutDailyRoutineId_Expect_IsBadRequest() throws Exception {
+		// given
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.routineId(1L)
+			.never(true)
+			.build();
+
+		// when // then
+		mockMvc.perform(
+				patch("/routine/remove")
+					.content(objectMapper.writeValueAsString(routineRemoveReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
