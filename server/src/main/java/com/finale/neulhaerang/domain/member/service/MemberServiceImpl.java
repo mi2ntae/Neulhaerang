@@ -257,8 +257,8 @@ public class MemberServiceImpl implements MemberService {
 
 		Member member = optionalMember.get();
 		StringBuilder titleBuilder = new StringBuilder();
-		if(member.getTitle_id() != 0) {
-			Optional<Title> optionalTitle = titleRepository.findById(member.getTitle_id());
+		if(member.getTitleId() != 0) {
+			Optional<Title> optionalTitle = titleRepository.findById(member.getTitleId());
 			if(optionalTitle.isEmpty()) {
 				titleBuilder.append("Unknown");
 			} else {
