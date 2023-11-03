@@ -14,4 +14,7 @@ public interface DailyRoutineRepository extends JpaRepository<DailyRoutine, Long
 
 	List<DailyRoutine> findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(LocalDate routineDate,
 		Member member);
+
+	List<DailyRoutine> findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalseAndCheckIsTrue(LocalDate routineDate,
+		Member member);
 }
