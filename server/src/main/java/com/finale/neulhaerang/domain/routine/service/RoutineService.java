@@ -14,7 +14,8 @@ public interface RoutineService {
 
 	void modifyDailyRoutineCheckByDailyRoutineId(Long dailyRoutineId);
 
-	void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(RoutineModifyReqDto routineModifyReqDto);
+	void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(Long routineId,
+		RoutineModifyReqDto routineModifyReqDto);
 
 	void removeRoutineByRoutineId(RoutineRemoveReqDto routineRemoveReqDto);
 }

@@ -49,9 +49,10 @@ public class RoutineController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	@PatchMapping
-	public ResponseEntity<Void> modifyRoutineByRoutineId(@RequestBody @Valid RoutineModifyReqDto routineModifyReqDto) {
-		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto);
+	@PatchMapping("/{routineId}")
+	public ResponseEntity<Void> modifyRoutineByRoutineId(@PathVariable Long routineId,
+		@RequestBody @Valid RoutineModifyReqDto routineModifyReqDto) {
+		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineId, routineModifyReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
