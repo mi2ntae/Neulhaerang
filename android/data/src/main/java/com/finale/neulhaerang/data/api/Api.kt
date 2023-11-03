@@ -2,6 +2,7 @@ package com.finale.neulhaerang.data.api
 
 import android.util.Log
 import com.finale.neulhaerang.data.util.GsonDateFormatAdapter
+import com.finale.neulhaerang.data.util.GsonDateTimeFormatAdapter
 import com.finale.neulhaerang.data.util.GsonTimeFormatAdapter
 import com.finale.neulhaerang.data.util.ResponseResultAdapter
 import com.google.gson.Gson
@@ -12,6 +13,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -27,7 +29,8 @@ interface Api {
 
         // JSON 파싱용 Gson
         private val gson: Gson = GsonBuilder().setLenient()
-            .registerTypeAdapter(LocalDateTime::class.java, GsonDateFormatAdapter())
+            .registerTypeAdapter(LocalDateTime::class.java, GsonDateTimeFormatAdapter())
+            .registerTypeAdapter(LocalDate::class.java, GsonDateFormatAdapter())
             .registerTypeAdapter(LocalTime::class.java, GsonTimeFormatAdapter())
             .create()
 

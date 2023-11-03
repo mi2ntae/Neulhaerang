@@ -96,6 +96,7 @@ class ChecklistCreationViewModel() : ViewModel() {
             // 투두 생성
             val request = TodoReqDto(
                 content = _content.value,
+                alarm = _alarm.value,
                 statType = _stat.value.statName,
                 todoDate = _dateTime.value
             )
