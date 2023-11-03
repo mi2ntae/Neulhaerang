@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
@@ -14,13 +15,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 enum class AppNavItem(
     val description: String,
     val route: String,
-    val icon: ImageVector?
+    val icon: ImageVector?,
 ) {
-    Login("로그인","login",null),
+    Login("로그인", "login", null),
     Main("메인", "main", Icons.Rounded.Home),
     MyPage("마이페이지", "mypage", Icons.Rounded.Person),
     Social("소셜", "social", Icons.Rounded.LocationOn),
     ChecklistCreation("체크리스트 생성", "checklist_creation", null),
+    Setting("설정", "setting", Icons.Rounded.Settings)
 }
 
 /**
