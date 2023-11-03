@@ -17,6 +17,7 @@ import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
+import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
@@ -30,6 +31,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(CanNotRemoveBeforeTodayException.class)
+	protected ResponseEntity<ErrorResponse> canNotRemoveBeforeTodayException() {
+		log.error("Daily routine from before today cannot be deleted.");
+		ErrorResponse errorResponse = ErrorResponse.of(
+			ErrorCode.CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY.getErrorCode(),
+			ErrorCode.CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY.getMessage());
+		return ResponseEntity.status(ErrorCode.CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY.getHttpStatus())
+			.body(errorResponse);
+	}
+
 	@ExceptionHandler(NotExistRelationWithRoutineException.class)
 	protected ResponseEntity<ErrorResponse> notExistRelationWithRoutineException() {
 		log.error("This daily routine is not related to that routine.");
