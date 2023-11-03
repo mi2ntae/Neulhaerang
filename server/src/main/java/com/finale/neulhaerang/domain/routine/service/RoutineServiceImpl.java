@@ -95,12 +95,12 @@ public class RoutineServiceImpl implements RoutineService {
 	}
 
 	@Override
-	public void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(
+	public void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(Long routineId,
 		RoutineModifyReqDto routineModifyReqDto) {
 		Optional<Member> member = memberRepository.findById(authenticationHandler.getLoginMemberId());
-		Optional<Routine> optionalRoutine = routineRepository.findById(routineModifyReqDto.getRoutineId());
+		Optional<Routine> optionalRoutine = routineRepository.findById(routineId);
 		if (optionalRoutine.isEmpty()) {
-			throw new NotExistRoutineException(member.get(), routineModifyReqDto.getRoutineId());
+			throw new NotExistRoutineException(member.get(), routineId);
 		}
 		if (optionalRoutine.get().getDeleteDate() != null && !optionalRoutine.get()
 			.getDeleteDate()
