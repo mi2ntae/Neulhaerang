@@ -23,4 +23,6 @@ public interface MemberService {
 	void createStat(StatRecord statRecord);
 
 	List<StatListResDto> findAllStatsByMemberId(long memberId) throws NotExistMemberException;
+
+	int[] findStatChangeRecordLastDaysByStatType(int statType);
 }

@@ -24,6 +24,7 @@ import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberStatRepository;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
@@ -45,7 +46,8 @@ public class MemberServiceImpl implements MemberService{
 
 	private final AuthenticationHandler authenticationHandler;
 
-	private static final int STAT_NUMS = 6;
+	private static final int VALID_STAT_NUMS = 6;
+	private static final int STAT_CHANGE_RECORD_DAYS = 7;
 	private int[] scores = new int[] {90,80,70,60,50};	// A+, A, B+, B, C+
 	private String[] levels = new String[] {"A+", "A", "B+", "B", "C+", "C"};
 
@@ -134,7 +136,7 @@ public class MemberServiceImpl implements MemberService{
 		}
 
 		MemberStat memberStat = optionalMemberStat.get();
-		int[] stats = new int[STAT_NUMS];
+		int[] stats = new int[VALID_STAT_NUMS];
 		memberStat.getRecords().stream()
 			.filter(record -> !record.getStatType().equals(StatType.피곤도) && !record.getStatType().equals(StatType.나태도))
 			.forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
@@ -145,6 +147,44 @@ public class MemberServiceImpl implements MemberService{
 			.level(getLevelByScore(stat)).build())
 		);
 		return statListResDtos;
+	}
+
+	@Override
+	public int[] findStatChangeRecordLastDaysByStatType(int statType) throws InvalidStatKindException, NotExistMemberException{
+		if(statType < 0 || statType >= VALID_STAT_NUMS) {
+			throw new InvalidStatKindException();
+		}
+
+		Optional<MemberStat> optionalMemberStat = memberStatRepository.findMemberStatByMemberId(authenticationHandler.getLoginMemberId());
+		if(optionalMemberStat.isEmpty()) {
+			throw new NotExistMemberException();
+		}
+
+		MemberStat memberStat = optionalMemberStat.get();
+		LocalDateTime now = LocalDateTime.now();
+
+		int[] changeRecords = new int[STAT_CHANGE_RECORD_DAYS+1];
+
+		memberStat.getRecords().stream().filter(r -> r.getStatType().ordinal() == statType)
+			.forEach(record -> {
+				if (record.getRecordedDate()
+					.toLocalDate()
+					.isBefore(now.minusDays(STAT_CHANGE_RECORD_DAYS).toLocalDate())) {
+					changeRecords[STAT_CHANGE_RECORD_DAYS] += record.getWeight();
+				} else {
+					for (int k = STAT_CHANGE_RECORD_DAYS; k > 0; k--) {
+						if (record.getRecordedDate().toLocalDate().isEqual(now.minusDays(k).toLocalDate())) {
+							changeRecords[STAT_CHANGE_RECORD_DAYS - k] += record.getWeight();
+						}
+					}
+				}
+			});
+
+		changeRecords[0] += changeRecords[STAT_CHANGE_RECORD_DAYS];
+		for(int i = 0; i < STAT_CHANGE_RECORD_DAYS-1; i++) {
+			changeRecords[i+1] += changeRecords[i];
+		}
+		return Arrays.copyOfRange(changeRecords, 0, STAT_CHANGE_RECORD_DAYS);
 	}
 
 	private String getLevelByScore(int score) {

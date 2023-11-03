@@ -12,6 +12,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NotValidJwtTokenException;
+import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
+import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
@@ -31,6 +33,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(InvalidStatKindException.class)
+	protected ResponseEntity<ErrorResponse> invalidStatKindException() {
+		log.error("Stat kind is not valid. Out of boundary");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_STAT_KIND.getErrorCode(),
+			ErrorCode.INVALID_STAT_KIND.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_STAT_KIND.getHttpStatus())
+			.body(errorResponse);
+	}
+
 	@ExceptionHandler(CanNotRemoveBeforeTodayException.class)
 	protected ResponseEntity<ErrorResponse> canNotRemoveBeforeTodayException() {
 		log.error("Daily routine from before today cannot be deleted.");
