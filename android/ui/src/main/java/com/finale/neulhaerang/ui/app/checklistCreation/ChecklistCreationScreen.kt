@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -45,35 +46,31 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChecklistCreationScreen(navController: NavHostController) {
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "체크리스트 작성"
-                    )
-                }, navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.go_back)
-                        )
-                    }
-                }, colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+        TopAppBar(title = {
+            Text(
+                text = "체크리스트 작성"
             )
-        }
-    ) {
+        }, navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(id = R.string.go_back)
+                )
+            }
+        }, colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
+        )
+    }) {
         Content(
             modifier = Modifier
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
-                .fillMaxSize(),
-            navController = navController
+                .imePadding()
+                .fillMaxSize(), navController = navController
         )
     }
 }
@@ -126,9 +123,7 @@ fun Content(
             onClick = {
                 viewModel.makeChecklist()
                 navController.popBackStack()
-            },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
+            }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.complete),

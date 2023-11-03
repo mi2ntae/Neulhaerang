@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
 import com.finale.neulhaerang.ui.app.App
 
 /**
@@ -21,6 +22,9 @@ import com.finale.neulhaerang.ui.app.App
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        
         setContent {
             BackOnPressed()
             App()

@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.app.checklistCreation.ChecklistCreationScreen
+import com.finale.neulhaerang.ui.app.config.SettingScreen
 import com.finale.neulhaerang.ui.app.login.LoginScreen
 import com.finale.neulhaerang.ui.app.main.MainScreen
 import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
@@ -58,7 +59,9 @@ fun AppMain() {
             composable(route = AppNavItem.ChecklistCreation.route) {
                 ChecklistCreationScreen(navController = navController)
             }
-
+            composable(route = AppNavItem.Setting.route) {
+                SettingScreen(navController = navController)
+            }
         }
     }
 }
