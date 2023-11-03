@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.finale.neulhaerang.domain.member.document.StatRecord;
+import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
+import com.finale.neulhaerang.domain.member.dto.response.StatRecordListResDto;
 import com.finale.neulhaerang.domain.member.service.MemberService;
 
 import io.swagger.annotations.Api;
@@ -63,11 +64,17 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.OK).body(memberService.findStatChangeRecordLastDaysByStatType(statType));
 	}
 
+	@ApiOperation(value = "멤버 스탯 변경 내역", notes = "멤버 특정 스탯 변경 내역 리스트 조회")
+	@GetMapping("/stat/detail")
+	public ResponseEntity<List<StatRecordListResDto>> findStatChangeRecordByStatType(@RequestParam int statType, @RequestParam int page) {
+		return ResponseEntity.status(HttpStatus.OK).body(memberService.findStatChangeRecordByStatType(statType, page));
+	}
+
 	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
 	@ApiOperation(value = "테스트", notes = "Mongo 테스트")
 	@PostMapping("/mongo")
-	public ResponseEntity<Void> mongo(@RequestBody StatRecord statRecord) {
-		memberService.createStat(statRecord);
+	public ResponseEntity<Void> mongo(@RequestBody StatRecordReqDto statRecordReqDto) {
+		memberService.createStat(statRecordReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
