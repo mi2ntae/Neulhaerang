@@ -3,6 +3,7 @@ package com.finale.neulhaerang.data.util
 /**
  * API 통신을 위한 wrapper 클래스
  * 성공과 실패로 이루어짐
+ * 반환이 없는 성공과 실패는 제너릭에 Any를 넣어 null을 받을 수 있게 사용
  * onSuccess 로 성공 시의 처리를, onFailure 로 실패 시의 처리를 하면 됨
  *
  * @property code http 상태 코드
