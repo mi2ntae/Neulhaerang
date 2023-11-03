@@ -7,13 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,7 +34,6 @@ import com.finale.neulhaerang.ui.theme.Typography
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController) {
     var tabIndex by remember { mutableIntStateOf(0) }
@@ -47,9 +47,13 @@ fun MainScreen(navController: NavHostController) {
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            AppHeader()
+            AppHeader(navController = navController)
             StatusBar()
-            Calendar(currentDate = currentDate, selectedDate = selectedDate.toLocalDate(), setDateTime = setDateTime)
+            Calendar(
+                currentDate = currentDate,
+                selectedDate = selectedDate.toLocalDate(),
+                setDateTime = setDateTime
+            )
             Column(modifier = Modifier.fillMaxWidth()) {
                 TabRow(selectedTabIndex = tabIndex) {
                     tabs.forEachIndexed { index, title ->
@@ -79,7 +83,10 @@ fun ChecklistCreationButton(navController: NavHostController) {
 }
 
 @Composable
-fun AppHeader(modifier: Modifier = Modifier) {
+fun AppHeader(
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+) {
     Row(
         modifier = modifier
             .padding(16.dp)
@@ -88,7 +95,13 @@ fun AppHeader(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "늘해랑", style = Typography.titleLarge)
-        Text(text = "설정", style = Typography.labelLarge)
+        TextButton(onClick = { navController.stackNavigate(AppNavItem.Setting.route) }) {
+            Text(
+                text = "설정",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = Typography.labelLarge
+            )
+        }
     }
 
 }
