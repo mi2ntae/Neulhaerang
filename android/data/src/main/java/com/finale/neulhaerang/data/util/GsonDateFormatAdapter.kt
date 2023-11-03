@@ -16,6 +16,9 @@ const val datePattern = "yyyy-MM-dd"
 const val timePattern = "HH:mm"
 const val dateTimePattern = "$datePattern $timePattern" // "yyyy-MM-dd HH:mm"
 
+/**
+ * LocalDateTime Serializer & Deserializer
+ */
 class GsonDateTimeFormatAdapter : JsonSerializer<LocalDateTime?>, JsonDeserializer<LocalDateTime?> {
     @Synchronized
     override fun serialize(
@@ -40,6 +43,10 @@ class GsonDateTimeFormatAdapter : JsonSerializer<LocalDateTime?>, JsonDeserializ
     }
 }
 
+
+/**
+ * LocalDateTime Serializer & Deserializer
+ */
 class GsonDateFormatAdapter : JsonSerializer<LocalDate?>, JsonDeserializer<LocalDate?> {
     override fun serialize(
         src: LocalDate?,
@@ -58,6 +65,10 @@ class GsonDateFormatAdapter : JsonSerializer<LocalDate?>, JsonDeserializer<Local
     }
 }
 
+
+/**
+ * LocalDateTime Serializer & Deserializer
+ */
 class GsonTimeFormatAdapter : JsonSerializer<LocalTime?>, JsonDeserializer<LocalTime?> {
     override fun serialize(
         src: LocalTime?,
