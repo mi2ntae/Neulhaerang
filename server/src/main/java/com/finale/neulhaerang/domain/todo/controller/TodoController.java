@@ -49,7 +49,7 @@ public class TodoController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	@PatchMapping("/remove/{todoId}")
+	@PatchMapping("/status/{todoId}")
 	public ResponseEntity<Void> removeTodoByTodoId(@PathVariable Long todoId){
 		todoService.removeTodoByTodoId(todoId);
 		return ResponseEntity.status(HttpStatus.OK).build();
