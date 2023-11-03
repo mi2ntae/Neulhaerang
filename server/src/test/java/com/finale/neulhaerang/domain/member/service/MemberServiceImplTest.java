@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
+import com.finale.neulhaerang.domain.member.dto.response.MemberProfileResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatRecordListResDto;
@@ -206,6 +207,25 @@ class MemberServiceImplTest extends BaseTest {
 		// when then
 		assertThatThrownBy(() -> memberService.findStatChangeRecordByStatType(statNo, page)).isInstanceOf(
 			InValidPageIndexException.class);
+	}
+
+	@Test
+	@DisplayName("회원의 아이디로 프로필 정보를 조회할 경우, MemberProfileResDto 형식으로 결과를 반환한다")
+	void When_FindMemberProfileByMemberId_Expect_MemberProfileResDto() {
+
+		// when then
+		assertThat(memberService.findMemberProfileByMemberId(member.getId())).isInstanceOf(MemberProfileResDto.class);
+	}
+
+	@Test
+	@DisplayName("회원의 아이디로 프로필 정보를 조회할 경우, 존재하지 않는 멤버의 스탯을 조회하면 예외를 발생시킨다.")
+	void When_FindMemberProfileByNotExistMemberId_Expect_ThrowException() {
+		// given
+		int memberId = -1;
+
+		// when then
+		assertThatThrownBy(() -> memberService.findMemberProfileByMemberId(memberId)).isInstanceOf(
+			NotExistMemberException.class);
 	}
 
 	private static CharacterInfo createCharacterInfo(Member member) {
