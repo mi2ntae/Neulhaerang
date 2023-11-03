@@ -144,7 +144,6 @@ class RoutineControllerTest extends BaseTest {
 	void When_ModifyRoutine_Expect_IsOk() throws Exception {
 		// given
 		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
-			.routineId(1L)
 			.content("아침부터 일어나기")
 			.repeated(List.of(true, true, true, true, true, true, true))
 			.alarm(true)
@@ -153,7 +152,7 @@ class RoutineControllerTest extends BaseTest {
 
 		// when // then
 		mockMvc.perform(
-				patch("/routine")
+				patch("/routine/1")
 					.content(objectMapper.writeValueAsString(routineModifyReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -161,33 +160,11 @@ class RoutineControllerTest extends BaseTest {
 			.andExpect(status().isOk());
 	}
 
-	@DisplayName("루틴을 수정 시, routineId 값은 필수입니다.")
-	@Test
-	void When_ModifyRoutine_Expect_IsBadRequest() throws Exception {
-		// given
-		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
-			.content("아침부터 일어나기")
-			.repeated(List.of(true, true, true, true, true, true, true))
-			.alarm(true)
-			.alarmTime(LocalTime.of(8, 30, 0))
-			.build();
-
-		// when // then
-		mockMvc.perform(
-				patch("/routine")
-					.content(objectMapper.writeValueAsString(routineModifyReqDto))
-					.contentType(MediaType.APPLICATION_JSON)
-			)
-			.andDo(print())
-			.andExpect(status().isBadRequest());
-	}
-
 	@DisplayName("루틴을 수정 시, content 값은 필수입니다.")
 	@Test
 	void When_ModifyRoutineWithoutContnet_Expect_IsBadRequest() throws Exception {
 		// given
 		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
-			.routineId(1L)
 			.repeated(List.of(true, true, true, true, true, true, true))
 			.alarm(true)
 			.alarmTime(LocalTime.of(8, 30, 0))
@@ -195,7 +172,7 @@ class RoutineControllerTest extends BaseTest {
 
 		// when // then
 		mockMvc.perform(
-				patch("/routine")
+				patch("/routine/1")
 					.content(objectMapper.writeValueAsString(routineModifyReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -208,7 +185,6 @@ class RoutineControllerTest extends BaseTest {
 	void When_ModifyRoutineWithBlankContnet_Expect_IsBadRequest() throws Exception {
 		// given
 		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
-			.routineId(1L)
 			.content(" ")
 			.repeated(List.of(true, true, true, true, true, true, true))
 			.alarm(true)
@@ -217,7 +193,7 @@ class RoutineControllerTest extends BaseTest {
 
 		// when // then
 		mockMvc.perform(
-				patch("/routine")
+				patch("/routine/1")
 					.content(objectMapper.writeValueAsString(routineModifyReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -230,7 +206,6 @@ class RoutineControllerTest extends BaseTest {
 	void When_ModifyRoutineWithoutRepeated_Expect_IsBadRequest() throws Exception {
 		// given
 		RoutineModifyReqDto routineModifyReqDto = RoutineModifyReqDto.builder()
-			.routineId(1L)
 			.content("양치걸")
 			.alarm(true)
 			.alarmTime(LocalTime.of(8, 30, 0))
@@ -238,7 +213,7 @@ class RoutineControllerTest extends BaseTest {
 
 		// when // then
 		mockMvc.perform(
-				patch("/routine")
+				patch("/routine/1")
 					.content(objectMapper.writeValueAsString(routineModifyReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -258,7 +233,7 @@ class RoutineControllerTest extends BaseTest {
 
 		// when // then
 		mockMvc.perform(
-				patch("/routine/remove")
+				patch("/routine/status")
 					.content(objectMapper.writeValueAsString(routineRemoveReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -277,7 +252,7 @@ class RoutineControllerTest extends BaseTest {
 
 		// when // then
 		mockMvc.perform(
-				patch("/routine/remove")
+				patch("/routine/status")
 					.content(objectMapper.writeValueAsString(routineRemoveReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -296,7 +271,7 @@ class RoutineControllerTest extends BaseTest {
 
 		// when // then
 		mockMvc.perform(
-				patch("/routine/remove")
+				patch("/routine/status")
 					.content(objectMapper.writeValueAsString(routineRemoveReqDto))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
