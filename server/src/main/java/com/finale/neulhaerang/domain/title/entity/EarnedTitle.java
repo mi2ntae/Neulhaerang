@@ -34,4 +34,11 @@ public class EarnedTitle {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "title_id", nullable = false)
 	private Title title;
+
+	public static EarnedTitle create(Member member, Title title) {
+		return EarnedTitle.builder()
+			.member(member)
+			.title(title)
+			.build();
+	}
 }
