@@ -246,6 +246,48 @@ class TodoServiceTest extends BaseTest {
 			.isInstanceOf(InvalidTodoDateException.class);
 	}
 
+	@Test
+	@DisplayName("주어진 년도와 달이 현재 날짜의 달이 아닐 때 해당 달 전체의 투두와 루틴의 완료 비율 구하는 테스트")
+	public void When_FindDoneRatioByYearAndMonth_Expect_DoneRatioList(){
+		// given
+		Todo todo1 = this.createTodo("todo1",StatType.생존력,LocalDateTime.of(2023, 10,1,13,30),false); // 완료하지 않은 투두
+		Todo todo2 = this.createTodo("todo2",StatType.인싸력,LocalDateTime.of(2023, 10,4,13,30),true);
+		Todo todo3 = this.createTodo("todo3",StatType.갓생력,LocalDateTime.of(2023, 10,20,13,30),true);
+		Todo todo4 = this.createTodo("todo4",StatType.창의력,LocalDateTime.of(2023, 10,20,13,30),true);
+		Todo todo5 = this.createTodo("todo5", StatType.최애력, LocalDateTime.of(2023, 10,30,13,30),true);
+		todoRepository.saveAll(List.of(todo1, todo2, todo3, todo4, todo5));
+
+		Routine routine1 = createRoutine("routine1", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine("routine2", "0110000", false, StatType.생존력);
+		Routine routine3 = createRoutine("routine3", "0101000", false, StatType.생존력);
+		routineRepository.saveAll(List.of(routine1, routine2, routine3));
+
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, LocalDate.of(2023, 10, 1));
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routine2, true, LocalDate.of(2023, 10, 4));
+		DailyRoutine dailyRoutine3 = createDailyRoutine(routine2, true, LocalDate.of(2023, 10, 20));
+		DailyRoutine dailyRoutine4 = createDailyRoutine(routine3, false, LocalDate.of(2023, 10, 20));
+		DailyRoutine dailyRoutine5 = createDailyRoutine(routine3, false, LocalDate.of(2023, 10, 27));
+		dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2, dailyRoutine3, dailyRoutine4, dailyRoutine5));
+
+		YearMonth yearMonth = YearMonth.of(2023, 10);
+
+		// when
+		List<CheckRatioListResDto> ratioList = todoService.findCheckRatioByMonth(yearMonth);
+
+		// then
+		assertThat(ratioList).hasSize(yearMonth.lengthOfMonth())
+			.extracting("date","ratio")
+			.contains(
+				tuple(LocalDate.of(2023,10,1), (double)1/2),
+				tuple(LocalDate.of(2023,10,4), (double)1),
+				tuple(LocalDate.of(2023,10,10), (double)0),
+				tuple(LocalDate.of(2023,10,20), (double)3/4),
+				tuple(LocalDate.of(2023,10,27), (double)0/1),
+				tuple(LocalDate.of(2023,10,30), (double)1)
+			)
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate, boolean check){
 		return Todo.builder()
 			.member(member)
@@ -261,6 +303,26 @@ class TodoServiceTest extends BaseTest {
 			.alarm(alarm)
 			.content(content)
 			.todoDate(todoDate)
+			.statType(statType)
+			.build();
+	}
+
+	private DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date) {
+		return DailyRoutine.builder()
+			.routine(routine)
+			.check(check)
+			.routineDate(date)
+			.status(false)
+			.build();
+	}
+
+	private Routine createRoutine(String content, String repeated, boolean alarm,
+		StatType statType) {
+		return Routine.builder()
+			.member(member)
+			.content(content)
+			.repeated(repeated)
+			.alarm(alarm)
 			.statType(statType)
 			.build();
 	}
