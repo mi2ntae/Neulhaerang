@@ -88,6 +88,36 @@ class DailyRoutineRepositoryTest extends BaseTest {
 			);
 	}
 
+	@DisplayName("로그인 한 사용자가 요청한 날짜에 완료한 dailyRoutine 리스트를 반환합니다.")
+	@Test
+	void When_FindDailyRoutineByDate_Expect_DoneDailyRoutineList() {
+		// given
+		Routine routine1 = createRoutine("양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine("양치하기2", "0110000", false, StatType.생존력);
+		Routine routine3 = createRoutine("양치하기3", "0101000", false, StatType.생존력);
+		routineRepository.saveAll(List.of(routine1, routine2, routine3));
+
+		LocalDate date = LocalDate.of(2023, 8, 19);
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date, false);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routine2, false, date, false); // 완료하지 않은 루틴
+		DailyRoutine dailyRoutine3 = createDailyRoutine(routine2, true, LocalDate.now(), false);  // 주어진 날짜와 다른 날의 루틴
+		DailyRoutine dailyRoutine4 = createDailyRoutine(routine3, false, date, true); // 삭제된 루틴
+		DailyRoutine dailyRoutine5 = createDailyRoutine(routine3, true, date, false);
+		dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2, dailyRoutine3, dailyRoutine4, dailyRoutine5));
+
+		// when
+		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalseAndCheckIsTrue(
+			date, member);
+
+		// then
+		assertThat(dailyRoutines).hasSize(2)
+			.extracting("routine", "check", "routineDate")
+			.containsExactlyInAnyOrder(
+				tuple(routine1, true, date),
+				tuple(routine3, true, date)
+			);
+	}
+
 	private DailyRoutine createDailyRoutine(Routine routine, boolean check, LocalDate date, boolean status) {
 		return DailyRoutine.builder()
 			.routine(routine)
