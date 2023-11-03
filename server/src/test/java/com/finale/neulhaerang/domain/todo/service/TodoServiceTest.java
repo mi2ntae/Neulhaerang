@@ -288,6 +288,22 @@ class TodoServiceTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("주어진 년도와 달이 현재 날짜의 달일 때 오늘 날짜까지의 데이터만 주는지 확인하는 테스트")
+	public void When_FindDoneRatioByYearAndMonth_Expect_DoneRatioListUntilToday(){
+		// given
+		int year = LocalDate.now().getYear();
+		int month = LocalDate.now().getMonthValue();
+		YearMonth yearMonth = YearMonth.of(year, month);
+
+		// when
+		List<CheckRatioListResDto> ratioList = todoService.findCheckRatioByMonth(yearMonth);
+
+		// then
+		assertThat(ratioList).hasSize(LocalDate.now().getDayOfMonth())
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate, boolean check){
 		return Todo.builder()
 			.member(member)
