@@ -208,19 +208,22 @@ class RoutineServiceTest extends BaseTest {
 		Routine routine3 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력, LocalDate.now().plusDays(1));
 		List<Routine> routines = routineRepository.saveAll(List.of(routine1, routine2, routine3));
 
-		RoutineModifyReqDto routineModifyReqDto1 = createRoutineModifyDto(routines.get(0).getId(), true,
+		RoutineModifyReqDto routineModifyReqDto1 = createRoutineModifyDto(true,
 			LocalTime.of(8, 10, 0), "양치 꼭 하기", List.of(true, true, true, true, true, true, true));
 
-		RoutineModifyReqDto routineModifyReqDto2 = createRoutineModifyDto(routines.get(1).getId(), false,
+		RoutineModifyReqDto routineModifyReqDto2 = createRoutineModifyDto(false,
 			null, "양치 꼭 하기", List.of(true, true, true, true, true, true, true));
 
-		RoutineModifyReqDto routineModifyReqDto3 = createRoutineModifyDto(routines.get(2).getId(), true,
+		RoutineModifyReqDto routineModifyReqDto3 = createRoutineModifyDto(true,
 			LocalTime.of(8, 10, 0), "양치 꼭 하기", List.of(true, true, true, true, true, true, true));
 
 		// when
-		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto1);
-		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto2);
-		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto3);
+		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routines.get(0).getId(),
+			routineModifyReqDto1);
+		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routines.get(1).getId(),
+			routineModifyReqDto2);
+		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routines.get(2).getId(),
+			routineModifyReqDto3);
 
 		// then
 		List<Routine> routine = routineRepository.findAll();
@@ -237,12 +240,13 @@ class RoutineServiceTest extends BaseTest {
 	@Test
 	void When_ModifyRoutineWithInvalidId_Expect_NotExistRoutineException() {
 		// given
-		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(1L, true,
+		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(true,
 			LocalTime.of(8, 10, 0), "양치 꼭 하기", List.of(true, true, true, true, true, true, true));
 
 		// when // then
 		assertThatThrownBy(
-			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto))
+			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(1L,
+				routineModifyReqDto))
 			.isInstanceOf(NotExistRoutineException.class);
 	}
 
@@ -253,12 +257,13 @@ class RoutineServiceTest extends BaseTest {
 		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력, LocalDate.now());
 		Routine save = routineRepository.save(routine);
 
-		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(save.getId(), true,
+		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(true,
 			LocalTime.of(8, 10, 0), "양치 꼭 하기", List.of(true, true, true, true, true, true, true));
 
 		// when // then
 		assertThatThrownBy(
-			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto))
+			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(save.getId(),
+				routineModifyReqDto))
 			.isInstanceOf(AlreadyRemoveRoutineException.class);
 	}
 
@@ -268,12 +273,13 @@ class RoutineServiceTest extends BaseTest {
 		// given
 		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
 		Routine save = routineRepository.save(routine);
-		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(save.getId(), true, null, "아침밥",
+		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(true, null, "아침밥",
 			List.of(true, true, true, false, false, false, false));
 
 		// when // then
 		assertThatThrownBy(
-			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto))
+			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(save.getId(),
+				routineModifyReqDto))
 			.isInstanceOf(NotExistAlarmTimeException.class);
 	}
 
@@ -283,12 +289,13 @@ class RoutineServiceTest extends BaseTest {
 		// given
 		Routine routine = createRoutine(member, "양치하기", "0010000", true, StatType.생존력);
 		Routine save = routineRepository.save(routine);
-		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(save.getId(), false, null, "아침밥",
+		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(false, null, "아침밥",
 			List.of(true, true, true, false, false, false));
 
 		// when // then
 		assertThatThrownBy(
-			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto))
+			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(save.getId(),
+				routineModifyReqDto))
 			.isInstanceOf(InvalidRepeatedDateException.class);
 	}
 
@@ -467,11 +474,10 @@ class RoutineServiceTest extends BaseTest {
 			.isInstanceOf(NotExistRelationWithRoutineException.class);
 	}
 
-	private RoutineModifyReqDto createRoutineModifyDto(Long routineId, boolean alarm, LocalTime alarmTime,
+	private RoutineModifyReqDto createRoutineModifyDto(boolean alarm, LocalTime alarmTime,
 		String content, List<Boolean> repeated) {
 
 		return RoutineModifyReqDto.builder()
-			.routineId(routineId)
 			.alarm(alarm)
 			.alarmTime(alarmTime)
 			.content(content)
