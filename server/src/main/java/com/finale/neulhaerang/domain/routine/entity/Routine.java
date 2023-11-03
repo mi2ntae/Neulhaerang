@@ -75,4 +75,8 @@ public class Routine {
 		this.alarm = routineModifyReqDto.isAlarm();
 		this.alarmTime = routineModifyReqDto.isAlarm() ? routineModifyReqDto.getAlarmTime() : null;
 	}
+
+	public void updateDeleteDate(LocalDate deleteDate) {
+		this.deleteDate = deleteDate;
+	}
 }
