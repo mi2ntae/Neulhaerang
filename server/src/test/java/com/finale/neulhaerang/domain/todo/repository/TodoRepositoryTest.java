@@ -20,13 +20,13 @@ class TodoRepositoryTest extends BaseTest {
 	private TodoRepository todoRepository;
 
 	@Test
-	@DisplayName("Todo 조회 시 날짜가 주어졌을 때 해당 날짜의 Todo를 조회하는 JPA 쿼리 테스트")
-	public void When_FindTodo_Expect_CollectTodoList(){
+	@DisplayName("로그인 한 사용자가 요청한 날짜에 등록된 모든 Todo 불러오는 JPA 쿼리 테스트")
+	public void When_FindTodoByDate_Expect_AllTodoList(){
 		// given
-		Todo todo1 = this.createTodo("todo1",StatType.생존력,LocalDateTime.now());
-		Todo todo2 = this.createTodo("todo2",StatType.인싸력,LocalDateTime.now());
-		Todo todo3 = this.createTodo("todo3",StatType.갓생력,LocalDateTime.now());
-		Todo todo4 = this.createTodo("todo4",StatType.창의력,LocalDateTime.of(2023,10,30,13,30));
+		Todo todo1 = this.createTodo("todo1",StatType.생존력,LocalDateTime.now(),false);
+		Todo todo2 = this.createTodo("todo2",StatType.인싸력,LocalDateTime.now(),false);
+		Todo todo3 = this.createTodo("todo3",StatType.갓생력,LocalDateTime.now(),false);
+		Todo todo4 = this.createTodo("todo4",StatType.창의력,LocalDateTime.of(2023,10,30,13,30),false);
 		Todo todo5 = Todo.builder()
 			.member(member)
 			.todoDate(LocalDateTime.now())
@@ -48,12 +48,13 @@ class TodoRepositoryTest extends BaseTest {
 		}
 	}
 
-	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
+	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate, boolean check){
 		return Todo.builder()
 			.member(member)
 			.todoDate(todoDate)
 			.content(content)
 			.statType(statType)
+			.check(check)
 			.build();
 	}
 }
