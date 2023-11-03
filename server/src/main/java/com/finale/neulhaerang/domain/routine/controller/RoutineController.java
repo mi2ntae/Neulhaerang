@@ -55,7 +55,7 @@ public class RoutineController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	@PatchMapping("/remove")
+	@PatchMapping("/status")
 	public ResponseEntity<Void> removeRoutineByRoutineId(@RequestBody @Valid RoutineRemoveReqDto routineRemoveReqDto) {
 		routineService.removeRoutineByRoutineId(routineRemoveReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
