@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
-import com.finale.neulhaerang.domain.member.dto.response.StatChangeRecordResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Member;
@@ -146,8 +145,8 @@ class MemberServiceImplTest extends BaseTest {
 
 		// when then
 		assertSoftly(s -> {
-			s.assertThat(memberService.findStatChangeRecordLastDaysByStatType(statNo)).isInstanceOf(StatChangeRecordResDto.class);
-			s.assertThat(memberService.findStatChangeRecordLastDaysByStatType(statNo).getWeights()).hasSize(numberOfStatFindDay);
+			s.assertThat(memberService.findStatChangeRecordLastDaysByStatType(statNo)).isInstanceOf(Integer[].class);
+			s.assertThat(memberService.findStatChangeRecordLastDaysByStatType(statNo)).hasSize(numberOfStatFindDay);
 		});
 	}
 

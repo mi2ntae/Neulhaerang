@@ -12,7 +12,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.NotValidJwtTokenException;
-import com.finale.neulhaerang.global.exception.common.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
@@ -40,7 +39,7 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(ErrorCode.INVALID_STAT_KIND.getHttpStatus())
 			.body(errorResponse);
 	}
-	
+
 	@ExceptionHandler(AlreadyRemoveRoutineException.class)
 	protected ResponseEntity<ErrorResponse> alreadyRemoveRoutineException() {
 		log.error("The routine is already removed.");
