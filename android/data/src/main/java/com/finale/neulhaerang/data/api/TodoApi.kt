@@ -25,11 +25,15 @@ interface TodoApi {
 
     @PATCH("$BASE/{todoId}")
     suspend fun modifyTodo(
-        @Path("todoId") todoId: Long, @Body request: TodoReqDto,
+        @Path("todoId") todoId: Long,
+        @Body request: TodoReqDto,
     ): ResponseResult<Any>
 
-    @GET("$BASE/")
-    suspend fun getCompleteTodo(@Body request: TodoReqDto): ResponseResult<Int>
+    /**
+     * @param yearMonth "yyyy-MM" 형식
+     */
+    @GET("$BASE/done")
+    suspend fun getCompleteTodo(@Query("yearMonth") yearMonth: String): ResponseResult<Int>
 
     companion object {
         private const val BASE = "todo"
