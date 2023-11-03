@@ -15,8 +15,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class RoutineModifyReqDto {
-	@NotNull
-	private Long routineId;
 	@NotBlank
 	private String content;
 	@NotNull
@@ -27,9 +25,8 @@ public class RoutineModifyReqDto {
 	private LocalTime alarmTime;
 
 	@Builder
-	private RoutineModifyReqDto(Long routineId, String content, List<Boolean> repeated, boolean alarm,
+	private RoutineModifyReqDto(String content, List<Boolean> repeated, boolean alarm,
 		LocalTime alarmTime) {
-		this.routineId = routineId;
 		this.content = content;
 		this.repeated = repeated;
 		this.alarm = alarm;
