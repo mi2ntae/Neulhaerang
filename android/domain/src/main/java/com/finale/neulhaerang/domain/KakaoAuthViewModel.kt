@@ -2,8 +2,10 @@ package com.finale.neulhaerang.domain
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.api.AuthApi
 import com.finale.neulhaerang.data.model.request.LoginReqDto
 import com.finale.neulhaerang.data.util.onFailure
@@ -12,7 +14,12 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -28,7 +35,30 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
     fun kakaoLogin() {
         viewModelScope.launch {
             isLoggedIn.emit(handleKakaoLogin())
+            Log.i("heejeong", "!!!" + isLoggedIn.value)
+            if (isLoggedIn.value) {
+                Log.i("heejeong", "@!!" + isLoggedIn.value.toString())
+
+                DataStoreApplication.getInstance().getDataStore().clearDataStore()
+                Log.i("heejeong",
+                    DataStoreApplication.getInstance().getDataStore().getAccessToken().firstOrNull().toString()
+                )
+                Log.i("heejeong",
+                    DataStoreApplication.getInstance().getDataStore().getRefreshToken().firstOrNull().toString()
+                )
+                DataStoreApplication.getInstance().getDataStore().setAccessToken("Access")
+                DataStoreApplication.getInstance().getDataStore().setRefreshToken("Refresh")
+                Log.i("heejeong",
+                    DataStoreApplication.getInstance().getDataStore().getAccessToken().firstOrNull().toString()
+                )
+                Log.i("heejeong",
+                    DataStoreApplication.getInstance().getDataStore().getRefreshToken().firstOrNull().toString()
+                )
+
+            }
         }
+
+
     }
 
     private suspend fun handleKakaoLogin(): Boolean = suspendCoroutine { continuation ->
