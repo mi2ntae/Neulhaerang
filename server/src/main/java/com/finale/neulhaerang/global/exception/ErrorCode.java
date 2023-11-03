@@ -21,6 +21,9 @@ public enum ErrorCode {
 	// 디바이스
 	NOT_EXIST_DEVICE(HttpStatus.INTERNAL_SERVER_ERROR, "D-001", "등록되지 않은 디바이스입니다."),
 
+	// 스탯
+	INVALID_STAT_KIND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "존재하지 않는 스탯입니다."),
+
 	// 투두리스트
 	INVALID_TODO_DATE(HttpStatus.BAD_REQUEST, "T-001", "날짜가 유효하지 않습니다."),
 	NOT_EXIST_TODO(HttpStatus.BAD_REQUEST, "T-002", "해당 체크리스트가 존재하지 않습니다."),
@@ -28,8 +31,12 @@ public enum ErrorCode {
 	// 루틴
 	NOT_EXIST_ALARM_TIME(HttpStatus.BAD_REQUEST, "R-001", "알람을 받는 경우 알람 시간을 지정해야합니다."),
 	INVALID_REPEATED_DATE(HttpStatus.BAD_REQUEST, "R-002", "반복 날짜를 담은 리스트는 길이가 7이어야 합니다."),
-	ALREADY_REMOVE_DAILY_ROUTINE(HttpStatus.BAD_REQUEST, "R-003", "해당 데일리 루틴은 이미 삭제되었습니다."),
-	NOT_EXIST_DAILY_ROUTINE(HttpStatus.BAD_REQUEST, "R-004", "해당 id를 가진 데일리 루틴은 존재하지 않습니다."),
+	ALREADY_REMOVE_ROUTINE(HttpStatus.BAD_REQUEST, "R-003", "해당 루틴은 이미 삭제되었습니다."),
+	ALREADY_REMOVE_DAILY_ROUTINE(HttpStatus.BAD_REQUEST, "R-004", "해당 데일리 루틴은 이미 삭제되었습니다."),
+	NOT_EXIST_ROUTINE(HttpStatus.BAD_REQUEST, "R-005", "해당 id를 가진 루틴은 존재하지 않습니다."),
+	NOT_EXIST_DAILY_ROUTINE(HttpStatus.BAD_REQUEST, "R-006", "해당 id를 가진 데일리 루틴은 존재하지 않습니다."),
+	NOT_EXIST_RELATION_WITH_ROUTINE(HttpStatus.BAD_REQUEST, "R-007", "해당 id를 가진 루틴과 관련이 없습니다."),
+	CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY(HttpStatus.BAD_REQUEST, "R-008", "오늘 날짜 이전의 데일리 루틴은 삭제할 수 없습니다."),
 	;
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
