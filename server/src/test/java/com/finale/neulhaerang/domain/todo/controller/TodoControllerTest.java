@@ -339,6 +339,22 @@ class TodoControllerTest extends BaseTest {
 		;
 	}
 
+	@Test
+	@DisplayName("년도와 월이 현재 날짜의 달이 아닐 경우 완료한 투두, 루틴 비율 보내주는 요청 테스트")
+	public void When_FindTodoRoutineRatioByMonth_Expect_IsOk() throws Exception {
+		// given, when, thdn
+		mockMvc.perform(get("/todo/done")
+				.contentType(MediaType.APPLICATION_JSON)
+				.param("yearMonth", "2023-10")
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$[0].date").value("2023-10-01"))
+			.andExpect(jsonPath("$[30].date").value("2023-10-31"))
+
+		;
+	}
+
 	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate){
 		return Todo.builder()
 			.member(member)
