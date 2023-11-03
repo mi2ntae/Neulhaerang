@@ -25,6 +25,7 @@ import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeExceptio
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
+import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
 
@@ -33,6 +34,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	@ExceptionHandler(NotExistTitleException.class)
+	protected ResponseEntity<ErrorResponse> notExistTitleException() {
+		log.error("Stat kind is not valid. Out of boundary");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_TITLE.getErrorCode(),
+			ErrorCode.NOT_EXIST_TITLE.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_TITLE.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(InValidPageIndexException.class)
 	protected ResponseEntity<ErrorResponse> inValidPageIndexException() {
