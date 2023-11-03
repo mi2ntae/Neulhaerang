@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
+import com.finale.neulhaerang.domain.member.dto.response.MemberProfileResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatListResDto;
 import com.finale.neulhaerang.domain.member.dto.response.StatRecordListResDto;
@@ -28,6 +29,8 @@ import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberStatRepository;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.title.entity.Title;
+import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.global.exception.common.InValidPageIndexException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
@@ -47,6 +50,8 @@ public class MemberServiceImpl implements MemberService {
 	private final DeviceRepository deviceRepository;
 	private final CharacterInfoRepository characterInfoRepository;
 	private final MemberStatRepository memberStatRepository;
+	private final TitleRepository titleRepository;
+
 	private final RedisUtil redisUtil;
 
 	private final AuthenticationHandler authenticationHandler;
@@ -54,8 +59,15 @@ public class MemberServiceImpl implements MemberService {
 	private static final int PAGE_SIZE = 6;
 	private static final int VALID_STAT_NUMS = 6;
 	private static final int STAT_CHANGE_RECORD_DAYS = 7;
-	private int[] scores = new int[] {90, 80, 70, 60, 50};    // A+, A, B+, B, C+
+
+	// 스탯 점수에 따른 등급
+	private int[] scores = new int[] {150, 120, 90, 60, 30};    // A+, A, B+, B, C+
 	private String[] levels = new String[] {"A+", "A", "B+", "B", "C+", "C"};
+
+	// 스탯 점수 총합에 따른 레벨업 경험치
+	private static final int MAX_LEVEL = 20;
+	private static final int LEVEL_WEIGHT = 15;
+
 
 	// 멤버 상태 정보 조회 (나태도, 피로도) -> MongoDB에서 조회
 	@Override
@@ -223,6 +235,41 @@ public class MemberServiceImpl implements MemberService {
 		Page<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeOrderByRecordedDateDesc(StatType.values()[statNo],
 			PageRequest.of(page, PAGE_SIZE));
 		return records.stream().map(StatRecordListResDto::from).collect(Collectors.toList());
+	}
+
+	@Override
+	public MemberProfileResDto findMemberProfileByMemberId(long memberId) throws NotExistMemberException {
+		Optional<Member> optionalMember = memberRepository.findById(memberId);
+		if (optionalMember.isEmpty()) {
+			throw new NotExistMemberException();
+		}
+
+		List<StatType> ignoreTypes = new ArrayList<>();
+		ignoreTypes.add(StatType.나태도);
+		ignoreTypes.add(StatType.피곤도);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotIn(ignoreTypes);
+
+		int sumExp = records.stream().map(record -> record.getWeight()).reduce(0, Integer::sum);
+		int level = 1;
+		while(level < MAX_LEVEL && sumExp - LEVEL_WEIGHT * level >= 0) {
+			sumExp -= LEVEL_WEIGHT * level++;
+		}
+
+		Member member = optionalMember.get();
+		StringBuilder titleBuilder = new StringBuilder();
+		if(member.getTitle_id() != 0) {
+			Optional<Title> optionalTitle = titleRepository.findById(member.getTitle_id());
+			if(optionalTitle.isEmpty()) {
+				titleBuilder.append("Unknown");
+			} else {
+				titleBuilder.append(optionalTitle.get().getName());
+			}
+		}
+
+		if(level == MAX_LEVEL) {
+			return MemberProfileResDto.of(MAX_LEVEL, 999, 999, titleBuilder.toString(), member.getNickname());
+		}
+		return MemberProfileResDto.of(level, LEVEL_WEIGHT * level, sumExp, titleBuilder.toString(), member.getNickname());
 	}
 
 	private String getLevelByScore(int score) {
