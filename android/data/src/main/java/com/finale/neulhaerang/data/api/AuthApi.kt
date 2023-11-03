@@ -7,13 +7,14 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthApi {
-    @POST("auth/check")
+    @POST("$BASE/check")
     suspend fun postCheck(): ResponseResult<String>
 
-    @POST("auth/login")
+    @POST("$BASE/login")
     suspend fun login(@Body loginReqDto: LoginReqDto): ResponseResult<LoginResDto>
 
     companion object {
+        private const val BASE = "auth"
         val instance: AuthApi by lazy { Api.instance.create(AuthApi::class.java) }
     }
 }
