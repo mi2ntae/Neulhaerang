@@ -14,4 +14,13 @@ public class StatRecordReqDto {
 	private LocalDateTime recordedDate;
 	private StatType statType;
 	private int weight;
+
+	public static StatRecordReqDto of(String reason, LocalDateTime recordedDate, StatType statType, int weight){
+		return StatRecordReqDto.builder()
+			.reason(reason)
+			.recordedDate(recordedDate)
+			.statType(statType)
+			.weight(weight)
+			.build();
+	}
 }
