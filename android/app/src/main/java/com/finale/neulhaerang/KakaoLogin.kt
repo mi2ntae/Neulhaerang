@@ -1,9 +1,9 @@
 package com.finale.neulhaerang
 
-import android.app.Application
+import com.finale.neulhaerang.data.DataStoreApplication
 import com.kakao.sdk.common.KakaoSdk
 
-class KakaoLogin : Application() {
+class MainApplication : DataStoreApplication() {
     override fun onCreate() {
         super.onCreate()
         // 다른 초기화 코드들
