@@ -41,6 +41,9 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:${rootProject.extra["retrofit2Version"]}")
     implementation("com.squareup.retrofit2:converter-gson:${rootProject.extra["retrofit2Version"]}")
     implementation("com.squareup.retrofit2:converter-scalars:${rootProject.extra["retrofit2Version"]}")
+    implementation("com.github.ihsanbal:LoggingInterceptor:3.1.0") {
+        exclude(group = "org.json", module = "json")
+    }
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

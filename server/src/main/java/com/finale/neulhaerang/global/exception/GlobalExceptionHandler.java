@@ -19,9 +19,11 @@ import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
+import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
@@ -47,6 +49,25 @@ public class GlobalExceptionHandler {
 		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_STAT_KIND.getErrorCode(),
 			ErrorCode.INVALID_STAT_KIND.getMessage());
 		return ResponseEntity.status(ErrorCode.INVALID_STAT_KIND.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(CanNotRemoveBeforeTodayException.class)
+	protected ResponseEntity<ErrorResponse> canNotRemoveBeforeTodayException() {
+		log.error("Daily routine from before today cannot be deleted.");
+		ErrorResponse errorResponse = ErrorResponse.of(
+			ErrorCode.CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY.getErrorCode(),
+			ErrorCode.CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY.getMessage());
+		return ResponseEntity.status(ErrorCode.CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NotExistRelationWithRoutineException.class)
+	protected ResponseEntity<ErrorResponse> notExistRelationWithRoutineException() {
+		log.error("This daily routine is not related to that routine.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EXIST_RELATION_WITH_ROUTINE.getErrorCode(),
+			ErrorCode.NOT_EXIST_RELATION_WITH_ROUTINE.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EXIST_RELATION_WITH_ROUTINE.getHttpStatus())
 			.body(errorResponse);
 	}
 

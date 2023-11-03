@@ -52,4 +52,8 @@ public class DailyRoutine {
 	public void updateCheck() {
 		this.check = !this.check;
 	}
+
+	public void updateStatus() {
+		this.status = true;
+	}
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineRemoveReqDto;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
@@ -22,9 +23,11 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
+import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
+import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
@@ -289,6 +292,181 @@ class RoutineServiceTest extends BaseTest {
 			.isInstanceOf(InvalidRepeatedDateException.class);
 	}
 
+	@DisplayName("루틴을 삭제합니다.")
+	@Test
+	void When_RemoveRoutine_Expect_RemoveRoutineAndDailyRoutine() {
+		// given
+		Routine routine1 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		List<Routine> routines = routineRepository.saveAll(List.of(routine1, routine2));
+
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routines.get(0), true, false);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routines.get(1), true, false);
+		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2));
+
+		RoutineRemoveReqDto routineRemoveReqDto1 = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(dailyRoutines.get(0).getId())
+			.routineId(routines.get(0).getId())
+			.never(true)
+			.build();
+
+		RoutineRemoveReqDto routineRemoveReqDto2 = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(dailyRoutines.get(1).getId())
+			.routineId(routines.get(1).getId())
+			.never(false)
+			.build();
+
+		// when
+		routineService.removeRoutineByRoutineId(routineRemoveReqDto1);
+		routineService.removeRoutineByRoutineId(routineRemoveReqDto2);
+
+		// then
+		List<DailyRoutine> allOfDailyRoutine = dailyRoutineRepository.findAll();
+		List<Routine> allOfRoutine = routineRepository.findAll();
+		assertThat(allOfDailyRoutine).hasSize(2)
+			.extracting("id", "status")
+			.containsExactlyInAnyOrder(
+				tuple(dailyRoutines.get(0).getId(), true),
+				tuple(dailyRoutines.get(1).getId(), true)
+			);
+
+		assertThat(allOfRoutine).hasSize(2)
+			.extracting("id", "content", "repeated", "alarm", "deleteDate")
+			.containsExactlyInAnyOrder(
+				tuple(routines.get(0).getId(), "양치하기", "0010000", false, LocalDate.now()),
+				tuple(routines.get(1).getId(), "양치하기", "0010000", false, null)
+			);
+	}
+
+	@DisplayName("루틴 삭제 시, 이미 삭제된 루틴이라면 에러를 반환합니다.")
+	@Test
+	void When_RemoveRoutineWithAlreadyRemovedRoutine_Expect_AlreadyRemoveRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력, LocalDate.of(2023, 8, 19));
+		Routine saveRoutine = routineRepository.save(routine);
+
+		DailyRoutine dailyRoutine = createDailyRoutine(saveRoutine, true, false);
+		DailyRoutine saveDailyRoutine = dailyRoutineRepository.save(dailyRoutine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(saveDailyRoutine.getId())
+			.routineId(saveRoutine.getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(AlreadyRemoveRoutineException.class);
+	}
+
+	@DisplayName("루틴 삭제 시, 해당 루틴이 존재하지 않으면 에러가 납니다.")
+	@Test
+	void When_RemoveRoutineWithNotExistRoutine_Expect_NotExistRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine saveRoutine = routineRepository.save(routine);
+
+		DailyRoutine dailyRoutine = createDailyRoutine(saveRoutine, true, false);
+		DailyRoutine saveDailyRoutine = dailyRoutineRepository.save(dailyRoutine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(saveDailyRoutine.getId())
+			.routineId(0L)
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(NotExistRoutineException.class);
+	}
+
+	@DisplayName("루틴 삭제 시, 이미 삭제된 데일리 루틴이라면 에러가 납니다.")
+	@Test
+	void When_RemoveRoutineWithAlreadyRemovedDailyRoutine_Expect_AlreadyRemoveDailyRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine saveRoutine = routineRepository.save(routine);
+
+		DailyRoutine dailyRoutine = createDailyRoutine(saveRoutine, true, true);
+		DailyRoutine saveDailyRoutine = dailyRoutineRepository.save(dailyRoutine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(saveDailyRoutine.getId())
+			.routineId(0L)
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(AlreadyRemoveDailyRoutineException.class);
+	}
+
+	@DisplayName("루틴 삭제 시, 해당 데일리 루틴이 존재하지 않으면 에러가 납니다.")
+	@Test
+	void When_RemoveRoutineWithNotExistDailyRoutine_Expect_NotExistDailyRoutineException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine saveRoutine = routineRepository.save(routine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(0L)
+			.routineId(saveRoutine.getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(NotExistDailyRoutineException.class);
+	}
+
+	@DisplayName("루틴 삭제 시, 데일리 루틴의 날짜가 오늘 이전이라면 삭제가 불가능합니다.")
+	@Test
+	void When_RemoveRoutineWithBeforeToday_Expect_CanNotRemoveBeforeTodayException() {
+		Routine routine = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine saveRoutine = routineRepository.save(routine);
+
+		DailyRoutine dailyRoutine = createDailyRoutine(saveRoutine, true, false, LocalDate.now().minusDays(1));
+		DailyRoutine saveDailyRoutine = dailyRoutineRepository.save(dailyRoutine);
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(saveDailyRoutine.getId())
+			.routineId(saveRoutine.getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(CanNotRemoveBeforeTodayException.class);
+	}
+
+	@DisplayName("루틴 삭제 시, 데일리 루틴이 해당 루틴과 관계가 없으면 에러가 납니다.")
+	@Test
+	void When_RemoveRoutineWithNotEqualRoutine_Expect_NotExistRelationWithRoutine() {
+		Routine routine1 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기", "0010000", false, StatType.생존력);
+		List<Routine> routines = routineRepository.saveAll(List.of(routine1, routine2));
+
+		DailyRoutine dailyRoutine1 = createDailyRoutine(routines.get(0), true, false);
+		DailyRoutine dailyRoutine2 = createDailyRoutine(routines.get(1), true, false);
+		List<DailyRoutine> dailyRoutines = dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2));
+
+		RoutineRemoveReqDto routineRemoveReqDto = RoutineRemoveReqDto.builder()
+			.dailyRoutineId(dailyRoutines.get(1).getId())
+			.routineId(routines.get(0).getId())
+			.never(true)
+			.build();
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.removeRoutineByRoutineId(routineRemoveReqDto))
+			.isInstanceOf(NotExistRelationWithRoutineException.class);
+	}
+
 	private RoutineModifyReqDto createRoutineModifyDto(Long routineId, boolean alarm, LocalTime alarmTime,
 		String content, List<Boolean> repeated) {
 
@@ -306,6 +484,15 @@ class RoutineServiceTest extends BaseTest {
 			.routine(routine)
 			.check(original)
 			.routineDate(LocalDate.now())
+			.status(status)
+			.build();
+	}
+
+	private DailyRoutine createDailyRoutine(Routine routine, boolean original, boolean status, LocalDate routineDate) {
+		return DailyRoutine.builder()
+			.routine(routine)
+			.check(original)
+			.routineDate(routineDate)
 			.status(status)
 			.build();
 	}

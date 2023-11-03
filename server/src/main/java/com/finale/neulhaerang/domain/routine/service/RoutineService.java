@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineRemoveReqDto;
 
 public interface RoutineService {
 	void createRoutine(RoutineCreateReqDto routineCreateReqDto);
@@ -14,4 +15,6 @@ public interface RoutineService {
 	void modifyDailyRoutineCheckByDailyRoutineId(Long dailyRoutineId);
 
 	void modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(RoutineModifyReqDto routineModifyReqDto);
+
+	void removeRoutineByRoutineId(RoutineRemoveReqDto routineRemoveReqDto);
 }

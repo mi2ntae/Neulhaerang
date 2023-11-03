@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.domain.routine.dto.request.RoutineRemoveReqDto;
 import com.finale.neulhaerang.domain.routine.service.RoutineService;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,12 @@ public class RoutineController {
 	@PatchMapping
 	public ResponseEntity<Void> modifyRoutineByRoutineId(@RequestBody @Valid RoutineModifyReqDto routineModifyReqDto) {
 		routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(routineModifyReqDto);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PatchMapping("/status")
+	public ResponseEntity<Void> removeRoutineByRoutineId(@RequestBody @Valid RoutineRemoveReqDto routineRemoveReqDto) {
+		routineService.removeRoutineByRoutineId(routineRemoveReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
