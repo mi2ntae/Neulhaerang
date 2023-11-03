@@ -1,9 +1,18 @@
 package com.finale.neulhaerang.domain
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.data.api.RoutineApi
+import com.finale.neulhaerang.data.api.TodoApi
+import com.finale.neulhaerang.data.model.request.RoutineReqDto
+import com.finale.neulhaerang.data.model.request.TodoReqDto
+import com.finale.neulhaerang.data.util.onFailure
+import com.finale.neulhaerang.data.util.onSuccess
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -63,7 +72,44 @@ class ChecklistCreationViewModel() : ViewModel() {
     }
 
     fun makeChecklist() {
-        /*TODO 리퀘스트 엔티티 생성*/
-        /*TODO API 통신*/
+        if (_routine.value) {
+            // 루틴 생성
+            val request = RoutineReqDto(
+                content = _content.value,
+                repeated = _repeat.value,
+                alarm = _alarm.value,
+                alarmTime = _dateTime.value.toLocalTime(),
+                statType = _stat.value.statName
+            )
+            Log.d(TAG, "makeChecklist: $request")
+
+            // TODO API 통신
+            viewModelScope.launch {
+                RoutineApi.instance.postRoutine(request)
+                    .onSuccess { (code, _) ->
+                        Log.d(TAG, "makeChecklist: success $code")
+                    }.onFailure { (code, message, _) ->
+                        Log.d(TAG, "makeChecklist: fail $code\n$message")
+                    }
+            }
+        } else {
+            // 투두 생성
+            val request = TodoReqDto(
+                content = _content.value,
+                statType = _stat.value.statName,
+                todoDate = _dateTime.value
+            )
+            Log.d(TAG, "makeChecklist: $request")
+
+            // TODO API 통신
+            viewModelScope.launch {
+                TodoApi.instance.postTodo(request)
+                    .onSuccess { (code, _) ->
+                        Log.d(TAG, "makeChecklist: success $code")
+                    }.onFailure { (code, message, _) ->
+                        Log.d(TAG, "makeChecklist: fail $code\n$message")
+                    }
+            }
+        }
     }
 }
