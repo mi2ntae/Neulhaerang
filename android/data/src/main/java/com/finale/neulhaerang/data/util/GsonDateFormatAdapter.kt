@@ -7,14 +7,16 @@ import com.google.gson.JsonPrimitive
 import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-const val dateTimePattern = "yyyy-MM-dd: HH:mm"
+const val datePattern = "yyyy-MM-dd"
 const val timePattern = "HH:mm"
+const val dateTimePattern = "$datePattern $timePattern" // "yyyy-MM-dd HH:mm"
 
-class GsonDateFormatAdapter : JsonSerializer<LocalDateTime?>, JsonDeserializer<LocalDateTime?> {
+class GsonDateTimeFormatAdapter : JsonSerializer<LocalDateTime?>, JsonDeserializer<LocalDateTime?> {
     @Synchronized
     override fun serialize(
         localDateTime: LocalDateTime?,
@@ -38,6 +40,24 @@ class GsonDateFormatAdapter : JsonSerializer<LocalDateTime?>, JsonDeserializer<L
     }
 }
 
+class GsonDateFormatAdapter : JsonSerializer<LocalDate?>, JsonDeserializer<LocalDate?> {
+    override fun serialize(
+        src: LocalDate?,
+        typeOfSrc: Type?,
+        context: JsonSerializationContext?,
+    ): JsonElement {
+        return JsonPrimitive(DateTimeFormatter.ofPattern(datePattern).format(src))
+    }
+
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?,
+    ): LocalDate? {
+        return LocalDate.parse(json!!.asString, DateTimeFormatter.ofPattern(datePattern))
+    }
+}
+
 class GsonTimeFormatAdapter : JsonSerializer<LocalTime?>, JsonDeserializer<LocalTime?> {
     override fun serialize(
         src: LocalTime?,
@@ -54,5 +74,4 @@ class GsonTimeFormatAdapter : JsonSerializer<LocalTime?>, JsonDeserializer<Local
     ): LocalTime? {
         return LocalTime.parse(json!!.asString, DateTimeFormatter.ofPattern(timePattern))
     }
-
 }
