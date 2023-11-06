@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class ArInteractionHandler {
+public class ArInteractionTitleHandler {
 	private final TitleRepository titleRepository;
 	private final EarnedTitleRepository earnedTitleRepository;
 	private final long SOCIAL_FIRST_TAG = 31;
@@ -35,7 +35,7 @@ public class ArInteractionHandler {
 		}
 		if (earnedTitleRepository.existsByTitle_IdAndMember(SOCIAL_FIRST_TAG, tagOtherMemberEvent.getMember())) {
 			log.info(
-				"회원가입 칭호를 받은 사용자 " + tagOtherMemberEvent.getMember().getNickname() + "님이 다시 회원가입을 칭호를 획득 하였습니다. 확인바랍니다.");
+				"첫 소셜 태그 칭호를 받은 사용자 " + tagOtherMemberEvent.getMember().getNickname() + "님이 다시 칭호를 획득 하였습니다. 확인바랍니다.");
 		}
 		earnedTitleRepository.save(EarnedTitle.create(tagOtherMemberEvent.getMember(), optionalTitle.get()));
 	}

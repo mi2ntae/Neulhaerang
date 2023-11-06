@@ -34,7 +34,7 @@ public class ArServiceImpl implements ArService {
 
 	private final AuthenticationHandler authenticationHandler;
 	private final ApplicationEventPublisher publisher;
-	private static final long SOCIAL_FIRST_TAG = 31;
+	private final long SOCIAL_FIRST_TAG = 31;
 
 	@Override
 	public boolean tagOtherMember(long memberId) throws NotExistMemberException, InvalidTagException {
@@ -52,7 +52,7 @@ public class ArServiceImpl implements ArService {
 
 		Optional<EarnedTitle> optionalEarnedTitle = earnedTitleRepository.findEarnedTitleByMember_IdAndTitle_Id(loginMemberId, SOCIAL_FIRST_TAG);
 		if(optionalEarnedTitle.isEmpty()) {
-			publisher.publishEvent(new TagOtherMemberEvent(optionalMember.get()));
+			publisher.publishEvent(new TagOtherMemberEvent(memberRepository.getReferenceById(loginMemberId)));
 			return true;
 		}
 		return false;
