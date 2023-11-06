@@ -10,25 +10,29 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.theme.Typography
-import java.time.LocalDate
 
 
 @Composable
-fun CheckList(selectedDate: LocalDate) {
+fun CheckList() {
     val viewModel = viewModel<MainScreenViewModel>()
+
+    val selectedDate = viewModel.selectedDate
     val routineList = viewModel.routineList
     val todoList = viewModel.todoList
 
@@ -85,8 +89,7 @@ fun CheckListItem(item: CheckList) {
             onCheckedChange = { (!isCompleted).let { isCompleted = it;item.isCompleted = it } },
         )
         Text(
-            text = item.content,
-            style = Typography.bodyLarge.merge(
+            text = item.content, style = Typography.bodyLarge.merge(
                 TextStyle(
                     lineHeight = 30.sp,
                     platformStyle = PlatformTextStyle(includeFontPadding = false),

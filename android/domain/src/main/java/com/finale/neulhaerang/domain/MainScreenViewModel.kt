@@ -15,8 +15,6 @@ class MainScreenViewModel : ViewModel() {
 
     val selectedDate: LocalDate
         get() = _selectedDateTime.value.toLocalDate()
-    val lastDay
-        get() = selectedDate.lengthOfMonth()
     val routineList: List<CheckList>
         get() = _routineList
     val todoList: List<CheckList>
@@ -28,23 +26,27 @@ class MainScreenViewModel : ViewModel() {
         _selectedDateTime.value = input
     }
 
+    /**
+     * 체크리스트를 전부 초기화하는 함수
+     * API 통신에 사용
+     */
     fun initCheckList(routines: List<CheckList>, todos: List<CheckList>) {
         initRoutine(routines)
         initTodo(todos)
     }
 
-    fun initRoutine(routines: List<CheckList>) {
+    private fun initRoutine(routines: List<CheckList>) {
         _routineList.clear()
         _routineList.addAll(routines)
     }
 
-    fun addRoutine(routine: CheckList) {
-        _routineList.add(routine)
-    }
-
-    fun initTodo(todos: List<CheckList>) {
+    private fun initTodo(todos: List<CheckList>) {
         _todoList.clear()
         _todoList.addAll(todos)
+    }
+
+    fun addRoutine(routine: CheckList) {
+        _routineList.add(routine)
     }
 
     fun addTodo(todo: CheckList) {

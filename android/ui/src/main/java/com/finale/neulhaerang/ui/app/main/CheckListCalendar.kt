@@ -70,8 +70,8 @@ fun Calendar(
 //    setDateTime: (LocalDateTime) -> Unit
 ) {
     val mainScreenViewModel = viewModel<MainScreenViewModel>()
-    val selectedDate = mainScreenViewModel.selectedDate
 
+    val selectedDate = mainScreenViewModel.selectedDate
     val setDateTime = mainScreenViewModel::setDateTime
 
     var showSheet by rememberSaveable { mutableStateOf(false) }
