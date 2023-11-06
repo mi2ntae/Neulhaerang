@@ -42,4 +42,17 @@ class LetterServiceTest extends BaseTest {
 		Optional<Letter> readLetter = letterRepository.findById(1L);
 		assertThat(readLetter.get().isRead()).isEqualTo(true);
 	}
+
+	@Test
+	@DisplayName("해당 날짜에 편지가 없는 경우 null 반환 테스트")
+	public void When_FindLetterByInvalidDate_Expect_Null() {
+		// given
+		LocalDate date = LocalDate.of(2023, 11, 10);
+
+		// when
+		String letter = letterService.findDailyLetter(date);
+
+		// then
+		assertThat(letter).isNull();
+	}
 }
