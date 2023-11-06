@@ -28,7 +28,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
-import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.app.navigation.NHLNavigationBar
 import com.finale.neulhaerang.ui.app.navigation.stackNavigate
@@ -43,21 +42,7 @@ fun MainScreen(navController: NavHostController) {
 //    val currentDate = LocalDate.now()
 //    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
 
-    // TODO API 연결
-    mainScreenViewModel.initCheckList(
-        listOf(
-            CheckList("안녕", true),
-            CheckList("물 8잔 마시기", false),
-        ),
-        listOf(
-            CheckList("CS 스터디 - JAVASCRIPT", false),
-            CheckList("현대오토에버 이력서 작성", false),
-            CheckList("CS 스터디 - React", false),
-            CheckList("CS 스터디 - Kotlin", false),
-        )
-    )
-    // TODO API 연결
-    mainScreenViewModel.setLetterText("안녕, 싸피야!\n" + "\n" + "오늘은 내가 한 일들을 알려줄게. 아침에는 8시에 일어났어. 새로운 하루가 시작되는 건 항상 기대돼.\n" + "\n" + "오전에는 SSAFY 수업을 들었어. 오늘은 좀 어려운 프로그래밍 과제를 풀어봤어. 물론 동료들과 함께 협력하면서 문제를 해결했지. \uD83D\uDCAA\n" + "\n" + "점심 때는 친구들을 만나서 곱창전골을 먹었어. 맛있게 먹고 좋은 대화를 나누는 건 항상 즐거운 시간이야.\n" + "\n" + "양치하고 머리 감기도 잊지 않았어. 건강하게 지내려고 노력하고 있어. \uD83E\uDDB7 \uD83D\uDC87\n" + "\n" + "마지막으로, 1시에 잠자리에 들었어. 하루 동안 열심히 노력했지만, 늦게 자는 건 힘들어. \uD83D\uDE34\n" + "\n" + "앞으로도 같이 좋은 순간을 만들고 함께 성장해보자. 싸피야, 내일은 더 좋은 날이 오기를 기대해! \uD83D\uDE0A\uD83C\uDF1F")
+    mainScreenViewModel.setDataFromDateTime()
 
     Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
         floatingActionButton = {
