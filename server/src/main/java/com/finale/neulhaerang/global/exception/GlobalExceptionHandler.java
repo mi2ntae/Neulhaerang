@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.finale.neulhaerang.global.exception.ar.InvalidTagException;
 import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.InValidJwtTokenException;
@@ -34,6 +35,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(InvalidTagException.class)
+	protected ResponseEntity<ErrorResponse> invalidTagException() {
+		log.error("Login user cannot self tag");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_TAG.getErrorCode(),
+			ErrorCode.INVALID_TAG.getMessage());
+		return ResponseEntity.status(ErrorCode.INVALID_TAG.getHttpStatus())
+			.body(errorResponse);
+	}
+
 	@ExceptionHandler(NotExistTitleException.class)
 	protected ResponseEntity<ErrorResponse> notExistTitleException() {
 		log.error("Stat kind is not valid. Out of boundary");
