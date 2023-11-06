@@ -21,9 +21,11 @@ import com.finale.neulhaerang.global.event.StatEvent;
 import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class StatEventHandler {
 	private final MemberStatRepository memberStatRepository;
 	private final TitleRepository titleRepository;
@@ -99,7 +101,11 @@ public class StatEventHandler {
 		if (optionalTitle.isEmpty()) {
 			throw new NotExistTitleException(member, titleId[titleNum]);
 		}
-		earnedTitleRepository.save(EarnedTitle.create(member, optionalTitle.get()));
+		if (!earnedTitleRepository.existsByTitle_IdAndMember(titleId[titleNum], member)) {
+			earnedTitleRepository.save(EarnedTitle.create(member, optionalTitle.get()));
+		} else {
+			log.info(member.getNickname() + "님이 이미 획득한 칭호(title_id=" + titleId + ")이기 때문에 발급하지 않습니다.");
+		}
 	}
 
 }
