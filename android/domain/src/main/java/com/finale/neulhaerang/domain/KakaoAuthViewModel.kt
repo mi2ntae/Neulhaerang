@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.api.AuthApi
 import com.finale.neulhaerang.data.model.request.LoginReqDto
 import com.finale.neulhaerang.data.util.onFailure
@@ -28,6 +29,7 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
     fun kakaoLogin() {
         viewModelScope.launch {
             isLoggedIn.emit(handleKakaoLogin())
+            Log.i("heejeong", "!!!" + isLoggedIn.value)
         }
     }
 
@@ -51,10 +53,16 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                         )
                     ).onSuccess { (_, data) ->
                         Log.i("heejeong", data.toString())
+//                        DataStoreApplication.getInstance().getDataStore().clearDataStore()
+                        if (data != null) {
+                            DataStoreApplication.getInstance().getDataStore()
+                                .setAccessToken(data.accessToken)
+                            DataStoreApplication.getInstance().getDataStore()
+                                .setRefreshToken(data.refreshToken)
+                        }
                     }.onFailure { (_, message, _) ->
                         Log.e("heejeong", "서버 로그인 실패! %n$message")
                     }
-
                 }
                 continuation.resume(true)
             }

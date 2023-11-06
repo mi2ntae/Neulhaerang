@@ -46,7 +46,7 @@ fun CheckListCreationContentInput() {
         }
         Spacer(modifier = Modifier.width(8.dp))
         TextField(
-            value = viewModel.content.value,
+            value = viewModel.content,
             onValueChange = viewModel::changeContent,
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(text = "할 일을 입력해 주세요") },
@@ -82,9 +82,9 @@ fun StatDialog(onDismiss: () -> Unit = {}) {
         ) {
             Stat.values().forEach {
                 item {
-                    val colors = if (it == viewModel.stat.value) ButtonDefaults.buttonColors()
+                    val colors = if (it == viewModel.stat) ButtonDefaults.buttonColors()
                     else ButtonDefaults.outlinedButtonColors()
-                    val border = if (it == viewModel.stat.value) null
+                    val border = if (it == viewModel.stat) null
                     else ButtonDefaults.outlinedButtonBorder
 
                     Button(

@@ -72,12 +72,12 @@ class SchedulerTest extends BaseTest {
 		// given
 		LocalDate date = LocalDate.now().minusDays(1);
 
-		Todo todo1 = this.createTodo("todo1",StatType.생존력,date.atTime(13,30),true);
-		Todo todo2 = this.createTodo("todo2",StatType.인싸력,date.atTime(13,30),true);
-		Todo todo3 = this.createTodo("todo3",StatType.갓생력,date.atTime(13,30),true);
-		Todo todo4 = this.createTodo("todo4",StatType.창의력,date.atTime(13,30),true);
-		Todo todo5 = this.createTodo("todo5", StatType.최애력,date.atTime(13,30),true);
-		Todo todo6 = this.createTodo("todo5", StatType.최애력,date.atTime(13,30),false);
+		Todo todo1 = this.createTodo("todo1", StatType.생존력, date.atTime(13, 30), true);
+		Todo todo2 = this.createTodo("todo2", StatType.인싸력, date.atTime(13, 30), true);
+		Todo todo3 = this.createTodo("todo3", StatType.갓생력, date.atTime(13, 30), true);
+		Todo todo4 = this.createTodo("todo4", StatType.창의력, date.atTime(13, 30), true);
+		Todo todo5 = this.createTodo("todo5", StatType.최애력, date.atTime(13, 30), true);
+		Todo todo6 = this.createTodo("todo5", StatType.최애력, date.atTime(13, 30), false);
 		todoRepository.saveAll(List.of(todo1, todo2, todo3, todo4, todo5, todo6));
 
 		Routine routine1 = createRoutine("routine1", "0010000", false, StatType.최애력);
@@ -91,10 +91,11 @@ class SchedulerTest extends BaseTest {
 		DailyRoutine dailyRoutine4 = createDailyRoutine(routine2, true, date);
 		DailyRoutine dailyRoutine5 = createDailyRoutine(routine3, true, date);
 		DailyRoutine dailyRoutine6 = createDailyRoutine(routine3, false, date);
-		dailyRoutineRepository.saveAll(List.of(dailyRoutine1, dailyRoutine2, dailyRoutine3, dailyRoutine4, dailyRoutine5, dailyRoutine6));
+		dailyRoutineRepository.saveAll(
+			List.of(dailyRoutine1, dailyRoutine2, dailyRoutine3, dailyRoutine4, dailyRoutine5, dailyRoutine6));
 
 		// when
-		scheduler.modifyStat(date);
+		scheduler.modifyStat(member, date);
 
 		// then
 		List<StatRecord> records = memberStatRepository.findAll();
@@ -121,7 +122,7 @@ class SchedulerTest extends BaseTest {
 			.build();
 	}
 
-	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate, boolean check){
+	private Todo createTodo(String content, StatType statType, LocalDateTime todoDate, boolean check) {
 		return Todo.builder()
 			.member(member)
 			.todoDate(todoDate)

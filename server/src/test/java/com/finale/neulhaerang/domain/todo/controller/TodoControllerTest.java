@@ -43,6 +43,7 @@ class TodoControllerTest extends BaseTest {
 			.todoDate(LocalDateTime.now().plusDays(1))
 			.content("코딩테스트")
 			.statType(StatType.생존력)
+			.alarm(true)
 			.build();
 
 		// when, then

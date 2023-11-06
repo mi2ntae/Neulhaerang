@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.theme.Typography
@@ -27,6 +28,7 @@ import com.finale.neulhaerang.ui.theme.Typography
  *  StatusBar
  *  피로도, 나태함 상태바를 보여주는 UI
  */
+@Preview
 @Composable
 fun StatusBar(modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {

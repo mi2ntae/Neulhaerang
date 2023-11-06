@@ -81,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
 		List<StatType> validStatTypes = new ArrayList<>();
 		validStatTypes.add(StatType.나태도);
 		validStatTypes.add(StatType.피곤도);
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsIn(validStatTypes);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsInAndMemberId(validStatTypes, memberId);
 
 		LocalDateTime now = LocalDateTime.now();
 		int sumOfIndolence = records.stream()
@@ -166,16 +166,13 @@ public class MemberServiceImpl implements MemberService {
 		List<StatType> ignoreTypes = new ArrayList<>();
 		ignoreTypes.add(StatType.나태도);
 		ignoreTypes.add(StatType.피곤도);
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotIn(ignoreTypes);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes, memberId);
 
 		int[] stats = new int[VALID_STAT_NUMS];
 		records.stream().forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
 
 		List<StatListResDto> statListResDtos = new ArrayList<>();
-		Arrays.stream(stats).forEach(stat -> statListResDtos.add(StatListResDto.builder()
-			.score(stat)
-			.level(getLevelByScore(stat)).build())
-		);
+		Arrays.stream(stats).forEach(stat -> statListResDtos.add(StatListResDto.of(stat, getLevelByScore(stat))));
 		return statListResDtos;
 	}
 
@@ -190,7 +187,7 @@ public class MemberServiceImpl implements MemberService {
 			throw new NotExistMemberException();
 		}
 
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatType(StatType.values()[statNo]);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberId(StatType.values()[statNo], optionalMember.get().getId());
 		LocalDateTime now = LocalDateTime.now();
 
 		int[] changeRecords = new int[STAT_CHANGE_RECORD_DAYS + 1];
@@ -232,7 +229,7 @@ public class MemberServiceImpl implements MemberService {
 			throw new InValidPageIndexException();
 		}
 
-		Page<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeOrderByRecordedDateDesc(StatType.values()[statNo],
+		Page<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberIdOrderByRecordedDateDesc(StatType.values()[statNo], optionalMember.get().getId(),
 			PageRequest.of(page, PAGE_SIZE));
 		return records.stream().map(StatRecordListResDto::from).collect(Collectors.toList());
 	}
@@ -247,7 +244,7 @@ public class MemberServiceImpl implements MemberService {
 		List<StatType> ignoreTypes = new ArrayList<>();
 		ignoreTypes.add(StatType.나태도);
 		ignoreTypes.add(StatType.피곤도);
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotIn(ignoreTypes);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes, memberId);
 
 		int sumExp = records.stream().map(record -> record.getWeight()).reduce(0, Integer::sum);
 		int level = 1;
