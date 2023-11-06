@@ -1,5 +1,7 @@
 package com.finale.neulhaerang.domain.letter.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,10 +36,25 @@ public class Letter extends BaseTimeEntity {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@Column(length = 200, nullable = false)
+	@Column(length = 1000, nullable = false)
 	private String content;
 
 	@ColumnDefault("false")
 	@Column(name = "is_read", nullable = false)
 	private boolean read;
+
+	@Column(nullable = false)
+	private LocalDate letterDate;
+
+	public static Letter create(Member member, String content, LocalDate date) {
+		return Letter.builder()
+			.member(member)
+			.content(content)
+			.letterDate(date)
+			.build();
+	}
+
+	public void updateRead() {
+		this.read = true;
+	}
 }
