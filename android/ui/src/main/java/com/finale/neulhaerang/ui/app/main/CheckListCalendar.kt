@@ -43,6 +43,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.theme.Typography
@@ -63,10 +65,15 @@ import java.util.Locale
 @Composable
 fun Calendar(
     modifier: Modifier = Modifier,
-    currentDate: LocalDate,
-    selectedDate: LocalDate,
-    setDateTime: (LocalDateTime) -> Unit
+//    currentDate: LocalDate,
+//    selectedDate: LocalDate,
+//    setDateTime: (LocalDateTime) -> Unit
 ) {
+    val mainScreenViewModel = viewModel<MainScreenViewModel>()
+    val selectedDate = mainScreenViewModel.selectedDate.value
+
+    val setDateTime = mainScreenViewModel::setDateTime
+
     var showSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
         selectedDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
@@ -112,7 +119,7 @@ fun DaysRow(
     modifier: Modifier = Modifier,
     days: List<Int>,
     selectedDate: LocalDate,
-    setDateTime: (LocalDateTime) -> Unit
+    setDateTime: (LocalDateTime) -> Unit,
 //    days: List<Day>
 ) {
     val index = if (selectedDate.dayOfMonth - 4 < 0) 0 else selectedDate.dayOfMonth - 4
@@ -146,7 +153,7 @@ fun DayElement(
     progressDegree: Int,
     day: Int,
     selectedDate: LocalDate,
-    setDateTime: (LocalDateTime) -> Unit
+    setDateTime: (LocalDateTime) -> Unit,
 ) {
     val isSelected = selectedDate.dayOfMonth == day
     Column(

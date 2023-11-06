@@ -25,9 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
+import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.app.navigation.NHLNavigationBar
 import com.finale.neulhaerang.ui.app.navigation.stackNavigate
 import com.finale.neulhaerang.ui.theme.Typography
@@ -36,10 +38,14 @@ import java.time.LocalDateTime
 
 @Composable
 fun MainScreen(navController: NavHostController) {
+    val mainScreenViewModel = viewModel<MainScreenViewModel>()
+
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
-    val currentDate = LocalDate.now()
-    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
+//    val currentDate = LocalDate.now()
+//    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
+    val selectedDate = mainScreenViewModel.selectedDate.value
+
     Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
@@ -49,11 +55,11 @@ fun MainScreen(navController: NavHostController) {
         ) {
             AppHeader(navController = navController)
             StatusBar()
-            Calendar(
-                currentDate = currentDate,
-                selectedDate = selectedDate.toLocalDate(),
-                setDateTime = setDateTime
-            )
+            Calendar()
+//                currentDate = currentDate,
+//                selectedDate = selectedDate.toLocalDate(),
+//                setDateTime = setDateTime
+//            )
             Column(modifier = Modifier.fillMaxWidth()) {
                 TabRow(selectedTabIndex = tabIndex) {
                     tabs.forEachIndexed { index, title ->
@@ -63,8 +69,8 @@ fun MainScreen(navController: NavHostController) {
                     }
                 }
                 when (tabIndex) {
-                    0 -> CheckList(selectedDate = selectedDate.toLocalDate())
-                    1 -> Letter(selectedDate = selectedDate.toLocalDate())
+                    0 -> CheckList(selectedDate = selectedDate)
+                    1 -> Letter(selectedDate = selectedDate)
                 }
             }
         }
