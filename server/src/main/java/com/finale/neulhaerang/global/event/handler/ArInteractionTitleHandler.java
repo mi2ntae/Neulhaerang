@@ -24,7 +24,7 @@ public class ArInteractionTitleHandler {
 	private final TitleRepository titleRepository;
 	private final EarnedTitleRepository earnedTitleRepository;
 	private final long SOCIAL_FIRST_TAG = 31;
-	private final long REPEL_MONSTER = 20;
+	private final long REPEL_INDOLENCE_MONSTER = 20;
 
 	@Async
 	@EventListener
@@ -43,13 +43,13 @@ public class ArInteractionTitleHandler {
 	@Async
 	@EventListener
 	public void repelIndolenceMonster(RepelIndolenceMonsterEvent repelIndolenceMonsterEvent) {
-		Optional<Title> optionalTitle = titleRepository.findById(REPEL_MONSTER);
+		Optional<Title> optionalTitle = titleRepository.findById(REPEL_INDOLENCE_MONSTER);
 		if (optionalTitle.isEmpty()) {
-			throw new NotExistTitleException(repelIndolenceMonsterEvent.getMember(), REPEL_MONSTER);
+			throw new NotExistTitleException(repelIndolenceMonsterEvent.getMember(), REPEL_INDOLENCE_MONSTER);
 		}
-		if (earnedTitleRepository.existsByTitle_IdAndMember(REPEL_MONSTER, repelIndolenceMonsterEvent.getMember())) {
+		if (earnedTitleRepository.existsByTitle_IdAndMember(REPEL_INDOLENCE_MONSTER, repelIndolenceMonsterEvent.getMember())) {
 			log.info(
-				"회원가입 칭호를 받은 사용자 " + repelIndolenceMonsterEvent.getMember().getNickname() + "님이 다시 회원가입을 칭호를 획득 하였습니다. 확인바랍니다.");
+				"나태 괴물 첫 처치 칭호를 받은 사용자 " + repelIndolenceMonsterEvent.getMember().getNickname() + "님이 다시 칭호를 획득 하였습니다. 확인바랍니다.");
 		}
 		earnedTitleRepository.save(EarnedTitle.create(repelIndolenceMonsterEvent.getMember(), optionalTitle.get()));
 	}
