@@ -34,7 +34,7 @@ class LetterServiceTest extends BaseTest {
 		letterRepository.save(saveLetter);
 
 		// when
-		String letter = letterService.findDailyLetter(date);
+		String letter = letterService.findLetterByDate(date);
 
 		// then
 		assertThat(letter).isEqualTo("오늘의 편지입니다.");
@@ -50,7 +50,7 @@ class LetterServiceTest extends BaseTest {
 		LocalDate date = LocalDate.of(2023, 11, 10);
 
 		// when
-		String letter = letterService.findDailyLetter(date);
+		String letter = letterService.findLetterByDate(date);
 
 		// then
 		assertThat(letter).isNull();

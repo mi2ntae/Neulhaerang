@@ -20,10 +20,11 @@ import lombok.RequiredArgsConstructor;
 public class LetterController {
 
 	private final LetterService letterService;
+
 	@GetMapping
-	public ResponseEntity<String> findDailyLetter(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd")
-	LocalDate todoDate){
-		String content = letterService.findDailyLetter(todoDate);
+	public ResponseEntity<String> findLetterByDate(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd")
+	LocalDate todoDate) {
+		String content = letterService.findLetterByDate(todoDate);
 		return ResponseEntity.status(HttpStatus.OK).body(content);
 	}
 }

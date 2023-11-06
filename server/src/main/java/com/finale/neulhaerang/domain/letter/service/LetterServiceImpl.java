@@ -24,7 +24,7 @@ public class LetterServiceImpl implements LetterService {
 	private final MemberRepository memberRepository;
 
 	@Override
-	public String findDailyLetter(LocalDate date) {
+	public String findLetterByDate(LocalDate date) {
 		Member member = memberRepository.findById(authenticationHandler.getLoginMemberId())
 			.orElseThrow(NotExistMemberException::new);
 		Optional<Letter> letter = letterRepository.findLetterByMemberAndLetterDate(member, date);
