@@ -10,4 +10,6 @@ import com.finale.neulhaerang.domain.member.entity.Member;
 
 public interface LetterRepository extends JpaRepository<Letter, Long> {
 	Optional<Letter> findLetterByMemberAndLetterDate(Member member, LocalDate letterDate);
+
+	int countAllByMember(Member member);
 }
