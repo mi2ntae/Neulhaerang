@@ -1,5 +1,4 @@
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -118,7 +117,6 @@ class DataStoreModule(
 
     suspend fun setAccessToken(value: String) {
         context.dataStore.edit { preferences ->
-            Log.i("heejeong55", value)
             preferences[_accessToken] = value
         }
     }

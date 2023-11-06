@@ -1,6 +1,8 @@
 package com.finale.neulhaerang.data.api
 
 import android.util.Log
+import com.finale.neulhaerang.data.util.AccessTokenExpireInterceptor
+import com.finale.neulhaerang.data.util.AccessTokenInterceptor
 import com.finale.neulhaerang.data.util.GsonDateFormatAdapter
 import com.finale.neulhaerang.data.util.GsonDateTimeFormatAdapter
 import com.finale.neulhaerang.data.util.GsonTimeFormatAdapter
@@ -16,6 +18,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -25,7 +28,10 @@ import java.time.LocalTime
 interface Api {
     companion object {
         // 서버 주소
-        private const val BASE_URL = "http://k9a502.p.ssafy.io/api/"
+        const val BASE_URL = "http://k9a502.p.ssafy.io/api/"
+//        const val BASE_URL = "http://10.0.2.2:8080/"
+
+        private const val TIMEOUT_LIMIT = 180L
 
         // JSON 파싱용 Gson
         private val gson: Gson = GsonBuilder().setLenient()
@@ -42,6 +48,11 @@ interface Api {
 
         // OkHttpClient
         private val client = OkHttpClient.Builder()
+            .connectTimeout(TIMEOUT_LIMIT, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_LIMIT, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_LIMIT, TimeUnit.SECONDS)
+            .addInterceptor(AccessTokenInterceptor())
+            .addInterceptor(AccessTokenExpireInterceptor())
             .addInterceptor(debugInterceptor)
             .build()
 
