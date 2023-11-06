@@ -84,9 +84,9 @@ fun RoutineCreation(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             for (i in 0..6) {
-                val colors = if (viewModel.repeat.value[i]) ButtonDefaults.buttonColors()
+                val colors = if (viewModel.repeat[i]) ButtonDefaults.buttonColors()
                 else ButtonDefaults.outlinedButtonColors()
-                val border = if (viewModel.repeat.value[i]) null
+                val border = if (viewModel.repeat[i]) null
                 else ButtonDefaults.outlinedButtonBorder
 
                 Button(
@@ -120,7 +120,7 @@ fun TodoCreation(
         icon = Icons.Filled.DateRange
     ) {
         TextButton(onClick = { showSheet = true }) {
-            Text(text = viewModel.dateTime.value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            Text(text = viewModel.dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
         // 날짜 피커 모달 바텀 시트
         NHLDatePicker(open = showSheet,
