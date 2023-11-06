@@ -90,9 +90,9 @@ fun Content(
             name = stringResource(id = R.string.checklist_category_routine),
             icon = Icons.Filled.Refresh
         ) {
-            Switch(checked = viewModel.routine.value, onCheckedChange = viewModel::changeRoutine)
+            Switch(checked = viewModel.routine, onCheckedChange = viewModel::changeRoutine)
         }
-        if (viewModel.routine.value) RoutineCreation() else TodoCreation()
+        if (viewModel.routine) RoutineCreation() else TodoCreation()
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_time),
             icon = Icons.Filled.Schedule
@@ -105,7 +105,7 @@ fun Content(
             )
 
             TextButton(onClick = { showSheet = true }) {
-                Text(text = viewModel.dateTime.value.format(DateTimeFormatter.ofPattern("h:mm a")))
+                Text(text = viewModel.dateTime.format(DateTimeFormatter.ofPattern("h:mm a")))
             }
             NHLTimePicker(open = showSheet,
                 close = { showSheet = false },
@@ -116,7 +116,7 @@ fun Content(
             name = stringResource(id = R.string.checklist_category_notice),
             icon = Icons.Filled.Alarm
         ) {
-            Switch(checked = viewModel.alarm.value, onCheckedChange = viewModel::changeAlarm)
+            Switch(checked = viewModel.alarm, onCheckedChange = viewModel::changeAlarm)
         }
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
