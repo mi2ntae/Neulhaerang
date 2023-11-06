@@ -8,4 +8,10 @@ import lombok.Getter;
 public class StatListResDto {
 	private int score;
 	private String level;
+
+	public static StatListResDto of(int score, String level) {
+		return StatListResDto.builder()
+			.score(score)
+			.level(level).build();
+	}
 }

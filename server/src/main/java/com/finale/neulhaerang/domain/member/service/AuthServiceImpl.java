@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.request.LoginReqDto;
+import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.request.TokenReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.KakaoUserResDto;
 import com.finale.neulhaerang.domain.member.dto.response.LoginResDto;
@@ -18,6 +20,8 @@ import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.feignclient.KakaoInfoFeignClient;
 import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
+import com.finale.neulhaerang.domain.member.repository.MemberStatRepository;
+import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.global.event.RegisteredEvent;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.InValidJwtTokenException;
@@ -33,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 	private final MemberRepository memberRepository;
+	private final MemberStatRepository memberStatRepository;
 	private final DeviceRepository deviceRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationHandler authenticationHandler;
@@ -58,6 +63,7 @@ public class AuthServiceImpl implements AuthService {
 			case "google":
 				break;
 			default:
+				member = kakaoLogin(loginReqDto);
 				break;
 		}
 		String accessToken = jwtTokenProvider.createAccessToken(loginReqDto.getDeviceToken(), member.getId());
@@ -108,9 +114,12 @@ public class AuthServiceImpl implements AuthService {
 		if (optionalMember.isEmpty()) {
 			Member member = memberRepository.save(
 				Member.create(kakaoUserResDto.getId(), kakaoUserResDto.getKakao_account().getProfile().getNickname()));
+
 			if (optionalDevice.isEmpty()) {
 				deviceRepository.save(Device.create(member, loginReqDto.getDeviceToken()));
 			}
+
+			memberStatRepository.save(StatRecord.of(StatRecordReqDto.of("늘해랑 가입 환영", LocalDateTime.now(), StatType.갓생력, 2), member.getId()));
 			applicationEventPublisher.publishEvent(new RegisteredEvent(member));
 			return member;
 		} else {
