@@ -9,3 +9,9 @@ data class LoginResDto(
     val refreshToken: String,
     val expiredTime: LocalDateTime,
 )
+
+data class RefreshTokenResDto(
+    val accessToken: String,
+    val refreshToken: String,
+    val expiredTime: LocalDateTime,
+)
