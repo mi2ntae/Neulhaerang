@@ -27,4 +27,7 @@ public class TodoCreateReqDto {
 
 	@NotNull
 	private StatType statType;
+
+	@NotNull
+	private Boolean alarm;
 }

@@ -52,6 +52,7 @@ class TodoServiceTest extends BaseTest {
 			.todoDate(LocalDateTime.of(2023, 12, 1, 13, 30))
 			.content("코딩테스트")
 			.statType(StatType.생존력)
+			.alarm(true)
 			.build();
 		Todo todo = modelMapper.map(todoCreateReqDto, Todo.class);
 
