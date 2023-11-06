@@ -161,7 +161,7 @@ class StatTitleEventHandlerTest extends BaseTest {
 
 	@DisplayName("칭호 발급 시, 해당 칭호가 존재하지 않으면 에러가 납니다.")
 	@Test
-	void When_LifeStat50Point_Expect_GetNothingLifeStatTitle() {
+	void When_LifeStat50Point_Expect_NotExistTitleException() {
 		// given
 		memberStatRepository.save(
 			StatRecord.of(StatRecordReqDto.of("늘해랑 가입 환영", LocalDateTime.now().minusDays(20), StatType.갓생력, 20),
