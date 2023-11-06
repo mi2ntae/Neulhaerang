@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.entity.Member;
@@ -26,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class StatTitleEventHandler {
 	private final MemberStatRepository memberStatRepository;
 	private final TitleRepository titleRepository;
@@ -77,7 +79,7 @@ public class StatTitleEventHandler {
 		checkIfGetTitleOrNot(statEvent.getMember(), StatType.최애력);
 	}
 
-	private void checkIfGetTitleOrNot(Member member, StatType statType) {
+	public void checkIfGetTitleOrNot(Member member, StatType statType) {
 		Long[] titleId = titleIdByStat.get(statType);
 		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsInAndMemberId(List.of(statType),
 			member.getId());
