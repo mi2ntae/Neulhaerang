@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class Scheduler {
 
 	private final RoutineRepository routineRepository;

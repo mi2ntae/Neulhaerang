@@ -67,6 +67,7 @@ public class Todo {
 			.todoDate(todoCreateReqDto.getTodoDate())
 			.content(todoCreateReqDto.getContent())
 			.statType(todoCreateReqDto.getStatType())
+			.alarm(todoCreateReqDto.getAlarm())
 			.member(member)
 			.build();
 	}
