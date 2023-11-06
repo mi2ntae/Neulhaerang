@@ -74,4 +74,12 @@ oauth2:
   kakao:
     infoUrl: https://kapi.kakao.com
 
+gpt:
+  key: ${GPT_KEY}
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 160000000
+        read-timeout: 160000000
 ---

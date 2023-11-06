@@ -38,6 +38,10 @@ import com.finale.neulhaerang.domain.ChecklistCreationViewModel
 fun CheckListCreationContentInput() {
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
+    val content = viewModel.content
+    val changeContent = viewModel::changeContent
+    val clearContent = viewModel::clearContent
+
     var showDialog by remember { mutableStateOf(false) }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -46,12 +50,12 @@ fun CheckListCreationContentInput() {
         }
         Spacer(modifier = Modifier.width(8.dp))
         TextField(
-            value = viewModel.content.value,
-            onValueChange = viewModel::changeContent,
+            value = content,
+            onValueChange = changeContent,
             modifier = Modifier.fillMaxWidth(),
             placeholder = { Text(text = "할 일을 입력해 주세요") },
             trailingIcon = {
-                IconButton(onClick = viewModel::clearContent) {
+                IconButton(onClick = clearContent) {
                     Icon(imageVector = Icons.Outlined.Cancel, contentDescription = "clear")
                 }
             },
@@ -73,6 +77,9 @@ fun CheckListCreationContentInput() {
 fun StatDialog(onDismiss: () -> Unit = {}) {
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
+    val stat = viewModel.stat
+    val changeStat = viewModel::changeStat
+
     AlertDialog(onDismissRequest = onDismiss, confirmButton = {}, title = {
         Text(text = "스탯을 골라주세요")
     }, text = {
@@ -82,13 +89,13 @@ fun StatDialog(onDismiss: () -> Unit = {}) {
         ) {
             Stat.values().forEach {
                 item {
-                    val colors = if (it == viewModel.stat.value) ButtonDefaults.buttonColors()
+                    val colors = if (it == stat) ButtonDefaults.buttonColors()
                     else ButtonDefaults.outlinedButtonColors()
-                    val border = if (it == viewModel.stat.value) null
+                    val border = if (it == stat) null
                     else ButtonDefaults.outlinedButtonBorder
 
                     Button(
-                        onClick = { viewModel.changeStat(it); onDismiss() },
+                        onClick = { changeStat(it); onDismiss() },
                         shape = RoundedCornerShape(8.dp),
                         colors = colors,
                         border = border,

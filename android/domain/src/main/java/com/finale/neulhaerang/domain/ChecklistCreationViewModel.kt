@@ -1,7 +1,6 @@
 package com.finale.neulhaerang.domain
 
 import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,16 +25,25 @@ class ChecklistCreationViewModel() : ViewModel() {
     private val _dateTime = mutableStateOf(LocalDateTime.now())
     private val _alarm = mutableStateOf(false)
 
-    val content: State<String> = _content
-    val stat: State<Stat> = _stat
-    val routine: State<Boolean> = _routine
-    val repeat: State<List<Boolean>> = _repeat
-    val dateTime: State<LocalDateTime> = _dateTime
-    val alarm: State<Boolean> = _alarm
+    val content: String
+        get() = _content.value
+    val stat: Stat
+        get() = _stat.value
+    val routine: Boolean
+        get() = _routine.value
+    val repeat: List<Boolean>
+        get() = _repeat.value
+    val dateTime: LocalDateTime
+        get() = _dateTime.value
+    val alarm: Boolean
+        get() = _alarm.value
 
-    val dateMilli: Long = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
-    val timeHour: Int = _dateTime.value.hour
-    val timeMinute: Int = _dateTime.value.minute
+    val dateMilli: Long
+        get() = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
+    val timeHour: Int
+        get() = _dateTime.value.hour
+    val timeMinute: Int
+        get() = _dateTime.value.minute
 
     fun changeContent(input: String) {
         _content.value = input
@@ -85,12 +93,11 @@ class ChecklistCreationViewModel() : ViewModel() {
 
             // TODO API 통신
             viewModelScope.launch {
-                RoutineApi.instance.postRoutine(request)
-                    .onSuccess { (code, _) ->
-                        Log.d(TAG, "makeChecklist: success $code")
-                    }.onFailure { (code, message, _) ->
-                        Log.d(TAG, "makeChecklist: fail $code\n$message")
-                    }
+                RoutineApi.instance.postRoutine(request).onSuccess { (code, _) ->
+                    Log.d(TAG, "makeChecklist: success $code")
+                }.onFailure { (code, message, _) ->
+                    Log.d(TAG, "makeChecklist: fail $code\n$message")
+                }
             }
         } else {
             // 투두 생성
@@ -104,12 +111,11 @@ class ChecklistCreationViewModel() : ViewModel() {
 
             // TODO API 통신
             viewModelScope.launch {
-                TodoApi.instance.postTodo(request)
-                    .onSuccess { (code, _) ->
-                        Log.d(TAG, "makeChecklist: success $code")
-                    }.onFailure { (code, message, _) ->
-                        Log.d(TAG, "makeChecklist: fail $code\n$message")
-                    }
+                TodoApi.instance.postTodo(request).onSuccess { (code, _) ->
+                    Log.d(TAG, "makeChecklist: success $code")
+                }.onFailure { (code, message, _) ->
+                    Log.d(TAG, "makeChecklist: fail $code\n$message")
+                }
             }
         }
     }

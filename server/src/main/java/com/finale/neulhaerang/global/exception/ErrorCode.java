@@ -44,7 +44,7 @@ public enum ErrorCode {
 	// AR
 	INVALID_TAG(HttpStatus.INTERNAL_SERVER_ERROR, "K-001", "자기 자신은 태그할 수 없습니다"),
 
-	// 칭호,
+	// 칭호
 	NOT_EXIST_TITLE(HttpStatus.BAD_REQUEST, "E-001", "해당 칭호는 존재하지 않습니다."),
 	;
 
