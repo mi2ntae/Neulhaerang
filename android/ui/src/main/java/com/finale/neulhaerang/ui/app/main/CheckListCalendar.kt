@@ -70,7 +70,7 @@ fun Calendar(
 //    setDateTime: (LocalDateTime) -> Unit
 ) {
     val mainScreenViewModel = viewModel<MainScreenViewModel>()
-    val selectedDate = mainScreenViewModel.selectedDate.value
+    val selectedDate = mainScreenViewModel.selectedDate
 
     val setDateTime = mainScreenViewModel::setDateTime
 

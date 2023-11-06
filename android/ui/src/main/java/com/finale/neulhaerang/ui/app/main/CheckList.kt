@@ -10,29 +10,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.data.CheckList
+import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.theme.Typography
 import java.time.LocalDate
 
 
 @Composable
 fun CheckList(selectedDate: LocalDate) {
-    val checklists = listOf<CheckList>(
-        CheckList("안녕", true),
-        CheckList("물 8잔 마시기", false),
-        CheckList("CS 스터디 - JAVASCRIPT", false),
-        CheckList("현대오토에버 이력서 작성", false),
-        CheckList("CS 스터디 - React", false),
-        CheckList("CS 스터디 - Kotlin", false),
-    )
+    val viewModel = viewModel<MainScreenViewModel>()
+    val routineList = viewModel.routineList
+    val todoList = viewModel.todoList
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -40,9 +39,9 @@ fun CheckList(selectedDate: LocalDate) {
             .padding(16.dp),
     ) {
         Text(text = selectedDate.toString())
-        Routine(checklists)
+        Routine(routineList)
         Spacer(modifier = Modifier.height(16.dp))
-        TodoList(checklists)
+        TodoList(todoList)
     }
 }
 
@@ -76,12 +75,14 @@ fun TodoList(todolist: List<CheckList>) {
 
 @Composable
 fun CheckListItem(item: CheckList) {
+    var isCompleted by remember { mutableStateOf(item.isCompleted) }
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
-            checked = item.isCompleted,
-            onCheckedChange = { !item.isCompleted },
+            checked = isCompleted,
+            onCheckedChange = { (!isCompleted).let { isCompleted = it;item.isCompleted = it } },
         )
         Text(
             text = item.content,
