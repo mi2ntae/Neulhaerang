@@ -72,4 +72,6 @@ dependencies {
     // debug
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeUiVersion"]}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
+
+    implementation("androidx.wear.compose:compose-navigation:${rootProject.extra["wearComposeVersion"]}")
 }
