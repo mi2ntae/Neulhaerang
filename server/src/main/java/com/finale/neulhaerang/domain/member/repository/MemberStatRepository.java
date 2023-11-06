@@ -10,11 +10,11 @@ import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 
 public interface MemberStatRepository extends MongoRepository<StatRecord, Long> {
-	List<StatRecord> findStatRecordsByStatTypeIsIn(List<StatType> statType);
+	List<StatRecord> findStatRecordsByStatTypeIsInAndMemberId(List<StatType> statType, long memberId);
 
-	List<StatRecord> findStatRecordsByStatTypeIsNotIn(List<StatType> ignoreStats);
+	List<StatRecord> findStatRecordsByStatTypeIsNotInAndMemberId(List<StatType> ignoreStats, long memberId);
 
-	List<StatRecord> findStatRecordsByStatType(StatType statType);
+	List<StatRecord> findStatRecordsByStatTypeAndMemberId(StatType statType, long memberId);
 
-	Page<StatRecord> findStatRecordsByStatTypeOrderByRecordedDateDesc(StatType statType, Pageable page);
+	Page<StatRecord> findStatRecordsByStatTypeAndMemberIdOrderByRecordedDateDesc(StatType statType, long memberId, Pageable page);
 }
