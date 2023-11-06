@@ -104,7 +104,7 @@ public class StatTitleEventHandler {
 		if (!earnedTitleRepository.existsByTitle_IdAndMember(titleId[titleNum], member)) {
 			earnedTitleRepository.save(EarnedTitle.create(member, optionalTitle.get()));
 		} else {
-			log.info(member.getNickname() + "님이 이미 획득한 칭호(title_id=" + titleId + ")이기 때문에 발급하지 않습니다.");
+			log.info(member.getNickname() + "님이 이미 획득한 칭호(title_id=" + titleId[titleNum] + ")이기 때문에 발급하지 않습니다.");
 		}
 	}
 
