@@ -5,3 +5,8 @@ data class LoginReqDto(
     val accessToken: String,
     val deviceToken: String,
 )
+
+data class RefreshTokenReqDto(
+    val refreshToken: String,
+    val deviceToken: String,
+)
