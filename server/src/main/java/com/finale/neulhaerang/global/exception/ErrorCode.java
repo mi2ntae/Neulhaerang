@@ -41,7 +41,7 @@ public enum ErrorCode {
 	NOT_EXIST_RELATION_WITH_ROUTINE(HttpStatus.BAD_REQUEST, "R-007", "해당 id를 가진 루틴과 관련이 없습니다."),
 	CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY(HttpStatus.BAD_REQUEST, "R-008", "오늘 날짜 이전의 데일리 루틴은 삭제할 수 없습니다."),
 
-	// 칭호,
+	// 칭호
 	NOT_EXIST_TITLE(HttpStatus.BAD_REQUEST, "E-001", "해당 칭호는 존재하지 않습니다."),
 	;
 

@@ -52,3 +52,13 @@ oauth2:
 schedules:
   cron:
     daily-routine: "0 0 0 * * *" # 매일 정각
+
+gpt:
+  key: ${GPT_KEY}
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 160000000
+        read-timeout: 160000000
