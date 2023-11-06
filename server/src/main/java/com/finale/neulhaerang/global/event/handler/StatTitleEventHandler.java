@@ -86,17 +86,17 @@ public class StatTitleEventHandler {
 			.map(record -> record.getWeight()).reduce(0, Integer::sum);
 
 		if (weight >= 50) {
-			earnTitle(titleId, 0, member);
+			getStatTitle(titleId, 0, member);
 		}
 		if (weight >= 70) {
-			earnTitle(titleId, 1, member);
+			getStatTitle(titleId, 1, member);
 		}
 		if (weight >= 90) {
-			earnTitle(titleId, 2, member);
+			getStatTitle(titleId, 2, member);
 		}
 	}
 
-	private void earnTitle(Long[] titleId, int titleNum, Member member) {
+	private void getStatTitle(Long[] titleId, int titleNum, Member member) {
 		Optional<Title> optionalTitle = titleRepository.findById(titleId[titleNum]);
 		if (optionalTitle.isEmpty()) {
 			throw new NotExistTitleException(member, titleId[titleNum]);
