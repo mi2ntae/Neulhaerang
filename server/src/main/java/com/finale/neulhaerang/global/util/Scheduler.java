@@ -31,6 +31,7 @@ import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.event.StatEvent;
+import com.finale.neulhaerang.global.event.WeatherEvent;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 
 import lombok.RequiredArgsConstructor;
@@ -62,6 +63,7 @@ public class Scheduler {
 		modifyStat(member, LocalDate.now().minusDays(1));
 		createLetter(LocalDate.now().minusDays(1));
 		publisher.publishEvent(new StatEvent(member));
+		publisher.publishEvent(new WeatherEvent(member));
 	}
 
 	void createDailyRoutine(LocalDate date) {
