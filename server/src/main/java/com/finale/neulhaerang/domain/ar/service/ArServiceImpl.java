@@ -3,6 +3,7 @@ package com.finale.neulhaerang.domain.ar.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.finale.neulhaerang.domain.member.document.StatRecord;
@@ -14,6 +15,7 @@ import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.title.entity.EarnedTitle;
 import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
+import com.finale.neulhaerang.global.event.TagOtherMemberEvent;
 import com.finale.neulhaerang.global.exception.ar.InvalidTagException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.util.AuthenticationHandler;
@@ -31,7 +33,7 @@ public class ArServiceImpl implements ArService {
 	private final TitleRepository titleRepository;
 
 	private final AuthenticationHandler authenticationHandler;
-
+	private final ApplicationEventPublisher publisher;
 	private static final long SOCIAL_FIRST_TAG = 31;
 
 	@Override
@@ -50,7 +52,7 @@ public class ArServiceImpl implements ArService {
 
 		Optional<EarnedTitle> optionalEarnedTitle = earnedTitleRepository.findEarnedTitleByMember_IdAndTitle_Id(loginMemberId, SOCIAL_FIRST_TAG);
 		if(optionalEarnedTitle.isEmpty()) {
-			earnedTitleRepository.save(EarnedTitle.create(memberRepository.getReferenceById(loginMemberId), titleRepository.getReferenceById(SOCIAL_FIRST_TAG)));
+			publisher.publishEvent(new TagOtherMemberEvent(optionalMember.get()));
 			return true;
 		}
 		return false;
