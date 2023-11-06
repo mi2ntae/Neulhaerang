@@ -72,6 +72,9 @@ fun RoutineCreation(
 ) {
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
+    val repeat = viewModel.repeat
+    val changeRepeat = viewModel::changeRepeat
+
     Column(
         modifier = modifier
     ) {
@@ -84,13 +87,13 @@ fun RoutineCreation(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             for (i in 0..6) {
-                val colors = if (viewModel.repeat.value[i]) ButtonDefaults.buttonColors()
+                val colors = if (repeat[i]) ButtonDefaults.buttonColors()
                 else ButtonDefaults.outlinedButtonColors()
-                val border = if (viewModel.repeat.value[i]) null
+                val border = if (repeat[i]) null
                 else ButtonDefaults.outlinedButtonBorder
 
                 Button(
-                    onClick = { viewModel.changeRepeat(i) },
+                    onClick = { changeRepeat(i) },
                     modifier = Modifier.size(48.dp),
                     shape = CircleShape,
                     colors = colors,
@@ -111,8 +114,12 @@ fun TodoCreation(
 ) {
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
+    val dateTime = viewModel.dateTime
+    val dateMilli = viewModel.dateMilli
+    val changeDate = viewModel::changeDate
+
     var showSheet by rememberSaveable { mutableStateOf(false) }
-    val datePickerState = rememberDatePickerState(viewModel.dateMilli)
+    val datePickerState = rememberDatePickerState(dateMilli)
 
     ChecklistCreationItem(
         modifier = modifier,
@@ -120,7 +127,7 @@ fun TodoCreation(
         icon = Icons.Filled.DateRange
     ) {
         TextButton(onClick = { showSheet = true }) {
-            Text(text = viewModel.dateTime.value.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            Text(text = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
         }
         // 날짜 피커 모달 바텀 시트
         NHLDatePicker(open = showSheet,
@@ -129,6 +136,6 @@ fun TodoCreation(
             dateValidator = {
                 it >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
             },
-            onOk = { datePickerState.selectedDateMillis?.let { viewModel.changeDate(it) } })
+            onOk = { datePickerState.selectedDateMillis?.let { changeDate(it) } })
     }
 }

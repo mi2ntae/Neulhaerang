@@ -83,6 +83,16 @@ fun Content(
 ) {
     val viewModel = viewModel<ChecklistCreationViewModel>()
 
+    val alarm = viewModel.alarm
+    val dateTime = viewModel.dateTime
+    val routine = viewModel.routine
+    val timeHour = viewModel.timeHour
+    val timeMinute = viewModel.timeMinute
+    val changeAlarm = viewModel::changeAlarm
+    val changeTime = viewModel::changeTime
+    val changeRoutine = viewModel::changeRoutine
+    val makeChecklist = viewModel::makeChecklist
+
     Column(modifier = modifier) {
         CheckListCreationContentInput()
         Spacer(modifier = Modifier.height(8.dp))
@@ -90,38 +100,38 @@ fun Content(
             name = stringResource(id = R.string.checklist_category_routine),
             icon = Icons.Filled.Refresh
         ) {
-            Switch(checked = viewModel.routine.value, onCheckedChange = viewModel::changeRoutine)
+            Switch(checked = routine, onCheckedChange = changeRoutine)
         }
-        if (viewModel.routine.value) RoutineCreation() else TodoCreation()
+        if (routine) RoutineCreation() else TodoCreation()
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_time),
             icon = Icons.Filled.Schedule
         ) {
             var showSheet by remember { mutableStateOf(false) }
             val timePickerState = rememberTimePickerState(
-                initialHour = viewModel.timeHour,
-                initialMinute = viewModel.timeMinute,
+                initialHour = timeHour,
+                initialMinute = timeMinute,
                 is24Hour = false
             )
 
             TextButton(onClick = { showSheet = true }) {
-                Text(text = viewModel.dateTime.value.format(DateTimeFormatter.ofPattern("h:mm a")))
+                Text(text = dateTime.format(DateTimeFormatter.ofPattern("h:mm a")))
             }
             NHLTimePicker(open = showSheet,
                 close = { showSheet = false },
                 timePickerState = timePickerState,
-                onOk = { viewModel.changeTime(timePickerState.hour, timePickerState.minute) })
+                onOk = { changeTime(timePickerState.hour, timePickerState.minute) })
         }
         ChecklistCreationItem(
             name = stringResource(id = R.string.checklist_category_notice),
             icon = Icons.Filled.Alarm
         ) {
-            Switch(checked = viewModel.alarm.value, onCheckedChange = viewModel::changeAlarm)
+            Switch(checked = alarm, onCheckedChange = changeAlarm)
         }
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
             onClick = {
-                viewModel.makeChecklist()
+                makeChecklist()
                 navController.popBackStack()
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {

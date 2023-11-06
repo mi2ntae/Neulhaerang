@@ -9,7 +9,7 @@ public enum ErrorCode {
 	// 인증
 	INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "A-001", "잘못된 형식의 토큰입니다."),
 	AUTHENTICATION_ENTRY_POINT(HttpStatus.BAD_REQUEST, "A-002", "잘못된 접근입니다."),
-	EXPIRED_AUTH(HttpStatus.UNAUTHORIZED, "A-003", "유효하지 않은 인증 정보입니다. 다시 로그인해주세요."),
+	EXPIRED_AUTH(HttpStatus.UNAUTHORIZED, "A-003", "유효하지 않은 인증 정보입니다. 다시 로그인해주세요."), // 리프레쉬 토큰 만료
 	ACCESS_FORBIDDEN(HttpStatus.FORBIDDEN, "A-004", "해당 요청에 대한 권한이 존재하지 않습니다."),
 
 	// 멤버
@@ -41,9 +41,14 @@ public enum ErrorCode {
 	NOT_EXIST_RELATION_WITH_ROUTINE(HttpStatus.BAD_REQUEST, "R-007", "해당 id를 가진 루틴과 관련이 없습니다."),
 	CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY(HttpStatus.BAD_REQUEST, "R-008", "오늘 날짜 이전의 데일리 루틴은 삭제할 수 없습니다."),
 
-	// 칭호,
+	// AR
+	INVALID_TAG(HttpStatus.INTERNAL_SERVER_ERROR, "K-001", "자기 자신은 태그할 수 없습니다"),
+
+	// 칭호
 	NOT_EXIST_TITLE(HttpStatus.BAD_REQUEST, "E-001", "해당 칭호는 존재하지 않습니다."),
 	;
+
+
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
 		this.httpStatus = httpStatus;

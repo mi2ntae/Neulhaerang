@@ -17,4 +17,6 @@ public interface MemberStatRepository extends MongoRepository<StatRecord, Long> 
 	List<StatRecord> findStatRecordsByStatTypeAndMemberId(StatType statType, long memberId);
 
 	Page<StatRecord> findStatRecordsByStatTypeAndMemberIdOrderByRecordedDateDesc(StatType statType, long memberId, Pageable page);
+
+	List<StatRecord> findStatRecordsByMemberIdAndReasonContaining(long memberId, String reason);
 }

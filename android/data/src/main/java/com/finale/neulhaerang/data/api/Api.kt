@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.data.api
 
 import android.util.Log
+import com.finale.neulhaerang.data.util.AccessTokenExpireInterceptor
 import com.finale.neulhaerang.data.util.AccessTokenInterceptor
 import com.finale.neulhaerang.data.util.GsonDateFormatAdapter
 import com.finale.neulhaerang.data.util.GsonDateTimeFormatAdapter
@@ -27,7 +28,8 @@ import java.util.concurrent.TimeUnit
 interface Api {
     companion object {
         // 서버 주소
-        private const val BASE_URL = "http://k9a502.p.ssafy.io/api/"
+        const val BASE_URL = "http://k9a502.p.ssafy.io/api/"
+//        const val BASE_URL = "http://10.0.2.2:8080/"
 
         private const val TIMEOUT_LIMIT = 180L
 
@@ -50,6 +52,7 @@ interface Api {
             .readTimeout(TIMEOUT_LIMIT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_LIMIT, TimeUnit.SECONDS)
             .addInterceptor(AccessTokenInterceptor())
+            .addInterceptor(AccessTokenExpireInterceptor())
             .addInterceptor(debugInterceptor)
             .build()
 
