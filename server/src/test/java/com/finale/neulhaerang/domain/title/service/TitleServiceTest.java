@@ -27,9 +27,9 @@ class TitleServiceTest extends BaseTest {
 	@Test
 	void When_FindEarnedTitle_Expect_ListOfEarnedTitle() {
 		// given
-		Title title1 = createTitle(19L, "슬늘생", "슬늘생");
-		Title title2 = createTitle(20L, "슬늘생", "슬늘생");
-		Title title3 = createTitle(21L, "슬늘생", "슬늘생");
+		Title title1 = createTitle(19L, "슬늘생1", "슬늘1");
+		Title title2 = createTitle(20L, "슬늘생2", "슬늘2");
+		Title title3 = createTitle(21L, "슬늘생3", "슬늘3");
 		List<Title> titles = titleRepository.saveAll(List.of(title1, title2, title3));
 		EarnedTitle earnedTitle1 = createEarnedTitle(titles.get(0));
 		EarnedTitle earnedTitle2 = createEarnedTitle(titles.get(2));
@@ -40,10 +40,10 @@ class TitleServiceTest extends BaseTest {
 
 		// then
 		assertThat(earnedTitles).hasSize(2)
-			.extracting("member", "title")
+			.extracting("titleId", "name", "content")
 			.containsExactlyInAnyOrder(
-				tuple(member, titles.get(0)),
-				tuple(member, titles.get(2))
+				tuple(19L, "슬늘생1", "슬늘1"),
+				tuple(21L, "슬늘생3", "슬늘3")
 			);
 	}
 
