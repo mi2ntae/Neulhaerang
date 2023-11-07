@@ -28,4 +28,9 @@ public class TitleSerivceImpl implements TitleService {
 			.map(EarnedTitleResDto::from)
 			.collect(Collectors.toList());
 	}
+
+	@Override
+	public void modifyEquipTitleByTitleId(Long titleId) {
+
+	}
 }
