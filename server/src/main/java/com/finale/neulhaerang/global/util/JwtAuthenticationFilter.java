@@ -33,7 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String token = jwtTokenProvider.resolveToken(request);
 		try {
 			if (token != null && !request.getRequestURI().equals("/auth/refresh") && !request.getRequestURI()
-				.contains("/notification") && jwtTokenProvider.validateToken(token)) {
+				.contains("/notification") && !request.getRequestURI()
+				.equals("/health") && jwtTokenProvider.validateToken(token)) {
 				Authentication auth = jwtTokenProvider.getAuthentication(token);
 				SecurityContextHolder.getContext().setAuthentication(auth); // 정상 토큰이면 SecurityContext에 저장
 			}

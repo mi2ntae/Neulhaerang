@@ -45,6 +45,7 @@ public class SecurityConfig {
 			.authorizeRequests()
 			.antMatchers("/auth/**").permitAll()
 			.antMatchers("/notification/**").permitAll()
+			.antMatchers("/health/**").permitAll()
 			.antMatchers("/v3/api-docs", "/swagger*/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
