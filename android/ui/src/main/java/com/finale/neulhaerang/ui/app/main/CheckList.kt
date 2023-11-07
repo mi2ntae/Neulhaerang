@@ -26,6 +26,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.theme.Typography
@@ -33,7 +35,7 @@ import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun CheckList() {
+fun CheckList(navController: NavHostController) {
     val viewModel = viewModel<MainScreenViewModel>()
 
     val selectedDate = viewModel.selectedDate
@@ -47,28 +49,28 @@ fun CheckList() {
             .padding(16.dp),
     ) {
         Text(text = selectedDate.toString())
-        Routine(routineList)
+        Routine(routineList, navController)
         Spacer(modifier = Modifier.height(16.dp))
-        TodoList(todoList)
+        TodoList(todoList, navController)
     }
 }
 
 
 @Composable
-fun Routine(routines: List<CheckList>) {
+fun Routine(routines: List<CheckList>, navController: NavHostController) {
     Text(text = "Routine", style = Typography.bodyLarge)
     Column(
 //        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         routines.forEach { item ->
-            CheckListItem(item)
+            CheckListItem(item, navController)
         }
     }
 }
 
 
 @Composable
-fun TodoList(todolist: List<CheckList>) {
+fun TodoList(todolist: List<CheckList>, navController: NavHostController) {
     Text(text = "To do", style = Typography.bodyLarge)
     Column(
 //        modifier = Modifier.fillMaxSize()
@@ -76,21 +78,24 @@ fun TodoList(todolist: List<CheckList>) {
 //        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         todolist.forEach { item ->
-            CheckListItem(item)
+            CheckListItem(item, navController)
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CheckListItem(item: CheckList) {
+fun CheckListItem(item: CheckList, navController: NavHostController) {
     val viewModel = viewModel<MainScreenViewModel>()
 
     Row(
         modifier = Modifier.combinedClickable(
             interactionSource = MutableInteractionSource(),
             indication = null,
-            onLongClick = { Log.d("TAG", "CheckListItem: long click") },
+            onLongClick = {
+                Log.d("TAG", "CheckListItem: long click")
+                navController.navigate(AppNavItem.CheckListModify.route)
+            },
             onClick = {}),
         verticalAlignment = Alignment.CenterVertically
     ) {

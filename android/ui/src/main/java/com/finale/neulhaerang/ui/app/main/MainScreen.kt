@@ -65,7 +65,7 @@ fun MainScreen(navController: NavHostController) {
                     }
                 }
                 when (tabIndex) {
-                    0 -> CheckList()
+                    0 -> CheckList(navController)
                     1 -> Letter()
                 }
             }
