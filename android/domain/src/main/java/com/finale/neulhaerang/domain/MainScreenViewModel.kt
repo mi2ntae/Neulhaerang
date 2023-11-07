@@ -26,6 +26,10 @@ class MainScreenViewModel : ViewModel() {
     private val _todoList = mutableStateListOf<Todo>()
     private val _letterText = mutableStateOf("")
 
+    init {
+        setDataFromDateTime()
+    }
+
     val selectedDate: LocalDate
         get() = _selectedDateTime.value.toLocalDate()
     val routineList: List<Routine>
@@ -38,15 +42,6 @@ class MainScreenViewModel : ViewModel() {
     fun setDateTime(input: LocalDateTime) {
         _selectedDateTime.value = input
         setDataFromDateTime()
-    }
-
-    /**
-     * 체크리스트를 전부 초기화하는 함수
-     * API 통신에 사용
-     */
-    fun initCheckList(routines: List<RoutineResDto>, todos: List<TodoResDto>) {
-        initRoutine(routines)
-        initTodo(todos)
     }
 
     private fun initRoutine(routines: List<RoutineResDto>) {
