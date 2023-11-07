@@ -44,7 +44,8 @@ public class SecurityConfig {
 			//TODO: 허용할 주소 추가
 			.authorizeRequests()
 			.antMatchers("/auth/**").permitAll()
-			.antMatchers( "/v3/api-docs","/swagger*/**").permitAll()
+			.antMatchers("/notification/**").permitAll()
+			.antMatchers("/v3/api-docs", "/swagger*/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.exceptionHandling()
