@@ -170,4 +170,5 @@ gradle-app.setting
 # env file
 .env
 
+src/main/resources/firebase/**
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,gradle
