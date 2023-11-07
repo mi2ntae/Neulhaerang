@@ -3,6 +3,7 @@ package com.finale.neulhaerang
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -18,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.view.WindowCompat
 import com.finale.neulhaerang.ui.app.App
+import com.google.firebase.messaging.FirebaseMessaging
+
 
 /**
  * 메인 엑티비티
@@ -32,6 +35,12 @@ class MainActivity : ComponentActivity() {
             if (it.resultCode == Activity.RESULT_OK) {
                 pageCode= it.data?.getStringExtra("pageCode")?.toInt() ?: 0
             }
+        }
+
+//        val token = FirebaseMessaging.getInstance().token.result
+//        Log.i("heejeong",token)
+        FirebaseMessaging.getInstance().token.addOnSuccessListener {
+            Log.i("heejeong",it)
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
