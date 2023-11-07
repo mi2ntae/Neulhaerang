@@ -2,6 +2,7 @@ package com.finale.neulhaerang.data
 
 import com.finale.neulhaerang.common.Stat
 import com.finale.neulhaerang.data.model.response.RoutineResDto
+import com.finale.neulhaerang.data.model.response.TodoResDto
 import java.time.LocalTime
 
 open class CheckList(
@@ -31,6 +32,24 @@ class Routine(
         resDto.content,
         setStat(resDto.statType),
         resDto.repeated
+    )
+}
+
+class Todo(
+    val todoId: Long,
+    alarm: Boolean,
+    alarmTime: LocalTime?,
+    check: Boolean,
+    content: String,
+    statType: Stat,
+) : CheckList(alarm, alarmTime, check, content, statType) {
+    constructor(resDto: TodoResDto) : this(
+        resDto.todoId,
+        resDto.alarm,
+        resDto.alarmTime,
+        resDto.check,
+        resDto.content,
+        setStat(resDto.statType),
     )
 }
 

@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
+import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.data.api.LetterApi
 import com.finale.neulhaerang.data.api.RoutineApi
+import com.finale.neulhaerang.data.api.TodoApi
 import com.finale.neulhaerang.data.model.response.RoutineResDto
+import com.finale.neulhaerang.data.model.response.TodoResDto
 import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
 import kotlinx.coroutines.launch
@@ -18,15 +20,15 @@ import java.time.LocalDateTime
 
 class MainScreenViewModel : ViewModel() {
     private val _selectedDateTime = mutableStateOf(LocalDateTime.now())
-    private val _routineList = mutableStateListOf<Routine>() // TODO Routine 객체 생성 후 교체
-    private val _todoList = mutableStateListOf<CheckList>() // TODO todo 객체 생성 후 교체
+    private val _routineList = mutableStateListOf<Routine>()
+    private val _todoList = mutableStateListOf<Todo>()
     private val _letterText = mutableStateOf("")
 
     val selectedDate: LocalDate
         get() = _selectedDateTime.value.toLocalDate()
     val routineList: List<Routine>
         get() = _routineList
-    val todoList: List<CheckList>
+    val todoList: List<Todo>
         get() = _todoList
     val letterText: String
         get() = _letterText.value
@@ -40,7 +42,7 @@ class MainScreenViewModel : ViewModel() {
      * 체크리스트를 전부 초기화하는 함수
      * API 통신에 사용
      */
-    fun initCheckList(routines: List<RoutineResDto>, todos: List<CheckList>) {
+    fun initCheckList(routines: List<RoutineResDto>, todos: List<TodoResDto>) {
         initRoutine(routines)
         initTodo(todos)
     }
@@ -50,20 +52,20 @@ class MainScreenViewModel : ViewModel() {
         routines.forEach { addRoutine(Routine(it)) }
     }
 
-    private fun initTodo(todos: List<CheckList>) {
+    private fun initTodo(todos: List<TodoResDto>) {
         _todoList.clear()
-        _todoList.addAll(todos)
+        todos.forEach { addTodo(Todo(it)) }
     }
 
     fun addRoutine(routine: Routine) {
         _routineList.add(routine)
     }
 
-    fun addTodo(todo: CheckList) {
+    fun addTodo(todo: Todo) {
         _todoList.add(todo)
     }
 
-    fun setLetterText(input: String) {
+    private fun setLetterText(input: String) {
         _letterText.value = input
     }
 
@@ -73,6 +75,11 @@ class MainScreenViewModel : ViewModel() {
             // TODO API 연결
             RoutineApi.instance.getRoutine(selectedDate)
                 .onSuccess { initRoutine(it.data!!) }
+                .onFailure {
+                    Log.w(TAG, "setDataFromDateTime: fail ${it.code} ${it.message}")
+                }
+            TodoApi.instance.getTodo(selectedDate)
+                .onSuccess { initTodo(it.data!!) }
                 .onFailure {
                     Log.w(TAG, "setDataFromDateTime: fail ${it.code} ${it.message}")
                 }
