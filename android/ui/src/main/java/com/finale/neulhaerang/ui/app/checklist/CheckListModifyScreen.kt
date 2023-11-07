@@ -39,16 +39,36 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.Stat
 import com.finale.neulhaerang.data.CheckList
+import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.domain.CheckListModifyViewModel
+import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CheckListModifyScreen(navController: NavHostController) {
+fun CheckListModifyScreen(navController: NavHostController, type: String?, index: Int?) {
+    val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+    val checkList = when (type) {
+        "routine" -> viewModel.routineList
+        "todo" -> viewModel.todoList
+        else -> {
+            listOf<CheckList>(
+                Routine(
+                    0,
+                    0,
+                    false,
+                    null,
+                    false,
+                    "dd",
+                    Stat.GodSang,
+                    List(7) { false })
+            )
+        }
+    }[index ?: 0]
+
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {
             Text(
@@ -73,7 +93,8 @@ fun CheckListModifyScreen(navController: NavHostController) {
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
                 .imePadding()
-                .fillMaxSize(), navController = navController
+                .fillMaxSize(), navController = navController,
+            checkList = checkList
         )
     }
 }
@@ -83,14 +104,8 @@ fun CheckListModifyScreen(navController: NavHostController) {
 fun CheckListModifyContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    checkList: CheckList,
 ) {
-    val checkList = CheckList(
-        alarm = true,
-        alarmTime = LocalTime.now(),
-        content = "text",
-        check = false,
-        statType = Stat.GodSang
-    )
     val viewModel =
         viewModel<CheckListModifyViewModel>(factory = CheckListModifyViewModel.Factory(checkList))
 
@@ -162,6 +177,6 @@ fun CheckListModifyContent(
 @Composable
 fun CheckListModifyScreenPreview() {
     NeulHaeRangTheme {
-        CheckListModifyScreen(navController = rememberNavController())
+        CheckListModifyScreen(navController = rememberNavController(), null, 0)
     }
 }

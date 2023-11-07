@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
@@ -21,6 +23,14 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class MainScreenViewModel : ViewModel() {
+    companion object {
+        val viewModelStore = ViewModelStore()
+        val storeOwner = object : ViewModelStoreOwner {
+            override val viewModelStore: ViewModelStore
+                get() = this@Companion.viewModelStore
+        }
+    }
+
     private val _selectedDateTime = mutableStateOf(LocalDateTime.now())
     private val _routineList = mutableStateListOf<Routine>()
     private val _todoList = mutableStateListOf<Todo>()

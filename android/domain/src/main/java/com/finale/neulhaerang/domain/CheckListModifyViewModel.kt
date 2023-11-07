@@ -21,7 +21,7 @@ class CheckListModifyViewModel(checkList: CheckList) : ViewModel() {
         }
     }
 
-    private val _content = mutableStateOf("")
+    private val _content = mutableStateOf(checkList.content)
     private val _stat = mutableStateOf(Stat.GodSang)
     private val _routine = mutableStateOf(false)
     private val _repeat = mutableStateOf(List(7) { _ -> false })

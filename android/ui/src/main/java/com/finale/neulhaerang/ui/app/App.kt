@@ -10,9 +10,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.app.checklist.CheckListCreationScreen
@@ -62,8 +64,17 @@ fun AppMain(getResult: ActivityResultLauncher<Intent>) {
             composable(route = AppNavItem.CheckListCreation.route) {
                 CheckListCreationScreen(navController = navController)
             }
-            composable(route = AppNavItem.CheckListModify.route) {
-                CheckListModifyScreen(navController = navController)
+            composable(
+                route = "${AppNavItem.CheckListModify.route}/{type}/{index}",
+                arguments = listOf(
+                    navArgument("type") { type = NavType.StringType },
+                    navArgument("index") { type = NavType.IntType }
+                )) { entry ->
+                CheckListModifyScreen(
+                    navController = navController,
+                    entry.arguments?.getString("type"),
+                    entry.arguments?.getInt("index")
+                )
             }
             composable(route = AppNavItem.Setting.route) {
                 SettingScreen(navController = navController)

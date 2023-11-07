@@ -29,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.data.CheckList
+import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.theme.Typography
 import java.time.format.DateTimeFormatter
@@ -62,8 +63,8 @@ fun Routine(routines: List<CheckList>, navController: NavHostController) {
     Column(
 //        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        routines.forEach { item ->
-            CheckListItem(item, navController)
+        routines.forEachIndexed { index, item ->
+            CheckListItem(index, item, navController)
         }
     }
 }
@@ -77,16 +78,17 @@ fun TodoList(todolist: List<CheckList>, navController: NavHostController) {
 //        contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
 //        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        todolist.forEach { item ->
-            CheckListItem(item, navController)
+        todolist.forEachIndexed { index, item ->
+            CheckListItem(index, item, navController)
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CheckListItem(item: CheckList, navController: NavHostController) {
-    val viewModel = viewModel<MainScreenViewModel>()
+fun CheckListItem(index: Int, item: CheckList, navController: NavHostController) {
+    val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+    val type = if (item is Routine) "routine" else "todo"
 
     Row(
         modifier = Modifier.combinedClickable(
@@ -94,7 +96,7 @@ fun CheckListItem(item: CheckList, navController: NavHostController) {
             indication = null,
             onLongClick = {
                 Log.d("TAG", "CheckListItem: long click")
-                navController.navigate(AppNavItem.CheckListModify.route)
+                navController.navigate("${AppNavItem.CheckListModify.route}/$type/$index")
             },
             onClick = {}),
         verticalAlignment = Alignment.CenterVertically
