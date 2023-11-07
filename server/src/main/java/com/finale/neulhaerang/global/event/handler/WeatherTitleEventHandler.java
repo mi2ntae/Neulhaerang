@@ -6,33 +6,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
-import com.finale.neulhaerang.domain.title.entity.EarnedTitle;
-import com.finale.neulhaerang.domain.title.entity.Title;
-import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
-import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.event.WeatherEvent;
-import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@RequiredArgsConstructor
-@Slf4j
-public class WeatherTitleEventHandler {
-	private final TodoRepository todoRepository;
-	private final DailyRoutineRepository dailyRoutineRepository;
-	private final TitleRepository titleRepository;
-	private final EarnedTitleRepository earnedTitleRepository;
+public class WeatherTitleEventHandler extends TitleEventHandler {
+	@Autowired
+	private TodoRepository todoRepository;
+	@Autowired
+	private DailyRoutineRepository dailyRoutineRepository;
+
 	private Map<String, Long[]> titleIdByWeather = new HashMap<>() {
 		{
 			put("sunny", new Long[] {25L, 26L});
@@ -60,11 +51,11 @@ public class WeatherTitleEventHandler {
 			}
 			countOfDay++;
 			if (countOfDay == 10) {
-				getWeatherTitle(todayWeather, 0, weatherEvent.getMember());
+				getTitle(titleIdByWeather.get(todayWeather)[0], weatherEvent.getMember());
 			}
 		}
 		if (countOfDay >= 50) {
-			getWeatherTitle(todayWeather, 1, weatherEvent.getMember());
+			getTitle(titleIdByWeather.get(todayWeather)[1], weatherEvent.getMember());
 		}
 
 	}
@@ -97,19 +88,5 @@ public class WeatherTitleEventHandler {
 			}
 		}
 		return weatherOfComplete;
-	}
-
-	public void getWeatherTitle(String weather, int index, Member member) {
-		Long[] titleId = titleIdByWeather.get(weather);
-
-		Optional<Title> optionalTitle = titleRepository.findById(titleId[index]);
-		if (optionalTitle.isEmpty()) {
-			throw new NotExistTitleException(member, titleId[index]);
-		}
-		if (!earnedTitleRepository.existsByTitle_IdAndMember(titleId[index], member)) {
-			earnedTitleRepository.save(EarnedTitle.create(member, optionalTitle.get()));
-		} else {
-			log.info(member.getNickname() + "님이 이미 획득한 칭호(title_id=" + titleId[index] + ")이기 때문에 발급하지 않습니다.");
-		}
 	}
 }

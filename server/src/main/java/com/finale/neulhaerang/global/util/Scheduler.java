@@ -34,6 +34,8 @@ import com.finale.neulhaerang.global.event.LetterEvent;
 import com.finale.neulhaerang.global.event.StatEvent;
 import com.finale.neulhaerang.global.event.WeatherEvent;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
+import com.finale.neulhaerang.global.notification.dto.request.LetterNotificationReqDto;
+import com.finale.neulhaerang.global.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,6 +52,7 @@ public class Scheduler {
 	private final MemberStatRepository memberStatRepository;
 	private final LetterRepository letterRepository;
 	private final LetterFeignClient letterFeignClient;
+	private final NotificationService notificationService;
 	private final ApplicationEventPublisher publisher;
 
 	@Value("${gpt.key}")
@@ -159,6 +162,7 @@ public class Scheduler {
 
 		Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
 		letterRepository.save(letter);
+		notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
 	}
 
 	String createReqMessage(Member member, LocalDate date) {

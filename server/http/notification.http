@@ -1,0 +1,35 @@
+### 알림 보내기 ver.편지보내기
+POST localhost:8080/notification/1
+Content-Type: application/json
+
+{
+  "title": "'슬기로운 늘해랑 생활' 칭호를 획득하셨습니다!",
+  "content": "정은님💗 '슬기로운 늘해랑 생활' 칭호를 획득하셨습니다! 축하드려요🎈🎁🎉"
+}
+
+### 알림 보내기 ver.편지보냄
+POST localhost:8080/notification/1
+Content-Type: application/json
+
+{
+  "title": "정은님 편지가 도착했어요💌",
+  "content": "정은님💗 ' 해랑이에게 편지가 도착했어요! 우체통에서 확인해보세요~ 해랑이가 기다리고 있어요 💘"
+}
+
+### 알림 보내기 ver.다른 사용자 발견
+POST localhost:8080/notification/1
+Content-Type: application/json
+
+{
+  "title": "정은님 주위에 다른 사용자가 있어요!",
+  "content": "정은님💗 '유진'님이 주위에 계세요!💨💨 태그해 보는건 어때요?"
+}
+
+### 알림 보내기 ver.기타
+POST localhost:8080/notification/1
+Content-Type: application/json
+
+{
+  "title": "정은💘님이 메세지를 보내셨어요💌",
+  "content": "언닝 안녕 ❗"
+}

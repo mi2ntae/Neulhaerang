@@ -32,7 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	) throws ServletException, IOException {
 		String token = jwtTokenProvider.resolveToken(request);
 		try {
-			if (token != null && !request.getRequestURI().equals("/auth/refresh") && jwtTokenProvider.validateToken(token)) {
+			if (token != null && !request.getRequestURI().equals("/auth/refresh") && !request.getRequestURI()
+				.contains("/notification") && jwtTokenProvider.validateToken(token)) {
 				Authentication auth = jwtTokenProvider.getAuthentication(token);
 				SecurityContextHolder.getContext().setAuthentication(auth); // 정상 토큰이면 SecurityContext에 저장
 			}
