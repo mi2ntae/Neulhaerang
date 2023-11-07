@@ -46,8 +46,6 @@ public class NotificationService {
 	}
 
 	private Notification createNotification(NotificationReqDto notificationReqDto) {
-		System.out.println(notificationReqDto.getContent());
-		System.out.println(notificationReqDto.getTitle());
 		return Notification.builder()
 			.setTitle(notificationReqDto.getTitle())
 			.setBody(notificationReqDto.getContent())
