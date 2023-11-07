@@ -42,8 +42,6 @@ fun MainScreen(navController: NavHostController) {
 //    val currentDate = LocalDate.now()
 //    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
 
-    mainScreenViewModel.setDataFromDateTime()
-
     Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
@@ -77,10 +75,10 @@ fun MainScreen(navController: NavHostController) {
 
 @Composable
 fun ChecklistCreationButton(navController: NavHostController) {
-    FloatingActionButton(onClick = { navController.stackNavigate(AppNavItem.ChecklistCreation.route) }) {
+    FloatingActionButton(onClick = { navController.stackNavigate(AppNavItem.CheckListCreation.route) }) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = AppNavItem.ChecklistCreation.description,
+            contentDescription = AppNavItem.CheckListCreation.description,
             modifier = Modifier
         )
     }

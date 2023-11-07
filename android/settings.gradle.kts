@@ -22,3 +22,9 @@ include(":ui")
 include(":data")
 include(":domain")
 include(":common")
+include(":watch")
+
+// unity
+include(":unityLibrary")
+project(":unityLibrary").projectDir = file("..\\UnityProject\\androidBuild\\unityLibrary")
+include (":unityLibrary:xrmanifest.androidlib")

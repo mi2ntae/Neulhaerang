@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.data.api
 
 import com.finale.neulhaerang.data.model.request.RoutineReqDto
+import com.finale.neulhaerang.data.model.response.RoutineResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -12,7 +13,7 @@ import java.time.LocalDate
 
 interface RoutineApi {
     @GET("${BASE}/")
-    suspend fun getRoutine(@Query("date") date: LocalDate): ResponseResult<List<Any>> // TODO 반환 타입 정의 후 Any 바꾸기
+    suspend fun getRoutine(@Query("date") date: LocalDate): ResponseResult<List<RoutineResDto>>
 
     @POST("$BASE/")
     suspend fun postRoutine(@Body routineReqDto: RoutineReqDto): ResponseResult<Any>

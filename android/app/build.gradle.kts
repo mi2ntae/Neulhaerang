@@ -3,6 +3,9 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+
+    // Add the Google services Gradle plugin
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -50,11 +53,16 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
-    packaging {
+    packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+//    packaging {
+//        resources {
+//            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+//        }
+//    }
 }
 
 fun getApiKey(propertyKey: String): String {
@@ -75,6 +83,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:${rootProject.extra["composeBomVersion"]}"))
     implementation("androidx.compose.ui:ui-android:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -86,4 +95,17 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
     //kakao login
     implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
+
+    // unity
+    implementation(project(":unityLibrary"))
+//    implementation(fileTree(mapOf("dir" to "../UnityProject/androidBuild/unityLibrary/libs", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "..\\UnityProject\\androidBuild\\unityLibrary\\libs", "include" to listOf("*.jar"))))
+
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    // Add the dependency for the Firebase SDK for Google Analytics
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
 }
