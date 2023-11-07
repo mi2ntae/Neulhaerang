@@ -1,5 +1,9 @@
 package com.finale.neulhaerang.ui.app.main
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -77,11 +81,17 @@ fun TodoList(todolist: List<CheckList>) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CheckListItem(item: CheckList) {
     val viewModel = viewModel<MainScreenViewModel>()
 
     Row(
+        modifier = Modifier.combinedClickable(
+            interactionSource = MutableInteractionSource(),
+            indication = null,
+            onLongClick = { Log.d("TAG", "CheckListItem: long click") },
+            onClick = {}),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
