@@ -50,11 +50,16 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
-    packaging {
+    packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+//    packaging {
+//        resources {
+//            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+//        }
+//    }
 }
 
 fun getApiKey(propertyKey: String): String {
@@ -86,4 +91,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
     //kakao login
     implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
+
+    // unity
+    implementation(project(":unityLibrary"))
+//    implementation(fileTree(mapOf("dir" to "../UnityProject/androidBuild/unityLibrary/libs", "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to "..\\UnityProject\\androidBuild\\unityLibrary\\libs", "include" to listOf("*.jar"))))
 }
