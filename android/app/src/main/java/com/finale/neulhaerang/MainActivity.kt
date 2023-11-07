@@ -1,13 +1,17 @@
 package com.finale.neulhaerang
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -20,14 +24,21 @@ import com.finale.neulhaerang.ui.app.App
  * 푸시 알림이나 기기 연결 등의 설정이 들어감
  */
 class MainActivity : ComponentActivity() {
+    lateinit var getResult: ActivityResultLauncher<Intent>
+    var pageCode by mutableIntStateOf(0)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                pageCode= it.data?.getStringExtra("pageCode")?.toInt() ?: 0
+            }
+        }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         
         setContent {
             BackOnPressed()
-            App()
+            App(getResult)
         }
     }
 }
