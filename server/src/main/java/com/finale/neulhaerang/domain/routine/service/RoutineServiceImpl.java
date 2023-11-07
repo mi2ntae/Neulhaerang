@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.domain.routine.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,14 +66,14 @@ public class RoutineServiceImpl implements RoutineService {
 			List<Routine> routines = routineRepository.findRoutinesByDayOfValue(dayOfVaule.toString(),
 				date);
 			return routines.stream()
-				.map(RoutineResDto::from)
+				.map(r -> RoutineResDto.of(r, changeRepeated(r.getRepeated())))
 				.collect(Collectors.toList());
 		} else {
 			Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
 			List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(
 				date, member);
 			return dailyRoutines.stream()
-				.map(DailyRoutineResDto::from)
+				.map(r -> DailyRoutineResDto.of(r, changeRepeated(r.getRoutine().getRepeated())))
 				.collect(Collectors.toList());
 		}
 	}
@@ -162,11 +163,19 @@ public class RoutineServiceImpl implements RoutineService {
 		optionalRoutine.get().updateDeleteDate(LocalDate.now());
 	}
 
-	private static StringBuilder checkRepeatedDate(List<Boolean> repeat) {
+	private StringBuilder checkRepeatedDate(List<Boolean> repeat) {
 		StringBuilder repeated = new StringBuilder();
 		repeat.forEach(r ->
 			repeated.append(r ? "1" : "0")
 		);
 		return repeated;
+	}
+
+	private List<Boolean> changeRepeated(String repeated) {
+		List<Boolean> date = new ArrayList<>();
+		for (char r : repeated.toCharArray()) {
+			date.add(r == '1');
+		}
+		return date;
 	}
 }
