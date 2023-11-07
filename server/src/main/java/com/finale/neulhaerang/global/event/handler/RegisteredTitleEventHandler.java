@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.finale.neulhaerang.global.event.RegisteredEvent;
 
 @Component
-public class RegisteredTitleHandler extends TitleEventHandler {
+public class RegisteredTitleEventHandler extends TitleEventHandler {
 	private final long titleIdOfRegisteredTitle = 19L;
 
 	@Async
