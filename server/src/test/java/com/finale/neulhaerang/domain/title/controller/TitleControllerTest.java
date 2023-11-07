@@ -47,4 +47,15 @@ class TitleControllerTest extends BaseTest {
 			.andExpect(status().isOk());
 	}
 
+	@DisplayName("장착 칭호를 변경합니다.")
+	@Test
+	void When_ModifyEquipTitle_Expect_ChangeEquipTitle() throws Exception {
+		// given // when // then
+		mockMvc.perform(
+				patch("/title/1")
+			)
+			.andDo(print())
+			.andExpect(status().isOk());
+	}
+
 }
