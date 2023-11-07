@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 
-class ChecklistCreationViewModel() : ViewModel() {
+class CheckListCreationViewModel() : ViewModel() {
     private val _content = mutableStateOf("")
     private val _stat = mutableStateOf(Stat.GodSang)
     private val _routine = mutableStateOf(false)

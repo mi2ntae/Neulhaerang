@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.app.checklistCreation
+package com.finale.neulhaerang.ui.app.checklist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,11 +32,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.common.Stat
-import com.finale.neulhaerang.domain.ChecklistCreationViewModel
+import com.finale.neulhaerang.domain.CheckListCreationViewModel
 
 @Composable
-fun CheckListCreationContentInput() {
-    val viewModel = viewModel<ChecklistCreationViewModel>()
+fun CheckListContentInput() {
+    val viewModel = viewModel<CheckListCreationViewModel>()
 
     val content = viewModel.content
     val changeContent = viewModel::changeContent
@@ -75,7 +75,7 @@ fun CheckListCreationContentInput() {
 
 @Composable
 fun StatDialog(onDismiss: () -> Unit = {}) {
-    val viewModel = viewModel<ChecklistCreationViewModel>()
+    val viewModel = viewModel<CheckListCreationViewModel>()
 
     val stat = viewModel.stat
     val changeStat = viewModel::changeStat

@@ -75,10 +75,10 @@ fun MainScreen(navController: NavHostController) {
 
 @Composable
 fun ChecklistCreationButton(navController: NavHostController) {
-    FloatingActionButton(onClick = { navController.stackNavigate(AppNavItem.ChecklistCreation.route) }) {
+    FloatingActionButton(onClick = { navController.stackNavigate(AppNavItem.CheckListCreation.route) }) {
         Icon(
             imageVector = Icons.Filled.Add,
-            contentDescription = AppNavItem.ChecklistCreation.description,
+            contentDescription = AppNavItem.CheckListCreation.description,
             modifier = Modifier
         )
     }
