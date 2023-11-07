@@ -46,9 +46,8 @@ public enum ErrorCode {
 
 	// 칭호
 	NOT_EXIST_TITLE(HttpStatus.BAD_REQUEST, "E-001", "해당 칭호는 존재하지 않습니다."),
+	NOT_EARNED_TITLE(HttpStatus.BAD_REQUEST, "E-002", "해당 칭호는 아직 얻지 못했습니다."),
 	;
-
-
 
 	ErrorCode(HttpStatus httpStatus, String errorCode, String message) {
 		this.httpStatus = httpStatus;
