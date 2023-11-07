@@ -45,4 +45,8 @@ public class Member extends BaseTimeEntity {
 	public void updateWithdrawalDate(LocalDateTime now) {
 		this.withdrawalDate = now;
 	}
+
+	public void updateTitleId(Long titleId) {
+		this.titleId = titleId;
+	}
 }

@@ -26,6 +26,7 @@ import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeExceptio
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
+import com.finale.neulhaerang.global.exception.title.NotEarnedTitleException;
 import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
@@ -35,6 +36,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(NotEarnedTitleException.class)
+	protected ResponseEntity<ErrorResponse> notEarnedTitleException() {
+		log.error("Login user cannot self tag");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_EARNED_TITLE.getErrorCode(),
+			ErrorCode.NOT_EARNED_TITLE.getMessage());
+		return ResponseEntity.status(ErrorCode.NOT_EARNED_TITLE.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(InvalidTagException.class)
 	protected ResponseEntity<ErrorResponse> invalidTagException() {
