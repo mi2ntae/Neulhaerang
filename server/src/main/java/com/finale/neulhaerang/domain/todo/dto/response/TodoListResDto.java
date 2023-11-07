@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class TodoListResDto {
+	private Long todoId;
 	private String content;
 	private boolean alarm;
 	private boolean check;
@@ -23,8 +24,9 @@ public class TodoListResDto {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalTime alarmTime;
 
-	public static TodoListResDto from(Todo todo){
+	public static TodoListResDto from(Todo todo) {
 		return TodoListResDto.builder()
+			.todoId(todo.getId())
 			.content(todo.getContent())
 			.alarm(todo.isAlarm())
 			.check(todo.isCheck())
