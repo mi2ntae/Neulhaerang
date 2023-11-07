@@ -19,7 +19,7 @@ public class FindOtherMemberReqDto extends NotificationReqDto {
 
 	public static FindOtherMemberReqDto create(Member member, Member otherMember) {
 		return FindOtherMemberReqDto.builder()
-			.title(member.getNickname() + " 주위에 다른 사용자가 있어요!")
+			.title(member.getNickname() + "님 주위에 다른 사용자가 있어요!")
 			.content(member.getNickname() + "님💗 '" + otherMember.getNickname() + "'님이 주위에 계세요!💨💨 태그해 보는건 어때요?")
 			.build();
 	}

@@ -20,7 +20,7 @@ public class TitleNotificationReqDto extends NotificationReqDto {
 
 	public static TitleNotificationReqDto create(Member member, Title earnedTitle) {
 		return TitleNotificationReqDto.builder()
-			.title(earnedTitle.getName() + " 칭호를 획득하셨습니다!")
+			.title("'" + earnedTitle.getName() + "' 칭호를 획득하셨습니다!")
 			.content(member.getNickname() + "님💗 '" + earnedTitle.getName() + "' 칭호를 획득하셨습니다! 축하드려요🎈🎁🎉")
 			.build();
 	}
