@@ -11,10 +11,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -81,14 +77,14 @@ fun TodoList(todolist: List<CheckList>) {
 
 @Composable
 fun CheckListItem(item: CheckList) {
-    var isCompleted by remember { mutableStateOf(item.check) }
+    val viewModel = viewModel<MainScreenViewModel>()
 
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
-            checked = isCompleted,
-            onCheckedChange = { (!isCompleted).let { isCompleted = it;item.check = it } },
+            checked = item.check,
+            onCheckedChange = { viewModel.checkCheckList(item) },
         )
         Text(
             text = item.content, style = Typography.bodyLarge.merge(
@@ -99,8 +95,8 @@ fun CheckListItem(item: CheckList) {
                         alignment = LineHeightStyle.Alignment.Center,
                         trim = LineHeightStyle.Trim.FirstLineTop
                     ),
-                    color = if (isCompleted) Color.Gray else TextStyle.Default.color,
-                    textDecoration = if (isCompleted) TextDecoration.LineThrough else null
+                    color = if (item.check) Color.Gray else TextStyle.Default.color,
+                    textDecoration = if (item.check) TextDecoration.LineThrough else null
                 )
             )
         )
