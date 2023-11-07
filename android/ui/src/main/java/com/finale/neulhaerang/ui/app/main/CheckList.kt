@@ -81,14 +81,14 @@ fun TodoList(todolist: List<CheckList>) {
 
 @Composable
 fun CheckListItem(item: CheckList) {
-    var isCompleted by remember { mutableStateOf(item.isCompleted) }
+    var isCompleted by remember { mutableStateOf(item.check) }
 
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
             checked = isCompleted,
-            onCheckedChange = { (!isCompleted).let { isCompleted = it;item.isCompleted = it } },
+            onCheckedChange = { (!isCompleted).let { isCompleted = it;item.check = it } },
         )
         Text(
             text = item.content, style = Typography.bodyLarge.merge(

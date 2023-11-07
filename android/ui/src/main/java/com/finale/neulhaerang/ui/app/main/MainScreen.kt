@@ -42,8 +42,6 @@ fun MainScreen(navController: NavHostController) {
 //    val currentDate = LocalDate.now()
 //    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
 
-    mainScreenViewModel.setDataFromDateTime()
-
     Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
