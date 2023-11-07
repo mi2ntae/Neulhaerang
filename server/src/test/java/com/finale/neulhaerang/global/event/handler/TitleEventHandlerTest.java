@@ -12,18 +12,17 @@ import com.finale.neulhaerang.domain.title.entity.EarnedTitle;
 import com.finale.neulhaerang.domain.title.entity.Title;
 import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
-import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
-class RegisteredTitleHandlerTest extends BaseTest {
+class TitleEventHandlerTest extends BaseTest {
 	@Autowired
 	private TitleRepository titleRepository;
 	@Autowired
-	private RegisteredTitleHandler registeredTitleHandler;
+	private TitleEventHandler titleEventHandler;
 	@Autowired
 	private EarnedTitleRepository earnedTitleRepository;
 
-	@DisplayName("회원가입을 하면 회원가입 칭호가 발급됩니다.")
+	@DisplayName("칭호가 발급됩니다.")
 	@Test
 	void When_RegisterMember_Expect_GetRegisterTitle() {
 		// given
@@ -31,18 +30,10 @@ class RegisteredTitleHandlerTest extends BaseTest {
 		titleRepository.save(title);
 
 		// when
-		registeredTitleHandler.getRegisteredTitle(member);
+		titleEventHandler.getTitle(19L, member);
 		// then
 		List<EarnedTitle> earnedTitles = earnedTitleRepository.findAll();
 		assertThat(earnedTitles).hasSize(1);
-	}
-
-	@DisplayName("회원가입 시, 칭호가 존재하지 않는다면 에러가 납니다.")
-	@Test
-	void When_RegisterMemberWithNothingTitle_Expect_NotExistTitleException() {
-		// given // when // then
-		assertThatThrownBy(() -> registeredTitleHandler.getRegisteredTitle(member))
-			.isInstanceOf(NotExistTitleException.class);
 	}
 
 	private Title createTitle(Long id, String name, String content) {
