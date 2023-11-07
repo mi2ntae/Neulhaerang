@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.app.checklistCreation
+package com.finale.neulhaerang.ui.app.checklist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,7 +32,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.finale.neulhaerang.domain.ChecklistCreationViewModel
+import com.finale.neulhaerang.domain.CheckListCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import java.time.LocalDate
@@ -41,7 +41,7 @@ import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun ChecklistCreationItem(
+fun CheckListItem(
     modifier: Modifier = Modifier,
     name: String,
     icon: ImageVector,
@@ -70,7 +70,7 @@ fun ChecklistCreationItem(
 fun RoutineCreation(
     modifier: Modifier = Modifier,
 ) {
-    val viewModel = viewModel<ChecklistCreationViewModel>()
+    val viewModel = viewModel<CheckListCreationViewModel>()
 
     val repeat = viewModel.repeat
     val changeRepeat = viewModel::changeRepeat
@@ -78,7 +78,7 @@ fun RoutineCreation(
     Column(
         modifier = modifier
     ) {
-        ChecklistCreationItem(
+        CheckListItem(
             name = stringResource(id = R.string.checklist_category_repeat),
             icon = Icons.Filled.Alarm,
             content = null
@@ -112,7 +112,7 @@ fun RoutineCreation(
 fun TodoCreation(
     modifier: Modifier = Modifier,
 ) {
-    val viewModel = viewModel<ChecklistCreationViewModel>()
+    val viewModel = viewModel<CheckListCreationViewModel>()
 
     val dateTime = viewModel.dateTime
     val dateMilli = viewModel.dateMilli
@@ -121,7 +121,7 @@ fun TodoCreation(
     var showSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(dateMilli)
 
-    ChecklistCreationItem(
+    CheckListItem(
         modifier = modifier,
         name = stringResource(id = R.string.checklist_category_date),
         icon = Icons.Filled.DateRange

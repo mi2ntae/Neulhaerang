@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.domain.KakaoAuthViewModel
-import com.finale.neulhaerang.ui.app.checklistCreation.ChecklistCreationScreen
+import com.finale.neulhaerang.ui.app.checklist.CheckListCreationScreen
 import com.finale.neulhaerang.ui.app.config.SettingScreen
 import com.finale.neulhaerang.ui.app.login.LoginScreen
 import com.finale.neulhaerang.ui.app.main.MainScreen
@@ -58,8 +58,8 @@ fun AppMain(getResult: ActivityResultLauncher<Intent>) {
             composable(route = AppNavItem.Social.route) {
                 SocialScreen()
             }
-            composable(route = AppNavItem.ChecklistCreation.route) {
-                ChecklistCreationScreen(navController = navController)
+            composable(route = AppNavItem.CheckListCreation.route) {
+                CheckListCreationScreen(navController = navController)
             }
             composable(route = AppNavItem.Setting.route) {
                 SettingScreen(navController = navController)

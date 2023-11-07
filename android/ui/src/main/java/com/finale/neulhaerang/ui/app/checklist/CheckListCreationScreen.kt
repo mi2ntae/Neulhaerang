@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.ui.app.checklistCreation
+package com.finale.neulhaerang.ui.app.checklist
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.finale.neulhaerang.domain.ChecklistCreationViewModel
+import com.finale.neulhaerang.domain.CheckListCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
@@ -45,7 +45,7 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChecklistCreationScreen(navController: NavHostController) {
+fun CheckListCreationScreen(navController: NavHostController) {
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {
             Text(
@@ -65,7 +65,7 @@ fun ChecklistCreationScreen(navController: NavHostController) {
         )
         )
     }) {
-        Content(
+        CheckListCreationContent(
             modifier = Modifier
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
@@ -77,11 +77,11 @@ fun ChecklistCreationScreen(navController: NavHostController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Content(
+fun CheckListCreationContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 ) {
-    val viewModel = viewModel<ChecklistCreationViewModel>()
+    val viewModel = viewModel<CheckListCreationViewModel>()
 
     val alarm = viewModel.alarm
     val dateTime = viewModel.dateTime
@@ -94,16 +94,16 @@ fun Content(
     val makeChecklist = viewModel::makeChecklist
 
     Column(modifier = modifier) {
-        CheckListCreationContentInput()
+        CheckListContentInput()
         Spacer(modifier = Modifier.height(8.dp))
-        ChecklistCreationItem(
+        CheckListItem(
             name = stringResource(id = R.string.checklist_category_routine),
             icon = Icons.Filled.Refresh
         ) {
             Switch(checked = routine, onCheckedChange = changeRoutine)
         }
         if (routine) RoutineCreation() else TodoCreation()
-        ChecklistCreationItem(
+        CheckListItem(
             name = stringResource(id = R.string.checklist_category_time),
             icon = Icons.Filled.Schedule
         ) {
@@ -122,7 +122,7 @@ fun Content(
                 timePickerState = timePickerState,
                 onOk = { changeTime(timePickerState.hour, timePickerState.minute) })
         }
-        ChecklistCreationItem(
+        CheckListItem(
             name = stringResource(id = R.string.checklist_category_notice),
             icon = Icons.Filled.Alarm
         ) {
@@ -145,8 +145,8 @@ fun Content(
 
 @Preview
 @Composable
-fun ChecklistCreationScreenPreview() {
+fun CheckListCreationScreenPreview() {
     NeulHaeRangTheme {
-        ChecklistCreationScreen(navController = rememberNavController())
+        CheckListCreationScreen(navController = rememberNavController())
     }
 }
