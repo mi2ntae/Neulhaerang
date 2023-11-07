@@ -6,6 +6,7 @@ import com.finale.neulhaerang.data.util.AccessTokenInterceptor
 import com.finale.neulhaerang.data.util.GsonDateFormatAdapter
 import com.finale.neulhaerang.data.util.GsonDateTimeFormatAdapter
 import com.finale.neulhaerang.data.util.GsonTimeFormatAdapter
+import com.finale.neulhaerang.data.util.NullOnEmptyConverterFactory
 import com.finale.neulhaerang.data.util.ResponseResultAdapter
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -60,6 +61,7 @@ interface Api {
         private fun create(): Retrofit {
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addConverterFactory(NullOnEmptyConverterFactory.create())
                 .addCallAdapterFactory(ResponseResultAdapter.Factory())
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))

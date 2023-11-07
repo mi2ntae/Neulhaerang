@@ -6,15 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.theme.Typography
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -81,15 +79,16 @@ fun TodoList(todolist: List<CheckList>) {
 
 @Composable
 fun CheckListItem(item: CheckList) {
-    var isCompleted by remember { mutableStateOf(item.isCompleted) }
+    val viewModel = viewModel<MainScreenViewModel>()
 
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
-            checked = isCompleted,
-            onCheckedChange = { (!isCompleted).let { isCompleted = it;item.isCompleted = it } },
+            checked = item.check,
+            onCheckedChange = { viewModel.checkCheckList(item) },
         )
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = item.content, style = Typography.bodyLarge.merge(
                 TextStyle(
@@ -99,11 +98,18 @@ fun CheckListItem(item: CheckList) {
                         alignment = LineHeightStyle.Alignment.Center,
                         trim = LineHeightStyle.Trim.FirstLineTop
                     ),
-                    color = if (isCompleted) Color.Gray else TextStyle.Default.color,
-                    textDecoration = if (isCompleted) TextDecoration.LineThrough else null
+                    color = if (item.check) Color.Gray else TextStyle.Default.color,
+                    textDecoration = if (item.check) TextDecoration.LineThrough else null
                 )
-            )
+            ),
+            modifier = Modifier.weight(1f)
         )
+        if (item.alarm && item.alarmTime != null) {
+            run {
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = item.alarmTime!!.format(DateTimeFormatter.ofPattern("h:mm a")))
+            }
+        }
     }
 
 }

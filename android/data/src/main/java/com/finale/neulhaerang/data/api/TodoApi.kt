@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.data.api
 
 import com.finale.neulhaerang.data.model.request.TodoReqDto
+import com.finale.neulhaerang.data.model.response.TodoResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -12,7 +13,7 @@ import java.time.LocalDate
 
 interface TodoApi {
     @GET("$BASE/")
-    suspend fun getTodo(@Query("date") date: LocalDate): ResponseResult<List<Any>> // TODO 반환 타입 정의 후 Any 바꾸기
+    suspend fun getTodo(@Query("date") date: LocalDate): ResponseResult<List<TodoResDto>>
 
     @POST("$BASE/")
     suspend fun postTodo(@Body request: TodoReqDto): ResponseResult<Any>

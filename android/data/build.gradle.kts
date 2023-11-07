@@ -33,7 +33,8 @@ android {
 }
 
 dependencies {
-
+    // module
+    implementation(project(":common"))
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")

@@ -54,6 +54,7 @@ class ResponseResultCall<T>(
 
             override fun onFailure(call: Call<T>, t: Throwable) {
                 Log.d(TAG, "onFailure: ${t.message}")
+                Response.success(ResponseResult.Failure(0, t.message ?: "null", t))
             }
         })
     }
