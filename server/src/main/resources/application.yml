@@ -82,4 +82,7 @@ feign:
       default:
         connect-timeout: 160000000
         read-timeout: 160000000
+fcm:
+  secret:
+    key: ${FCM_SECRET_KEY}
 ---
