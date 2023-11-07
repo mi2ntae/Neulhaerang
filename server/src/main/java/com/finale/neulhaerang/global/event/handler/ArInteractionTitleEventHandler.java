@@ -8,7 +8,7 @@ import com.finale.neulhaerang.global.event.RepelIndolenceMonsterEvent;
 import com.finale.neulhaerang.global.event.TagOtherMemberEvent;
 
 @Component
-public class ArInteractionTitleHandler extends TitleEventHandler {
+public class ArInteractionTitleEventHandler extends TitleEventHandler {
 	private final long SOCIAL_FIRST_TAG = 31;
 	private final long REPEL_INDOLENCE_MONSTER = 20;
 

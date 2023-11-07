@@ -9,7 +9,7 @@ import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.global.event.LetterEvent;
 
 @Component
-public class LetterTitleHandler extends TitleEventHandler {
+public class LetterTitleEventHandler extends TitleEventHandler {
 	@Autowired
 	private LetterRepository letterRepository;
 	private Long[] titleIdOfLetter = new Long[] {22L, 23L, 24L};

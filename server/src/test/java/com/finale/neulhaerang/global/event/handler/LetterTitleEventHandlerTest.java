@@ -18,11 +18,11 @@ import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
-class LetterTitleHandlerTest extends BaseTest {
+class LetterTitleEventHandlerTest extends BaseTest {
 	@Autowired
 	private LetterRepository letterRepository;
 	@Autowired
-	private LetterTitleHandler letterTitleHandler;
+	private LetterTitleEventHandler letterTitleHandler;
 	@Autowired
 	private EarnedTitleRepository earnedTitleRepository;
 	@Autowired
