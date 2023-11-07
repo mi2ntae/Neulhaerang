@@ -14,6 +14,7 @@ import com.finale.neulhaerang.domain.title.entity.EarnedTitle;
 import com.finale.neulhaerang.domain.title.entity.Title;
 import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
+import com.finale.neulhaerang.global.exception.title.NotEarnedTitleException;
 import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
@@ -78,15 +79,14 @@ class TitleServiceTest extends BaseTest {
 
 	@DisplayName("장착 칭호 변경 시, 아직 얻지 못한 칭호라면 에러가 납니다.")
 	@Test
-	void When_ModifyEquipTitleWithNotEarnedTitle_Expect_ChangeEquipTitle() {
+	void When_ModifyEquipTitleWithNotEarnedTitle_Expect_NotEarnedTitleException() {
 		// given
-		Title title1 = createTitle(1L, "슬늘생1", "슬늘1");
-		Title title2 = createTitle(2L, "슬늘생2", "슬늘2");
-		List<Title> titles = titleRepository.saveAll(List.of(title1, title2));
+		Title title = createTitle(1L, "슬늘생1", "슬늘1");
+		Title save = titleRepository.save(title);
 
 		// when // then
-		assertThatThrownBy(() -> titleService.modifyEquipTitleByTitleId(titles.get(1).getId()))
-			.isInstanceOf(NotExistTitleException.class);
+		assertThatThrownBy(() -> titleService.modifyEquipTitleByTitleId(save.getId()))
+			.isInstanceOf(NotEarnedTitleException.class);
 	}
 
 	private EarnedTitle createEarnedTitle(Title title) {
