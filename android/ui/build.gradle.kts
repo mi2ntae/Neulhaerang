@@ -36,11 +36,16 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
     }
-    packaging {
+    packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+//    packaging {
+//        resources {
+//            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+//        }
+//    }
 }
 
 dependencies {
@@ -63,6 +68,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
     // navigation
     implementation("androidx.navigation:navigation-compose:${rootProject.extra["composeNavVersion"]}")
+    implementation(project(mapOf("path" to ":unityLibrary")))
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -73,5 +79,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeUiVersion"]}")
     debugImplementation("androidx.compose.ui:ui-test-manifest:${rootProject.extra["composeUiVersion"]}")
 
+    // Compose for Wear OS Dependencies
+    // Foundation is additive, so you can use the mobile version in your Wear OS app.
+    implementation("androidx.wear.compose:compose-foundation:${rootProject.extra["wearComposeVersion"]}")
+    implementation("androidx.wear.compose:compose-material:${rootProject.extra["wearComposeVersion"]}")
     implementation("androidx.wear.compose:compose-navigation:${rootProject.extra["wearComposeVersion"]}")
+    // Wear OS preview annotations
+    implementation("androidx.wear.compose:compose-ui-tooling:1.2.1")
+
 }
