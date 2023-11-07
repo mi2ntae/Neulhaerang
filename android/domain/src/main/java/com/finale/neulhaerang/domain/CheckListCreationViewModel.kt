@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 
 class CheckListCreationViewModel() : ViewModel() {
     private val _content = mutableStateOf("")
@@ -38,8 +37,8 @@ class CheckListCreationViewModel() : ViewModel() {
     val alarm: Boolean
         get() = _alarm.value
 
-    val dateMilli: Long
-        get() = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
+    //    val dateMilli: Long
+//        get() = _dateTime.value.toInstant(ZoneOffset.UTC).toEpochMilli()
     val timeHour: Int
         get() = _dateTime.value.hour
     val timeMinute: Int
