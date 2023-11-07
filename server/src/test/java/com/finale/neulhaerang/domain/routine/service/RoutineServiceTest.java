@@ -106,8 +106,8 @@ class RoutineServiceTest extends BaseTest {
 		// given
 		LocalDate date = LocalDate.now();
 		Routine routine1 = createRoutine(member, "양치하기1", "0010000", false, StatType.생존력);
-		Routine routine2 = createRoutine(member, "양치하기2", "0110000", false, StatType.생존력);
-		Routine routine3 = createRoutine(member, "양치하기3", "0111000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기2", "0110000", true, StatType.생존력);
+		Routine routine3 = createRoutine(member, "양치하기3", "0111000", true, StatType.생존력);
 		routineRepository.saveAll(List.of(routine1, routine2, routine3));
 
 		DailyRoutine dailyRoutine1 = createDailyRoutine(routine1, true, date);
@@ -120,10 +120,11 @@ class RoutineServiceTest extends BaseTest {
 
 		// then
 		assertThat(dailyRoutines).hasSize(2)
-			.extracting("content", "check")
+			.extracting("content", "check", "alarm", "alarmTime", "repeated")
 			.containsExactlyInAnyOrder(
-				tuple("양치하기1", true),
-				tuple("양치하기3", false)
+				tuple("양치하기1", true, false, null, List.of(false, false, true, false, false, false, false)),
+				tuple("양치하기3", false, true, LocalTime.of(8, 30, 0),
+					List.of(false, true, true, true, false, false, false))
 			);
 	}
 
@@ -144,7 +145,7 @@ class RoutineServiceTest extends BaseTest {
 		LocalDate date = currentDate.plusDays(daysUntilNextWednesday);
 
 		Routine routine1 = createRoutine(member, "양치하기1", "0010000", false, StatType.생존력);
-		Routine routine2 = createRoutine(member, "양치하기2", "0110000", false, StatType.생존력);
+		Routine routine2 = createRoutine(member, "양치하기2", "0110000", true, StatType.생존력);
 		Routine routine3 = createRoutine(member, "양치하기3", "0101000", false, StatType.생존력);
 		routineRepository.saveAll(List.of(routine1, routine2, routine3));
 
@@ -153,10 +154,11 @@ class RoutineServiceTest extends BaseTest {
 
 		// then
 		assertThat(routines).hasSize(2)
-			.extracting("content")
+			.extracting("content", "alarm", "alarmTime", "statType", "repeated")
 			.containsExactlyInAnyOrder(
-				"양치하기1",
-				"양치하기2"
+				tuple("양치하기1", false, null, StatType.생존력, List.of(false, false, true, false, false, false, false)),
+				tuple("양치하기2", true, LocalTime.of(8, 30, 0), StatType.생존력,
+					List.of(false, true, true, false, false, false, false))
 			);
 	}
 
@@ -522,6 +524,7 @@ class RoutineServiceTest extends BaseTest {
 			.repeated(repeated)
 			.alarm(alarm)
 			.statType(statType)
+			.alarmTime(alarm ? LocalTime.of(8, 30, 0) : null)
 			.build();
 	}
 
