@@ -3,35 +3,18 @@ package com.finale.neulhaerang.global.event.handler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.finale.neulhaerang.domain.member.document.StatRecord;
 import com.finale.neulhaerang.domain.member.entity.Member;
-import com.finale.neulhaerang.domain.member.repository.MemberStatRepository;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
-import com.finale.neulhaerang.domain.title.entity.EarnedTitle;
-import com.finale.neulhaerang.domain.title.entity.Title;
-import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
-import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.global.event.StatEvent;
-import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@RequiredArgsConstructor
-@Slf4j
-@Transactional
-public class StatTitleEventHandler {
-	private final MemberStatRepository memberStatRepository;
-	private final TitleRepository titleRepository;
-	private final EarnedTitleRepository earnedTitleRepository;
+public class StatTitleEventHandler extends TitleEventHandler {
 	private Map<StatType, Long[]> titleIdByStat = new HashMap<>() {
 		{
 			put(StatType.갓생력, new Long[] {1L, 2L, 3L});
@@ -88,25 +71,13 @@ public class StatTitleEventHandler {
 			.map(record -> record.getWeight()).reduce(0, Integer::sum);
 
 		if (weight >= 50) {
-			getStatTitle(titleId, 0, member);
+			getTitle(titleId[0], member);
 		}
 		if (weight >= 70) {
-			getStatTitle(titleId, 1, member);
+			getTitle(titleId[1], member);
 		}
 		if (weight >= 90) {
-			getStatTitle(titleId, 2, member);
-		}
-	}
-
-	private void getStatTitle(Long[] titleId, int titleNum, Member member) {
-		Optional<Title> optionalTitle = titleRepository.findById(titleId[titleNum]);
-		if (optionalTitle.isEmpty()) {
-			throw new NotExistTitleException(member, titleId[titleNum]);
-		}
-		if (!earnedTitleRepository.existsByTitle_IdAndMember(titleId[titleNum], member)) {
-			earnedTitleRepository.save(EarnedTitle.create(member, optionalTitle.get()));
-		} else {
-			log.info(member.getNickname() + "님이 이미 획득한 칭호(title_id=" + titleId[titleNum] + ")이기 때문에 발급하지 않습니다.");
+			getTitle(titleId[2], member);
 		}
 	}
 
