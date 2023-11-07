@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
@@ -24,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.theme.Typography
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -86,6 +88,7 @@ fun CheckListItem(item: CheckList) {
             checked = item.check,
             onCheckedChange = { viewModel.checkCheckList(item) },
         )
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = item.content, style = Typography.bodyLarge.merge(
                 TextStyle(
@@ -98,8 +101,15 @@ fun CheckListItem(item: CheckList) {
                     color = if (item.check) Color.Gray else TextStyle.Default.color,
                     textDecoration = if (item.check) TextDecoration.LineThrough else null
                 )
-            )
+            ),
+            modifier = Modifier.weight(1f)
         )
+        if (item.alarm && item.alarmTime != null) {
+            run {
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = item.alarmTime!!.format(DateTimeFormatter.ofPattern("h:mm a")))
+            }
+        }
     }
 
 }
