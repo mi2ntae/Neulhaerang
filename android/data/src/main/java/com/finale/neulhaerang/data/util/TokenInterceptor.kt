@@ -92,10 +92,14 @@ class AccessTokenExpireInterceptor : Interceptor {
                         val refreshToken =
                             DataStoreApplication.getInstance().getDataStore().getRefreshToken()
                                 .firstOrNull().toString()
+                        val deviceToken =
+                            DataStoreApplication.getInstance().getDataStore().getDeviceToken()
+                                .firstOrNull().toString()
                         Log.d("heejeong", "refreshToken $refreshToken")
+                        Log.d("heejeong", "deviceToken $deviceToken")
                         AuthApi.instance.refresh(
                             RefreshTokenReqDto(
-                                deviceToken = "testtest",
+                                deviceToken = deviceToken,
                                 refreshToken = refreshToken,
                             )
                         ).onSuccess {

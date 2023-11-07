@@ -26,6 +26,7 @@ class DataStoreModule(
 
     private val _accessToken = stringPreferencesKey("access_token") // string 저장 키값
     private val _refreshToken = stringPreferencesKey("refresh_token") // int 저장 키값
+    private val _deviceToken = stringPreferencesKey("deviceToken") // int 저장 키값
     private val _loginStatus = booleanPreferencesKey("login_status") // int 저장 키값
 
     //DataStore에서 값 읽기
@@ -82,6 +83,21 @@ class DataStoreModule(
             }
     }
 
+    suspend fun getDeviceToken(): Flow<String> {
+        return context.dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map { preferences ->
+                preferences[_deviceToken] ?: ""
+            }
+    }
+
     suspend fun getLoginStatus(): Flow<Boolean> {
         return context.dataStore.data
             .catch { exception ->
@@ -127,11 +143,18 @@ class DataStoreModule(
         }
     }
 
+    suspend fun setDeviceToken(value: String) {
+        context.dataStore.edit { preferences ->
+            preferences[_deviceToken] = value
+        }
+    }
+
     suspend fun setLoginStatus(value: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[_loginStatus] = value
         }
     }
+
 
     suspend fun clearDataStore() {
         context.dataStore.edit {
