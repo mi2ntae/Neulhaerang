@@ -12,6 +12,7 @@ import com.finale.neulhaerang.domain.title.entity.EarnedTitle;
 import com.finale.neulhaerang.domain.title.entity.Title;
 import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
+import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
 class TitleEventHandlerTest extends BaseTest {
@@ -34,6 +35,14 @@ class TitleEventHandlerTest extends BaseTest {
 		// then
 		List<EarnedTitle> earnedTitles = earnedTitleRepository.findAll();
 		assertThat(earnedTitles).hasSize(1);
+	}
+
+	@DisplayName("칭호가 발급됩니다. 이때 칭호가 없다면 에러가 납니다.")
+	@Test
+	void When_RegisterMemberWithoutTitle_Expect_NotExistTitleException() {
+		// given // when // then
+		assertThatThrownBy(() -> titleEventHandler.getTitle(19L, member))
+			.isInstanceOf(NotExistTitleException.class);
 	}
 
 	private Title createTitle(Long id, String name, String content) {
