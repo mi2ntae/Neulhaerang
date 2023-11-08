@@ -25,7 +25,14 @@ fun Letter(
     ) {
         Spacer(modifier = Modifier.height(16.dp)) //편지 위아래 여백
         Text(text = selectedDate.toString())
-        Text(text = letterText)
+        if (letterText.isEmpty()) {
+            Text(
+                text = "아직 편지가 오지 않았어요\n" +
+                        "편지는 매일 밤 12시에 도착해요", modifier = Modifier.padding(8.dp)
+            )
+        } else {
+            Text(text = letterText)
+        }
         Spacer(modifier = Modifier.height(56.dp))
     }
 }

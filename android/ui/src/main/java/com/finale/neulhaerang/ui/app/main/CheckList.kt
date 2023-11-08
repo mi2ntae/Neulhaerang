@@ -64,11 +64,15 @@ fun Routine(
     checkCheckList: (CheckList) -> Unit,
 ) {
     Text(text = "Routine", style = Typography.bodyLarge)
-    Column(
-//        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        routines.forEachIndexed { index, item ->
-            CheckListItem(index, item, navController, checkCheckList)
+    if (routines.isEmpty()) {
+        Text(text = "오늘 할 루틴이 없어요", modifier = Modifier.padding(8.dp))
+    } else {
+        Column(
+            //        verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            routines.forEachIndexed { index, item ->
+                CheckListItem(index, item, navController, checkCheckList)
+            }
         }
     }
 }
@@ -81,13 +85,17 @@ fun TodoList(
     checkCheckList: (CheckList) -> Unit,
 ) {
     Text(text = "To do", style = Typography.bodyLarge)
-    Column(
-//        modifier = Modifier.fillMaxSize()
-//        contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
-//        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        todolist.forEachIndexed { index, item ->
-            CheckListItem(index, item, navController, checkCheckList)
+    if (todolist.isEmpty()) {
+        Text(text = "오늘의 할 일이 없어요", modifier = Modifier.padding(8.dp))
+    } else {
+        Column(
+            //        modifier = Modifier.fillMaxSize()
+            //        contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
+            //        verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            todolist.forEachIndexed { index, item ->
+                CheckListItem(index, item, navController, checkCheckList)
+            }
         }
     }
 }
