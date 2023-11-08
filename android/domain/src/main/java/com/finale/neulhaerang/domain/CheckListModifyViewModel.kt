@@ -1,12 +1,21 @@
 package com.finale.neulhaerang.domain
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.common.Stat
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
+import com.finale.neulhaerang.data.api.RoutineApi
+import com.finale.neulhaerang.data.api.TodoApi
+import com.finale.neulhaerang.data.model.request.RoutineReqDto
+import com.finale.neulhaerang.data.model.request.TodoReqDto
+import com.finale.neulhaerang.data.util.onFailure
+import com.finale.neulhaerang.data.util.onSuccess
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -100,6 +109,30 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
     }
 
     fun modifyCheckList() {
-        // TODO modify checklist
+        viewModelScope.launch {
+            if (routine) {
+                val reqDto = RoutineReqDto(
+                    content,
+                    repeat,
+                    alarm,
+                    dateTime.toLocalTime(),
+                    stat.statName
+                )
+//                Log.d(TAG, "modifyCheckList: $reqDto")
+                RoutineApi.instance.modifyRoutine(routineId, reqDto)
+            } else {
+                val reqDto = TodoReqDto(
+                    content,
+                    alarm,
+                    stat.statName,
+                    dateTime
+                )
+                TodoApi.instance.modifyTodo(todoId, reqDto)
+            }.onSuccess {
+                Log.d(TAG, "modifyCheckList: success")
+            }.onFailure {
+                Log.w(TAG, "modifyCheckList: fail ${it.code} ${it.message}")
+            }
+        }
     }
 }

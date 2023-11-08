@@ -109,7 +109,8 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                 .imePadding()
                 .fillMaxSize(), navController = navController,
             checkList = checkList,
-            selectedDate = selectedDate
+            selectedDate = selectedDate,
+            viewModel::setDataFromDateTime
         )
     }
 }
@@ -121,6 +122,7 @@ fun CheckListModifyContent(
     navController: NavHostController,
     checkList: CheckList,
     selectedDate: LocalDate,
+    setDataFromDateTime: ()->Unit
 ) {
     val viewModel =
         viewModel<CheckListModifyViewModel>(
@@ -177,6 +179,7 @@ fun CheckListModifyContent(
         Button(
             onClick = {
                 viewModel.modifyCheckList()
+                setDataFromDateTime()
                 navController.popBackStack()
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {
