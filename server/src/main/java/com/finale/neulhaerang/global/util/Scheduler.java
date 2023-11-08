@@ -30,10 +30,6 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
-import com.finale.neulhaerang.global.event.LetterEvent;
-import com.finale.neulhaerang.global.event.StatEvent;
-import com.finale.neulhaerang.global.event.WeatherEvent;
-import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.notification.dto.request.LetterNotificationReqDto;
 import com.finale.neulhaerang.global.notification.service.NotificationService;
 
@@ -60,15 +56,13 @@ public class Scheduler {
 
 	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
 	public void createDailyRoutineTrigger() {
-		long memberId = authenticationHandler.getLoginMemberId();
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(NotExistMemberException::new);
+		List<Member> memberList = memberRepository.findAllByWithdrawalDateIsNull();
 		createDailyRoutine(LocalDate.now());
-		modifyStat(member, LocalDate.now().minusDays(1));
-		createLetter(LocalDate.now().minusDays(1));
-		publisher.publishEvent(new StatEvent(member));
-		publisher.publishEvent(new WeatherEvent(member));
-		publisher.publishEvent(new LetterEvent(member));
+		modifyStat(memberList, LocalDate.now().minusDays(1));
+		createLetter(memberList, LocalDate.now().minusDays(1));
+		// publisher.publishEvent(new StatEvent(member));
+		// publisher.publishEvent(new WeatherEvent(member));
+		// publisher.publishEvent(new LetterEvent(member));
 	}
 
 	void createDailyRoutine(LocalDate date) {
@@ -82,18 +76,20 @@ public class Scheduler {
 		});
 	}
 
-	void modifyStat(Member member, LocalDate date) {
-		// 그 날 완료한 투두 STAT 상승
-		List<Todo> doneTodoList = modifyStatByTodo(date, member);
+	void modifyStat(List<Member> memberList, LocalDate date) {
+		for (Member member : memberList) {
+			// 그 날 완료한 투두 STAT 상승
+			List<Todo> doneTodoList = modifyStatByTodo(date, member);
 
-		// 그 날 완료한 루틴 STAT 상승
-		List<DailyRoutine> doneDailyRoutineList = modifyStatByRoutine(date, member);
+			// 그 날 완료한 루틴 STAT 상승
+			List<DailyRoutine> doneDailyRoutineList = modifyStatByRoutine(date, member);
 
-		// 투두, 루틴 완료 갯수에 따라서 피곤도 STAT 증가
-		int totalDone = modifyTirednessByTodoAndRoutine(date, member, doneTodoList, doneDailyRoutineList);
+			// 투두, 루틴 완료 갯수에 따라서 피곤도 STAT 증가
+			int totalDone = modifyTirednessByTodoAndRoutine(date, member, doneTodoList, doneDailyRoutineList);
 
-		// 투두, 루틴 완료 비율에 따라서 나태도 STAT 증가
-		modifyIndolenceByTodoAndRoutine(date, member, totalDone);
+			// 투두, 루틴 완료 비율에 따라서 나태도 STAT 증가
+			modifyIndolenceByTodoAndRoutine(date, member, totalDone);
+		}
 	}
 
 	private List<Todo> modifyStatByTodo(LocalDate date, Member member) {
@@ -147,22 +143,21 @@ public class Scheduler {
 	}
 
 	// 편지 생성
-	void createLetter(LocalDate date) {
-		Member member = memberRepository.findById(authenticationHandler.getLoginMemberId())
-			.orElseThrow(NotExistMemberException::new);
-
+	void createLetter(List<Member> memberList, LocalDate date) {
 		String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
+		for (Member member : memberList) {
+			String reqMessage = createReqMessage(member, date);
+			List<ChatGptDto> content = new ArrayList<>();
+			content.add(ChatGptDto.from(reqMessage));
 
-		String reqMessage = createReqMessage(member, date);
-		List<ChatGptDto> content = new ArrayList<>();
-		content.add(ChatGptDto.from(reqMessage));
+			LetterReqDto letterReqDto = LetterReqDto.from(content);
+			LetterResDto letterResDto = letterFeignClient.getGPTResponse(CONTENT_TYPE, "Bearer " + gptKey,
+				letterReqDto);
 
-		LetterReqDto letterReqDto = LetterReqDto.from(content);
-		LetterResDto letterResDto = letterFeignClient.getGPTResponse(CONTENT_TYPE, "Bearer " + gptKey, letterReqDto);
-
-		Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
-		letterRepository.save(letter);
-		notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
+			Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
+			letterRepository.save(letter);
+			notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
+		}
 	}
 
 	String createReqMessage(Member member, LocalDate date) {
