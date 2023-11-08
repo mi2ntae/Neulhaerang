@@ -45,6 +45,7 @@ import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,6 +69,7 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
             )
         }
     }[index ?: 0]
+    val selectedDate = viewModel.selectedDate
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -106,7 +108,8 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                 .padding(all = 16.dp)
                 .imePadding()
                 .fillMaxSize(), navController = navController,
-            checkList = checkList
+            checkList = checkList,
+            selectedDate = selectedDate
         )
     }
 }
@@ -117,9 +120,15 @@ fun CheckListModifyContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     checkList: CheckList,
+    selectedDate: LocalDate,
 ) {
     val viewModel =
-        viewModel<CheckListModifyViewModel>(factory = CheckListModifyViewModel.Factory(checkList))
+        viewModel<CheckListModifyViewModel>(
+            factory = CheckListModifyViewModel.Factory(
+                checkList = checkList,
+                selectedDate = selectedDate
+            )
+        )
 
     Column(modifier = modifier) {
         CheckListContentInput(

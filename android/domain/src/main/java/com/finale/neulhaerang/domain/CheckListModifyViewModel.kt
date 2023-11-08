@@ -5,35 +5,58 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.finale.neulhaerang.common.Stat
 import com.finale.neulhaerang.data.CheckList
+import com.finale.neulhaerang.data.Routine
+import com.finale.neulhaerang.data.Todo
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-class CheckListModifyViewModel(checkList: CheckList) : ViewModel() {
-    class Factory(private val checkList: CheckList) : ViewModelProvider.Factory {
+class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : ViewModel() {
+    class Factory(private val checkList: CheckList, private val selectedDate: LocalDate) :
+        ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             // modelClass가 원하는 모델을 상속받았는지 확인
             if (modelClass.isAssignableFrom(CheckListModifyViewModel::class.java)) {
-                return CheckListModifyViewModel(checkList = checkList) as T
+                return CheckListModifyViewModel(
+                    checkList = checkList,
+                    selectedDate = selectedDate
+                ) as T
             }
             // 상속이 되지 않았다면 IllegalArgumentException
             throw IllegalArgumentException("Unknown ViewModel Class")
         }
     }
 
+    val routine = checkList is Routine
+
+    private var todoId: Long = 0
+    private var routineId: Long = 0
+    private var dailyRoutineId: Long = 0
+
     private val _content = mutableStateOf(checkList.content)
-    private val _stat = mutableStateOf(Stat.GodSang)
-    private val _routine = mutableStateOf(false)
+    private val _stat = mutableStateOf(checkList.statType)
     private val _repeat = mutableStateOf(List(7) { _ -> false })
     private val _dateTime = mutableStateOf(LocalDateTime.now())
-    private val _alarm = mutableStateOf(false)
+    private val _alarm = mutableStateOf(checkList.alarm)
+
+    init {
+        if (checkList is Routine) {
+            routineId = checkList.routineId
+            dailyRoutineId = checkList.dailyRoutineId
+            _repeat.value = checkList.repeated
+        } else if (checkList is Todo) {
+            todoId = checkList.todoId
+        }
+        if (_alarm.value) {
+            _dateTime.value = checkList.alarmTime?.atDate(selectedDate)
+        }
+    }
 
     val content: String
         get() = _content.value
     val stat: Stat
         get() = _stat.value
-    val routine: Boolean
-        get() = _routine.value
     val repeat: List<Boolean>
         get() = _repeat.value
     val dateTime: LocalDateTime
@@ -56,10 +79,6 @@ class CheckListModifyViewModel(checkList: CheckList) : ViewModel() {
 
     fun clearContent() {
         _content.value = ""
-    }
-
-    fun changeRoutine(input: Boolean) {
-        _routine.value = input
     }
 
     fun changeRepeat(index: Int) {
