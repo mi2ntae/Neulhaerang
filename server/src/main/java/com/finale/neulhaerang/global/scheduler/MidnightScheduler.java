@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,10 +38,12 @@ import com.finale.neulhaerang.global.notification.dto.request.LetterNotification
 import com.finale.neulhaerang.global.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class MidnightScheduler {
 
 	private final RoutineRepository routineRepository;
@@ -64,7 +67,9 @@ public class MidnightScheduler {
 		createLetter(memberList, LocalDate.now().minusDays(1));
 	}
 
+	@Async
 	void createDailyRoutine(LocalDate date) {
+		log.info("---------- 자정 스케줄러 : daily routine을 생성합니다 ----------");
 		StringBuilder dayOfVaule = new StringBuilder("_______");
 		int dayOfWeekValue = date.getDayOfWeek().getValue() - 1;
 		dayOfVaule.setCharAt(dayOfWeekValue, '1');
@@ -75,18 +80,23 @@ public class MidnightScheduler {
 		});
 	}
 
+	@Async
 	void modifyStat(List<Member> memberList, LocalDate date) {
 		for (Member member : memberList) {
 			// 그 날 완료한 투두 STAT 상승
+			log.info("---------- 자정 스케줄러 : 투두 스탯을 증가시킵니다 ----------");
 			List<Todo> doneTodoList = modifyStatByTodo(date, member);
 
 			// 그 날 완료한 루틴 STAT 상승
+			log.info("---------- 자정 스케줄러 : 루틴 스탯을 증가시킵니다 ----------");
 			List<DailyRoutine> doneDailyRoutineList = modifyStatByRoutine(date, member);
 
 			// 투두, 루틴 완료 갯수에 따라서 피곤도 STAT 증가
+			log.info("---------- 자정 스케줄러 : 피곤도 스탯을 증가시킵니다 ----------");
 			int totalDone = modifyTirednessByTodoAndRoutine(date, member, doneTodoList, doneDailyRoutineList);
 
 			// 투두, 루틴 완료 비율에 따라서 나태도 STAT 증가
+			log.info("---------- 자정 스케줄러 : 나태도 스탯을 증가시킵니다 ----------");
 			modifyIndolenceByTodoAndRoutine(date, member, totalDone);
 
 			// 스탯 칭호 발급 이벤트 호출
@@ -146,7 +156,9 @@ public class MidnightScheduler {
 		}
 	}
 
+	@Async
 	void createLetter(List<Member> memberList, LocalDate date) {
+		log.info("---------- 자정 스케줄러 : 편지를 전송합니다 ----------");
 		String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
 		for (Member member : memberList) {
@@ -160,6 +172,7 @@ public class MidnightScheduler {
 
 			Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
 			letterRepository.save(letter);
+			log.info("-----------  편지를 " + member.getNickname() + "님께 전송했습니다 --------");
 			notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
 			publisher.publishEvent(new LetterEvent(member));
 		}

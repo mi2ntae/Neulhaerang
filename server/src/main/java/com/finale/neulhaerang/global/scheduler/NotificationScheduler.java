@@ -41,15 +41,13 @@ public class NotificationScheduler {
 	@Async
 	public void sendTodoNotificationTrigger(LocalTime now, LocalDate today) {
 		log.info("------------- " + today + " " + now + " 투두 알림 스케줄러 실행 -------------");
-		List<Todo> notificationTodos = todoRepository.findTodosByStatusIsFalseAndTodoDateIsBetweenAndAlarmIsTrue(
-			LocalDateTime.of(today, now.withSecond(0)), LocalDateTime.of(today, now.plusMinutes(1).withSecond(0)));
-		notificationTodos.forEach(r ->
-			{
-				notificationService.sendNotificationByToken(r.getMember().getId(),
-					TodoNotificationReqDto.create(r.getMember(), r));
-				log.info(r.getMember().getNickname() + "님에게 투두 알림을 전송");
-			}
-		);
+		List<Todo> notificationTodos = todoRepository.findTodosByStatusIsFalseAndAlarmIsTrueAndTodoDateIsBetween(
+			LocalDateTime.of(today, now.withSecond(0).withNano(0)), LocalDateTime.of(today, now.withSecond(59)));
+		notificationTodos.forEach(r -> {
+			notificationService.sendNotificationByToken(r.getMember().getId(),
+				TodoNotificationReqDto.create(r.getMember(), r));
+			log.info(r.getMember().getNickname() + "님에게 투두 알림을 전송");
+		});
 	}
 
 	@Async
@@ -57,7 +55,7 @@ public class NotificationScheduler {
 		log.info("------------- " + today + " " + now + " 루틴 알림 스케줄러 실행 -------------");
 		String dayOfVaule = calculateRepeated(today);
 		List<Routine> notificationRoutines = routineRepository.findRoutinesByDayOfValueAndAlarmIsTrueAndAlarmTimeIsNotNull(
-			dayOfVaule, today, now.withSecond(0), now.withSecond(59));
+			dayOfVaule, today, now.withSecond(0).withNano(0), now.withSecond(59));
 
 		notificationRoutines
 			.forEach(r -> {
