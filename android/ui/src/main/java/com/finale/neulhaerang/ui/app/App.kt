@@ -10,12 +10,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.app.checklist.CheckListCreationScreen
+import com.finale.neulhaerang.ui.app.checklist.CheckListModifyScreen
 import com.finale.neulhaerang.ui.app.config.SettingScreen
 import com.finale.neulhaerang.ui.app.login.LoginScreen
 import com.finale.neulhaerang.ui.app.main.MainScreen
@@ -50,7 +53,7 @@ fun AppMain(getResult: ActivityResultLauncher<Intent>) {
             modifier = Modifier.fillMaxSize(),
         ) {
             composable(route = AppNavItem.Main.route) {
-                MainScreen(navController )
+                MainScreen(navController)
             }
             composable(route = AppNavItem.MyPage.route) {
                 MyPageScreen(navController = navController, getResult)
@@ -60,6 +63,18 @@ fun AppMain(getResult: ActivityResultLauncher<Intent>) {
             }
             composable(route = AppNavItem.CheckListCreation.route) {
                 CheckListCreationScreen(navController = navController)
+            }
+            composable(
+                route = "${AppNavItem.CheckListModify.route}/{type}/{index}",
+                arguments = listOf(
+                    navArgument("type") { type = NavType.StringType },
+                    navArgument("index") { type = NavType.IntType }
+                )) { entry ->
+                CheckListModifyScreen(
+                    navController = navController,
+                    entry.arguments?.getString("type"),
+                    entry.arguments?.getInt("index")
+                )
             }
             composable(route = AppNavItem.Setting.route) {
                 SettingScreen(navController = navController)

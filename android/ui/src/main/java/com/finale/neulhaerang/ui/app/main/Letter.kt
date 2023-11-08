@@ -10,18 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.finale.neulhaerang.domain.MainScreenViewModel
+import java.time.LocalDate
 
 @Composable
 fun Letter(
     modifier: Modifier = Modifier,
+    letterText: String,
+    selectedDate: LocalDate,
 ) {
-    val viewModel = viewModel<MainScreenViewModel>()
-
-    val letterText = viewModel.letterText
-    val selectedDate = viewModel.selectedDate
-
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp)
@@ -29,7 +25,14 @@ fun Letter(
     ) {
         Spacer(modifier = Modifier.height(16.dp)) //편지 위아래 여백
         Text(text = selectedDate.toString())
-        Text(text = letterText)
+        if (letterText.isEmpty()) {
+            Text(
+                text = "아직 편지가 오지 않았어요\n" +
+                        "편지는 매일 밤 12시에 도착해요", modifier = Modifier.padding(8.dp)
+            )
+        } else {
+            Text(text = letterText)
+        }
         Spacer(modifier = Modifier.height(56.dp))
     }
 }

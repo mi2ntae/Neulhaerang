@@ -3,6 +3,7 @@ package com.finale.neulhaerang.domain.routine.dto.response;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 
@@ -21,6 +22,7 @@ public class DailyRoutineResDto {
 	private String content;
 	private boolean check;
 	private boolean alarm;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm", timezone = "Asia/Seoul")
 	private LocalTime alarmTime;
 	private StatType statType;
 	private List<Boolean> repeated;

@@ -35,7 +35,7 @@ import com.finale.neulhaerang.ui.theme.Typography
 
 @Composable
 fun MainScreen(navController: NavHostController) {
-    val mainScreenViewModel = viewModel<MainScreenViewModel>()
+    val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
 
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
@@ -51,11 +51,11 @@ fun MainScreen(navController: NavHostController) {
         ) {
             AppHeader(navController = navController)
             StatusBar()
-            Calendar()
+            Calendar(
 //                currentDate = currentDate,
-//                selectedDate = selectedDate.toLocalDate(),
-//                setDateTime = setDateTime
-//            )
+                selectedDate =viewModel.selectedDate,
+                setDateTime = viewModel::setDateTime
+            )
             Column(modifier = Modifier.fillMaxWidth()) {
                 TabRow(selectedTabIndex = tabIndex) {
                     tabs.forEachIndexed { index, title ->
@@ -65,8 +65,18 @@ fun MainScreen(navController: NavHostController) {
                     }
                 }
                 when (tabIndex) {
-                    0 -> CheckList()
-                    1 -> Letter()
+                    0 -> CheckList(
+                        navController,
+                        viewModel.selectedDate,
+                        viewModel.routineList,
+                        viewModel.todoList,
+                        viewModel::checkCheckList
+                    )
+
+                    1 -> Letter(
+                        letterText = viewModel.letterText,
+                        selectedDate = viewModel.selectedDate
+                    )
                 }
             }
         }

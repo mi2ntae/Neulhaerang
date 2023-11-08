@@ -11,6 +11,13 @@ import com.finale.neulhaerang.domain.todo.entity.Todo;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
 	Optional<Todo> findTodoByIdAndStatusIsFalse(Long todoId);
-	List<Todo> findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(Member member, LocalDateTime startDate, LocalDateTime endDate);
-	List<Todo> findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(Member member, LocalDateTime startDate, LocalDateTime endDate);
+
+	List<Todo> findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(Member member, LocalDateTime startDate,
+		LocalDateTime endDate);
+
+	List<Todo> findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(Member member,
+		LocalDateTime startDate, LocalDateTime endDate);
+
+	List<Todo> findTodosByStatusIsFalseAndAlarmIsTrueAndTodoDateIsBetween(LocalDateTime startDateTime,
+		LocalDateTime endDateTime);
 }

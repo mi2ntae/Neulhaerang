@@ -49,4 +49,8 @@ public class Member extends BaseTimeEntity {
 	public void updateTitleId(Long titleId) {
 		this.titleId = titleId;
 	}
+
+	public void updateCreateDate(LocalDateTime now) {
+		createDate = now;
+	}
 }

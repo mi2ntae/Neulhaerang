@@ -1,5 +1,9 @@
 package com.finale.neulhaerang.ui.app.main
 
+import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,21 +25,24 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.data.CheckList
-import com.finale.neulhaerang.domain.MainScreenViewModel
+import com.finale.neulhaerang.data.Routine
+import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.ui.theme.Typography
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun CheckList() {
-    val viewModel = viewModel<MainScreenViewModel>()
-
-    val selectedDate = viewModel.selectedDate
-    val routineList = viewModel.routineList
-    val todoList = viewModel.todoList
-
+fun CheckList(
+    navController: NavHostController,
+    selectedDate: LocalDate,
+    routineList: List<Routine>,
+    todoList: List<Todo>,
+    checkCheckList: (CheckList) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -43,50 +50,80 @@ fun CheckList() {
             .padding(16.dp),
     ) {
         Text(text = selectedDate.toString())
-        Routine(routineList)
+        Routine(routineList, navController, checkCheckList)
         Spacer(modifier = Modifier.height(16.dp))
-        TodoList(todoList)
+        TodoList(todoList, navController, checkCheckList)
     }
 }
 
 
 @Composable
-fun Routine(routines: List<CheckList>) {
+fun Routine(
+    routines: List<CheckList>,
+    navController: NavHostController,
+    checkCheckList: (CheckList) -> Unit,
+) {
     Text(text = "Routine", style = Typography.bodyLarge)
-    Column(
-//        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        routines.forEach { item ->
-            CheckListItem(item)
+    if (routines.isEmpty()) {
+        Text(text = "오늘 할 루틴이 없어요", modifier = Modifier.padding(8.dp))
+    } else {
+        Column(
+            //        verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            routines.forEachIndexed { index, item ->
+                CheckListItem(index, item, navController, checkCheckList)
+            }
         }
     }
 }
 
 
 @Composable
-fun TodoList(todolist: List<CheckList>) {
+fun TodoList(
+    todolist: List<CheckList>,
+    navController: NavHostController,
+    checkCheckList: (CheckList) -> Unit,
+) {
     Text(text = "To do", style = Typography.bodyLarge)
-    Column(
-//        modifier = Modifier.fillMaxSize()
-//        contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
-//        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        todolist.forEach { item ->
-            CheckListItem(item)
+    if (todolist.isEmpty()) {
+        Text(text = "오늘의 할 일이 없어요", modifier = Modifier.padding(8.dp))
+    } else {
+        Column(
+            //        modifier = Modifier.fillMaxSize()
+            //        contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
+            //        verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            todolist.forEachIndexed { index, item ->
+                CheckListItem(index, item, navController, checkCheckList)
+            }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CheckListItem(item: CheckList) {
-    val viewModel = viewModel<MainScreenViewModel>()
+fun CheckListItem(
+    index: Int,
+    item: CheckList,
+    navController: NavHostController,
+    checkCheckList: (CheckList) -> Unit,
+) {
+    val type = if (item is Routine) "routine" else "todo"
 
     Row(
+        modifier = Modifier.combinedClickable(
+            interactionSource = MutableInteractionSource(),
+            indication = null,
+            onLongClick = {
+                Log.d("TAG", "CheckListItem: long click")
+                navController.navigate("${AppNavItem.CheckListModify.route}/$type/$index")
+            },
+            onClick = {}),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
             checked = item.check,
-            onCheckedChange = { viewModel.checkCheckList(item) },
+            onCheckedChange = { checkCheckList(item) },
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(

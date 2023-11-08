@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -50,7 +49,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         getResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                pageCode= it.data?.getStringExtra("pageCode")?.toInt() ?: 0
+                pageCode = it.data?.getStringExtra("pageCode")?.toInt() ?: 0
             }
         }
 
@@ -63,7 +62,7 @@ class MainActivity : ComponentActivity() {
         }
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        
+
         setContent {
             BackOnPressed()
             App(getResult)
