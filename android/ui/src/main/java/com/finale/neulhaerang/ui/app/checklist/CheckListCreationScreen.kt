@@ -38,6 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.domain.CheckListCreationViewModel
+import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
@@ -82,6 +83,8 @@ fun CheckListCreationContent(
     navController: NavHostController,
 ) {
     val viewModel = viewModel<CheckListCreationViewModel>()
+    val mainScreenViewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+
 
     Column(modifier = modifier) {
         CheckListContentInput(
@@ -136,6 +139,7 @@ fun CheckListCreationContent(
         Button(
             onClick = {
                 viewModel.makeChecklist()
+                mainScreenViewModel.setDataFromDateTime()
                 navController.popBackStack()
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {
