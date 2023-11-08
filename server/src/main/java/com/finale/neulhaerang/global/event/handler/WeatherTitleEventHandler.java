@@ -35,13 +35,18 @@ public class WeatherTitleEventHandler extends TitleEventHandler {
 	@Async
 	@EventListener
 	public void checkWeather(WeatherEvent weatherEvent) {
+		checkIfGetWeatherTitle(weatherEvent.getMember());
+
+	}
+
+	public void checkIfGetWeatherTitle(Member member) {
 		LocalDate start = LocalDate.now().minusDays(1);
-		LocalDate end = LocalDate.now().minusDays(51);
-		if (end.isBefore(weatherEvent.getMember().getCreateDate().toLocalDate())) {
-			end = weatherEvent.getMember().getCreateDate().toLocalDate();
+		LocalDate end = LocalDate.now().minusDays(50);
+		if (end.isBefore(member.getCreateDate().toLocalDate())) {
+			end = member.getCreateDate().toLocalDate();
 		}
 
-		List<String> weatherOfComplete = calculateWeatherOfDays(weatherEvent.getMember(), start, end);
+		List<String> weatherOfComplete = calculateWeatherOfDays(member, start, end);
 
 		String todayWeather = weatherOfComplete.get(0);
 		int countOfDay = 0;
@@ -51,18 +56,18 @@ public class WeatherTitleEventHandler extends TitleEventHandler {
 			}
 			countOfDay++;
 			if (countOfDay == 10) {
-				getTitle(titleIdByWeather.get(todayWeather)[0], weatherEvent.getMember());
+				getTitle(titleIdByWeather.get(todayWeather)[0], member);
 			}
 		}
 		if (countOfDay >= 50) {
-			getTitle(titleIdByWeather.get(todayWeather)[1], weatherEvent.getMember());
+			getTitle(titleIdByWeather.get(todayWeather)[1], member);
 		}
 
 	}
 
 	private List<String> calculateWeatherOfDays(Member member, LocalDate start, LocalDate end) {
 		List<String> weatherOfComplete = new ArrayList<>();
-		for (LocalDate date = start; !date.isAfter(end); date = date.minusDays(1)) {
+		for (LocalDate date = start; !date.isBefore(end); date = date.minusDays(1)) {
 			int totalTodo = todoRepository.findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(
 				member,
 				date.atStartOfDay(), date.atTime(
@@ -79,9 +84,9 @@ public class WeatherTitleEventHandler extends TitleEventHandler {
 			if (Double.isNaN(ratio)) {
 				ratio = 0;
 			}
-			if (ratio >= 70) {
+			if (ratio >= 0.7) {
 				weatherOfComplete.add("sunny");
-			} else if (ratio >= 40) {
+			} else if (ratio >= 0.4) {
 				weatherOfComplete.add("cloud");
 			} else {
 				weatherOfComplete.add("rain");
