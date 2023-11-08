@@ -18,6 +18,7 @@ import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.RoutineApi
 import com.finale.neulhaerang.data.api.TodoApi
 import com.finale.neulhaerang.data.model.response.RoutineResDto
+import com.finale.neulhaerang.data.model.response.TodoDoneResDto
 import com.finale.neulhaerang.data.model.response.TodoResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import com.finale.neulhaerang.data.util.onFailure
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainScreenViewModel : ViewModel() {
     companion object {
@@ -39,12 +41,17 @@ class MainScreenViewModel : ViewModel() {
     private val _memberId = mutableLongStateOf(0)
     private val _indolence = mutableIntStateOf(0)
     private val _tiredness = mutableIntStateOf(0)
+
+    private val _todoDoneList = mutableStateListOf<TodoDoneResDto>()
+    private val _beforeYearMonth = mutableStateOf("")
+
     private val _selectedDateTime = mutableStateOf(LocalDateTime.now())
     private val _routineList = mutableStateListOf<Routine>()
     private val _todoList = mutableStateListOf<Todo>()
     private val _letterText = mutableStateOf("")
 
     init {
+        updateBeforeYearMonth()
         setDataFromDateTime()
         viewModelScope.launch {
             _memberId.longValue =
@@ -63,6 +70,10 @@ class MainScreenViewModel : ViewModel() {
         get() = _indolence.intValue
     val tiredness: Int
         get() = _tiredness.intValue
+    val todoDoneList: List<TodoDoneResDto>
+        get() = _todoDoneList.toList()
+    val beforeYearMonth: String
+        get() = _beforeYearMonth.value
     val selectedDate: LocalDate
         get() = _selectedDateTime.value.toLocalDate()
     val routineList: List<Routine>
@@ -72,7 +83,19 @@ class MainScreenViewModel : ViewModel() {
     val letterText: String
         get() = _letterText.value
 
+    val yearMonth: String
+        get() = DateTimeFormatter.ofPattern("yyyy-MM").format(selectedDate)
+
     // setter
+    private fun updateBeforeYearMonth() {
+        _beforeYearMonth.value = yearMonth
+    }
+
+    private fun updateTodoDoneList(todoDoneList: List<TodoDoneResDto>) {
+        _todoDoneList.clear()
+        todoDoneList.forEach { _todoDoneList.add(it) }
+    }
+
     fun setDateTime(input: LocalDateTime) {
         _selectedDateTime.value = input
         setDataFromDateTime()
@@ -103,6 +126,13 @@ class MainScreenViewModel : ViewModel() {
     // business logic
     fun setDataFromDateTime() {
         viewModelScope.launch {
+            // 완료 퍼센트 가져오기
+            if (beforeYearMonth != yearMonth) {
+                TodoApi.instance.getCompleteTodo(yearMonth).onSuccess { (_, data) ->
+                    updateTodoDoneList(data!!)
+                }
+                updateBeforeYearMonth()
+            }
             // 오늘의 체크리스트
             RoutineApi.instance.getRoutine(selectedDate)
                 .onSuccess { initRoutine(it.data!!) }
