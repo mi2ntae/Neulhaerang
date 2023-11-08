@@ -46,29 +46,33 @@ class RoutineRepositoryTest extends BaseTest {
 			);
 	}
 
-	@DisplayName("해당 날짜 요일에 실행되는 루틴 중 현재 시간에 알림 설정이 되어있는 것들을 가져옵니다. 이때 삭제 예정 날짜가 해당 날짜 이후여야 합니다.")
+	@DisplayName("해당 날짜 요일에 실행되는 루틴 중 알림 설정이 되어있는 것들을 가져옵니다. 이때 삭제 예정 날짜가 해당 날짜 이후여야 합니다.")
 	@Test
 	void When_GetDateAndDayOfValueAndAlarmTime_Expect_GetListOfRoutine() {
 		// given
-		LocalTime now = LocalTime.now();
+		LocalTime now = LocalTime.of(8, 10, 10);
 		Routine routine1 = createRoutine("양치하기1", "0010000", false, StatType.생존력, null);
 		Routine routine2 = createRoutine("양치하기2", "0110000", true, StatType.갓생력, LocalDate.of(2023, 8, 20), now);
-		Routine routine3 = createRoutine("양치하기3", "0111000", true, StatType.최애력, LocalDate.of(2023, 8, 19), now);
-		Routine routine4 = createRoutine("양치하기4", "0101000", false, StatType.인싸력, null);
+		Routine routine3 = createRoutine("양치하기2-2", "0110000", true, StatType.갓생력, LocalDate.of(2023, 8, 20),
+			LocalTime.of(8, 10, 11));
+		Routine routine4 = createRoutine("양치하기3", "0111000", true, StatType.최애력, LocalDate.of(2023, 8, 19), now);
+		Routine routine5 = createRoutine("양치하기4", "0101000", false, StatType.인싸력, null);
 
-		routineRepository.saveAll(List.of(routine1, routine2, routine3, routine4));
+		routineRepository.saveAll(List.of(routine1, routine2, routine3, routine4, routine5));
 
 		// when
 		String dayOfValue = "__1____";
 		LocalDate date = LocalDate.of(2023, 8, 19);
-		List<Routine> routines = routineRepository.findRoutinesByDayOfValueAndAlarmIsTrueAndAlarmTimeIsNow(dayOfValue,
-			date, now);
+		List<Routine> routines = routineRepository.findRoutinesByDayOfValueAndAlarmIsTrueAndAlarmTimeIsNotNull(
+			dayOfValue,
+			date);
 
 		// then
-		Assertions.assertThat(routines).hasSize(1)
+		Assertions.assertThat(routines).hasSize(2)
 			.extracting("content", "repeated", "statType", "alarm", "alarmTime")
 			.containsExactlyInAnyOrder(
-				tuple("양치하기2", "0110000", StatType.갓생력, true, now)
+				tuple("양치하기2", "0110000", StatType.갓생력, true, now),
+				tuple("양치하기2-2", "0110000", StatType.갓생력, true, LocalTime.of(8, 10, 11))
 			);
 	}
 
