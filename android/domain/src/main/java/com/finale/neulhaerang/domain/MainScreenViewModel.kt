@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
@@ -21,10 +23,22 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class MainScreenViewModel : ViewModel() {
+    companion object {
+        val viewModelStore = ViewModelStore()
+        val storeOwner = object : ViewModelStoreOwner {
+            override val viewModelStore: ViewModelStore
+                get() = this@Companion.viewModelStore
+        }
+    }
+
     private val _selectedDateTime = mutableStateOf(LocalDateTime.now())
     private val _routineList = mutableStateListOf<Routine>()
     private val _todoList = mutableStateListOf<Todo>()
     private val _letterText = mutableStateOf("")
+
+    init {
+        setDataFromDateTime()
+    }
 
     val selectedDate: LocalDate
         get() = _selectedDateTime.value.toLocalDate()
@@ -38,15 +52,6 @@ class MainScreenViewModel : ViewModel() {
     fun setDateTime(input: LocalDateTime) {
         _selectedDateTime.value = input
         setDataFromDateTime()
-    }
-
-    /**
-     * 체크리스트를 전부 초기화하는 함수
-     * API 통신에 사용
-     */
-    fun initCheckList(routines: List<RoutineResDto>, todos: List<TodoResDto>) {
-        initRoutine(routines)
-        initTodo(todos)
     }
 
     private fun initRoutine(routines: List<RoutineResDto>) {

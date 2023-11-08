@@ -37,7 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.finale.neulhaerang.domain.CheckListCreationViewModel
+import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.data.CheckList
+import com.finale.neulhaerang.data.Routine
+import com.finale.neulhaerang.domain.CheckListModifyViewModel
+import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
@@ -45,11 +49,30 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CheckListCreationScreen(navController: NavHostController) {
+fun CheckListModifyScreen(navController: NavHostController, type: String?, index: Int?) {
+    val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+    val checkList = when (type) {
+        "routine" -> viewModel.routineList
+        "todo" -> viewModel.todoList
+        else -> {
+            listOf<CheckList>(
+                Routine(
+                    0,
+                    0,
+                    false,
+                    null,
+                    false,
+                    "dd",
+                    Stat.GodSang,
+                    List(7) { false })
+            )
+        }
+    }[index ?: 0]
+
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {
             Text(
-                text = "체크리스트 작성"
+                text = "체크리스트 수정"
             )
         }, navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
@@ -65,23 +88,26 @@ fun CheckListCreationScreen(navController: NavHostController) {
         )
         )
     }) {
-        CheckListCreationContent(
+        CheckListModifyContent(
             modifier = Modifier
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
                 .imePadding()
-                .fillMaxSize(), navController = navController
+                .fillMaxSize(), navController = navController,
+            checkList = checkList
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CheckListCreationContent(
+fun CheckListModifyContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    checkList: CheckList,
 ) {
-    val viewModel = viewModel<CheckListCreationViewModel>()
+    val viewModel =
+        viewModel<CheckListModifyViewModel>(factory = CheckListModifyViewModel.Factory(checkList))
 
     Column(modifier = modifier) {
         CheckListContentInput(
@@ -135,7 +161,7 @@ fun CheckListCreationContent(
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
             onClick = {
-                viewModel.makeChecklist()
+                viewModel.modifyCheckList()
                 navController.popBackStack()
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {
@@ -149,8 +175,8 @@ fun CheckListCreationContent(
 
 @Preview
 @Composable
-fun CheckListCreationScreenPreview() {
+fun CheckListModifyScreenPreview() {
     NeulHaeRangTheme {
-        CheckListCreationScreen(navController = rememberNavController())
+        CheckListModifyScreen(navController = rememberNavController(), null, 0)
     }
 }

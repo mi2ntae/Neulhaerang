@@ -35,7 +35,7 @@ import com.finale.neulhaerang.ui.theme.Typography
 
 @Composable
 fun MainScreen(navController: NavHostController) {
-    val mainScreenViewModel = viewModel<MainScreenViewModel>()
+    val mainScreenViewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
 
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
@@ -65,7 +65,7 @@ fun MainScreen(navController: NavHostController) {
                     }
                 }
                 when (tabIndex) {
-                    0 -> CheckList()
+                    0 -> CheckList(navController)
                     1 -> Letter()
                 }
             }

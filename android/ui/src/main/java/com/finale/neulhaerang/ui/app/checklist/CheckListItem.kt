@@ -31,11 +31,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.finale.neulhaerang.domain.CheckListCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
@@ -69,11 +68,13 @@ fun CheckListItem(
 @Composable
 fun RoutineCreation(
     modifier: Modifier = Modifier,
+    repeat: List<Boolean>,
+    changeRepeat: (Int) -> Unit,
 ) {
-    val viewModel = viewModel<CheckListCreationViewModel>()
-
-    val repeat = viewModel.repeat
-    val changeRepeat = viewModel::changeRepeat
+//    val viewModel = viewModel<CheckListCreationViewModel>()
+//
+//    val repeat = viewModel.repeat
+//    val changeRepeat = viewModel::changeRepeat
 
     Column(
         modifier = modifier
@@ -111,12 +112,16 @@ fun RoutineCreation(
 @Composable
 fun TodoCreation(
     modifier: Modifier = Modifier,
+    dateTime: LocalDateTime,
+    changeDate: (Long) -> Unit,
 ) {
-    val viewModel = viewModel<CheckListCreationViewModel>()
+//    val viewModel = viewModel<CheckListCreationViewModel>()
+//
+//    val dateTime = viewModel.dateTime
+//    val dateMilli = viewModel.dateMilli
+//    val changeDate = viewModel::changeDate
 
-    val dateTime = viewModel.dateTime
-    val dateMilli = viewModel.dateMilli
-    val changeDate = viewModel::changeDate
+    val dateMilli = dateTime.toInstant(ZoneOffset.UTC).toEpochMilli()
 
     var showSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(dateMilli)

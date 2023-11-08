@@ -22,6 +22,7 @@ enum class AppNavItem(
     MyPage("마이페이지", "mypage", Icons.Rounded.Person),
     Social("소셜", "social", Icons.Rounded.LocationOn),
     CheckListCreation("체크리스트 생성", "checklist_creation", null),
+    CheckListModify("체크리스트 수정", "checklist_creation", null),
     Setting("설정", "setting", Icons.Rounded.Settings)
 }
 

@@ -30,17 +30,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.finale.neulhaerang.common.Stat
-import com.finale.neulhaerang.domain.CheckListCreationViewModel
 
 @Composable
-fun CheckListContentInput() {
-    val viewModel = viewModel<CheckListCreationViewModel>()
-
-    val content = viewModel.content
-    val changeContent = viewModel::changeContent
-    val clearContent = viewModel::clearContent
+fun CheckListContentInput(
+    content: String,
+    changeContent: (String) -> Unit,
+    clearContent: () -> Unit,
+    stat: Stat,
+    changeStat: (Stat) -> Unit,
+) {
+//    val viewModel = viewModel<CheckListCreationViewModel>()
+//
+//    val content = viewModel.content
+//    val changeContent = viewModel::changeContent
+//    val clearContent = viewModel::clearContent
 
     var showDialog by remember { mutableStateOf(false) }
 
@@ -68,17 +72,21 @@ fun CheckListContentInput() {
             )
         )
         if (showDialog) {
-            StatDialog(onDismiss = { showDialog = false })
+            StatDialog(onDismiss = { showDialog = false }, stat = stat, changeStat = changeStat)
         }
     }
 }
 
 @Composable
-fun StatDialog(onDismiss: () -> Unit = {}) {
-    val viewModel = viewModel<CheckListCreationViewModel>()
-
-    val stat = viewModel.stat
-    val changeStat = viewModel::changeStat
+fun StatDialog(
+    onDismiss: () -> Unit = {},
+    stat: Stat,
+    changeStat: (Stat) -> Unit,
+) {
+//    val viewModel = viewModel<CheckListCreationViewModel>()
+//
+//    val stat = viewModel.stat
+//    val changeStat = viewModel::changeStat
 
     AlertDialog(onDismissRequest = onDismiss, confirmButton = {}, title = {
         Text(text = "스탯을 골라주세요")
