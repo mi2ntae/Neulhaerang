@@ -108,4 +108,7 @@ dependencies {
     // Add the dependency for the Firebase SDK for Google Analytics
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-messaging-ktx")
+
+    // health connect
+    implementation ("androidx.health.connect:connect-client:1.1.0-alpha01")
 }
