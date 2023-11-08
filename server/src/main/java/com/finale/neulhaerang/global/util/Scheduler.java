@@ -60,15 +60,13 @@ public class Scheduler {
 
 	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
 	public void createDailyRoutineTrigger() {
-		long memberId = authenticationHandler.getLoginMemberId();
-		Member member = memberRepository.findById(memberId)
-			.orElseThrow(NotExistMemberException::new);
+		List<Member> memberList = memberRepository.findAllByWithdrawalDateIsNull();
 		createDailyRoutine(LocalDate.now());
-		modifyStat(member, LocalDate.now().minusDays(1));
-		createLetter(LocalDate.now().minusDays(1));
-		publisher.publishEvent(new StatEvent(member));
-		publisher.publishEvent(new WeatherEvent(member));
-		publisher.publishEvent(new LetterEvent(member));
+		modifyStat(memberList, LocalDate.now().minusDays(1));
+		createLetter(memberList, LocalDate.now().minusDays(1));
+		// publisher.publishEvent(new StatEvent(member));
+		// publisher.publishEvent(new WeatherEvent(member));
+		// publisher.publishEvent(new LetterEvent(member));
 	}
 
 	void createDailyRoutine(LocalDate date) {
@@ -82,18 +80,20 @@ public class Scheduler {
 		});
 	}
 
-	void modifyStat(Member member, LocalDate date) {
-		// 그 날 완료한 투두 STAT 상승
-		List<Todo> doneTodoList = modifyStatByTodo(date, member);
+	void modifyStat(List<Member> memberList, LocalDate date) {
+		for(Member member : memberList) {
+			// 그 날 완료한 투두 STAT 상승
+			List<Todo> doneTodoList = modifyStatByTodo(date, member);
 
-		// 그 날 완료한 루틴 STAT 상승
-		List<DailyRoutine> doneDailyRoutineList = modifyStatByRoutine(date, member);
+			// 그 날 완료한 루틴 STAT 상승
+			List<DailyRoutine> doneDailyRoutineList = modifyStatByRoutine(date, member);
 
-		// 투두, 루틴 완료 갯수에 따라서 피곤도 STAT 증가
-		int totalDone = modifyTirednessByTodoAndRoutine(date, member, doneTodoList, doneDailyRoutineList);
+			// 투두, 루틴 완료 갯수에 따라서 피곤도 STAT 증가
+			int totalDone = modifyTirednessByTodoAndRoutine(date, member, doneTodoList, doneDailyRoutineList);
 
-		// 투두, 루틴 완료 비율에 따라서 나태도 STAT 증가
-		modifyIndolenceByTodoAndRoutine(date, member, totalDone);
+			// 투두, 루틴 완료 비율에 따라서 나태도 STAT 증가
+			modifyIndolenceByTodoAndRoutine(date, member, totalDone);
+		}
 	}
 
 	private List<Todo> modifyStatByTodo(LocalDate date, Member member) {
@@ -147,26 +147,26 @@ public class Scheduler {
 	}
 
 	// 편지 생성
-	void createLetter(LocalDate date) {
-		Member member = memberRepository.findById(authenticationHandler.getLoginMemberId())
-			.orElseThrow(NotExistMemberException::new);
-
+	void createLetter(List<Member> memberList, LocalDate date) {
 		String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
-		String reqMessage = createReqMessage(member, date);
-		List<ChatGptDto> content = new ArrayList<>();
-		content.add(ChatGptDto.from(reqMessage));
+		for(Member member : memberList) {
+			String reqMessage = createReqMessage(member, date);
+			List<ChatGptDto> content = new ArrayList<>();
+			content.add(ChatGptDto.from(reqMessage));
 
-		LetterReqDto letterReqDto = LetterReqDto.from(content);
-		LetterResDto letterResDto = letterFeignClient.getGPTResponse(CONTENT_TYPE, "Bearer " + gptKey, letterReqDto);
+			LetterReqDto letterReqDto = LetterReqDto.from(content);
+			LetterResDto letterResDto = letterFeignClient.getGPTResponse(CONTENT_TYPE, "Bearer " + gptKey,
+				letterReqDto);
 
-		Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
-		letterRepository.save(letter);
-		notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
+			Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
+			letterRepository.save(letter);
+			notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
+		}
 	}
 
 	String createReqMessage(Member member, LocalDate date) {
-		StringBuilder reqMessage = new StringBuilder("내 이름은" + member.getNickname() + "이야. 오늘 내가 완료한 일은");
+		StringBuilder reqMessage = new StringBuilder("내 이름은 " + member.getNickname() + "이야. 오늘 내가 완료한 일은 ");
 
 		List<Todo> doneTodoList = todoRepository.findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(
 			member, date.atStartOfDay(), date.atTime(LocalTime.MAX)
@@ -181,7 +181,7 @@ public class Scheduler {
 			reqMessage.append(dailyRoutine.getRoutine().getContent()).append(",");
 		}
 		reqMessage.append(
-			"이야. 나의 가상의 캐릭터 '해랑이'가 위의 일을 진행했다고 가정하고 나에게 주는 일기 형식의 느낌으로 긍정적이고 동기부여가 되는 편지를 작성해줘. 반말로 길고 정성스럽게 이모지를 사용해서 작성 부탁해.");
+			"이야. 나의 가상의 캐릭터 '해랑이'가 위의 일을 진행했다고 가정하고 나에게 주는 일기 형식의 느낌으로 긍정적이고 동기부여가 되는 편지를 작성해줘. 반말로 정성스럽게 이모지를 사용해서 1000글자 이내로 작성 부탁해.\n");
 
 		return reqMessage.toString();
 	}
