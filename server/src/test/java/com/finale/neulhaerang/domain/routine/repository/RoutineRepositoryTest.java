@@ -50,29 +50,33 @@ class RoutineRepositoryTest extends BaseTest {
 	@Test
 	void When_GetDateAndDayOfValueAndAlarmTime_Expect_GetListOfRoutine() {
 		// given
-		LocalTime now = LocalTime.of(8, 10, 10);
+		LocalTime now = LocalTime.of(8, 10, 0);
 		Routine routine1 = createRoutine("양치하기1", "0010000", false, StatType.생존력, null);
 		Routine routine2 = createRoutine("양치하기2", "0110000", true, StatType.갓생력, LocalDate.of(2023, 8, 20), now);
 		Routine routine3 = createRoutine("양치하기2-2", "0110000", true, StatType.갓생력, LocalDate.of(2023, 8, 20),
-			LocalTime.of(8, 10, 11));
-		Routine routine4 = createRoutine("양치하기3", "0111000", true, StatType.최애력, LocalDate.of(2023, 8, 19), now);
-		Routine routine5 = createRoutine("양치하기4", "0101000", false, StatType.인싸력, null);
+			LocalTime.of(8, 10, 59));
+		Routine routine4 = createRoutine("양치하기2-3", "0110000", true, StatType.갓생력, LocalDate.of(2023, 8, 20),
+			LocalTime.of(8, 11, 0));
+		Routine routine5 = createRoutine("양치하기3", "0111000", true, StatType.최애력, LocalDate.of(2023, 8, 19), now);
+		Routine routine6 = createRoutine("양치하기4", "0101000", false, StatType.인싸력, null);
 
-		routineRepository.saveAll(List.of(routine1, routine2, routine3, routine4, routine5));
+		routineRepository.saveAll(List.of(routine1, routine2, routine3, routine4, routine5, routine6));
 
 		// when
 		String dayOfValue = "__1____";
 		LocalDate date = LocalDate.of(2023, 8, 19);
 		List<Routine> routines = routineRepository.findRoutinesByDayOfValueAndAlarmIsTrueAndAlarmTimeIsNotNull(
 			dayOfValue,
-			date);
+			date,
+			now.withSecond(0),
+			now.withSecond(59));
 
 		// then
-		Assertions.assertThat(routines).hasSize(2)
+		assertThat(routines).hasSize(2)
 			.extracting("content", "repeated", "statType", "alarm", "alarmTime")
 			.containsExactlyInAnyOrder(
 				tuple("양치하기2", "0110000", StatType.갓생력, true, now),
-				tuple("양치하기2-2", "0110000", StatType.갓생력, true, LocalTime.of(8, 10, 11))
+				tuple("양치하기2-2", "0110000", StatType.갓생력, true, LocalTime.of(8, 10, 59))
 			);
 	}
 
