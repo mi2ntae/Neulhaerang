@@ -10,18 +10,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.finale.neulhaerang.domain.MainScreenViewModel
+import java.time.LocalDate
 
 @Composable
 fun Letter(
     modifier: Modifier = Modifier,
+    letterText: String,
+    selectedDate: LocalDate,
 ) {
-    val viewModel = viewModel<MainScreenViewModel>()
-
-    val letterText = viewModel.letterText
-    val selectedDate = viewModel.selectedDate
-
     Column(
         modifier = modifier
             .padding(horizontal = 24.dp)

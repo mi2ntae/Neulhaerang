@@ -25,24 +25,24 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
-import com.finale.neulhaerang.domain.MainScreenViewModel
+import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.ui.theme.Typography
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun CheckList(navController: NavHostController) {
-    val viewModel = viewModel<MainScreenViewModel>()
-
-    val selectedDate = viewModel.selectedDate
-    val routineList = viewModel.routineList
-    val todoList = viewModel.todoList
-
+fun CheckList(
+    navController: NavHostController,
+    selectedDate: LocalDate,
+    routineList: List<Routine>,
+    todoList: List<Todo>,
+    checkCheckList: (CheckList) -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,28 +50,36 @@ fun CheckList(navController: NavHostController) {
             .padding(16.dp),
     ) {
         Text(text = selectedDate.toString())
-        Routine(routineList, navController)
+        Routine(routineList, navController, checkCheckList)
         Spacer(modifier = Modifier.height(16.dp))
-        TodoList(todoList, navController)
+        TodoList(todoList, navController, checkCheckList)
     }
 }
 
 
 @Composable
-fun Routine(routines: List<CheckList>, navController: NavHostController) {
+fun Routine(
+    routines: List<CheckList>,
+    navController: NavHostController,
+    checkCheckList: (CheckList) -> Unit,
+) {
     Text(text = "Routine", style = Typography.bodyLarge)
     Column(
 //        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         routines.forEachIndexed { index, item ->
-            CheckListItem(index, item, navController)
+            CheckListItem(index, item, navController, checkCheckList)
         }
     }
 }
 
 
 @Composable
-fun TodoList(todolist: List<CheckList>, navController: NavHostController) {
+fun TodoList(
+    todolist: List<CheckList>,
+    navController: NavHostController,
+    checkCheckList: (CheckList) -> Unit,
+) {
     Text(text = "To do", style = Typography.bodyLarge)
     Column(
 //        modifier = Modifier.fillMaxSize()
@@ -79,15 +87,19 @@ fun TodoList(todolist: List<CheckList>, navController: NavHostController) {
 //        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         todolist.forEachIndexed { index, item ->
-            CheckListItem(index, item, navController)
+            CheckListItem(index, item, navController, checkCheckList)
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CheckListItem(index: Int, item: CheckList, navController: NavHostController) {
-    val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+fun CheckListItem(
+    index: Int,
+    item: CheckList,
+    navController: NavHostController,
+    checkCheckList: (CheckList) -> Unit,
+) {
     val type = if (item is Routine) "routine" else "todo"
 
     Row(
@@ -103,7 +115,7 @@ fun CheckListItem(index: Int, item: CheckList, navController: NavHostController)
     ) {
         Checkbox(
             checked = item.check,
-            onCheckedChange = { viewModel.checkCheckList(item) },
+            onCheckedChange = { checkCheckList(item) },
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
