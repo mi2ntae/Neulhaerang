@@ -103,6 +103,7 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,unity
 
 /[Aa]ssets/Suriyun
+/[Aa]ssets/ElementalSuperDemons
 /[Aa]ssets/Plugins
 /[Aa]ssets/XR
 *.fbx
