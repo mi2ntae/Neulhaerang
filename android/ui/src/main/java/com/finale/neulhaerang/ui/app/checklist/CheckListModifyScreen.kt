@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.checklist
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +13,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -71,6 +75,14 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
     }[index ?: 0]
     val selectedDate = viewModel.selectedDate
 
+    var showAlertDialog by remember { mutableStateOf(false) }
+
+    if (showAlertDialog) {
+        CheckListDeleteDialog(
+            navController = navController,
+            onDismissRequest = { showAlertDialog = false })
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -92,7 +104,7 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 ),
                 actions = {
-                    TextButton(onClick = { /*TODO 삭제*/ }) {
+                    TextButton(onClick = { showAlertDialog = true }) {
                         Text(
                             text = stringResource(id = R.string.delete),
                             color = Color.Red
@@ -122,7 +134,7 @@ fun CheckListModifyContent(
     navController: NavHostController,
     checkList: CheckList,
     selectedDate: LocalDate,
-    setDataFromDateTime: ()->Unit
+    setDataFromDateTime: () -> Unit,
 ) {
     val viewModel =
         viewModel<CheckListModifyViewModel>(
@@ -189,6 +201,52 @@ fun CheckListModifyContent(
             )
         }
     }
+}
+
+@Composable
+fun CheckListDeleteDialog(
+    navController: NavHostController,
+    onDismissRequest: () -> Unit,
+    viewModel: CheckListModifyViewModel = viewModel(),
+) {
+    val TAG = "delete"
+
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            Button(onClick = {
+                Log.d(TAG, "CheckListDeleteDialog: confirm")
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(id = R.string.delete))
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = {
+                    Log.d(TAG, "CheckListDeleteDialog: cancle")
+                    onDismissRequest()
+                }, colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
+                    containerColor = MaterialTheme.colorScheme.secondary
+                )
+            ) {
+                Text(text = stringResource(id = R.string.cancel))
+            }
+        },
+        title = {
+            Text(text = "정말로 삭제하시겠습니까?")
+        },
+        text = {
+            if (viewModel.routine) {
+                var checked by remember { mutableStateOf(false) }
+                Column {
+                    Text(text = "이 루틴을 더 이상 반복하지 않으시겠습니까?")
+                    Checkbox(checked = checked, onCheckedChange = { checked = it })
+                }
+            }
+        }
+    )
 }
 
 @Preview
