@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.domain.routine.repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +22,10 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 		+ "where r.repeated like :dayOfValue "
 		+ "and (r.delete_date > :date or r.delete_date is null) "
 		+ "and r.alarm=true "
-		+ "and r.alarm_time is not null", nativeQuery = true)
-	List<Routine> findRoutinesByDayOfValueAndAlarmIsTrueAndAlarmTimeIsNotNull(String dayOfValue, LocalDate date);
+		+ "and r.alarm_time is not null "
+		+ "and r.alarm_time >= :startTime "
+		+ "and r.alarm_time <= :endTime", nativeQuery = true)
+	List<Routine> findRoutinesByDayOfValueAndAlarmIsTrueAndAlarmTimeIsNotNull(String dayOfValue, LocalDate date,
+		LocalTime startTime, LocalTime endTime);
 
 }
