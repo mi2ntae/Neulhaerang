@@ -6,21 +6,21 @@ import com.finale.neulhaerang.data.model.response.TodoResDto
 import java.time.LocalTime
 
 open class CheckList(
-    val alarm: Boolean,
-    val alarmTime: LocalTime?,
-    var check: Boolean,
-    val content: String,
-    val statType: Stat,
+    open val alarm: Boolean,
+    open val alarmTime: LocalTime?,
+    open val check: Boolean,
+    open val content: String,
+    open val statType: Stat,
 )
 
-class Routine(
+data class Routine(
     val dailyRoutineId: Long,
     val routineId: Long,
-    alarm: Boolean,
-    alarmTime: LocalTime?,
-    check: Boolean,
-    content: String,
-    statType: Stat,
+    override val alarm: Boolean,
+    override val alarmTime: LocalTime?,
+    override val check: Boolean,
+    override val content: String,
+    override val statType: Stat,
     val repeated: List<Boolean>,
 ) : CheckList(alarm, alarmTime, check, content, statType) {
     constructor(resDto: RoutineResDto) : this(
@@ -35,13 +35,13 @@ class Routine(
     )
 }
 
-class Todo(
+data class Todo(
     val todoId: Long,
-    alarm: Boolean,
-    alarmTime: LocalTime?,
-    check: Boolean,
-    content: String,
-    statType: Stat,
+    override val alarm: Boolean,
+    override val alarmTime: LocalTime?,
+    override val check: Boolean,
+    override val content: String,
+    override val statType: Stat,
 ) : CheckList(alarm, alarmTime, check, content, statType) {
     constructor(resDto: TodoResDto) : this(
         resDto.todoId,
