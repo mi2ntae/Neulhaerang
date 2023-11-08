@@ -121,6 +121,66 @@ class WeatherTitleEventHandlerTest extends BaseTest {
 		assertThat(earnedTitles).hasSize(2);
 	}
 
+	@DisplayName("9일 연속 todo를 70퍼센트 이하 40퍼센트 이상 달성했다면 칭호를 0개 받습니다.")
+	@Test
+	void When_SunnyContinuous9Days_Expect_GetCloudTitle() {
+		// given
+		member.updateCreateDate(LocalDateTime.now().minusDays(100));
+		Title title1 = createTitle(27L, "구10", "구름10");
+		Title title2 = createTitle(28L, "구50", "구름50");
+		titleRepository.saveAll(List.of(title1, title2));
+		for (int i = 1; i <= 9; i++) {
+			createCheckTodo(i);
+			createUncheckTodo(i);
+		}
+
+		// when
+		weatherTitleEventHandler.checkIfGetWeatherTitle(member);
+		// then
+		List<EarnedTitle> earnedTitles = earnedTitleRepository.findAll();
+		assertThat(earnedTitles).hasSize(0);
+	}
+
+	@DisplayName("49일 연속 todo를 70퍼센트 이하 40퍼센트 이상 달성했다면 칭호를 1개 받습니다.")
+	@Test
+	void When_SunnyContinuous49Days_Expect_GetCloudTitle() {
+		// given
+		member.updateCreateDate(LocalDateTime.now().minusDays(100));
+		Title title1 = createTitle(27L, "구10", "구름10");
+		Title title2 = createTitle(28L, "구50", "구름50");
+		titleRepository.saveAll(List.of(title1, title2));
+		for (int i = 1; i <= 49; i++) {
+			createCheckTodo(i);
+			createUncheckTodo(i);
+		}
+
+		// when
+		weatherTitleEventHandler.checkIfGetWeatherTitle(member);
+		// then
+		List<EarnedTitle> earnedTitles = earnedTitleRepository.findAll();
+		assertThat(earnedTitles).hasSize(1);
+	}
+
+	@DisplayName("50일 연속 todo를 70퍼센트 이하 40퍼센트 이상 달성했다면 칭호를 2개 받습니다.")
+	@Test
+	void When_SunnyContinuous50Days_Expect_GetCloudTitle() {
+		// given
+		member.updateCreateDate(LocalDateTime.now().minusDays(100));
+		Title title1 = createTitle(27L, "구10", "구름10");
+		Title title2 = createTitle(28L, "구50", "구름50");
+		titleRepository.saveAll(List.of(title1, title2));
+		for (int i = 1; i <= 50; i++) {
+			createCheckTodo(i);
+			createUncheckTodo(i);
+		}
+
+		// when
+		weatherTitleEventHandler.checkIfGetWeatherTitle(member);
+		// then
+		List<EarnedTitle> earnedTitles = earnedTitleRepository.findAll();
+		assertThat(earnedTitles).hasSize(2);
+	}
+
 	private Title createTitle(Long id, String name, String content) {
 		return Title.builder()
 			.id(id)
@@ -133,6 +193,19 @@ class WeatherTitleEventHandlerTest extends BaseTest {
 		Todo todo = Todo.builder()
 			.member(member)
 			.check(true)
+			.todoDate(LocalDateTime.now().minusDays(i))
+			.content("hi")
+			.alarm(false)
+			.status(false)
+			.statType(StatType.갓생력)
+			.build();
+		todoRepository.save(todo);
+	}
+
+	public void createUncheckTodo(int i) {
+		Todo todo = Todo.builder()
+			.member(member)
+			.check(false)
 			.todoDate(LocalDateTime.now().minusDays(i))
 			.content("hi")
 			.alarm(false)
