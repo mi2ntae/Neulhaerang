@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -99,9 +101,11 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
+	@Transactional
 	public void logout() {
 		long deviceId = authenticationHandler.getLoginDeviceId();
 		redisUtil.deleteData(String.valueOf(deviceId));
+		deviceRepository.deleteDeviceByDeviceToken(String.valueOf(deviceId));
 		log.info("로그아웃 완료");
 	}
 
