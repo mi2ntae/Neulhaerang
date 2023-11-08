@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.domain
 
 import android.util.Log
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.data.CheckList
+import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.data.api.LetterApi
@@ -18,6 +20,7 @@ import com.finale.neulhaerang.data.model.response.TodoResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
+import kotlinx.coroutines.flow.singleOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -35,9 +38,14 @@ class MainScreenViewModel : ViewModel() {
     private val _routineList = mutableStateListOf<Routine>()
     private val _todoList = mutableStateListOf<Todo>()
     private val _letterText = mutableStateOf("")
+    private val _memberId = mutableLongStateOf(0)
 
     init {
         setDataFromDateTime()
+        viewModelScope.launch {
+            _memberId.longValue =
+                DataStoreApplication.getInstance().getDataStore().getMemberId().singleOrNull() ?: 0
+        }
     }
 
     val selectedDate: LocalDate
