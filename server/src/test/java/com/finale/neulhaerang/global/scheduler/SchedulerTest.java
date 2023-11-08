@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.global.util;
+package com.finale.neulhaerang.global.scheduler;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
+import com.finale.neulhaerang.global.util.BaseTest;
 
-// @AutoConfigureMockMvc
 @WithMockUser(password = "1")
 class SchedulerTest extends BaseTest {
 
@@ -46,6 +47,11 @@ class SchedulerTest extends BaseTest {
 
 	@Autowired
 	private LetterRepository letterRepository;
+
+	@BeforeEach
+	void tearDown() {
+		memberStatRepository.deleteAll();
+	}
 
 	@DisplayName("스케줄러가 실행되면 해당 날짜의 daily-routine이 추가됩니다.")
 	@Test

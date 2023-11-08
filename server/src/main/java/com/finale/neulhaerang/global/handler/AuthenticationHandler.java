@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.global.util;
+package com.finale.neulhaerang.global.handler;
 
 import java.util.Optional;
 
@@ -23,21 +23,21 @@ public class AuthenticationHandler {
 	public void checkMemberAuthentication(long memberId) throws NotExistMemberException, AccessForbiddenException {
 		long loginId = getLoginMemberId();
 		Optional<Member> loginMember = memberRepository.findById(loginId);
-		if(loginMember.isEmpty()) {
+		if (loginMember.isEmpty()) {
 			throw new NotExistMemberException();
 		}
-		if(loginMember.get().getId() != memberId) {
+		if (loginMember.get().getId() != memberId) {
 			throw new AccessForbiddenException();
 		}
 	}
 
 	public long getLoginDeviceId() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return Long.parseLong(userDetails.getUsername());
 	}
 
 	public long getLoginMemberId() {
-		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return Long.parseLong(userDetails.getPassword());
 	}
 

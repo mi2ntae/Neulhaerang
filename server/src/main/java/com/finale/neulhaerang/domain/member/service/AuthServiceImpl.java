@@ -25,7 +25,7 @@ import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.global.event.RegisteredEvent;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.InValidJwtTokenException;
-import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 import com.finale.neulhaerang.global.util.JwtTokenProvider;
 import com.finale.neulhaerang.global.util.RedisUtil;
 
@@ -119,7 +119,8 @@ public class AuthServiceImpl implements AuthService {
 				deviceRepository.save(Device.create(member, loginReqDto.getDeviceToken()));
 			}
 
-			memberStatRepository.save(StatRecord.of(StatRecordReqDto.of("늘해랑 가입 환영", LocalDateTime.now(), StatType.갓생력, 2), member.getId()));
+			memberStatRepository.save(
+				StatRecord.of(StatRecordReqDto.of("늘해랑 가입 환영", LocalDateTime.now(), StatType.갓생력, 2), member.getId()));
 			applicationEventPublisher.publishEvent(new RegisteredEvent(member));
 			return member;
 		} else {

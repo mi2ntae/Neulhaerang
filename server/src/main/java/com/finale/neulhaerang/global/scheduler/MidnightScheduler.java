@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.global.util;
+package com.finale.neulhaerang.global.scheduler;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +30,7 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 import com.finale.neulhaerang.global.notification.dto.request.LetterNotificationReqDto;
 import com.finale.neulhaerang.global.notification.service.NotificationService;
 

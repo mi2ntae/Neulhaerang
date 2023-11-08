@@ -16,7 +16,7 @@ import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.global.exception.title.NotEarnedTitleException;
 import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
-import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
 

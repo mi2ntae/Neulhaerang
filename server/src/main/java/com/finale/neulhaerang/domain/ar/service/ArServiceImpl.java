@@ -20,7 +20,7 @@ import com.finale.neulhaerang.global.event.RepelIndolenceMonsterEvent;
 import com.finale.neulhaerang.global.event.TagOtherMemberEvent;
 import com.finale.neulhaerang.global.exception.ar.InvalidTagException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
-import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,28 +41,35 @@ public class ArServiceImpl implements ArService {
 	@Override
 	public boolean tagOtherMember(long memberId) throws NotExistMemberException, InvalidTagException {
 		Optional<Member> optionalMember = memberRepository.findById(memberId);
-		if(optionalMember.isEmpty()) {
+		if (optionalMember.isEmpty()) {
 			throw new NotExistMemberException();
 		}
 		long loginMemberId = authenticationHandler.getLoginMemberId();
-		if(optionalMember.get().getId() == loginMemberId) {
+		if (optionalMember.get().getId() == loginMemberId) {
 			throw new InvalidTagException();
 		}
 
 		LocalDateTime now = LocalDateTime.now();
-		List<StatRecord> statRecords = memberStatRepository.findStatRecordsByMemberIdAndReasonContaining(loginMemberId, "[ID : "+memberId+", 닉네임 : "+optionalMember.get().getNickname()+"]");
-		boolean isTagedToday = statRecords.stream().filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-			DateTimeFormatter.ISO_DATE))).count() == 0 ? false : true;
+		List<StatRecord> statRecords = memberStatRepository.findStatRecordsByMemberIdAndReasonContaining(loginMemberId,
+			"[ID : " + memberId + ", 닉네임 : " + optionalMember.get().getNickname() + "]");
+		boolean isTagedToday = statRecords.stream()
+			.filter(
+				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
+					DateTimeFormatter.ISO_DATE)))
+			.count() == 0 ? false : true;
 
-		if(!isTagedToday) {
-			StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("소셜에서 [ID : "+memberId+", 닉네임 : "+optionalMember.get().getNickname()+"] 사용자를 태그", LocalDateTime.now(), StatType.인싸력, 3);
+		if (!isTagedToday) {
+			StatRecordReqDto statRecordReqDto = StatRecordReqDto.of(
+				"소셜에서 [ID : " + memberId + ", 닉네임 : " + optionalMember.get().getNickname() + "] 사용자를 태그",
+				LocalDateTime.now(), StatType.인싸력, 3);
 			memberStatRepository.save(StatRecord.of(statRecordReqDto, loginMemberId));
 		} else {
-			log.debug(loginMemberId+" 사용자가 오늘 이미 "+optionalMember.get().getId()+" 사용자를 태그하여 인싸력이 올라가지 않았습니다.");
+			log.debug(loginMemberId + " 사용자가 오늘 이미 " + optionalMember.get().getId() + " 사용자를 태그하여 인싸력이 올라가지 않았습니다.");
 		}
 
-		Optional<EarnedTitle> optionalEarnedTitle = earnedTitleRepository.findEarnedTitleByMember_IdAndTitle_Id(loginMemberId, SOCIAL_FIRST_TAG);
-		if(optionalEarnedTitle.isEmpty()) {
+		Optional<EarnedTitle> optionalEarnedTitle = earnedTitleRepository.findEarnedTitleByMember_IdAndTitle_Id(
+			loginMemberId, SOCIAL_FIRST_TAG);
+		if (optionalEarnedTitle.isEmpty()) {
 			publisher.publishEvent(new TagOtherMemberEvent(memberRepository.getReferenceById(loginMemberId)));
 			return true;
 		}
@@ -72,18 +79,24 @@ public class ArServiceImpl implements ArService {
 	@Override
 	public boolean repelIndolenceMonster() {
 		long loginMemberId = authenticationHandler.getLoginMemberId();
-		List<StatRecord> statRecords = memberStatRepository.findStatRecordsByStatTypeAndMemberId(StatType.나태도, loginMemberId);
+		List<StatRecord> statRecords = memberStatRepository.findStatRecordsByStatTypeAndMemberId(StatType.나태도,
+			loginMemberId);
 		LocalDateTime now = LocalDateTime.now();
-		int indolenceSum = statRecords.stream().filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-			DateTimeFormatter.ISO_DATE))).map(StatRecord::getWeight).reduce(0, Integer::sum);
+		int indolenceSum = statRecords.stream()
+			.filter(
+				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
+					DateTimeFormatter.ISO_DATE)))
+			.map(StatRecord::getWeight)
+			.reduce(0, Integer::sum);
 
-		if(indolenceSum > 0) {
+		if (indolenceSum > 0) {
 			StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("나태 괴물 처치!", now, StatType.나태도, -indolenceSum);
 			memberStatRepository.save(StatRecord.of(statRecordReqDto, loginMemberId));
 		}
 
-		Optional<EarnedTitle> optionalEarnedTitle = earnedTitleRepository.findEarnedTitleByMember_IdAndTitle_Id(loginMemberId, REPEL_INDOLENCE_MONSTER);
-		if(optionalEarnedTitle.isEmpty()) {
+		Optional<EarnedTitle> optionalEarnedTitle = earnedTitleRepository.findEarnedTitleByMember_IdAndTitle_Id(
+			loginMemberId, REPEL_INDOLENCE_MONSTER);
+		if (optionalEarnedTitle.isEmpty()) {
 			publisher.publishEvent(new RepelIndolenceMonsterEvent(memberRepository.getReferenceById(loginMemberId)));
 			return true;
 		}

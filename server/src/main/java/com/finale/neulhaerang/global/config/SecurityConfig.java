@@ -12,7 +12,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.finale.neulhaerang.global.util.JwtAccessDeniedHandler;
+import com.finale.neulhaerang.global.handler.JwtAccessDeniedHandler;
 import com.finale.neulhaerang.global.util.JwtAuthenticationEntryPoint;
 import com.finale.neulhaerang.global.util.JwtAuthenticationFilter;
 import com.finale.neulhaerang.global.util.JwtTokenProvider;

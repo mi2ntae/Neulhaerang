@@ -22,7 +22,7 @@ import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.exception.todo.InvalidTodoDateException;
 import com.finale.neulhaerang.global.exception.todo.NotExistTodoException;
-import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +37,7 @@ public class TodoServiceImpl implements TodoService {
 
 	@Override
 	public void createTodo(TodoCreateReqDto todoCreateReqDto) {
-		if(todoCreateReqDto.getTodoDate().isBefore(LocalDateTime.now())){
+		if (todoCreateReqDto.getTodoDate().isBefore(LocalDateTime.now())) {
 			throw new InvalidTodoDateException();
 		}
 		Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
@@ -51,7 +51,8 @@ public class TodoServiceImpl implements TodoService {
 		LocalDateTime startDate = todoDate.atStartOfDay();
 		LocalDateTime endDate = todoDate.atTime(LocalTime.MAX);
 
-		List<Todo> todoList = todoRepository.findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(member, startDate, endDate);
+		List<Todo> todoList = todoRepository.findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(member, startDate,
+			endDate);
 
 		return todoList.stream()
 			.map(TodoListResDto::from)
@@ -62,7 +63,7 @@ public class TodoServiceImpl implements TodoService {
 	public void modifyTodoCheckByTodoId(Long todoId) {
 		Todo todo = todoRepository.findTodoByIdAndStatusIsFalse(todoId)
 			.orElseThrow(NotExistTodoException::new);
-		if(todo.getTodoDate().toLocalDate().isBefore(LocalDate.now())){
+		if (todo.getTodoDate().toLocalDate().isBefore(LocalDate.now())) {
 			throw new InvalidTodoDateException();
 		}
 		todo.updateCheck();
@@ -72,7 +73,7 @@ public class TodoServiceImpl implements TodoService {
 	public void removeTodoByTodoId(Long todoId) {
 		Todo todo = todoRepository.findTodoByIdAndStatusIsFalse(todoId)
 			.orElseThrow(NotExistTodoException::new);
-		if(todo.getTodoDate().toLocalDate().isBefore(LocalDate.now())){
+		if (todo.getTodoDate().toLocalDate().isBefore(LocalDate.now())) {
 			throw new InvalidTodoDateException();
 		}
 		todo.updateStatus();
@@ -82,8 +83,10 @@ public class TodoServiceImpl implements TodoService {
 	public void modifyTodoByTodoId(Long todoId, TodoModifyReqDto todoModifyReqDto) {
 		Todo todo = todoRepository.findTodoByIdAndStatusIsFalse(todoId)
 			.orElseThrow(NotExistTodoException::new);
-		if(
-			todo.getTodoDate().toLocalDate().isBefore(LocalDate.now()) || todoModifyReqDto.getTodoDate().toLocalDate().isBefore(LocalDate.now())){
+		if (
+			todo.getTodoDate().toLocalDate().isBefore(LocalDate.now()) || todoModifyReqDto.getTodoDate()
+				.toLocalDate()
+				.isBefore(LocalDate.now())) {
 			throw new InvalidTodoDateException();
 		}
 		todo.updateTodo(todoModifyReqDto);
@@ -95,19 +98,23 @@ public class TodoServiceImpl implements TodoService {
 
 		LocalDate start = yearMonth.atDay(1);
 		LocalDate end = yearMonth.atEndOfMonth();
-		if(YearMonth.from(LocalDate.now()).equals(yearMonth)) {
+		if (YearMonth.from(LocalDate.now()).equals(yearMonth)) {
 			end = LocalDate.now();
 		}
 
 		List<CheckRatioListResDto> checkRatioList = new ArrayList<>();
 		for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
-			int totalTodo = todoRepository.findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(member, date.atStartOfDay(), date.atTime(LocalTime.MAX)).size();
-			int totalRoutine = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(date, member).size();
-			int checkTodo = todoRepository.findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(member, date.atStartOfDay(), date.atTime(LocalTime.MAX)).size();
-			int checkRoutine = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalseAndCheckIsTrue(date, member).size();
+			int totalTodo = todoRepository.findTodosByMemberAndStatusIsFalseAndTodoDateIsBetween(member,
+				date.atStartOfDay(), date.atTime(LocalTime.MAX)).size();
+			int totalRoutine = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(
+				date, member).size();
+			int checkTodo = todoRepository.findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(member,
+				date.atStartOfDay(), date.atTime(LocalTime.MAX)).size();
+			int checkRoutine = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalseAndCheckIsTrue(
+				date, member).size();
 
-			double ratio = (double)(checkTodo + checkRoutine)/(totalTodo+totalRoutine);
-			if(Double.isNaN(ratio)){
+			double ratio = (double)(checkTodo + checkRoutine) / (totalTodo + totalRoutine);
+			if (Double.isNaN(ratio)) {
 				ratio = 0;
 			}
 			checkRatioList.add(CheckRatioListResDto.of(date, ratio));

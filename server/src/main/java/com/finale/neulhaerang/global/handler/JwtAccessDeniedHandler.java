@@ -1,4 +1,4 @@
-package com.finale.neulhaerang.global.util;
+package com.finale.neulhaerang.global.handler;
 
 import java.io.IOException;
 
@@ -19,10 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	@Override
-	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws
+	public void handle(HttpServletRequest request, HttpServletResponse response,
+		AccessDeniedException accessDeniedException) throws
 		IOException, ServletException {
 		// 필요한 권한이 없이 접근하려 할때 403
-		log.error("[JwtAccessDeniedHandler] handle() -> 접근 권한이 없습니다. ["+request.getMethod()+"] "+request.getRequestURI());
+		log.error("[JwtAccessDeniedHandler] handle() -> 접근 권한이 없습니다. [" + request.getMethod() + "] "
+			+ request.getRequestURI());
 		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
 }

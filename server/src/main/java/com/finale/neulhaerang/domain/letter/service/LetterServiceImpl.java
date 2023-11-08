@@ -11,7 +11,7 @@ import com.finale.neulhaerang.domain.letter.repository.LetterRepository;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
-import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
 
