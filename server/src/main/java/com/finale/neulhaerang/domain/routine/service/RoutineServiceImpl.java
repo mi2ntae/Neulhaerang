@@ -28,7 +28,7 @@ import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeExceptio
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRoutineException;
-import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 
 import lombok.RequiredArgsConstructor;
 

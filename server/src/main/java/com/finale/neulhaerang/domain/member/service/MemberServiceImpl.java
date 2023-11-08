@@ -36,7 +36,7 @@ import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
-import com.finale.neulhaerang.global.util.AuthenticationHandler;
+import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 import com.finale.neulhaerang.global.util.RedisUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -68,7 +68,6 @@ public class MemberServiceImpl implements MemberService {
 	private static final int MAX_LEVEL = 20;
 	private static final int LEVEL_WEIGHT = 15;
 
-
 	// 멤버 상태 정보 조회 (나태도, 피로도) -> MongoDB에서 조회
 	@Override
 	public MemberStatusResDto findStatusByMemberId(long memberId) {
@@ -81,18 +80,21 @@ public class MemberServiceImpl implements MemberService {
 		List<StatType> validStatTypes = new ArrayList<>();
 		validStatTypes.add(StatType.나태도);
 		validStatTypes.add(StatType.피곤도);
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsInAndMemberId(validStatTypes, memberId);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsInAndMemberId(validStatTypes,
+			memberId);
 
 		LocalDateTime now = LocalDateTime.now();
 		int sumOfIndolence = records.stream()
 			.filter(r -> r.getStatType().equals(StatType.나태도))
-			.filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-				DateTimeFormatter.ISO_DATE)))
+			.filter(
+				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
+					DateTimeFormatter.ISO_DATE)))
 			.map(record -> record.getWeight()).reduce(0, Integer::sum);
 		int sumOfTiredness = records.stream()
 			.filter(r -> r.getStatType().equals(StatType.피곤도))
-			.filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-				DateTimeFormatter.ISO_DATE)))
+			.filter(
+				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
+					DateTimeFormatter.ISO_DATE)))
 			.map(record -> record.getWeight())
 			.reduce(0, Integer::sum);
 
@@ -166,12 +168,16 @@ public class MemberServiceImpl implements MemberService {
 		List<StatType> ignoreTypes = new ArrayList<>();
 		ignoreTypes.add(StatType.나태도);
 		ignoreTypes.add(StatType.피곤도);
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes, memberId);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes,
+			memberId);
 
 		LocalDateTime now = LocalDateTime.now();
 		int[] stats = new int[VALID_STAT_NUMS];
-		records.stream().filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-			DateTimeFormatter.ISO_DATE))).forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
+		records.stream()
+			.filter(
+				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
+					DateTimeFormatter.ISO_DATE)))
+			.forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
 
 		List<StatListResDto> statListResDtos = new ArrayList<>();
 		Arrays.stream(stats).forEach(stat -> statListResDtos.add(StatListResDto.of(stat, getLevelByScore(stat))));
@@ -179,7 +185,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int[] findStatChangeRecordLastDaysByStatType(int statNo) throws InvalidStatKindException, NotExistMemberException {
+	public int[] findStatChangeRecordLastDaysByStatType(int statNo) throws
+		InvalidStatKindException,
+		NotExistMemberException {
 		if (statNo < 0 || statNo >= VALID_STAT_NUMS) {
 			throw new InvalidStatKindException();
 		}
@@ -189,25 +197,25 @@ public class MemberServiceImpl implements MemberService {
 			throw new NotExistMemberException();
 		}
 
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberId(StatType.values()[statNo], optionalMember.get().getId());
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberId(StatType.values()[statNo],
+			optionalMember.get().getId());
 		LocalDateTime now = LocalDateTime.now();
 
 		int[] changeRecords = new int[STAT_CHANGE_RECORD_DAYS + 1];
 
-
 		records.forEach(record -> {
-				if (record.getRecordedDate()
-					.toLocalDate()
-					.isBefore(now.minusDays(STAT_CHANGE_RECORD_DAYS).toLocalDate())) {
-					changeRecords[STAT_CHANGE_RECORD_DAYS] += record.getWeight();
-				} else {
-					for (int k = STAT_CHANGE_RECORD_DAYS; k > 0; k--) {
-						if (record.getRecordedDate().toLocalDate().isEqual(now.minusDays(k).toLocalDate())) {
-							changeRecords[STAT_CHANGE_RECORD_DAYS - k] += record.getWeight();
-						}
+			if (record.getRecordedDate()
+				.toLocalDate()
+				.isBefore(now.minusDays(STAT_CHANGE_RECORD_DAYS).toLocalDate())) {
+				changeRecords[STAT_CHANGE_RECORD_DAYS] += record.getWeight();
+			} else {
+				for (int k = STAT_CHANGE_RECORD_DAYS; k > 0; k--) {
+					if (record.getRecordedDate().toLocalDate().isEqual(now.minusDays(k).toLocalDate())) {
+						changeRecords[STAT_CHANGE_RECORD_DAYS - k] += record.getWeight();
 					}
 				}
-			});
+			}
+		});
 
 		changeRecords[0] += changeRecords[STAT_CHANGE_RECORD_DAYS];
 		for (int i = 0; i < STAT_CHANGE_RECORD_DAYS - 1; i++) {
@@ -217,7 +225,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<StatRecordListResDto> findStatChangeRecordByStatType(int statNo, int page) throws InvalidStatKindException, NotExistMemberException {
+	public List<StatRecordListResDto> findStatChangeRecordByStatType(int statNo, int page) throws
+		InvalidStatKindException,
+		NotExistMemberException {
 		if (statNo < 0 || statNo >= VALID_STAT_NUMS) {
 			throw new InvalidStatKindException();
 		}
@@ -231,7 +241,8 @@ public class MemberServiceImpl implements MemberService {
 			throw new InValidPageIndexException();
 		}
 
-		Page<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberIdOrderByRecordedDateDesc(StatType.values()[statNo], optionalMember.get().getId(),
+		Page<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberIdOrderByRecordedDateDesc(
+			StatType.values()[statNo], optionalMember.get().getId(),
 			PageRequest.of(page, PAGE_SIZE));
 		return records.stream().map(StatRecordListResDto::from).collect(Collectors.toList());
 	}
@@ -246,29 +257,31 @@ public class MemberServiceImpl implements MemberService {
 		List<StatType> ignoreTypes = new ArrayList<>();
 		ignoreTypes.add(StatType.나태도);
 		ignoreTypes.add(StatType.피곤도);
-		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes, memberId);
+		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes,
+			memberId);
 
 		int sumExp = records.stream().map(record -> record.getWeight()).reduce(0, Integer::sum);
 		int level = 1;
-		while(level < MAX_LEVEL && sumExp - LEVEL_WEIGHT * level >= 0) {
+		while (level < MAX_LEVEL && sumExp - LEVEL_WEIGHT * level >= 0) {
 			sumExp -= LEVEL_WEIGHT * level++;
 		}
 
 		Member member = optionalMember.get();
 		StringBuilder titleBuilder = new StringBuilder();
-		if(member.getTitleId() != 0) {
+		if (member.getTitleId() != 0) {
 			Optional<Title> optionalTitle = titleRepository.findById(member.getTitleId());
-			if(optionalTitle.isEmpty()) {
+			if (optionalTitle.isEmpty()) {
 				titleBuilder.append("Unknown");
 			} else {
 				titleBuilder.append(optionalTitle.get().getName());
 			}
 		}
 
-		if(level == MAX_LEVEL) {
+		if (level == MAX_LEVEL) {
 			return MemberProfileResDto.of(MAX_LEVEL, 999, 999, titleBuilder.toString(), member.getNickname());
 		}
-		return MemberProfileResDto.of(level, LEVEL_WEIGHT * level, sumExp, titleBuilder.toString(), member.getNickname());
+		return MemberProfileResDto.of(level, LEVEL_WEIGHT * level, sumExp, titleBuilder.toString(),
+			member.getNickname());
 	}
 
 	private String getLevelByScore(int score) {
