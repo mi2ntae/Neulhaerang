@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.domain
 
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.data.api.LetterApi
+import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.RoutineApi
 import com.finale.neulhaerang.data.api.TodoApi
 import com.finale.neulhaerang.data.model.response.RoutineResDto
@@ -20,7 +22,7 @@ import com.finale.neulhaerang.data.model.response.TodoResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
-import kotlinx.coroutines.flow.singleOrNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -34,20 +36,33 @@ class MainScreenViewModel : ViewModel() {
         }
     }
 
+    private val _memberId = mutableLongStateOf(0)
+    private val _indolence = mutableIntStateOf(0)
+    private val _tiredness = mutableIntStateOf(0)
     private val _selectedDateTime = mutableStateOf(LocalDateTime.now())
     private val _routineList = mutableStateListOf<Routine>()
     private val _todoList = mutableStateListOf<Todo>()
     private val _letterText = mutableStateOf("")
-    private val _memberId = mutableLongStateOf(0)
 
     init {
         setDataFromDateTime()
         viewModelScope.launch {
             _memberId.longValue =
-                DataStoreApplication.getInstance().getDataStore().getMemberId().singleOrNull() ?: 0
+                DataStoreApplication.getInstance().getDataStore().getMemberId().firstOrNull() ?: 0
+            MemberApi.instance.getMemberStatus(_memberId.longValue)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    _indolence.intValue = data.indolence
+                    _tiredness.intValue = data.indolence
+                }
         }
     }
 
+    // getter
+    val indolence: Int
+        get() = _indolence.intValue
+    val tiredness: Int
+        get() = _tiredness.intValue
     val selectedDate: LocalDate
         get() = _selectedDateTime.value.toLocalDate()
     val routineList: List<Routine>
@@ -57,6 +72,7 @@ class MainScreenViewModel : ViewModel() {
     val letterText: String
         get() = _letterText.value
 
+    // setter
     fun setDateTime(input: LocalDateTime) {
         _selectedDateTime.value = input
         setDataFromDateTime()
@@ -84,6 +100,7 @@ class MainScreenViewModel : ViewModel() {
         _letterText.value = input
     }
 
+    // business logic
     fun setDataFromDateTime() {
         viewModelScope.launch {
             // 오늘의 체크리스트
