@@ -18,6 +18,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 	List<Todo> findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(Member member,
 		LocalDateTime startDate, LocalDateTime endDate);
 
-	List<Todo> findTodosByStatusIsFalseAndTodoDateIsBetweenAndAlarmIsTrue(LocalDateTime startDateTime,
+	List<Todo> findTodosByStatusIsFalseAndAlarmIsTrueAndTodoDateIsBetween(LocalDateTime startDateTime,
 		LocalDateTime endDateTime);
 }
