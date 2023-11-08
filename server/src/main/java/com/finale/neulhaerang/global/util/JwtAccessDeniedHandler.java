@@ -22,7 +22,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws
 		IOException, ServletException {
 		// 필요한 권한이 없이 접근하려 할때 403
-		log.error("[JwtAccessDeniedHandler] handle() -> 접근 권한이 없습니다.");
+		log.error("[JwtAccessDeniedHandler] handle() -> 접근 권한이 없습니다. ["+request.getMethod()+"] "+request.getRequestURI());
 		response.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
 }
