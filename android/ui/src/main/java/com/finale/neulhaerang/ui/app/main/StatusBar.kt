@@ -30,11 +30,15 @@ import com.finale.neulhaerang.ui.theme.Typography
  */
 @Preview
 @Composable
-fun StatusBar(modifier: Modifier = Modifier) {
+fun StatusBar(
+    modifier: Modifier = Modifier,
+    indolence: Int = 30,
+    tiredness: Int = 50,
+) {
     Column(modifier = modifier.padding(start = 16.dp, end = 16.dp)) {
-        ProgressBarElement(R.string.main_tired, 50)
+        ProgressBarElement(R.string.main_tired, tiredness)
         Spacer(modifier = Modifier.height(4.dp))
-        ProgressBarElement(R.string.main_lazy, 30)
+        ProgressBarElement(R.string.main_lazy, indolence)
     }
 }
 

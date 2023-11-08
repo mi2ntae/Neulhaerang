@@ -50,10 +50,13 @@ fun MainScreen(navController: NavHostController) {
             modifier = Modifier.padding(innerPadding)
         ) {
             AppHeader(navController = navController)
-            StatusBar()
+            StatusBar(
+                indolence = viewModel.indolence,
+                tiredness = viewModel.tiredness
+            )
             Calendar(
 //                currentDate = currentDate,
-                selectedDate =viewModel.selectedDate,
+                selectedDate = viewModel.selectedDate,
                 setDateTime = viewModel::setDateTime
             )
             Column(modifier = Modifier.fillMaxWidth()) {
