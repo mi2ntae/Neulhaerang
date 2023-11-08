@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import com.finale.neulhaerang.domain.letter.entity.Letter;
 import com.finale.neulhaerang.domain.letter.repository.LetterRepository;
 import com.finale.neulhaerang.domain.member.document.StatRecord;
+import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberStatRepository;
 import com.finale.neulhaerang.domain.routine.entity.DailyRoutine;
 import com.finale.neulhaerang.domain.routine.entity.Routine;
@@ -77,9 +79,11 @@ class SchedulerTest extends BaseTest {
 		// given
 		LocalDate date = LocalDate.now().minusDays(1);
 		createTodoAndRoutine(date);
+		List<Member> memberList = new ArrayList<>();
+		memberList.add(member);
 
 		// when
-		scheduler.modifyStat(member, date);
+		scheduler.modifyStat(memberList, date);
 
 		// then
 		List<StatRecord> records = memberStatRepository.findAll();
@@ -102,9 +106,11 @@ class SchedulerTest extends BaseTest {
 		// given
 		LocalDate date = LocalDate.now().minusDays(1);
 		createTodoAndRoutine(date);
+		List<Member> memberList = new ArrayList<>();
+		memberList.add(member);
 
 		// when
-		scheduler.createLetter(date);
+		scheduler.createLetter(memberList, date);
 
 		// then
 		List<Letter> letter = letterRepository.findAll();
