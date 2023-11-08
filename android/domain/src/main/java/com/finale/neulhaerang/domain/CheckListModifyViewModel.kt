@@ -48,6 +48,7 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
     private val _repeat = mutableStateOf(List(7) { _ -> false })
     private val _dateTime = mutableStateOf(LocalDateTime.now())
     private val _alarm = mutableStateOf(checkList.alarm)
+    private val _stopRoutine = mutableStateOf(false)
 
     init {
         if (checkList is Routine) {
@@ -72,12 +73,15 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
         get() = _dateTime.value
     val alarm: Boolean
         get() = _alarm.value
+    val stopRoutine: Boolean
+        get() = _stopRoutine.value
 
     val timeHour: Int
         get() = _dateTime.value.hour
     val timeMinute: Int
         get() = _dateTime.value.minute
 
+    // state change
     fun changeContent(input: String) {
         _content.value = input
     }
@@ -108,6 +112,11 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
         _alarm.value = input
     }
 
+    fun setStopRoutine(input: Boolean) {
+        _stopRoutine.value = input
+    }
+
+    // business logic
     fun modifyCheckList() {
         viewModelScope.launch {
             if (routine) {
@@ -133,6 +142,15 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
             }.onFailure {
                 Log.w(TAG, "modifyCheckList: fail ${it.code} ${it.message}")
             }
+        }
+    }
+
+    fun deleteCheckList() {
+        // TODO: delete api 연결
+        if (routine) {
+            Log.d(TAG, "deleteCheckList: routine $dailyRoutineId $routineId $stopRoutine")
+        } else {
+            Log.d(TAG, "deleteCheckList: todo $todoId")
         }
     }
 }

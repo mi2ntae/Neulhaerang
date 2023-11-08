@@ -216,6 +216,8 @@ fun CheckListDeleteDialog(
         confirmButton = {
             Button(onClick = {
                 Log.d(TAG, "CheckListDeleteDialog: confirm")
+                viewModel.deleteCheckList()
+                onDismissRequest()
                 navController.popBackStack()
             }) {
                 Text(text = stringResource(id = R.string.delete))
@@ -239,10 +241,11 @@ fun CheckListDeleteDialog(
         },
         text = {
             if (viewModel.routine) {
-                var checked by remember { mutableStateOf(false) }
                 Column {
                     Text(text = "이 루틴을 더 이상 반복하지 않으시겠습니까?")
-                    Checkbox(checked = checked, onCheckedChange = { checked = it })
+                    Checkbox(
+                        checked = viewModel.stopRoutine,
+                        onCheckedChange = { viewModel.setStopRoutine(it) })
                 }
             }
         }
