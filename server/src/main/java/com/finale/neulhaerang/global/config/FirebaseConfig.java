@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -15,10 +16,12 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 @Configuration
 public class FirebaseConfig {
+	@Value("${fcm.secret.key}")
+	private String fcmSecretKeyPath;
+
 	@Bean
 	FirebaseMessaging firebaseMessaging() throws IOException {
-		ClassPathResource resource = new ClassPathResource(
-			"firebase/neulhaerang-6a75c-firebase-adminsdk-tojxl-835e206e5a.json");
+		ClassPathResource resource = new ClassPathResource(fcmSecretKeyPath);
 
 		InputStream refreshToken = resource.getInputStream();
 
