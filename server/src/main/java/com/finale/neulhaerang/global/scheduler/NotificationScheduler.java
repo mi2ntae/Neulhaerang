@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 public class NotificationScheduler {
-	private RoutineRepository routineRepository;
-	private TodoRepository todoRepository;
-	private NotificationService notificationService;
+	private final RoutineRepository routineRepository;
+	private final TodoRepository todoRepository;
+	private final NotificationService notificationService;
 
 	@Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
 	public void sendNotificationTrigger() {
@@ -37,8 +38,9 @@ public class NotificationScheduler {
 		sendTodoNotificationTrigger(now, today);
 	}
 
-	private void sendTodoNotificationTrigger(LocalTime now, LocalDate today) {
-		log.info("------------- " + today + " " + now + " 루틴 알림 스케줄러 실행 -------------");
+	@Async
+	public void sendTodoNotificationTrigger(LocalTime now, LocalDate today) {
+		log.info("------------- " + today + " " + now + " 투두 알림 스케줄러 실행 -------------");
 		List<Todo> notificationTodos = todoRepository.findTodosByStatusIsFalseAndTodoDateIsBetweenAndAlarmIsTrue(
 			LocalDateTime.of(today, now.withSecond(0)), LocalDateTime.of(today, now.plusMinutes(1).withSecond(0)));
 		notificationTodos.forEach(r ->
@@ -50,15 +52,14 @@ public class NotificationScheduler {
 		);
 	}
 
-	private void sentRoutineNotificationTrigger(LocalTime now, LocalDate today) {
+	@Async
+	public void sentRoutineNotificationTrigger(LocalTime now, LocalDate today) {
 		log.info("------------- " + today + " " + now + " 루틴 알림 스케줄러 실행 -------------");
 		String dayOfVaule = calculateRepeated(today);
 		List<Routine> notificationRoutines = routineRepository.findRoutinesByDayOfValueAndAlarmIsTrueAndAlarmTimeIsNotNull(
-			dayOfVaule, today);
+			dayOfVaule, today, now.withSecond(0), now.withSecond(59));
 
 		notificationRoutines
-			.stream()
-			.filter(r -> r.getAlarmTime().equals(now))
 			.forEach(r -> {
 				notificationService.sendNotificationByToken(r.getMember().getId(),
 					RoutineNotificationReqDto.create(r.getMember(), r));
