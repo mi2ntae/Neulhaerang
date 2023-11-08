@@ -43,8 +43,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.theme.Typography
@@ -66,14 +64,9 @@ import java.util.Locale
 fun Calendar(
     modifier: Modifier = Modifier,
 //    currentDate: LocalDate,
-//    selectedDate: LocalDate,
-//    setDateTime: (LocalDateTime) -> Unit
+    selectedDate: LocalDate,
+    setDateTime: (LocalDateTime) -> Unit,
 ) {
-    val mainScreenViewModel = viewModel<MainScreenViewModel>()
-
-    val selectedDate = mainScreenViewModel.selectedDate
-    val setDateTime = mainScreenViewModel::setDateTime
-
     var showSheet by rememberSaveable { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState(
         selectedDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
