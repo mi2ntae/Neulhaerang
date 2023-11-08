@@ -30,10 +30,6 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
-import com.finale.neulhaerang.global.event.LetterEvent;
-import com.finale.neulhaerang.global.event.StatEvent;
-import com.finale.neulhaerang.global.event.WeatherEvent;
-import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.notification.dto.request.LetterNotificationReqDto;
 import com.finale.neulhaerang.global.notification.service.NotificationService;
 
@@ -42,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 @Transactional
-public class Scheduler {
+public class MidnightScheduler {
 
 	private final RoutineRepository routineRepository;
 	private final DailyRoutineRepository dailyRoutineRepository;
@@ -81,7 +77,7 @@ public class Scheduler {
 	}
 
 	void modifyStat(List<Member> memberList, LocalDate date) {
-		for(Member member : memberList) {
+		for (Member member : memberList) {
 			// 그 날 완료한 투두 STAT 상승
 			List<Todo> doneTodoList = modifyStatByTodo(date, member);
 
@@ -150,7 +146,7 @@ public class Scheduler {
 	void createLetter(List<Member> memberList, LocalDate date) {
 		String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
-		for(Member member : memberList) {
+		for (Member member : memberList) {
 			String reqMessage = createReqMessage(member, date);
 			List<ChatGptDto> content = new ArrayList<>();
 			content.add(ChatGptDto.from(reqMessage));
