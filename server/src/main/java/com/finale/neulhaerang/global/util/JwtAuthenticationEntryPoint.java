@@ -22,7 +22,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws
 		IOException, ServletException {
 		// 유효한 자격증명을 제공하지 않고 접근하려 할때 401
-		log.error("[JwtAuthenticationEntryPoint] commence() -> 유효하지 않은 인증 정보입니다.");
+		log.error("[JwtAuthenticationEntryPoint] commence() -> 유효하지 않은 인증 정보입니다. -> ["+request.getMethod()+"] "+request.getRequestURI());
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 	}
 }
