@@ -64,6 +64,25 @@ class WeatherTitleEventHandlerTest extends BaseTest {
 		assertThat(earnedTitles).hasSize(1);
 	}
 
+	@DisplayName("9일전에 가입한 유저가 10일 연속 todo를 70퍼센트 이상 달성했다면 칭호를 0개 받습니다.")
+	@Test
+	void When_SunnyContinuous10DaysWithCreate9DaysAgo_Expect_NotGetSunnyTitle() {
+		// given
+		member.updateCreateDate(LocalDateTime.now().minusDays(9));
+		Title title1 = createTitle(25L, "해10", "태양10");
+		Title title2 = createTitle(26L, "해50", "태양50");
+		titleRepository.saveAll(List.of(title1, title2));
+		for (int i = 1; i <= 10; i++) {
+			createCheckTodo(i);
+		}
+
+		// when
+		weatherTitleEventHandler.checkIfGetWeatherTitle(member);
+		// then
+		List<EarnedTitle> earnedTitles = earnedTitleRepository.findAll();
+		assertThat(earnedTitles).hasSize(0);
+	}
+
 	@DisplayName("9일 연속 todo를 70퍼센트 이상 달성했다면 칭호를 0개 받습니다.")
 	@Test
 	void When_SunnyContinuous9Days_Expect_GetSunnyTitle() {
