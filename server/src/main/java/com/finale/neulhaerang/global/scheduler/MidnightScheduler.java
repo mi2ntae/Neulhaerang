@@ -30,7 +30,9 @@ import com.finale.neulhaerang.domain.routine.repository.DailyRoutineRepository;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
 import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
-import com.finale.neulhaerang.global.handler.AuthenticationHandler;
+import com.finale.neulhaerang.global.event.LetterEvent;
+import com.finale.neulhaerang.global.event.StatEvent;
+import com.finale.neulhaerang.global.event.WeatherEvent;
 import com.finale.neulhaerang.global.notification.dto.request.LetterNotificationReqDto;
 import com.finale.neulhaerang.global.notification.service.NotificationService;
 
@@ -45,7 +47,6 @@ public class MidnightScheduler {
 	private final DailyRoutineRepository dailyRoutineRepository;
 	private final TodoRepository todoRepository;
 	private final MemberRepository memberRepository;
-	private final AuthenticationHandler authenticationHandler;
 	private final MemberStatRepository memberStatRepository;
 	private final LetterRepository letterRepository;
 	private final LetterFeignClient letterFeignClient;
@@ -61,9 +62,6 @@ public class MidnightScheduler {
 		createDailyRoutine(LocalDate.now());
 		modifyStat(memberList, LocalDate.now().minusDays(1));
 		createLetter(memberList, LocalDate.now().minusDays(1));
-		// publisher.publishEvent(new StatEvent(member));
-		// publisher.publishEvent(new WeatherEvent(member));
-		// publisher.publishEvent(new LetterEvent(member));
 	}
 
 	void createDailyRoutine(LocalDate date) {
@@ -90,6 +88,11 @@ public class MidnightScheduler {
 
 			// 투두, 루틴 완료 비율에 따라서 나태도 STAT 증가
 			modifyIndolenceByTodoAndRoutine(date, member, totalDone);
+
+			// 스탯 칭호 발급 이벤트 호출
+			publisher.publishEvent(new StatEvent(member));
+			// 날씨 칭호 발급 이벤트 호출
+			publisher.publishEvent(new WeatherEvent(member));
 		}
 	}
 
@@ -143,7 +146,6 @@ public class MidnightScheduler {
 		}
 	}
 
-	// 편지 생성
 	void createLetter(List<Member> memberList, LocalDate date) {
 		String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
@@ -159,6 +161,7 @@ public class MidnightScheduler {
 			Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
 			letterRepository.save(letter);
 			notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
+			publisher.publishEvent(new LetterEvent(member));
 		}
 	}
 
