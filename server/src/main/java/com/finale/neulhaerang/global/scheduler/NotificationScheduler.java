@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.global.scheduler;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -10,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.finale.neulhaerang.domain.routine.entity.Routine;
 import com.finale.neulhaerang.domain.routine.repository.RoutineRepository;
+import com.finale.neulhaerang.domain.todo.entity.Todo;
 import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.notification.dto.request.RoutineNotificationReqDto;
+import com.finale.neulhaerang.global.notification.dto.request.TodoNotificationReqDto;
 import com.finale.neulhaerang.global.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,20 @@ public class NotificationScheduler {
 		LocalTime now = LocalTime.now();
 		LocalDate today = LocalDate.now();
 		sentRoutineNotificationTrigger(now, today);
+		sendTodoNotificationTrigger(now, today);
+	}
+
+	private void sendTodoNotificationTrigger(LocalTime now, LocalDate today) {
+		log.info("------------- " + today + " " + now + " 루틴 알림 스케줄러 실행 -------------");
+		List<Todo> notificationTodos = todoRepository.findTodosByStatusIsFalseAndTodoDateIsBetweenAndAlarmIsTrue(
+			LocalDateTime.of(today, now.withSecond(0)), LocalDateTime.of(today, now.plusMinutes(1).withSecond(0)));
+		notificationTodos.forEach(r ->
+			{
+				notificationService.sendNotificationByToken(r.getMember().getId(),
+					TodoNotificationReqDto.create(r.getMember(), r));
+				log.info(r.getMember().getNickname() + "님에게 투두 알림을 전송");
+			}
+		);
 	}
 
 	private void sentRoutineNotificationTrigger(LocalTime now, LocalDate today) {
