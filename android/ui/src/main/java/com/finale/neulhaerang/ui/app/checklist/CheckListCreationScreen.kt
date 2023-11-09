@@ -149,7 +149,7 @@ fun CheckListCreationContent(
                 // 값 확인 통과 실패 또는 등록 실패 시 alert
                 scope.launch {
                     message = viewModel.registerCheckList() ?: ""
-                    if (message == "") {
+                    if (message.isBlank()) {
                         navController.popBackStack()
                     } else {
                         alert = true
@@ -164,6 +164,7 @@ fun CheckListCreationContent(
         }
     }
 
+    // 값 확인 실패 또는 통신 에러 경고창
     if (alert) {
         AlertDialog(
             onDismissRequest = { alert = false },
