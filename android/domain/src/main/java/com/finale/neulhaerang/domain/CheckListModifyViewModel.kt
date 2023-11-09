@@ -11,6 +11,7 @@ import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.data.api.RoutineApi
 import com.finale.neulhaerang.data.api.TodoApi
+import com.finale.neulhaerang.data.model.request.RoutineDeleteReqDto
 import com.finale.neulhaerang.data.model.request.RoutineReqDto
 import com.finale.neulhaerang.data.model.request.TodoReqDto
 import com.finale.neulhaerang.data.util.onFailure
@@ -146,11 +147,17 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
     }
 
     fun deleteCheckList() {
-        // TODO: delete api 연결
-        if (routine) {
-            Log.d(TAG, "deleteCheckList: routine $dailyRoutineId $routineId $stopRoutine")
-        } else {
-            Log.d(TAG, "deleteCheckList: todo $todoId")
+        viewModelScope.launch {
+            if (routine) {
+                val request = RoutineDeleteReqDto(dailyRoutineId, routineId, stopRoutine)
+                RoutineApi.instance.deleteRoutine(request)
+            } else {
+                TodoApi.instance.deleteTodo(todoId)
+            }.onSuccess {
+                Log.d(TAG, "deleteCheckList: success")
+            }.onFailure {
+                Log.d(TAG, "deleteCheckList: fail ${it.code} ${it.message}")
+            }
         }
     }
 }
