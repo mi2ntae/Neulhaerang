@@ -126,7 +126,10 @@ fun CheckListModifyContent(
     navController: NavHostController,
     viewModel: CheckListModifyViewModel = viewModel(),
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         CheckListContentInput(
             content = viewModel.content,
             changeContent = viewModel::changeContent,

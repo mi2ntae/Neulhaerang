@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.checklist
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -83,7 +84,10 @@ fun CheckListCreationContent(
     navController: NavHostController,
     viewModel: CheckListCreationViewModel = viewModel(),
 ) {
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         CheckListContentInput(
             content = viewModel.content,
             changeContent = viewModel::changeContent,
