@@ -1,6 +1,7 @@
 package com.finale.neulhaerang.data.api
 
 import com.finale.neulhaerang.data.model.request.TodoReqDto
+import com.finale.neulhaerang.data.model.response.TodoDoneResDto
 import com.finale.neulhaerang.data.model.response.TodoResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import retrofit2.http.Body
@@ -34,7 +35,7 @@ interface TodoApi {
      * @param yearMonth "yyyy-MM" 형식
      */
     @GET("$BASE/done")
-    suspend fun getCompleteTodo(@Query("yearMonth") yearMonth: String): ResponseResult<Int>
+    suspend fun getCompleteTodo(@Query("yearMonth") yearMonth: String): ResponseResult<List<TodoDoneResDto>>
 
     companion object {
         private const val BASE = "todo"
