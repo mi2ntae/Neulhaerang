@@ -36,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -109,7 +108,7 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                     TextButton(onClick = { showAlertDialog = true }) {
                         Text(
                             text = stringResource(id = R.string.delete),
-                            color = Color.Red
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 }
@@ -214,11 +213,16 @@ fun CheckListDeleteDialog(
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            Button(onClick = {
-                viewModel.deleteCheckList()
-                onDismissRequest()
-                navController.popBackStack()
-            }) {
+            Button(
+                onClick = {
+                    viewModel.deleteCheckList()
+                    onDismissRequest()
+                    navController.popBackStack()
+                }, colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
                 Text(text = stringResource(id = R.string.delete))
             }
         },
