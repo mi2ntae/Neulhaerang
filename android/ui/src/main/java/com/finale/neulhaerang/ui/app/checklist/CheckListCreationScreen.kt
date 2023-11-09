@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.checklist
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -38,10 +41,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.domain.CheckListCreationViewModel
-import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,7 +74,8 @@ fun CheckListCreationScreen(navController: NavHostController) {
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
                 .imePadding()
-                .fillMaxSize(), navController = navController
+                .fillMaxSize(),
+            navController = navController
         )
     }
 }
@@ -81,12 +85,16 @@ fun CheckListCreationScreen(navController: NavHostController) {
 fun CheckListCreationContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    viewModel: CheckListCreationViewModel = viewModel(),
 ) {
-    val viewModel = viewModel<CheckListCreationViewModel>()
-    val mainScreenViewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+    val scope = rememberCoroutineScope()
+    var alert by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf("") }
 
-
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         CheckListContentInput(
             content = viewModel.content,
             changeContent = viewModel::changeContent,
@@ -138,9 +146,15 @@ fun CheckListCreationContent(
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
             onClick = {
-                viewModel.makeChecklist()
-                mainScreenViewModel.setDataFromDateTime()
-                navController.popBackStack()
+                // 값 확인 통과 실패 또는 등록 실패 시 alert
+                scope.launch {
+                    message = viewModel.registerCheckList() ?: ""
+                    if (message.isBlank()) {
+                        navController.popBackStack()
+                    } else {
+                        alert = true
+                    }
+                }
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {
             Text(
@@ -148,6 +162,20 @@ fun CheckListCreationContent(
                 style = MaterialTheme.typography.bodyLarge
             )
         }
+    }
+
+    // 값 확인 실패 또는 통신 에러 경고창
+    if (alert) {
+        AlertDialog(
+            onDismissRequest = { alert = false },
+            confirmButton = {
+                Button(onClick = { alert = false }) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+            },
+            title = {},
+            text = { Text(text = message) }
+        )
     }
 }
 

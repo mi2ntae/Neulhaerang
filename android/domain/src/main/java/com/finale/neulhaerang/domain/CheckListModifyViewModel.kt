@@ -1,11 +1,11 @@
 package com.finale.neulhaerang.domain
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.common.message.ErrorMessage
+import com.finale.neulhaerang.common.message.ValidationMessage
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
@@ -14,9 +14,9 @@ import com.finale.neulhaerang.data.api.TodoApi
 import com.finale.neulhaerang.data.model.request.RoutineDeleteReqDto
 import com.finale.neulhaerang.data.model.request.RoutineReqDto
 import com.finale.neulhaerang.data.model.request.TodoReqDto
+import com.finale.neulhaerang.data.util.ResponseResult
 import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
-import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -118,46 +118,77 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
     }
 
     // business logic
-    fun modifyCheckList() {
-        viewModelScope.launch {
-            if (routine) {
-                val reqDto = RoutineReqDto(
-                    content,
-                    repeat,
-                    alarm,
-                    dateTime.toLocalTime(),
-                    stat.statName
-                )
-//                Log.d(TAG, "modifyCheckList: $reqDto")
-                RoutineApi.instance.modifyRoutine(routineId, reqDto)
-            } else {
-                val reqDto = TodoReqDto(
-                    content,
-                    alarm,
-                    stat.statName,
-                    dateTime
-                )
-                TodoApi.instance.modifyTodo(todoId, reqDto)
-            }.onSuccess {
-                Log.d(TAG, "modifyCheckList: success")
-            }.onFailure {
-                Log.w(TAG, "modifyCheckList: fail ${it.code} ${it.message}")
-            }
+    private fun validateValues(): String? {
+        return when {
+            content.isEmpty() -> ValidationMessage.NoContent.message
+            routine && repeat.all { !it } -> ValidationMessage.NoRepeat.message
+            !routine && dateTime <= LocalDateTime.now() -> ValidationMessage.PastTime.message
+            else -> null
         }
     }
 
-    fun deleteCheckList() {
-        viewModelScope.launch {
-            if (routine) {
-                val request = RoutineDeleteReqDto(dailyRoutineId, routineId, stopRoutine)
-                RoutineApi.instance.deleteRoutine(request)
-            } else {
-                TodoApi.instance.deleteTodo(todoId)
-            }.onSuccess {
-                Log.d(TAG, "deleteCheckList: success")
-            }.onFailure {
-                Log.d(TAG, "deleteCheckList: fail ${it.code} ${it.message}")
+    private fun makeRequest(): Any {
+        return if (routine) {
+            RoutineReqDto(
+                content,
+                repeat,
+                alarm,
+                dateTime.toLocalTime(),
+                stat.statName
+            )
+        } else {
+            TodoReqDto(
+                content,
+                alarm,
+                stat.statName,
+                dateTime
+            )
+        }
+    }
+
+    suspend fun modifyCheckList(): String? {
+        // 값 확인
+        validateValues().let { if (it !== null) return it }
+        // api 통신
+        makeRequest().let {
+            when (it) {
+                is RoutineReqDto -> RoutineApi.instance.modifyRoutine(routineId, it)
+                is TodoReqDto -> TodoApi.instance.modifyTodo(todoId, it)
+                else -> ResponseResult.Failure(0, "fail")
+            }
+        }.onSuccess {
+            // 성공
+            return null
+        }.onFailure { (code, _, _) ->
+            // 실패
+            return when (code) {
+                400 -> ErrorMessage.Code400.message
+                403 -> ErrorMessage.Code403.message
+                500 -> ErrorMessage.Code500.message
+                else -> ErrorMessage.CodeUnknown.message
             }
         }
+        return ErrorMessage.CodeUnknown.message
+    }
+
+    suspend fun deleteCheckList(): String? {
+        if (routine) {
+            val request = RoutineDeleteReqDto(dailyRoutineId, routineId, stopRoutine)
+            RoutineApi.instance.deleteRoutine(request)
+        } else {
+            TodoApi.instance.deleteTodo(todoId)
+        }.onSuccess {
+            // 성공
+            return null
+        }.onFailure { (code, _, _) ->
+            // 실패
+            return when (code) {
+                400 -> ErrorMessage.Code400.message
+                403 -> ErrorMessage.Code403.message
+                500 -> ErrorMessage.Code500.message
+                else -> ErrorMessage.CodeUnknown.message
+            }
+        }
+        return ErrorMessage.CodeUnknown.message
     }
 }

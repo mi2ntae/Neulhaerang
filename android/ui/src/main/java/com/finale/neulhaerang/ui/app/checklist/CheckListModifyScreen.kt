@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.checklist
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,10 +34,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,38 +52,34 @@ import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
-import java.time.LocalDate
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckListModifyScreen(navController: NavHostController, type: String?, index: Int?) {
     val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+    val defaultVal = Routine(0, 0, false, null, false, "dd", Stat.GodSang, List(7) { false })
     val checkList = when (type) {
         "routine" -> viewModel.routineList
         "todo" -> viewModel.todoList
         else -> {
-            listOf<CheckList>(
-                Routine(
-                    0,
-                    0,
-                    false,
-                    null,
-                    false,
-                    "dd",
-                    Stat.GodSang,
-                    List(7) { false })
-            )
+            listOf<CheckList>(defaultVal)
         }
-    }[index ?: 0]
+    }.getOrNull(index ?: 0) ?: defaultVal
     val selectedDate = viewModel.selectedDate
 
     var showAlertDialog by remember { mutableStateOf(false) }
+    val (alert, setAlert) = remember { mutableStateOf(false) }
+    val (message, setMessage) = remember { mutableStateOf("") }
 
     if (showAlertDialog) {
         CheckListDeleteDialog(
             navController = navController,
-            onDismissRequest = { showAlertDialog = false })
+            onDismissRequest = { showAlertDialog = false },
+            setAlert = setAlert,
+            setMessage = setMessage
+        )
     }
 
     Scaffold(
@@ -109,7 +106,7 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                     TextButton(onClick = { showAlertDialog = true }) {
                         Text(
                             text = stringResource(id = R.string.delete),
-                            color = Color.Red
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 }
@@ -121,10 +118,27 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
                 .imePadding()
-                .fillMaxSize(), navController = navController,
-            checkList = checkList,
-            selectedDate = selectedDate,
-            viewModel::setDataFromDateTime
+                .fillMaxSize(),
+            navController = navController,
+            setAlert = setAlert,
+            setMessage = setMessage,
+            viewModel = viewModel(
+                factory = CheckListModifyViewModel.Factory(checkList, selectedDate)
+            )
+        )
+    }
+
+    // 값 확인 실패 또는 통신 에러 경고창
+    if (alert) {
+        AlertDialog(
+            onDismissRequest = { setAlert(false) },
+            confirmButton = {
+                Button(onClick = { setAlert(false) }) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+            },
+            title = {},
+            text = { Text(text = message) }
         )
     }
 }
@@ -134,19 +148,16 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
 fun CheckListModifyContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    checkList: CheckList,
-    selectedDate: LocalDate,
-    setDataFromDateTime: () -> Unit,
+    setAlert: (Boolean) -> Unit,
+    setMessage: (String) -> Unit,
+    viewModel: CheckListModifyViewModel = viewModel(),
 ) {
-    val viewModel =
-        viewModel<CheckListModifyViewModel>(
-            factory = CheckListModifyViewModel.Factory(
-                checkList = checkList,
-                selectedDate = selectedDate
-            )
-        )
+    val scope = rememberCoroutineScope()
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         CheckListContentInput(
             content = viewModel.content,
             changeContent = viewModel::changeContent,
@@ -192,9 +203,16 @@ fun CheckListModifyContent(
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
             onClick = {
-                viewModel.modifyCheckList()
-                setDataFromDateTime()
-                navController.popBackStack()
+                // 값 확인 통과 실패 또는 등록 실패 시 alert
+                scope.launch {
+                    val message = viewModel.modifyCheckList() ?: ""
+                    setMessage(message)
+                    if (message.isBlank()) {
+                        navController.popBackStack()
+                    } else {
+                        setAlert(true)
+                    }
+                }
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {
             Text(
@@ -209,16 +227,32 @@ fun CheckListModifyContent(
 fun CheckListDeleteDialog(
     navController: NavHostController,
     onDismissRequest: () -> Unit,
+    setAlert: (Boolean) -> Unit,
+    setMessage: (String) -> Unit,
     viewModel: CheckListModifyViewModel = viewModel(),
 ) {
+    val scope = rememberCoroutineScope()
+
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
-            Button(onClick = {
-                viewModel.deleteCheckList()
-                onDismissRequest()
-                navController.popBackStack()
-            }) {
+            Button(
+                onClick = {
+                    scope.launch {
+                        val message = viewModel.deleteCheckList() ?: ""
+                        setMessage(message)
+                        if (message.isBlank()) {
+                            onDismissRequest()
+                            navController.popBackStack()
+                        } else {
+                            setAlert(true)
+                        }
+                    }
+                }, colors = ButtonDefaults.buttonColors(
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
                 Text(text = stringResource(id = R.string.delete))
             }
         },
@@ -246,7 +280,8 @@ fun CheckListDeleteDialog(
                     Checkbox(
                         checked = viewModel.stopRoutine,
                         onCheckedChange = { viewModel.setStopRoutine(it) })
-                    Text(text = "앞으로 반복하지 않기")
+                    Text(text = "앞으로 반복하지 않기",
+                        modifier = Modifier.clickable { viewModel.setStopRoutine(!viewModel.stopRoutine) })
                 }
             }
         }

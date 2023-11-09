@@ -18,6 +18,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +42,15 @@ fun MainScreen(navController: NavHostController) {
     val tabs = listOf("체크리스트", "우편함")
 //    val currentDate = LocalDate.now()
 //    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
+    var beforeRoute by remember { mutableStateOf("") }
+    val currentRoute = navController.currentDestination?.route ?: ""
+    // 현재 라우트와 이전 라우트를 비교하여 다른 라우트에서 메인으로 온 경우 갱신
+    if (beforeRoute != currentRoute) {
+        beforeRoute = currentRoute
+        if (currentRoute == AppNavItem.Main.route) {
+            viewModel.setDataFromDateTime()
+        }
+    }
 
     Scaffold(
         bottomBar = { NHLNavigationBar(navController = navController) },

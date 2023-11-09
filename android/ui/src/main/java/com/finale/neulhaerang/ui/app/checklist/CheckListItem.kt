@@ -48,8 +48,7 @@ fun CheckListItem(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(bottom = 4.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

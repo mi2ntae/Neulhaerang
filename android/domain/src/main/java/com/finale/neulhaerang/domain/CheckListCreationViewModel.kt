@@ -1,17 +1,17 @@
 package com.finale.neulhaerang.domain
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.common.message.ErrorMessage
+import com.finale.neulhaerang.common.message.ValidationMessage
 import com.finale.neulhaerang.data.api.RoutineApi
 import com.finale.neulhaerang.data.api.TodoApi
 import com.finale.neulhaerang.data.model.request.RoutineReqDto
 import com.finale.neulhaerang.data.model.request.TodoReqDto
+import com.finale.neulhaerang.data.util.ResponseResult
 import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
-import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -78,44 +78,58 @@ class CheckListCreationViewModel() : ViewModel() {
         _alarm.value = input
     }
 
-    fun makeChecklist() {
-        if (_routine.value) {
+    private fun validateValues(): String? {
+        return when {
+            content.isEmpty() -> ValidationMessage.NoContent.message
+            routine && repeat.all { !it } -> ValidationMessage.NoRepeat.message
+            !routine && dateTime <= LocalDateTime.now() -> ValidationMessage.PastTime.message
+            else -> null
+        }
+    }
+
+    private fun makeChecklist(): Any {
+        return if (routine) {
             // 루틴 생성
-            val request = RoutineReqDto(
+            RoutineReqDto(
                 content = _content.value,
                 repeated = _repeat.value,
                 alarm = _alarm.value,
                 alarmTime = _dateTime.value.toLocalTime(),
                 statType = _stat.value.statName
             )
-            Log.d(TAG, "makeChecklist: $request")
-
-            // TODO API 통신
-            viewModelScope.launch {
-                RoutineApi.instance.postRoutine(request).onSuccess { (code, _) ->
-                    Log.d(TAG, "makeChecklist: success $code")
-                }.onFailure { (code, message, _) ->
-                    Log.d(TAG, "makeChecklist: fail $code\n$message")
-                }
-            }
         } else {
             // 투두 생성
-            val request = TodoReqDto(
+            TodoReqDto(
                 content = _content.value,
                 alarm = _alarm.value,
                 statType = _stat.value.statName,
                 todoDate = _dateTime.value
             )
-            Log.d(TAG, "makeChecklist: $request")
+        }
+    }
 
-            // TODO API 통신
-            viewModelScope.launch {
-                TodoApi.instance.postTodo(request).onSuccess { (code, _) ->
-                    Log.d(TAG, "makeChecklist: success $code")
-                }.onFailure { (code, message, _) ->
-                    Log.d(TAG, "makeChecklist: fail $code\n$message")
-                }
+    suspend fun registerCheckList(): String? {
+        // 값 확인
+        validateValues().let { if (it !== null) return it }
+        // api 통신
+        makeChecklist().let {
+            when (it) {
+                is RoutineReqDto -> RoutineApi.instance.postRoutine(it)
+                is TodoReqDto -> TodoApi.instance.postTodo(it)
+                else -> ResponseResult.Failure(0, "fail")
+            }
+        }.onSuccess {
+            // 성공
+            return null
+        }.onFailure { (code, _, _) ->
+            // 실패
+            return when (code) {
+                400 -> ErrorMessage.Code400.message
+                403 -> ErrorMessage.Code403.message
+                500 -> ErrorMessage.Code500.message
+                else -> ErrorMessage.CodeUnknown.message
             }
         }
+        return ErrorMessage.CodeUnknown.message
     }
 }
