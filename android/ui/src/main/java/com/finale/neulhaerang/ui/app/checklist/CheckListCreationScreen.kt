@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -42,6 +44,7 @@ import com.finale.neulhaerang.domain.CheckListCreationViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,6 +87,10 @@ fun CheckListCreationContent(
     navController: NavHostController,
     viewModel: CheckListCreationViewModel = viewModel(),
 ) {
+    val scope = rememberCoroutineScope()
+    var alert by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf("") }
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -139,8 +146,15 @@ fun CheckListCreationContent(
         Spacer(modifier = Modifier.weight(weight = 1f))
         Button(
             onClick = {
-                viewModel.makeChecklist()
-                navController.popBackStack()
+                // 값 확인 통과 실패 또는 등록 실패 시 alert
+                scope.launch {
+                    message = viewModel.registerCheckList() ?: ""
+                    if (message == "") {
+                        navController.popBackStack()
+                    } else {
+                        alert = true
+                    }
+                }
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {
             Text(
@@ -148,6 +162,19 @@ fun CheckListCreationContent(
                 style = MaterialTheme.typography.bodyLarge
             )
         }
+    }
+
+    if (alert) {
+        AlertDialog(
+            onDismissRequest = { alert = false },
+            confirmButton = {
+                Button(onClick = { alert = false }) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+            },
+            title = {},
+            text = { Text(text = message) }
+        )
     }
 }
 
