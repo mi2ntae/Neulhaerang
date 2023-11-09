@@ -41,6 +41,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification title: ${it.title}")
             Log.d(TAG, "Message Notification Body: ${it.body}")
+            sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -85,7 +86,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
 
-    private fun sendNotification(messageBody: String) {
+    private fun sendNotification(title: String?, messageBody: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val requestCode = 0
