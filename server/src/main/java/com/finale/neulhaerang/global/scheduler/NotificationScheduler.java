@@ -30,6 +30,7 @@ public class NotificationScheduler {
 	private final TodoRepository todoRepository;
 	private final NotificationService notificationService;
 
+	@Async
 	@Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
 	public void sendNotificationTrigger() {
 		LocalTime now = LocalTime.now();
@@ -38,7 +39,6 @@ public class NotificationScheduler {
 		sendTodoNotificationTrigger(now, today);
 	}
 
-	@Async
 	public void sendTodoNotificationTrigger(LocalTime now, LocalDate today) {
 		log.info("------------- " + today + " " + now + " 투두 알림 스케줄러 실행 -------------");
 		List<Todo> notificationTodos = todoRepository.findTodosByStatusIsFalseAndAlarmIsTrueAndTodoDateIsBetween(
@@ -50,7 +50,6 @@ public class NotificationScheduler {
 		});
 	}
 
-	@Async
 	public void sentRoutineNotificationTrigger(LocalTime now, LocalDate today) {
 		log.info("------------- " + today + " " + now + " 루틴 알림 스케줄러 실행 -------------");
 		String dayOfVaule = calculateRepeated(today);

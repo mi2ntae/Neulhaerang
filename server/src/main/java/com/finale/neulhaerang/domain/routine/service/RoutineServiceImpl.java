@@ -54,7 +54,12 @@ public class RoutineServiceImpl implements RoutineService {
 		}
 		StringBuilder repeated = checkRepeatedDate(routineCreateReqDto.getRepeated());
 		Routine routine = Routine.create(routineCreateReqDto, member.get(), repeated.toString());
-		routineRepository.save(routine);
+		Routine save = routineRepository.save(routine);
+		LocalDate now = LocalDate.now();
+		int dayOfWeekValue = LocalDate.now().getDayOfWeek().getValue() - 1;
+		if (routineCreateReqDto.getRepeated().get(dayOfWeekValue)) {
+			dailyRoutineRepository.save(DailyRoutine.create(save, now));
+		}
 	}
 
 	@Override

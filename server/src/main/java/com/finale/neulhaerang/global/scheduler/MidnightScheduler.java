@@ -6,6 +6,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
@@ -42,7 +44,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
-@Transactional
 @Slf4j
 public class MidnightScheduler {
 
@@ -55,19 +56,37 @@ public class MidnightScheduler {
 	private final LetterFeignClient letterFeignClient;
 	private final NotificationService notificationService;
 	private final ApplicationEventPublisher publisher;
+	private final EntityManager entityManager;
 
 	@Value("${gpt.key}")
 	private String gptKey;
 
+	@Async
+	@Transactional
 	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
-	public void createDailyRoutineTrigger() {
-		List<Member> memberList = memberRepository.findAllByWithdrawalDateIsNull();
+	public void createDailiyRoutineTrigger() {
 		createDailyRoutine(LocalDate.now());
-		modifyStat(memberList, LocalDate.now().minusDays(1));
-		createLetter(memberList, LocalDate.now().minusDays(1));
 	}
 
 	@Async
+	@Transactional
+	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
+	public void createLetterTrigger() {
+		log.info("---------- 자정 스케줄러 : 편지를 전송합니다 ----------");
+		List<Member> memberList = memberRepository.findAllByWithdrawalDateIsNull();
+		for (Member member : memberList) {
+			createLetter(member, LocalDate.now().minusDays(1));
+		}
+	}
+
+	@Async
+	@Transactional
+	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
+	public void createModifyStatTrigger() {
+		List<Member> memberList = memberRepository.findAllByWithdrawalDateIsNull();
+		modifyStat(memberList, LocalDate.now().minusDays(1));
+	}
+
 	void createDailyRoutine(LocalDate date) {
 		log.info("---------- 자정 스케줄러 : daily routine을 생성합니다 ----------");
 		StringBuilder dayOfVaule = new StringBuilder("_______");
@@ -80,7 +99,6 @@ public class MidnightScheduler {
 		});
 	}
 
-	@Async
 	void modifyStat(List<Member> memberList, LocalDate date) {
 		for (Member member : memberList) {
 			// 그 날 완료한 투두 STAT 상승
@@ -156,29 +174,31 @@ public class MidnightScheduler {
 		}
 	}
 
-	@Async
-	void createLetter(List<Member> memberList, LocalDate date) {
-		log.info("---------- 자정 스케줄러 : 편지를 전송합니다 ----------");
+	public void createLetter(Member member, LocalDate date) {
+		log.info("-----------  편지를 " + member.getNickname() + "님께 전송합니다 --------");
 		String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
 
-		for (Member member : memberList) {
-			String reqMessage = createReqMessage(member, date);
-			List<ChatGptDto> content = new ArrayList<>();
-			content.add(ChatGptDto.from(reqMessage));
+		String reqMessage = createReqMessage(member, date);
+		List<ChatGptDto> content = new ArrayList<>();
+		content.add(ChatGptDto.from(reqMessage));
 
-			LetterReqDto letterReqDto = LetterReqDto.from(content);
+		LetterReqDto letterReqDto = LetterReqDto.from(content);
+		try {
 			LetterResDto letterResDto = letterFeignClient.getGPTResponse(CONTENT_TYPE, "Bearer " + gptKey,
 				letterReqDto);
-
 			Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
 			letterRepository.save(letter);
 			log.info("-----------  편지를 " + member.getNickname() + "님께 전송했습니다 --------");
 			notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
 			publisher.publishEvent(new LetterEvent(member));
+		} catch (Exception e) {
+			log.error("-----------  편지를 " + member.getNickname() + "님께 전송할 때 에러가 발생했습니다 --------");
+			entityManager.clear();
 		}
+
 	}
 
-	String createReqMessage(Member member, LocalDate date) {
+	public String createReqMessage(Member member, LocalDate date) {
 		StringBuilder reqMessage = new StringBuilder("내 이름은 " + member.getNickname() + "이야. 오늘 내가 완료한 일은 ");
 
 		List<Todo> doneTodoList = todoRepository.findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(
