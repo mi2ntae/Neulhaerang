@@ -36,7 +36,6 @@ import com.finale.neulhaerang.domain.todo.repository.TodoRepository;
 import com.finale.neulhaerang.global.event.LetterEvent;
 import com.finale.neulhaerang.global.event.StatEvent;
 import com.finale.neulhaerang.global.event.WeatherEvent;
-import com.finale.neulhaerang.global.notification.dto.request.LetterNotificationReqDto;
 import com.finale.neulhaerang.global.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -69,7 +68,7 @@ public class MidnightScheduler {
 	}
 
 	@Async
-	@Transactional
+	@Transactional(readOnly = true)
 	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
 	public void createLetterTrigger() {
 		log.info("---------- 자정 스케줄러 : 편지를 전송합니다 ----------");
@@ -189,7 +188,6 @@ public class MidnightScheduler {
 			Letter letter = Letter.create(member, letterResDto.getChoices().get(0).getMessage().getContent(), date);
 			letterRepository.save(letter);
 			log.info("-----------  편지를 " + member.getNickname() + "님께 전송했습니다 --------");
-			notificationService.sendNotificationByToken(member.getId(), LetterNotificationReqDto.create(member));
 			publisher.publishEvent(new LetterEvent(member));
 		} catch (Exception e) {
 			log.error("-----------  편지를 " + member.getNickname() + "님께 전송할 때 에러가 발생했습니다 --------");
