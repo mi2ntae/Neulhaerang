@@ -51,7 +51,6 @@ class MainScreenViewModel : ViewModel() {
     private val _letterText = mutableStateOf("")
 
     init {
-        updateBeforeYearMonth()
         setDataFromDateTime()
         viewModelScope.launch {
             _memberId.longValue =
@@ -91,7 +90,7 @@ class MainScreenViewModel : ViewModel() {
         _beforeYearMonth.value = yearMonth
     }
 
-    private fun updateTodoDoneList(todoDoneList: List<TodoDoneResDto>) {
+    private fun setTodoDoneList(todoDoneList: List<TodoDoneResDto>) {
         _todoDoneList.clear()
         todoDoneList.forEach { _todoDoneList.add(it) }
     }
@@ -124,14 +123,18 @@ class MainScreenViewModel : ViewModel() {
     }
 
     // business logic
+    private suspend fun updateTodoDoneList() {
+        TodoApi.instance.getCompleteTodo(yearMonth).onSuccess { (_, data) ->
+            setTodoDoneList(data!!)
+            updateBeforeYearMonth()
+        }
+    }
+
     fun setDataFromDateTime() {
         viewModelScope.launch {
             // 완료 퍼센트 가져오기
             if (beforeYearMonth != yearMonth) {
-                TodoApi.instance.getCompleteTodo(yearMonth).onSuccess { (_, data) ->
-                    updateTodoDoneList(data!!)
-                }
-                updateBeforeYearMonth()
+                updateTodoDoneList()
             }
             // 오늘의 체크리스트
             RoutineApi.instance.getRoutine(selectedDate)
@@ -170,6 +173,8 @@ class MainScreenViewModel : ViewModel() {
                 is Todo -> TodoApi.instance.completeTodo(checkList.todoId)
                 else -> ResponseResult.Failure(0, "class type error")
             }.onSuccess {
+                // 체크리스트 체크시 완료도 갱신
+                updateTodoDoneList()
                 setDataFromDateTime()
             }.onFailure {
                 Log.w(TAG, "checkCheckList: 체크 실패")
