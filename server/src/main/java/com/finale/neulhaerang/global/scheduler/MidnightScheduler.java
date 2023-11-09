@@ -79,7 +79,6 @@ public class MidnightScheduler {
 	}
 
 	@Async
-	@Transactional
 	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
 	public void createModifyStatTrigger() {
 		List<Member> memberList = memberRepository.findAllByWithdrawalDateIsNull();
@@ -173,6 +172,7 @@ public class MidnightScheduler {
 		}
 	}
 
+	@Transactional
 	public void createLetter(Member member, LocalDate date) {
 		log.info("-----------  편지를 " + member.getNickname() + "님께 전송합니다 --------");
 		String CONTENT_TYPE = "application/x-www-form-urlencoded; charset=UTF-8";
