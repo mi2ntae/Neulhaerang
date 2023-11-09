@@ -1,6 +1,5 @@
 package com.finale.neulhaerang.ui.app.checklist
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -212,13 +211,10 @@ fun CheckListDeleteDialog(
     onDismissRequest: () -> Unit,
     viewModel: CheckListModifyViewModel = viewModel(),
 ) {
-    val TAG = "delete"
-
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             Button(onClick = {
-                Log.d(TAG, "CheckListDeleteDialog: confirm")
                 viewModel.deleteCheckList()
                 onDismissRequest()
                 navController.popBackStack()
@@ -229,7 +225,6 @@ fun CheckListDeleteDialog(
         dismissButton = {
             Button(
                 onClick = {
-                    Log.d(TAG, "CheckListDeleteDialog: cancle")
                     onDismissRequest()
                 }, colors = ButtonDefaults.buttonColors(
                     contentColor = MaterialTheme.colorScheme.onSecondary,

@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.main
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -43,6 +44,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLDatePicker
 import com.finale.neulhaerang.ui.theme.Typography
@@ -115,6 +118,9 @@ fun DaysRow(
     setDateTime: (LocalDateTime) -> Unit,
 //    days: List<Day>
 ) {
+    val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+    Log.d("todoDoneList", "DaysRow: ${viewModel.todoDoneList}")
+
     val index = if (selectedDate.dayOfMonth - 4 < 0) 0 else selectedDate.dayOfMonth - 4
     val listState = rememberLazyListState(index)
     LaunchedEffect(selectedDate) {
@@ -130,7 +136,8 @@ fun DaysRow(
         items(items = days, key = { it }) { item ->
             DayElement(
                 daysOfWeek = selectedDate.withDayOfMonth(item).dayOfWeek,
-                progressDegree = 80,
+                progressDegree = ((viewModel.todoDoneList.getOrNull(item - 1)?.ratio
+                    ?: 0.0F) * 100).toInt(),
                 day = item,
                 selectedDate = selectedDate,
                 setDateTime = setDateTime

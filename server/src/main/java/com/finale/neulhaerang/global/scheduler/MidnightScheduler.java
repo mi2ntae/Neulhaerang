@@ -199,7 +199,7 @@ public class MidnightScheduler {
 	}
 
 	public String createReqMessage(Member member, LocalDate date) {
-		StringBuilder reqMessage = new StringBuilder("내 이름은 " + member.getNickname() + "이야. 오늘 내가 완료한 일은 ");
+		StringBuilder reqMessage = new StringBuilder("내 이름은 " + member.getNickname() + "이야. 내가 어제 한 일은 다음과 같아.");
 
 		List<Todo> doneTodoList = todoRepository.findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(
 			member, date.atStartOfDay(), date.atTime(LocalTime.MAX)
@@ -214,7 +214,7 @@ public class MidnightScheduler {
 			reqMessage.append(dailyRoutine.getRoutine().getContent()).append(",");
 		}
 		reqMessage.append(
-			"이야. 나의 가상의 캐릭터 '해랑이'가 위의 일을 진행했다고 가정하고 나에게 주는 일기 형식의 느낌으로 긍정적이고 동기부여가 되는 편지를 작성해줘. 반말로 정성스럽게 이모지를 사용해서 1000글자 이내로 작성 부탁해.\n");
+			"나의 가상의 캐릭터 '해랑이'가 위의 일을 바탕으로 나에게 주는 편지를 작성해줘. 일기 형식에 긍정적이고 동기부여를 줄 것, 반말로 쓸 것, 이모지를 사용해서 귀엽게 작성할 것. 10문장 이내로 부탁해");
 
 		return reqMessage.toString();
 	}

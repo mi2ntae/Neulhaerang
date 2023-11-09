@@ -47,9 +47,10 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                 Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
 
                 viewModelScope.launch {
-                    val deviceId = DataStoreApplication.getInstance().getDataStore().getDeviceToken()
-                        .firstOrNull().toString()
-                    Log.i("heejeong","deviceId222 $deviceId")
+                    val deviceId =
+                        DataStoreApplication.getInstance().getDataStore().getDeviceToken()
+                            .firstOrNull().toString()
+                    Log.i("heejeong", "deviceId222 $deviceId")
                     AuthApi.instance.login(
                         LoginReqDto(
                             "kakao",
@@ -64,6 +65,8 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                                 .setAccessToken(data.accessToken)
                             DataStoreApplication.getInstance().getDataStore()
                                 .setRefreshToken(data.refreshToken)
+                            DataStoreApplication.getInstance().getDataStore()
+                                .setMemberId(data.memberId)
                         }
                         continuation.resume(true)
                     }.onFailure { (_, message, _) ->

@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.data.api
 
+import com.finale.neulhaerang.data.model.request.RoutineDeleteReqDto
 import com.finale.neulhaerang.data.model.request.RoutineReqDto
 import com.finale.neulhaerang.data.model.response.RoutineResDto
 import com.finale.neulhaerang.data.util.ResponseResult
@@ -19,7 +20,7 @@ interface RoutineApi {
     suspend fun postRoutine(@Body routineReqDto: RoutineReqDto): ResponseResult<Any>
 
     @PATCH("${BASE}/status")
-    suspend fun deleteRoutine(@Body request: Any): ResponseResult<Any> // TODO  루틴 삭제 request 정의 후 body 붙이기
+    suspend fun deleteRoutine(@Body request: RoutineDeleteReqDto): ResponseResult<Any>
 
     @PATCH("${BASE}/{routineId}")
     suspend fun modifyRoutine(

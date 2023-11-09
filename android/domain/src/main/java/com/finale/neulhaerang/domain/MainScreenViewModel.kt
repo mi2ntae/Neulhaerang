@@ -1,6 +1,8 @@
 package com.finale.neulhaerang.domain
 
 import android.util.Log
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,19 +10,24 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
 import com.finale.neulhaerang.data.CheckList
+import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.data.api.LetterApi
+import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.RoutineApi
 import com.finale.neulhaerang.data.api.TodoApi
 import com.finale.neulhaerang.data.model.response.RoutineResDto
+import com.finale.neulhaerang.data.model.response.TodoDoneResDto
 import com.finale.neulhaerang.data.model.response.TodoResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainScreenViewModel : ViewModel() {
     companion object {
@@ -31,6 +38,13 @@ class MainScreenViewModel : ViewModel() {
         }
     }
 
+    private val _memberId = mutableLongStateOf(0)
+    private val _indolence = mutableIntStateOf(0)
+    private val _tiredness = mutableIntStateOf(0)
+
+    private val _todoDoneList = mutableStateListOf<TodoDoneResDto>()
+    private val _beforeYearMonth = mutableStateOf("")
+
     private val _selectedDateTime = mutableStateOf(LocalDateTime.now())
     private val _routineList = mutableStateListOf<Routine>()
     private val _todoList = mutableStateListOf<Todo>()
@@ -38,8 +52,27 @@ class MainScreenViewModel : ViewModel() {
 
     init {
         setDataFromDateTime()
+        viewModelScope.launch {
+            _memberId.longValue =
+                DataStoreApplication.getInstance().getDataStore().getMemberId().firstOrNull() ?: 0
+            MemberApi.instance.getMemberStatus(_memberId.longValue)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    _indolence.intValue = data.indolence
+                    _tiredness.intValue = data.indolence
+                }
+        }
     }
 
+    // getter
+    val indolence: Int
+        get() = _indolence.intValue
+    val tiredness: Int
+        get() = _tiredness.intValue
+    val todoDoneList: List<TodoDoneResDto>
+        get() = _todoDoneList.toList()
+    val beforeYearMonth: String
+        get() = _beforeYearMonth.value
     val selectedDate: LocalDate
         get() = _selectedDateTime.value.toLocalDate()
     val routineList: List<Routine>
@@ -48,6 +81,19 @@ class MainScreenViewModel : ViewModel() {
         get() = _todoList
     val letterText: String
         get() = _letterText.value
+
+    val yearMonth: String
+        get() = DateTimeFormatter.ofPattern("yyyy-MM").format(selectedDate)
+
+    // setter
+    private fun updateBeforeYearMonth() {
+        _beforeYearMonth.value = yearMonth
+    }
+
+    private fun setTodoDoneList(todoDoneList: List<TodoDoneResDto>) {
+        _todoDoneList.clear()
+        todoDoneList.forEach { _todoDoneList.add(it) }
+    }
 
     fun setDateTime(input: LocalDateTime) {
         _selectedDateTime.value = input
@@ -76,8 +122,20 @@ class MainScreenViewModel : ViewModel() {
         _letterText.value = input
     }
 
+    // business logic
+    private suspend fun updateTodoDoneList() {
+        TodoApi.instance.getCompleteTodo(yearMonth).onSuccess { (_, data) ->
+            setTodoDoneList(data!!)
+            updateBeforeYearMonth()
+        }
+    }
+
     fun setDataFromDateTime() {
         viewModelScope.launch {
+            // 완료 퍼센트 가져오기
+            if (beforeYearMonth != yearMonth) {
+                updateTodoDoneList()
+            }
             // 오늘의 체크리스트
             RoutineApi.instance.getRoutine(selectedDate)
                 .onSuccess { initRoutine(it.data!!) }
@@ -115,6 +173,8 @@ class MainScreenViewModel : ViewModel() {
                 is Todo -> TodoApi.instance.completeTodo(checkList.todoId)
                 else -> ResponseResult.Failure(0, "class type error")
             }.onSuccess {
+                // 체크리스트 체크시 완료도 갱신
+                updateTodoDoneList()
                 setDataFromDateTime()
             }.onFailure {
                 Log.w(TAG, "checkCheckList: 체크 실패")

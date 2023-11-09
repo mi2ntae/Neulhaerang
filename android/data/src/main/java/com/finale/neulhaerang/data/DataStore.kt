@@ -4,6 +4,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +20,7 @@ import java.io.IOException
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "dataStore")
 
 class DataStoreModule(
-    private val context: Context
+    private val context: Context,
 ) {
 //    private val Context.tokenDataStore by preferencesDataStore(TOKEN_DATASTORE)
 //    private val Context.loginCheckDataStore by preferencesDataStore(LOGIN_CHECK_DATASTORE)
@@ -28,6 +29,7 @@ class DataStoreModule(
     private val _refreshToken = stringPreferencesKey("refresh_token") // int 저장 키값
     private val _deviceToken = stringPreferencesKey("deviceToken") // int 저장 키값
     private val _loginStatus = booleanPreferencesKey("login_status") // int 저장 키값
+    private val _memberid = longPreferencesKey("member_id") // int
 
     //DataStore에서 값 읽기
     suspend fun getToken(): Flow<List<String>> {
@@ -113,6 +115,21 @@ class DataStoreModule(
             }
     }
 
+    suspend fun getMemberId(): Flow<Long> {
+        return context.dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map { preferences ->
+                preferences[_memberid] ?: 0L
+            }
+    }
+
     //DataStore에서 값 저장
     suspend fun saveToken(token: List<String>) {
         context.dataStore.edit { prefs ->
@@ -155,12 +172,19 @@ class DataStoreModule(
         }
     }
 
+    suspend fun setMemberId(value: Long) {
+        context.dataStore.edit { preferences ->
+            preferences[_memberid] = value
+        }
+    }
+
 
     suspend fun clearDataStore() {
         context.dataStore.edit {
             it.remove(_accessToken)
             it.remove(_refreshToken)
             it.remove(_loginStatus)
+            it.remove(_memberid)
         }
     }
 }

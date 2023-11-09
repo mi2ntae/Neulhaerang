@@ -42,18 +42,23 @@ fun MainScreen(navController: NavHostController) {
 //    val currentDate = LocalDate.now()
 //    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
 
-    Scaffold(bottomBar = { NHLNavigationBar(navController = navController) },
+    Scaffold(
+        bottomBar = { NHLNavigationBar(navController = navController) },
         floatingActionButton = {
             ChecklistCreationButton(navController = navController)
-        }) { innerPadding ->
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
             AppHeader(navController = navController)
-            StatusBar()
+            StatusBar(
+                indolence = viewModel.indolence,
+                tiredness = viewModel.tiredness
+            )
             Calendar(
 //                currentDate = currentDate,
-                selectedDate =viewModel.selectedDate,
+                selectedDate = viewModel.selectedDate,
                 setDateTime = viewModel::setDateTime
             )
             Column(modifier = Modifier.fillMaxWidth()) {
