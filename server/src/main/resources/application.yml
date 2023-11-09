@@ -101,6 +101,6 @@ schedules:
     activate:
       on-profile: prod
   cron:
-    daily-routine: "0 0 13 * * *" # 매일 정각
+    daily-routine: "0 5 13 * * *" # 배포 기준 시각
 
 ---
