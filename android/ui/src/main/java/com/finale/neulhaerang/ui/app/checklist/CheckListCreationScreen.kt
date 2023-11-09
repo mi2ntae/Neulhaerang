@@ -38,7 +38,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.domain.CheckListCreationViewModel
-import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
@@ -71,7 +70,8 @@ fun CheckListCreationScreen(navController: NavHostController) {
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
                 .imePadding()
-                .fillMaxSize(), navController = navController
+                .fillMaxSize(),
+            navController = navController
         )
     }
 }
@@ -81,11 +81,8 @@ fun CheckListCreationScreen(navController: NavHostController) {
 fun CheckListCreationContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    viewModel: CheckListCreationViewModel = viewModel(),
 ) {
-    val viewModel = viewModel<CheckListCreationViewModel>()
-    val mainScreenViewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
-
-
     Column(modifier = modifier) {
         CheckListContentInput(
             content = viewModel.content,
@@ -139,7 +136,6 @@ fun CheckListCreationContent(
         Button(
             onClick = {
                 viewModel.makeChecklist()
-                mainScreenViewModel.setDataFromDateTime()
                 navController.popBackStack()
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {

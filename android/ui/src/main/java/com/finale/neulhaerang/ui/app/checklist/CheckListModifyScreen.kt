@@ -57,23 +57,14 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun CheckListModifyScreen(navController: NavHostController, type: String?, index: Int?) {
     val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+    val defaultVal = Routine(0, 0, false, null, false, "dd", Stat.GodSang, List(7) { false })
     val checkList = when (type) {
         "routine" -> viewModel.routineList
         "todo" -> viewModel.todoList
         else -> {
-            listOf<CheckList>(
-                Routine(
-                    0,
-                    0,
-                    false,
-                    null,
-                    false,
-                    "dd",
-                    Stat.GodSang,
-                    List(7) { false })
-            )
+            listOf<CheckList>(defaultVal)
         }
-    }[index ?: 0]
+    }.getOrNull(index ?: 0) ?: defaultVal
     val selectedDate = viewModel.selectedDate
 
     var showAlertDialog by remember { mutableStateOf(false) }
@@ -120,10 +111,10 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                 .padding(paddingValues = it)
                 .padding(all = 16.dp)
                 .imePadding()
-                .fillMaxSize(), navController = navController,
+                .fillMaxSize(),
+            navController = navController,
             checkList = checkList,
             selectedDate = selectedDate,
-            viewModel::setDataFromDateTime
         )
     }
 }
@@ -135,7 +126,6 @@ fun CheckListModifyContent(
     navController: NavHostController,
     checkList: CheckList,
     selectedDate: LocalDate,
-    setDataFromDateTime: () -> Unit,
 ) {
     val viewModel =
         viewModel<CheckListModifyViewModel>(
@@ -192,7 +182,6 @@ fun CheckListModifyContent(
         Button(
             onClick = {
                 viewModel.modifyCheckList()
-                setDataFromDateTime()
                 navController.popBackStack()
             }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
         ) {

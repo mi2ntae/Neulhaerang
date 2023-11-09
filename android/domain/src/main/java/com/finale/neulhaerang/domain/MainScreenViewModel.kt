@@ -51,7 +51,7 @@ class MainScreenViewModel : ViewModel() {
     private val _letterText = mutableStateOf("")
 
     init {
-        setDataFromDateTime()
+//        setDataFromDateTime()
         viewModelScope.launch {
             _memberId.longValue =
                 DataStoreApplication.getInstance().getDataStore().getMemberId().firstOrNull() ?: 0
