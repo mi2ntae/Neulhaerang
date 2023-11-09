@@ -116,7 +116,8 @@ class SchedulerTest extends BaseTest {
 		memberList.add(member);
 
 		// when
-		scheduler.createLetter(memberList, date);
+		for (Member member : memberList)
+			scheduler.createLetter(member, date);
 
 		// then
 		List<Letter> letter = letterRepository.findAll();
