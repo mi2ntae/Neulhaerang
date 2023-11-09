@@ -194,7 +194,7 @@ public class MidnightScheduler {
 			reqMessage.append(dailyRoutine.getRoutine().getContent()).append(",");
 		}
 		reqMessage.append(
-			"이야. 나의 가상의 캐릭터 '해랑이'가 위의 일을 진행했다고 가정하고 나에게 주는 일기 형식의 느낌으로 긍정적이고 동기부여가 되는 편지를 작성해줘. 반말로 정성스럽게 이모지를 사용해서 1000글자 이내로 작성 부탁해.\n");
+			"이야. 나의 가상의 캐릭터 '해랑이'가 위의 일을 진행했다고 가정하고 나에게 주는 일기 형식의 느낌으로 긍정적이고 동기부여가 되는 편지를 작성해줘. 반말로 정성스럽게 이모지를 사용해서 10문장 이내로 작성해줘.\n");
 
 		return reqMessage.toString();
 	}

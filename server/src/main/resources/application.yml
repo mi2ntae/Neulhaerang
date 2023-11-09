@@ -50,11 +50,6 @@ spring:
       password: ${MONGO_PASSWORD}
       database: ${MONGO_DATABASE}
 
-schedules:
-  cron:
-    daily-routine: "0 0 0 * * *" # 매일 정각
-
-
 logging:
   config:
     activate:
@@ -75,7 +70,11 @@ oauth2:
     infoUrl: https://kapi.kakao.com
 
 gpt:
+  config:
+    activate:
+      on-profile: common
   key: ${GPT_KEY}
+
 feign:
   client:
     config:
@@ -85,4 +84,23 @@ feign:
 fcm:
   secret:
     key: ${FCM_SECRET_KEY}
+
+---
+
+schedules:
+  config:
+    activate:
+      on-profile: local
+  cron:
+    daily-routine: "0 0 0 * * *" # 매일 정각
+
+---
+
+schedules:
+  config:
+    activate:
+      on-profile: prod
+  cron:
+    daily-routine: "0 0 13 * * *" # 매일 정각
+
 ---
