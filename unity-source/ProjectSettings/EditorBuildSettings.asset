@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MonsterScene.unity
     guid: 7c7aaec4f46f05c4ab6555edd4c1253c
+  - enabled: 1
+    path: Assets/Scenes/GameOverScene.unity
+    guid: 0b09e8de922a735499066ee760dccd90
+  - enabled: 1
+    path: Assets/Scenes/MyPageScene.unity
+    guid: 755b3443fe4f34c40891941ea0cade9f
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 89a6d18d3df8d3e4fa917b0f9a963bc0,
       type: 2}

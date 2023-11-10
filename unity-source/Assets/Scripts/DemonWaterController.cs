@@ -8,16 +8,16 @@ public class DemonWaterController : MonoBehaviour
     private int EXP = 200;
     public GameObject ElementalSuperDemonWater;
     public Image hpBar;
-    private GameObject cleaveWaterObject;
-    private ParticleSystem cleaveWaterParticle;
+    private GameObject attackWaterObject;
+    private ParticleSystem attackWaterParticle;
 
     void Start()
     {
         hpBar.rectTransform.localScale = new Vector3(1f, 1f, 1f);
         ElementalSuperDemonWater.SetActive(true);
 
-        cleaveWaterObject = GameObject.Find("CleaveWater");
-        cleaveWaterParticle = cleaveWaterObject.GetComponent<ParticleSystem>();
+        attackWaterObject = GameObject.Find("HolyBigExplosion");
+        attackWaterParticle = attackWaterObject.GetComponent<ParticleSystem>();
         StopParticleEffect();
     }
 
@@ -34,19 +34,19 @@ public class DemonWaterController : MonoBehaviour
 
     void StopParticleEffect()
     {
-        if (cleaveWaterParticle != null)
+        if (attackWaterParticle != null)
         {
-            cleaveWaterParticle.Stop();
-            cleaveWaterParticle.Clear();
+            attackWaterParticle.Stop();
+            attackWaterParticle.Clear();
         }
     }
 
     void PlayParticleEffect()
     {
-        if (cleaveWaterParticle != null)
+        if (attackWaterParticle != null)
         {
             StopParticleEffect();
-            cleaveWaterParticle.Play();
+            attackWaterParticle.Play();
         }
     }
 
@@ -60,6 +60,6 @@ public class DemonWaterController : MonoBehaviour
             ElementalSuperDemonWater.SetActive(false);
         }
 
-        hpBar.rectTransform.localScale = new Vector3((float)EXP / (float)500, 1f, 1f);
+        hpBar.rectTransform.localScale = new Vector3((float)EXP / (float)200, 1f, 1f);
     }
 }
