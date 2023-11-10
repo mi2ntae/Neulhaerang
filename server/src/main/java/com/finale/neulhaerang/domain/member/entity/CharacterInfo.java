@@ -29,24 +29,11 @@ public class CharacterInfo {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@Column(length = 50, nullable = false)
-	private String face;
+	private int backpack;
 
-	@Column(length = 50)
-	private String backpack;
+	private int glasses;
 
-	@Column(length = 50, nullable = false)
-	private String skin;
-
-	@Column(length = 50)
-	private String glasses;
-
-	@Column(length = 50)
-	private String hat;
-
-	@Column(length = 50)
-	private String hand;
-
-	@Column(length = 50)
-	private String scarf;
+	private int hat;
+	
+	private int scarf;
 }
