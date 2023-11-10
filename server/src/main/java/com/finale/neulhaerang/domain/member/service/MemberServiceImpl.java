@@ -33,6 +33,7 @@ import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.title.entity.Title;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.global.exception.common.InValidPageIndexException;
+import com.finale.neulhaerang.global.exception.member.AlreadyExistTirednessException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
@@ -288,20 +289,25 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void recordTiredness(int tiredness) throws NotExistMemberException, AlreadyExistTirednessException {
 		Optional<Member> optionalMember = memberRepository.findById(authenticationHandler.getLoginMemberId());
-		if(optionalMember.isEmpty()) {
+		if (optionalMember.isEmpty()) {
 			throw new NotExistMemberException();
 		}
 
 		long memberId = optionalMember.get().getId();
 		LocalDateTime now = LocalDateTime.now();
 		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberId(StatType.피곤도, memberId);
-		int counts = records.stream().filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-			DateTimeFormatter.ISO_DATE))).collect(Collectors.toList()).size();
-		if(counts > 0) {
+		int counts = records.stream()
+			.filter(
+				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
+					DateTimeFormatter.ISO_DATE)))
+			.collect(Collectors.toList())
+			.size();
+		if (counts > 0) {
 			throw new AlreadyExistTirednessException();
 		}
 
-		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now(), StatType.피곤도, tiredness);
+		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now(), StatType.피곤도,
+			tiredness);
 		memberStatRepository.save(StatRecord.of(statRecordReqDto, memberId));
 	}
 
