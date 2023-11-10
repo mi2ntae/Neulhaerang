@@ -1,6 +1,5 @@
 package com.finale.neulhaerang.ui.app.main
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -119,7 +118,6 @@ fun DaysRow(
 //    days: List<Day>
 ) {
     val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
-    Log.d("todoDoneList", "DaysRow: ${viewModel.todoDoneList}")
 
     val index = if (selectedDate.dayOfMonth - 4 < 0) 0 else selectedDate.dayOfMonth - 4
     val listState = rememberLazyListState(index)
