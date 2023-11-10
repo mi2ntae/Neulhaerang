@@ -26,20 +26,17 @@ import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.lifecycleScope
 import com.finale.neulhaerang.data.DataStoreApplication
-import com.finale.neulhaerang.ui.app.Memo
-import com.finale.neulhaerang.ui.app.SqliteHelper
 import com.finale.neulhaerang.ui.app.App
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 
@@ -73,7 +70,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BackOnPressed()
-            App(getResult, MainActivity@ this)
+            App(getResult)
         }
 
 
@@ -146,12 +143,13 @@ class MainActivity : ComponentActivity() {
         val sqliteHelper = SqliteHelper(this, "memo", null, 1)
 //        insertData(healthConnectClient, 17);      // 헬스 커넥트에 데이터 삽입 예시
 //        readDailyRecords(healthConnectClient)       // 걸음수 받아오기
-
+        sqliteHelper.deleteMemo(LocalDateTime.now().toLocalDate().toString())
         var memo = sqliteHelper.selectMemo(LocalDateTime.now().toLocalDate().toString())
         Log.i("SQLITE", memo.size.toString())
-        val sleepTime = readSleepSessions(healthConnectClient)      // 수면량 받아오기
+
         if (memo.size == 0) {
             sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
+            val sleepTime = readSleepSessions(healthConnectClient)      // 수면량 받아오기
             val dataStore = DataStoreApplication.getInstance().getDataStore()
             val tiredness = getScoreOfIndolence(sleepTime)
             Log.i("Tiredness", tiredness.toString())
@@ -162,51 +160,49 @@ class MainActivity : ComponentActivity() {
     }
 
     suspend fun readSleepSessions(healthConnectClient: HealthConnectClient): Long {
-//        val lastDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-//        val firstDay = lastDay
-//            .minusDays(2)
-//        // 설정한 날짜 범위
+        val lastDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val firstDay = lastDay.minusDays(2)
+        // 설정한 날짜 범위
         val sessions = mutableListOf<SleepSessionData>()
-//        val sleepSessionRequest = ReadRecordsRequest(
-//            recordType = SleepSessionRecord::class,
-//            timeRangeFilter = TimeRangeFilter.between(firstDay.toInstant(), lastDay.toInstant())
-////            ascendingOrder = false,
-//        )
-//        val sleepSessions = healthConnectClient.readRecords(sleepSessionRequest)
-//        sleepSessions.records.forEach { session ->
-//            val sessionTimeFilter = TimeRangeFilter.between(session.startTime, session.endTime)
-//            val durationAggregateRequest = AggregateRequest(
-//                metrics = setOf(SleepSessionRecord.SLEEP_DURATION_TOTAL),
-//                timeRangeFilter = sessionTimeFilter
-//            )
-//            Log.i(
-//                "mintae",
-//                "[sleep] " + session.metadata.id + " / " + session.title + " / " + session.startTime.toString() + " / " + session.startZoneOffset + " / " + session.endTime.toString() + " / " + session.stages.toString() + " / " + session.endZoneOffset
-//            )
-//            val aggregateResponse = healthConnectClient.aggregate(durationAggregateRequest)
-//            sessions.add(
-//                SleepSessionData(
-//                    uid = session.metadata.id,
-//                    title = session.title,
-//                    notes = session.notes,
-//                    startTime = session.startTime,
-//                    startZoneOffset = session.startZoneOffset,
-//                    endTime = session.endTime,
-//                    endZoneOffset = session.endZoneOffset,
-//                    duration = aggregateResponse[SleepSessionRecord.SLEEP_DURATION_TOTAL],
-//                    stages = session.stages
-//                )
-//            )
-//        }
-        val start = "2023-11-08T12:50:00Z"
-        val end = "2023-11-08T23:50:00Z"
-        if(sessions.size == 0) {
+        val sleepSessionRequest = ReadRecordsRequest(
+            recordType = SleepSessionRecord::class,
+            timeRangeFilter = TimeRangeFilter.between(firstDay.toInstant(), lastDay.toInstant())
+//            ascendingOrder = false,
+        )
+        val sleepSessions = healthConnectClient.readRecords(sleepSessionRequest)
+        sleepSessions.records.forEach { session ->
+            val sessionTimeFilter = TimeRangeFilter.between(session.startTime, session.endTime)
+            val durationAggregateRequest = AggregateRequest(
+                metrics = setOf(SleepSessionRecord.SLEEP_DURATION_TOTAL),
+                timeRangeFilter = sessionTimeFilter
+            )
+            Log.i(
+                "mintae",
+                "[sleep] " + session.metadata.id + " / " + session.title + " / " + session.startTime.toString() + " / " + session.startZoneOffset + " / " + session.endTime.toString() + " / " + session.stages.toString() + " / " + session.endZoneOffset
+            )
+            val aggregateResponse = healthConnectClient.aggregate(durationAggregateRequest)
+            sessions.add(
+                SleepSessionData(
+                    uid = session.metadata.id,
+                    title = session.title,
+                    notes = session.notes,
+                    startTime = session.startTime,
+                    startZoneOffset = session.startZoneOffset,
+                    endTime = session.endTime,
+                    endZoneOffset = session.endZoneOffset,
+                    duration = aggregateResponse[SleepSessionRecord.SLEEP_DURATION_TOTAL],
+                    stages = session.stages
+                )
+            )
+        }
+
+        if(sessions.size > 0) {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
 //            val calStartDate = dateFormat.parse(sessions.get(sessions.size-1).startTime.toString().substring(0, 19).replace("T", " ").format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).time
-            val calStartDate = dateFormat.parse(start.substring(0, 19).replace("T", " ")).time
+            val calStartDate = dateFormat.parse(sessions.get(sessions.size-1).startTime.toString().substring(0, 19).replace("T", " ")).time
 
-            val calEndDate = dateFormat.parse(end.substring(0, 19).replace("T", " ")).time
+            val calEndDate = dateFormat.parse(sessions.get(sessions.size-1).endTime.toString().substring(0, 19).replace("T", " ")).time
 
             Log.i("Cal", calStartDate.toString() + " / " + calEndDate.toString())
             val diff = calEndDate - calStartDate
