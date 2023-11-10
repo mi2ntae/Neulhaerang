@@ -2,6 +2,8 @@ package com.finale.neulhaerang.domain.member.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,9 +50,9 @@ public class MemberController {
 	}
 
 	@ApiOperation(value = "멤버 캐릭터 정보 변경", notes = "멤버 캐릭터 정보 변경")
-	@GetMapping("/character")
+	@PatchMapping("/character")
 	public ResponseEntity<Void> modifyCharacterByMemberId(
-		@RequestBody CharacterModifyReqDto characterModifyReqDto) {
+		@RequestBody @Valid CharacterModifyReqDto characterModifyReqDto) {
 		memberService.modifyCharacterInfoByMember(characterModifyReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
