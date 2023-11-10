@@ -1,14 +1,23 @@
 package com.finale.neulhaerang.ui.app
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.health.connect.datatypes.HeartRateRecord
+import android.health.connect.datatypes.SleepSessionRecord
+import android.health.connect.datatypes.StepsRecord
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -16,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.finale.neulhaerang.common.navigation.AppNavItem
+import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.app.checklist.CheckListCreationScreen
 import com.finale.neulhaerang.ui.app.checklist.CheckListModifyScreen
@@ -25,6 +35,10 @@ import com.finale.neulhaerang.ui.app.main.MainScreen
 import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
 import com.finale.neulhaerang.ui.app.social.SocialScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 /**
  * 메인 앱
@@ -36,6 +50,9 @@ fun App(getResult: ActivityResultLauncher<Intent>) {
     val isLoggedIn = viewModel.isLoggedIn.collectAsState()
     Log.i("KakaoAuthViewModel", "로그인 되었나요? " + isLoggedIn.value)
 
+    if(isLoggedIn.value) {
+        
+    }
     NeulHaeRangTheme {
         if (isLoggedIn.value) AppMain(getResult)
         else LoginScreen()
