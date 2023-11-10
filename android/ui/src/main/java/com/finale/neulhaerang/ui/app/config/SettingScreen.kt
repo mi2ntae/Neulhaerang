@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +34,22 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(
     navController: NavHostController,
 ) {
+    val kakaoAuthViewModel: KakaoAuthViewModel = viewModel()
     var alarmSetting by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {
@@ -73,7 +79,9 @@ fun SettingScreen(
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
-                TextButton(onClick = { /*TODO 로그아웃 기능*/ }) {
+                TextButton(
+                    onClick = { scope.launch { kakaoAuthViewModel.handleLogout() } }
+                ) {
                     Text(
                         text = "로그아웃", style = MaterialTheme.typography.labelLarge.plus(
                             TextStyle(

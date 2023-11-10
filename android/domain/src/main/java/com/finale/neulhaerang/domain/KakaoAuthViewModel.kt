@@ -110,4 +110,12 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    suspend fun handleLogout() {
+        Log.d(TAG, "handleLogout: start")
+        AuthApi.instance.logout()
+        Log.d(TAG, "handleLogout: api end")
+        DataStoreApplication.getInstance().getDataStore().run {
+            clearDataStore()
+        }
+    }
 }

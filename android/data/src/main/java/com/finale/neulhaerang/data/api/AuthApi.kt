@@ -18,6 +18,9 @@ interface AuthApi {
     @POST("$BASE/refresh")
     suspend fun refresh(@Body refreshTokenResDto: RefreshTokenReqDto): ResponseResult<RefreshTokenResDto>
 
+    @POST("$BASE/logout")
+    suspend fun logout(): ResponseResult<Any>
+
     companion object {
         private const val BASE = "auth"
         val instance: AuthApi by lazy { Api.instance.create(AuthApi::class.java) }
