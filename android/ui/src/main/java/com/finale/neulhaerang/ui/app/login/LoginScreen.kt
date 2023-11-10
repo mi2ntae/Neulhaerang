@@ -27,9 +27,9 @@ import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.theme.Typography
 
 @Composable
-fun LoginScreen() {
-    val viewModel = viewModel<KakaoAuthViewModel>()
-
+fun LoginScreen(
+    viewModel: KakaoAuthViewModel = viewModel(),
+) {
     Column(
         modifier = Modifier
             .background(Color.White)

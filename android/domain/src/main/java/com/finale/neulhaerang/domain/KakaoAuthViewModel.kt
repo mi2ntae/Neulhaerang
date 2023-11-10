@@ -26,7 +26,18 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
 
     private val context = application.applicationContext
 
-    val isLoggedIn = MutableStateFlow<Boolean>(false)
+    val isLoggedIn = MutableStateFlow(false)
+
+    init {
+        Log.d(TAG, "init: start")
+        viewModelScope.launch {
+            isLoggedIn.emit(
+                DataStoreApplication.getInstance().getDataStore().getLoginStatus().firstOrNull()
+                    ?: false
+            )
+        }
+    }
+
     fun kakaoLogin() {
         viewModelScope.launch {
             isLoggedIn.emit(handleKakaoLogin())
@@ -61,12 +72,12 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
                         Log.i("heejeong", data.toString())
 //                        DataStoreApplication.getInstance().getDataStore().clearDataStore()
                         if (data != null) {
-                            DataStoreApplication.getInstance().getDataStore()
-                                .setAccessToken(data.accessToken)
-                            DataStoreApplication.getInstance().getDataStore()
-                                .setRefreshToken(data.refreshToken)
-                            DataStoreApplication.getInstance().getDataStore()
-                                .setMemberId(data.memberId)
+                            DataStoreApplication.getInstance().getDataStore().run {
+                                setLoginStatus(true)
+                                setAccessToken(data.accessToken)
+                                setRefreshToken(data.refreshToken)
+                                setMemberId(data.memberId)
+                            }
                         }
                         continuation.resume(true)
                     }.onFailure { (_, message, _) ->
@@ -99,4 +110,13 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+    suspend fun handleLogout() {
+        Log.d(TAG, "handleLogout: start")
+        AuthApi.instance.logout()
+        Log.d(TAG, "handleLogout: api end")
+        DataStoreApplication.getInstance().getDataStore().run {
+            clearDataStore()
+        }
+        isLoggedIn.emit(false)
+    }
 }
