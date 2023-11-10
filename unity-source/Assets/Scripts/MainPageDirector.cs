@@ -25,10 +25,10 @@ public class MainPageDirector : MonoBehaviour
         GameObject myMinihat = Instantiate(characterMinihat);
         GameObject myScarf = Instantiate(characterScarf);
 
-        myBag.SetActive(true);
-        myGlasses.SetActive(true);
-        myMinihat.SetActive(true);
-        myScarf.SetActive(true);
+        myBag.SetActive(false);
+        myGlasses.SetActive(false);
+        myMinihat.SetActive(false);
+        myScarf.SetActive(false);
     }
 
     // Update is called once per frame
