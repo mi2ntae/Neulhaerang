@@ -26,6 +26,7 @@ public enum ErrorCode {
 
 	// 스탯
 	INVALID_STAT_KIND(HttpStatus.INTERNAL_SERVER_ERROR, "S-001", "존재하지 않는 스탯입니다."),
+	ALREADY_EXIST_TIREDNESS(HttpStatus.INTERNAL_SERVER_ERROR, "S-002", "오늘의 피로도를 이미 입력하셨습니다."),
 
 	// 투두리스트
 	INVALID_TODO_DATE(HttpStatus.BAD_REQUEST, "T-001", "날짜가 유효하지 않습니다."),

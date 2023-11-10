@@ -14,6 +14,7 @@ import com.finale.neulhaerang.global.exception.common.AccessForbiddenException;
 import com.finale.neulhaerang.global.exception.common.ExpiredAuthException;
 import com.finale.neulhaerang.global.exception.common.InValidJwtTokenException;
 import com.finale.neulhaerang.global.exception.common.InValidPageIndexException;
+import com.finale.neulhaerang.global.exception.member.AlreadyExistTirednessException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
@@ -36,6 +37,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(AlreadyExistTirednessException.class)
+	protected ResponseEntity<ErrorResponse> alreadyExistTirednessException() {
+		log.error("Today's tiredness is already recorded");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.ALREADY_EXIST_TIREDNESS.getErrorCode(),
+			ErrorCode.ALREADY_EXIST_TIREDNESS.getMessage());
+		return ResponseEntity.status(ErrorCode.ALREADY_EXIST_TIREDNESS.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(NotEarnedTitleException.class)
 	protected ResponseEntity<ErrorResponse> notEarnedTitleException() {

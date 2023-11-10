@@ -31,4 +31,6 @@ public interface MemberService {
 	List<StatRecordListResDto> findStatChangeRecordByStatType(int statType, int page);
 
 	MemberProfileResDto findMemberProfileByMemberId(long memberId);
+
+	void recordTiredness (int tiredness) throws NotExistMemberException;
 }

@@ -103,9 +103,9 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	@Transactional
 	public void logout() {
-		long deviceId = authenticationHandler.getLoginDeviceId();
-		redisUtil.deleteData(String.valueOf(deviceId));
-		deviceRepository.deleteDeviceByDeviceToken(String.valueOf(deviceId));
+		String deviceId = authenticationHandler.getLoginDeviceId();
+		redisUtil.deleteData(deviceId);
+		deviceRepository.deleteDeviceByDeviceToken(deviceId);
 		log.info("로그아웃 완료");
 	}
 
