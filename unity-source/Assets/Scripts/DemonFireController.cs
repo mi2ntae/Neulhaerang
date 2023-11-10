@@ -8,16 +8,16 @@ public class DemonFireController : MonoBehaviour
     private int EXP = 100;
     public GameObject ElementalSuperDemonFire;
     public Image hpBar;
-    private GameObject cleaveFireObject;
-    private ParticleSystem cleaveFireParticle;
+    private GameObject attackFireObject;
+    private ParticleSystem attackfileParticle;
 
     void Start()
     {
         hpBar.rectTransform.localScale = new Vector3(1f, 1f, 1f);
         ElementalSuperDemonFire.SetActive(true);
 
-        cleaveFireObject = GameObject.Find("CleaveFire");
-        cleaveFireParticle = cleaveFireObject.GetComponent<ParticleSystem>();
+        attackFireObject = GameObject.Find("FireballExplosionRed");
+        attackfileParticle = attackFireObject.GetComponent<ParticleSystem>();
         StopParticleEffect();
     }
 
@@ -34,19 +34,19 @@ public class DemonFireController : MonoBehaviour
 
     void StopParticleEffect()
     {
-        if (cleaveFireParticle != null)
+        if (attackfileParticle != null)
         {
-            cleaveFireParticle.Stop();
-            cleaveFireParticle.Clear();
+            attackfileParticle.Stop();
+            attackfileParticle.Clear();
         }
     }
 
     void PlayParticleEffect()
     {
-        if(cleaveFireParticle != null)
+        if(attackfileParticle != null)
         {
             StopParticleEffect();
-            cleaveFireParticle.Play();
+            attackfileParticle.Play();
         }
     }
 
