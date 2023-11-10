@@ -1,4 +1,4 @@
-package com.finale.neulhaerang
+package com.finale.neulhaerang.data
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -26,17 +26,16 @@ class SqliteHelper(context: Context?, name: String?, factory: SQLiteDatabase.Cur
         //쓰기나 수정이 가능한 데이터베이스 변수
         val wd = writableDatabase
         wd.insert("memo",null,values)
-        Log.i("SQLITE INSERT", "INSERT SUCCESS")
+        Log.i("SQLITE INSERT", "INSERT SUCCESSSS")
         //사용이 끝나면 반드시 close()를 사용하여 메모리누수 가 되지않도록 합시다.
         wd.close()
     }
 
     fun deleteMemo(date: String){
-        Log.i("SQLITE DELETE", date)
+        Log.i("SQLITE DELETE", "delete "+date)
         //쓰기나 수정이 가능한 데이터베이스 변수
         val wd = writableDatabase
-        wd.delete("memo","date = "+date, null)
-        Log.i("SQLITE INSERT", "INSERT SUCCESS")
+        wd.delete("memo","date = '$date'", null)
         //사용이 끝나면 반드시 close()를 사용하여 메모리누수 가 되지않도록 합시다.
         wd.close()
     }

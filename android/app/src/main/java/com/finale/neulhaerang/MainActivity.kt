@@ -32,6 +32,8 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.lifecycleScope
 import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.ui.app.App
+import com.finale.neulhaerang.data.Memo
+import com.finale.neulhaerang.data.SqliteHelper
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -70,7 +72,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BackOnPressed()
-            App(getResult)
+            App(getResult, this@MainActivity)
         }
 
 
@@ -160,8 +162,8 @@ class MainActivity : ComponentActivity() {
     }
 
     suspend fun readSleepSessions(healthConnectClient: HealthConnectClient): Long {
-        val lastDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
-        val firstDay = lastDay.minusDays(2)
+        val lastDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS).plusDays(1)
+        val firstDay = lastDay.minusDays(3)
         // 설정한 날짜 범위
         val sessions = mutableListOf<SleepSessionData>()
         val sleepSessionRequest = ReadRecordsRequest(
@@ -209,12 +211,12 @@ class MainActivity : ComponentActivity() {
             Log.i("Cal", TimeUnit.MILLISECONDS.toMinutes(diff).toString())
             return TimeUnit.MILLISECONDS.toMinutes(diff)
         }
-        return 0;
+        return 840;
     }
 
-    private fun getScoreOfIndolence(sleepTime: Long): Long {
+    private fun getScoreOfIndolence(sleepTime: Long): Int {
         for(i: Int in 0..9 step(1)) {
-            if(sleepTime < (1+i)*60) return (100-(10*i)).toLong()
+            if(sleepTime < (1+i)*60) return 100-(10*i)
         }
         return 0
     }
