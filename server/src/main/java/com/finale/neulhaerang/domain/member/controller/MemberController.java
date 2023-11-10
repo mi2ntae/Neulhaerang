@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,11 +89,10 @@ public class MemberController {
 		return ResponseEntity.status(HttpStatus.OK).body(memberService.findMemberProfileByMemberId(memberId));
 	}
 
-	// MongoDB에 스탯 업데이트하는 예제 코드 : 추후 변경해서 사용
-	@ApiOperation(value = "테스트", notes = "Mongo 테스트")
-	@PostMapping("/mongo")
-	public ResponseEntity<Void> mongo(@RequestBody StatRecordReqDto statRecordReqDto) {
-		memberService.createStat(statRecordReqDto);
+	@ApiOperation(value = "피로도 저장", notes = "받아온 피로도를 저장")
+	@PostMapping("/stat")
+	public ResponseEntity<Void> recordTiredness(@RequestParam int tiredness) {
+		memberService.recordTiredness(tiredness);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 

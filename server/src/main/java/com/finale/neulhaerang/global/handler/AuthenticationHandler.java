@@ -31,9 +31,9 @@ public class AuthenticationHandler {
 		}
 	}
 
-	public long getLoginDeviceId() {
+	public String getLoginDeviceId() {
 		UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return Long.parseLong(userDetails.getUsername());
+		return userDetails.getUsername();
 	}
 
 	public long getLoginMemberId() {

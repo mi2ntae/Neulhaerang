@@ -34,4 +34,6 @@ public interface MemberService {
 	MemberProfileResDto findMemberProfileByMemberId(long memberId);
 
 	void modifyCharacterInfoByMember(CharacterModifyReqDto characterModifyReqDto);
+
+	void recordTiredness (int tiredness) throws NotExistMemberException;
 }
