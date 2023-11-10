@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.finale.neulhaerang.domain.member.document.StatRecord;
+import com.finale.neulhaerang.domain.member.dto.request.CharacterModifyReqDto;
 import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberProfileResDto;
@@ -288,21 +289,35 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void recordTiredness(int tiredness) throws NotExistMemberException, AlreadyExistTirednessException {
 		Optional<Member> optionalMember = memberRepository.findById(authenticationHandler.getLoginMemberId());
-		if(optionalMember.isEmpty()) {
+		if (optionalMember.isEmpty()) {
 			throw new NotExistMemberException();
 		}
 
 		long memberId = optionalMember.get().getId();
 		LocalDateTime now = LocalDateTime.now();
 		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeAndMemberId(StatType.피곤도, memberId);
-		int counts = records.stream().filter(record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-			DateTimeFormatter.ISO_DATE))).collect(Collectors.toList()).size();
-		if(counts > 0) {
+		int counts = records.stream()
+			.filter(
+				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
+					DateTimeFormatter.ISO_DATE)))
+			.collect(Collectors.toList())
+			.size();
+		if (counts > 0) {
 			throw new AlreadyExistTirednessException();
 		}
 
-		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now(), StatType.피곤도, tiredness);
+		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now(), StatType.피곤도,
+			tiredness);
 		memberStatRepository.save(StatRecord.of(statRecordReqDto, memberId));
+	}
+
+	@Override
+	@Transactional
+	public void modifyCharacterInfoByMember(CharacterModifyReqDto characterModifyReqDto) {
+		CharacterInfo characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(
+			authenticationHandler.getLoginMemberId()).orElseThrow(NotExistCharacterInfoException::new
+		);
+		characterInfo.updateCharacterInfo(characterModifyReqDto);
 	}
 
 	private String getLevelByScore(int score) {

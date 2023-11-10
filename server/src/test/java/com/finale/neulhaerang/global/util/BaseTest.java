@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Member;
+import com.finale.neulhaerang.domain.member.repository.CharacterInfoRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 
 @SpringBootTest
@@ -20,8 +22,11 @@ import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 public class BaseTest {
 	@Autowired
 	protected MemberRepository memberRepository;
+	@Autowired
+	protected CharacterInfoRepository characterInfoRepository;
 
 	protected Member member;
+	protected CharacterInfo characterInfo;
 
 	@BeforeAll
 	public void createTestMember() {
@@ -31,5 +36,6 @@ public class BaseTest {
 			.titleId(1L)
 			.build();
 		this.member = memberRepository.save(member);
+		this.characterInfo = characterInfoRepository.save(CharacterInfo.create(this.member));
 	}
 }

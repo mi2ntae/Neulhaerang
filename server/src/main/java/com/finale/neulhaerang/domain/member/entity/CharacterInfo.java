@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.finale.neulhaerang.domain.member.dto.request.CharacterModifyReqDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,24 +31,24 @@ public class CharacterInfo {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@Column(length = 50, nullable = false)
-	private String face;
+	private int backpack;
 
-	@Column(length = 50)
-	private String backpack;
+	private int glasses;
 
-	@Column(length = 50, nullable = false)
-	private String skin;
+	private int hat;
 
-	@Column(length = 50)
-	private String glasses;
+	private int scarf;
 
-	@Column(length = 50)
-	private String hat;
+	public static CharacterInfo create(Member member) {
+		return CharacterInfo.builder()
+			.member(member)
+			.build();
+	}
 
-	@Column(length = 50)
-	private String hand;
-
-	@Column(length = 50)
-	private String scarf;
+	public void updateCharacterInfo(CharacterModifyReqDto characterModifyReqDto) {
+		this.backpack = characterModifyReqDto.getBackpack();
+		this.hat = characterModifyReqDto.getHat();
+		this.scarf = characterModifyReqDto.getScarf();
+		this.glasses = characterModifyReqDto.getGlasses();
+	}
 }

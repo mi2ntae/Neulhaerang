@@ -17,9 +17,11 @@ import com.finale.neulhaerang.domain.member.dto.request.TokenReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.KakaoUserResDto;
 import com.finale.neulhaerang.domain.member.dto.response.LoginResDto;
 import com.finale.neulhaerang.domain.member.dto.response.TokenResDto;
+import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Device;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.feignclient.KakaoInfoFeignClient;
+import com.finale.neulhaerang.domain.member.repository.CharacterInfoRepository;
 import com.finale.neulhaerang.domain.member.repository.DeviceRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberStatRepository;
@@ -42,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
 	private final MemberStatRepository memberStatRepository;
 	private final DeviceRepository deviceRepository;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final CharacterInfoRepository characterInfoRepository;
 	private final AuthenticationHandler authenticationHandler;
 	private final ApplicationEventPublisher applicationEventPublisher;
 	private final RedisUtil redisUtil;
@@ -122,7 +125,8 @@ public class AuthServiceImpl implements AuthService {
 			if (optionalDevice.isEmpty()) {
 				deviceRepository.save(Device.create(member, loginReqDto.getDeviceToken()));
 			}
-
+			// 캐릭터 정보 생성
+			characterInfoRepository.save(CharacterInfo.create(member));
 			memberStatRepository.save(
 				StatRecord.of(StatRecordReqDto.of("늘해랑 가입 환영", LocalDateTime.now(), StatType.갓생력, 2), member.getId()));
 			applicationEventPublisher.publishEvent(new RegisteredEvent(member));
