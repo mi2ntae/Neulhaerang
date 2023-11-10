@@ -34,6 +34,12 @@ public class CharacterInfo {
 	private int glasses;
 
 	private int hat;
-	
+
 	private int scarf;
+
+	public static CharacterInfo create(Member member) {
+		return CharacterInfo.builder()
+			.member(member)
+			.build();
+	}
 }
