@@ -79,10 +79,7 @@ class MemberServiceTest extends BaseTest {
 	@Test
 	@DisplayName("회원 캐릭터 정보를 조회할 경우, MemberCharacterResDto 형식으로 결과를 반환하고 저장된 캐릭터 정보를 가진다.")
 	void When_FindMemberCharacterInfo_Expect_MemberCharacterDto() {
-		// given
-		CharacterInfo characterInfo = characterInfoRepository.save(createCharacterInfo(member));
-
-		// when
+		// given // when
 		MemberCharacterResDto memberCharacterResDto = MemberCharacterResDto.from(characterInfo);
 
 		// then

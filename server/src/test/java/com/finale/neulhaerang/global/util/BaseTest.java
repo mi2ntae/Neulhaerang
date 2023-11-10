@@ -26,6 +26,7 @@ public class BaseTest {
 	protected CharacterInfoRepository characterInfoRepository;
 
 	protected Member member;
+	protected CharacterInfo characterInfo;
 
 	@BeforeAll
 	public void createTestMember() {
@@ -35,6 +36,6 @@ public class BaseTest {
 			.titleId(1L)
 			.build();
 		this.member = memberRepository.save(member);
-		characterInfoRepository.save(CharacterInfo.create(this.member));
+		this.characterInfo = characterInfoRepository.save(CharacterInfo.create(this.member));
 	}
 }
