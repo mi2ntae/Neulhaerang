@@ -8,16 +8,16 @@ public class DemonDarkController : MonoBehaviour
     private int EXP = 100;
     public GameObject ElementalSuperDemonDark;
     public Image hpBar;
-    private GameObject cleaveShadowObject;
-    private ParticleSystem cleaveShadowParticle;
+    private GameObject attackShadowObject;
+    private ParticleSystem attackShadowParticle;
 
     void Start()
     {
         hpBar.rectTransform.localScale = new Vector3(1f, 1f, 1f);
         ElementalSuperDemonDark.SetActive(true);
 
-        cleaveShadowObject = GameObject.Find("CleaveShadow");
-        cleaveShadowParticle = cleaveShadowObject.GetComponent<ParticleSystem>();
+        attackShadowObject = GameObject.Find("ShadowPurpleExplosion");
+        attackShadowParticle = attackShadowObject.GetComponent<ParticleSystem>();
         StopParticleEffect();
     }
 
@@ -34,19 +34,19 @@ public class DemonDarkController : MonoBehaviour
 
     void StopParticleEffect()
     {
-        if (cleaveShadowParticle != null)
+        if (attackShadowParticle != null)
         {
-            cleaveShadowParticle.Stop();
-            cleaveShadowParticle.Clear();
+            attackShadowParticle.Stop();
+            attackShadowParticle.Clear();
         }
     }
 
     void PlayParticleEffect()
     {
-        if (cleaveShadowParticle != null)
+        if (attackShadowParticle != null)
         {
             StopParticleEffect();
-            cleaveShadowParticle.Play();
+            attackShadowParticle.Play();
         }
     }
 
