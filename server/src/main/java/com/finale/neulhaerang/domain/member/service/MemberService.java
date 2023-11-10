@@ -2,6 +2,7 @@ package com.finale.neulhaerang.domain.member.service;
 
 import java.util.List;
 
+import com.finale.neulhaerang.domain.member.dto.request.CharacterModifyReqDto;
 import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberProfileResDto;
@@ -31,4 +32,6 @@ public interface MemberService {
 	List<StatRecordListResDto> findStatChangeRecordByStatType(int statType, int page);
 
 	MemberProfileResDto findMemberProfileByMemberId(long memberId);
+
+	void modifyCharacterInfoByMember(CharacterModifyReqDto characterModifyReqDto);
 }

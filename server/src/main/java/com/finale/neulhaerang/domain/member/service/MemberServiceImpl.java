@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.finale.neulhaerang.domain.member.document.StatRecord;
+import com.finale.neulhaerang.domain.member.dto.request.CharacterModifyReqDto;
 import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberProfileResDto;
@@ -282,6 +283,11 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return MemberProfileResDto.of(level, LEVEL_WEIGHT * level, sumExp, titleBuilder.toString(),
 			member.getNickname());
+	}
+
+	@Override
+	public void modifyCharacterInfoByMember(CharacterModifyReqDto characterModifyReqDto) {
+		
 	}
 
 	private String getLevelByScore(int score) {
