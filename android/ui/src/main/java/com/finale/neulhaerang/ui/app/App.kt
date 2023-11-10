@@ -26,6 +26,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.data.DataStoreApplication
+import com.finale.neulhaerang.data.Memo
+import com.finale.neulhaerang.data.SqliteHelper
+import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.app.checklist.CheckListCreationScreen
 import com.finale.neulhaerang.ui.app.checklist.CheckListModifyScreen
@@ -35,6 +38,9 @@ import com.finale.neulhaerang.ui.app.main.MainScreen
 import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
 import com.finale.neulhaerang.ui.app.social.SocialScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
@@ -43,15 +49,25 @@ import java.time.temporal.ChronoUnit
 /**
  * 메인 앱
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun App(getResult: ActivityResultLauncher<Intent>) {
+fun App(getResult: ActivityResultLauncher<Intent>, context: Context) {
     val viewModel = viewModel<KakaoAuthViewModel>()
+    val scope = rememberCoroutineScope()
     val isLoggedIn = viewModel.isLoggedIn.collectAsState()
     Log.i("KakaoAuthViewModel", "로그인 되었나요? " + isLoggedIn.value)
 
+    val sqliteHelper = SqliteHelper(context, "memo", null, 1)
+    val dataStore = DataStoreApplication.getInstance().getDataStore()
     if(isLoggedIn.value) {
-        
+        Log.i("mintaeApp", "login")
+        if(sqliteHelper.selectMemo(LocalDateTime.now().toLocalDate().toString()).size == 1) {
+            Log.i("mintaeApp", "data size okay")
+            sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
+            scope.launch {
+                MemberApi.instance.recordTiredness(dataStore.getTiredness().firstOrNull() ?: 1)
+            }
+        }
     }
     NeulHaeRangTheme {
         if (isLoggedIn.value) AppMain(getResult)

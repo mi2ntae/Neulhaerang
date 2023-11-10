@@ -4,6 +4,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -30,7 +31,7 @@ class DataStoreModule(
     private val _deviceToken = stringPreferencesKey("deviceToken") // int 저장 키값
     private val _loginStatus = booleanPreferencesKey("login_status") // int 저장 키값
     private val _memberid = longPreferencesKey("member_id") // int
-    private val _tiredness = longPreferencesKey("tiredness") // int
+    private val _tiredness = intPreferencesKey("tiredness") // int
 
     //DataStore에서 값 읽기
     suspend fun getToken(): Flow<List<String>> {
@@ -131,7 +132,7 @@ class DataStoreModule(
             }
     }
 
-    suspend fun getTiredness(): Flow<Long> {
+    suspend fun getTiredness(): Flow<Int> {
         return context.dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -142,7 +143,7 @@ class DataStoreModule(
                 }
             }
             .map { preferences ->
-                preferences[_tiredness] ?: 0L
+                preferences[_tiredness] ?: 0
             }
     }
 
@@ -194,7 +195,7 @@ class DataStoreModule(
         }
     }
 
-    suspend fun setTiredness(value: Long) {
+    suspend fun setTiredness(value: Int) {
         context.dataStore.edit { preferences ->
             preferences[_tiredness] = value
         }
