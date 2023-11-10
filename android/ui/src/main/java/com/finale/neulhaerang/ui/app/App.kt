@@ -38,13 +38,14 @@ fun App(getResult: ActivityResultLauncher<Intent>) {
 
     NeulHaeRangTheme {
         if (isLoggedIn.value) AppMain(getResult)
-        else LoginScreen()
+        else LoginScreen(viewModel)
     }
 }
 
 @Composable
 fun AppMain(getResult: ActivityResultLauncher<Intent>) {
     val navController = rememberNavController()
+    val kakaoAuthViewModel: KakaoAuthViewModel = viewModel()
 
     NeulHaeRangTheme {
         NavHost(
@@ -77,7 +78,10 @@ fun AppMain(getResult: ActivityResultLauncher<Intent>) {
                 )
             }
             composable(route = AppNavItem.Setting.route) {
-                SettingScreen(navController = navController)
+                SettingScreen(
+                    navController = navController,
+                    kakaoAuthViewModel = kakaoAuthViewModel
+                )
             }
         }
     }

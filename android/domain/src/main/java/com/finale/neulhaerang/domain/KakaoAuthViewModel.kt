@@ -117,5 +117,6 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
         DataStoreApplication.getInstance().getDataStore().run {
             clearDataStore()
         }
+        isLoggedIn.emit(false)
     }
 }

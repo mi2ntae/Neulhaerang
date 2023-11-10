@@ -46,8 +46,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingScreen(
     navController: NavHostController,
+    kakaoAuthViewModel: KakaoAuthViewModel = viewModel(),
 ) {
-    val kakaoAuthViewModel: KakaoAuthViewModel = viewModel()
     var alarmSetting by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
 
