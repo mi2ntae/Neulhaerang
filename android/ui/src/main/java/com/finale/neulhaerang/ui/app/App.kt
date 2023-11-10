@@ -3,21 +3,14 @@ package com.finale.neulhaerang.ui.app
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.health.connect.datatypes.HeartRateRecord
-import android.health.connect.datatypes.SleepSessionRecord
-import android.health.connect.datatypes.StepsRecord
-import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -38,13 +31,9 @@ import com.finale.neulhaerang.ui.app.main.MainScreen
 import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
 import com.finale.neulhaerang.ui.app.social.SocialScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
-import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 
 /**
  * 메인 앱
@@ -59,9 +48,9 @@ fun App(getResult: ActivityResultLauncher<Intent>, context: Context) {
 
     val sqliteHelper = SqliteHelper(context, "memo", null, 1)
     val dataStore = DataStoreApplication.getInstance().getDataStore()
-    if(isLoggedIn.value) {
+    if (isLoggedIn.value) {
         Log.i("mintaeApp", "login")
-        if(sqliteHelper.selectMemo(LocalDateTime.now().toLocalDate().toString()).size == 1) {
+        if (sqliteHelper.selectMemo(LocalDateTime.now().toLocalDate().toString()).size == 1) {
             Log.i("mintaeApp", "data size okay")
             sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
             scope.launch {

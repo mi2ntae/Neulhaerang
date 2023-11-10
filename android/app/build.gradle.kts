@@ -13,11 +13,12 @@ android {
     compileSdkVersion(rootProject.extra["compileSDKVersion"] as Int)
 
     defaultConfig {
+        manifestPlaceholders += mapOf()
         applicationId = "com.finale.neulhaerang"
         minSdkVersion(rootProject.extra["minimumSDKVersion"] as Int)
         targetSdkVersion(rootProject.extra["targetSDKVersion"] as Int)
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = rootProject.extra["versionCode"] as Int
+        versionName = rootProject.extra["versionName"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
