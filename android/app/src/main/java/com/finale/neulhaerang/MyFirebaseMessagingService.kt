@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlin.random.Random
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     // [START receive_message]
@@ -41,6 +43,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         remoteMessage.notification?.let {
             Log.d(TAG, "Message Notification title: ${it.title}")
             Log.d(TAG, "Message Notification Body: ${it.body}")
+            sendNotification(remoteMessage.notification?.title, remoteMessage.notification!!.body!!)
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -85,7 +88,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
     }
 
-    private fun sendNotification(messageBody: String) {
+    private fun sendNotification(title: String?, messageBody: String) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val requestCode = 0
@@ -100,11 +103,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("FCM Message")
+            .setContentTitle(title)
             .setContentText(messageBody)
             .setAutoCancel(true)
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
+
+        Log.d("FIRE", messageBody);
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -112,13 +117,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT,
+                "Channel neulhaerang",
+                NotificationManager.IMPORTANCE_HIGH,
             )
+            channel.apply {
+                enableLights(true)
+                lightColor= Color.GREEN
+                enableVibration(true)
+                description = "notification"
+            }
             notificationManager.createNotificationChannel(channel)
         }
 
-        val notificationId = 0
+        val notificationId = Random.nextInt();
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 

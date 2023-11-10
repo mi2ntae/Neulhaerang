@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>-->
-<!--    <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>-->
-<!--    <uses-permission android:name="android.permission.health.READ_STEPS"/>-->
-<!--    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>-->
-
+    <!-- <uses-permission android:name="android.permission.health.READ_HEART_RATE"/> -->
+    <!-- <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/> -->
+    <!-- <uses-permission android:name="android.permission.health.READ_STEPS"/> -->
+    <!-- <uses-permission android:name="android.permission.health.WRITE_STEPS"/> -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -20,9 +20,13 @@
         android:name="com.google.ar.core.depth"
         android:required="true" />
 
+    <queries>
+        <package android:name="com.google.android.apps.healthdata" />
+    </queries>
+
     <application
-        android:allowBackup="true"
         android:name=".MainApplication"
+        android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -46,10 +50,28 @@
             android:theme="@style/Theme.NeulHaeRang">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <!-- PUSH 알림 -->
+                <action android:name="NOTIFICATION_CLICK" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--
+ For versions starting Android 14, create an activity alias to show the rationale
+             of Health Connect permissions once users click the privacy policy link.
+        -->
+        <activity-alias
+            android:name=".ViewPermissionUsageActivity"
+            android:exported="true"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity-alias>
+
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -66,28 +88,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:exported="true"
-            android:name=".PermissionsRationaleActivity">
+            android:name=".PermissionsRationaleActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
             </intent-filter>
-            <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
-        </activity>
 
-        <!-- For versions starting Android 14, create an activity alias to show the rationale
-             of Health Connect permissions once users click the privacy policy link. -->
-        <activity-alias
-            android:name="ViewPermissionUsageActivity"
-            android:exported="true"
-            android:targetActivity=".MainActivity"
-            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
-                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
-            </intent-filter>
-        </activity-alias>
+            <meta-data
+                android:name="health_permissions"
+                android:resource="@array/health_permissions" />
+        </activity>
     </application>
-    <queries>
-        <package android:name="com.google.android.apps.healthdata" />
-    </queries>
+
 </manifest>
