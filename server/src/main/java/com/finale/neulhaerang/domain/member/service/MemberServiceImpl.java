@@ -287,7 +287,10 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void modifyCharacterInfoByMember(CharacterModifyReqDto characterModifyReqDto) {
-		
+		CharacterInfo characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(
+			authenticationHandler.getLoginMemberId()).orElseThrow(NotExistCharacterInfoException::new
+		);
+		characterInfo.updateCharacterInfo(characterModifyReqDto);
 	}
 
 	private String getLevelByScore(int score) {

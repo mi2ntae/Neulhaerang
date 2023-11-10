@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.finale.neulhaerang.domain.member.dto.request.CharacterModifyReqDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,5 +43,12 @@ public class CharacterInfo {
 		return CharacterInfo.builder()
 			.member(member)
 			.build();
+	}
+
+	public void updateCharacterInfo(CharacterModifyReqDto characterModifyReqDto) {
+		this.backpack = characterModifyReqDto.getBackpack();
+		this.hat = characterModifyReqDto.getHat();
+		this.scarf = characterModifyReqDto.getScarf();
+		this.glasses = characterModifyReqDto.getGlasses();
 	}
 }
