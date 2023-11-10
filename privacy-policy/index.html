@@ -1,0 +1,765 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>개인정보처리방침</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-interactiveBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="80a81815-21ec-4f92-bcee-a97e5b4ef83e" class="page sans"><header><h1 class="page-title">개인정보처리방침</h1><p class="page-description"></p><table class="properties"><tbody></tbody></table></header><div class="page-body"><h2 id="927f4968-997e-49c9-b637-4491a4bc9cd1" class=""><strong>서비스 이용약관</strong></h2><p id="929b26db-27b9-48b4-b56f-af6e932787b3" class=""><strong>제 1장 총칙</strong></p><p id="cd00932e-b0fd-4b0d-acf6-de9274562267" class="">
+제 1조 (목적)
+이 약관은 “피날레”(이하 “회사”라 합니다)가 제공하는 “늘해랑”(이하 ‘서비스’라 합니다)를 회사와 이용계약을 체결한 ‘고객’이 이용함에 있어 필요한 회사와 고객의 권리 및 의무, 기타 제반 사항을 정함을 목적으로 합니다.</p><p id="e5d1f05d-b552-4bb1-981f-c34a381abb13" class="">
+</p><p id="a3853667-c6f2-482f-a018-a86373c8b041" class="">제 2조 (약관 외 준칙)
+이 약관에 명시되지 않은 사항에 대해서는 위치 정보의 보호 및 이용 등에 관한 법률, 전기통신사업법, 정보통신망 이용 촉진및 보호 등에 관한 법률 등 관계법령 및 회사가 정한 서비스의 세부이용지침 등의 규정에 따릅니다.</p><p id="9116e5f2-6551-411b-8a91-35b797b1c8fd" class="">
+</p><p id="90f7cc39-7ed6-4a70-87ec-213edeb1d37d" class=""><strong>제 2장 서비스의 이용</strong></p><p id="081f88e2-f07e-41b3-89d4-3aaa33947b47" class="">
+제 3조 (가입자격)
+① 서비스에 가입할 수 있는 자는 Application 이 설치가능한 모든 사람 입니다.</p><p id="d9f94382-23d1-4c72-8525-dabfe38a0219" class="">
+</p><p id="4b068779-a6ff-404f-8008-626467c6d710" class="">제 4조 (서비스 가입)
+① “Application 관리자”가 정한 본 약관에 고객이 동의하면 서비스 가입의 효력이 발생합니다.
+②“Application 관리자”는 다음 각 호의 고객 가입신청에 대해서는 이를 승낙하지 아니할 수 있습니다. 
+1. 고객 등록 사항을 누락하거나 오기하여 신청하는 경우
+2. 공공질서 또는 미풍양속을 저해하거나 저해할 목적으로 신청한 경우
+3. 기타 회사가 정한 이용신청 요건이 충족되지 않았을 경우</p><p id="44eca50b-bdcd-4e53-95a6-b334d5566534" class="">
+</p><p id="2cdb479a-a73f-409a-92c1-d0f4b45a35fa" class="">제 5조 (서비스의 탈퇴)
+서비스 탈퇴를 희망하는 고객은 “Application 담당자”가 정한 소정의 절차(설정메뉴의 탈퇴)를 통해 서비스 해지를 신청할 수 있습니다.
+ 
+제 6조 (서비스의 수준)
+① 서비스의 이용은 연중무휴 1일 24시간을 원칙으로 합니다. 단, 회사의 업무상이나 기술상의 이유로 서비스가 일시 중지될 수 있으며, 운영상의 목적으로 회사가 정한 기간에는 서비스가 일시 중지될 수 있습니다. 이러한 경우 회사는 사전 또는 사후에 이를 공지합니다. 
+② 위치정보는 관련 기술의 발전에 따라 오차가 발생할 수 있습니다.</p><p id="e7d16fca-c974-402c-b76a-4634eb776d01" class="">
+</p><p id="48e8a798-2d01-4972-bb33-b8aa451bd89c" class="">제 7조 (서비스 이용의 제한 및 정지)
+회사는 고객이 다음 각 호에 해당하는 경우 사전 통지 없이 고객의 서비스 이용을 제한 또는 정지하거나 직권 해지를 할 수 있습니다. 
+1. 타인의 서비스 이용을 방해하거나 타인의 개인정보를 도용한 경우
+2. 서비스를 이용하여 법령, 공공질서, 미풍양속 등에 반하는 행위를 한 경우</p><p id="dc0f899a-ab24-4217-96ac-e1985d5420a5" class="">
+</p><p id="d38567e7-630e-4ec9-a930-8706a7f42bb9" class="">제 8조 (서비스의 변경 및 중지)
+① 회사는 다음 각 호의 1에 해당하는 경우 고객에게 서비스의 전부 또는 일부를 제한, 변경하거나 중지할 수 있습니다. 
+1. 서비스용 설비의 보수 등 공사로 인한 부득이한 경우
+2. 정전, 제반 설비의 장애 또는 이용량의 폭주 등으로 정상적인 서비스 이용에 지장이 있는 경우
+3. 서비스 제휴업체와의 계약 종료 등과 같은 회사의 제반 사정 또는 법률상의 장애 등으로 서비스를 유지할 수 없는 경우
+4.기타 천재지변, 국가비상사태 등 불가항력적 사유가 있는 경우 
+② 제1항에 의한 서비스 중단의 경우에는 회사는 인터넷 등에 공지하거나 고객에게 통지합니다. 다만, 회사가 통제할 수 없는 사유로 인한 서비스의 중단 (운영자의 고의, 과실이 없는 디스크 장애, 시스템 다운 등)으로 인하여 사전 통지가 불가능한 경우에는 사후에 통지합니다.</p><p id="221f4eb9-231a-4a6f-bf3a-e81c0184a195" class="">
+</p><p id="a6f17159-3c0d-4685-976a-2ddbe25ae3db" class=""><strong>제 5장 기타</strong></p><p id="1b4ac15e-62fe-44fc-8ca2-bc462c2b3904" class="">
+제 19조 (회사의 연락처)
+회사의 상호 다음과 같습니다.</p><ol type="1" id="05267cf5-e15c-4cb7-a317-75e157e186cd" class="numbered-list" start="1"><li>상호: “피날레”</li></ol><p id="3693e958-0ff5-430f-a152-0f7e2dcd67ae" class="">제 20조 (양도금지)
+고객 및 회사는 고객의 서비스 가입에 따른 본 약관상의 지위 또는 권리,의무의 전부 또는 일부를 제3자에게 양도, 위임하거나 담보제공 등의 목적으로 처분할 수 없습니다.</p><p id="1f774a6c-0765-4641-b733-2d8d2bc86d1a" class="">제 21조 (손해배상)
+① 고객의 고의나 과실에 의해 이 약관의 규정을 위반함으로 인하여 회사에 손해가 발생하게 되는 경우, 이 약관을 위반한 고객은 회사에 발생하는 모든 손해를 배상하여야 합니다.
+② 고객이 서비스를 이용함에 있어 행한 불법행위나 고객의 고의나 과실에 의해 이 약관 위반행위로 인하여 회사가 당해 고객 이외의 제3자로부터 손해배상청구 또는 소송을 비롯한 각종 이의제기를 받는 경우 당해 고객은 그로 인하여 회사에 발생한 손해를 배상하여야 합니다. 
+③ 회사가 위치정보의 보호 및 이용 등에 관한 법률 제 15조 내지 제26조의 규정을 위반한 행위 혹은 회사가 제공하는 서비스로 인하여 고객에게 손해가 발생한 경우, 회사가 고의 또는 과실 없음을 입증하지 아니하면, 고객의 손해에 대하여 책임을 부담합니다.</p><p id="035c094c-6da6-42f6-9223-3ad3c6dc0b18" class="">
+</p><p id="cfc84071-67e9-451a-826f-ddc1629d88c1" class="">제 22조 (면책사항)
+① 회사는 천재지변 또는 이에 준하는 불가항력으로 인하여 서비스를 제공할 수 없는 경우에는 서비스 제공에 관한 책임이 면제됩니다.
+② 회사는 고객의 귀책사유로 인한 서비스의 이용장애에 대하여 책임을 지지 않습니다.
+③ 회사는 고객이 서비스를 이용하여 기대하는 수익을 상실한 것에 대하여 책임을 지지 않으며, 그 밖에 서비스를 통하여 얻은 자료로 인한 손해 등에 대하여도 책임을 지지 않습니다.
+④ 회사에서 제공하는 서비스 및 서비스를 이용하여 얻은 정보에 대한 최종판단은 고객이 직접 하여야 하고, 그에 따른 책임은 전적으로 고객 자신에게 있으며, 회사는 그로 인하여 발생하는 손해에 대해서 책임을 부담하지 않습니다. 
+⑤ 회사의 업무상 또는 기술상의 장애로 인하여 서비스를 개시하지 못하는 경우 회사는 인터넷 홈페이지 등에 이를 공지하거나 E-mail 등의 방법으로 고객에게 통지합니다. 단, 회사가 통제할 수 없는 사유로 인하여 사전 공지가 불가능한 경우에는 사후에 공지합니다.</p><p id="48f2b5a8-396f-4581-98f9-c073eef02329" class="">
+</p><p id="697eb1a7-558b-4609-89ad-f6370e89d85b" class="">제 23조 (분쟁의 해결 및 관할법원)
+① 서비스 이용과 관련하여 회사와 고객 사이에 분쟁이 발생한 경우, 회사와 고객은 분쟁의 해결을 위해 성실히 협의합니다.
+② 제1항의 협의에서도 분쟁이 해결되지 않을 경우 양 당사자는 정보통신망 이용촉진 및 정보보호 등에 관한 법률 제33조의 규정에 의한 개인정보분쟁조정위원회에 분쟁조정을 신청할 수 있습니다.</p><p id="d5cb1b9a-f319-47ff-93f9-ad3d42ec01b3" class="">
+</p><hr id="d0c974e2-dcde-4e30-ba4b-082a02a11325"/><h2 id="68e09f1e-95a4-4c4f-a99b-c21a43fb5e4a" class=""><strong>개인정보의 항목 및 수집방법 및 수집하는 개인정보의 수집·이용 목적</strong></h2><p id="c7b57d00-f558-4d23-a308-2046999fa572" class="">■ 개인정보 수집 항목</p><p id="c49fd1c7-e5cd-4e01-a60d-846d566c00f9" class="">회사는 회원가입, 서비스 신청을 위해 아래와 같은 개인정보를 수집하고 있습니다.</p><ul id="4febfe03-ef18-4342-bc75-25a307e4a3ed" class="bulleted-list"><li style="list-style-type:disc">수집항목: 카카오 계정 프로필, 기기 id, 헬스 커넥트 수면 정보</li></ul><ul id="50963580-35a4-4416-9d13-ad9531f57bf1" class="bulleted-list"><li style="list-style-type:disc">개인정보 수집방법: 앱 설치 후 카카오 계정 로그인을 통해 수집. 매일 접속시 수면 정보 수집</li></ul><p id="8301b3bc-1ee3-472f-a805-1eb8ccdc630a" class="">
+</p><p id="0785eb0e-3fca-4184-8ce2-7aad24341c56" class=""><strong>■ </strong>앱 접근 권한 안내</p><ul id="ddc42393-41b0-4768-9418-ac48bc9cbb72" class="bulleted-list"><li style="list-style-type:disc">헬스커넥트 접근 권한: 위의 &quot;사용자 수면 정보 관련 세부 사항&quot;에서 설명한 바와 같이, 사용자의 수면 정보를 수집하여 서비스 제공을 위한 목적으로 활용합니다.</li></ul><p id="a53ae3e0-47d3-4864-804e-c1b1aae74633" class="">
+</p><p id="a90d00b1-6811-4111-ab30-e3e9e6bf7eda" class="">■ 사용자 수면 정보 관련 세부 사항</p><ul id="67cc1fd7-9f0f-4f9c-8291-7c17bce8ad09" class="bulleted-list"><li style="list-style-type:disc">사용자 수면 정보: 회사는 서비스 제공을 위해 사용자의 수면 정보를 수집합니다. 이 위치 정보는 서비스 사용량 제한을 위해 필요합니다.</li></ul><ul id="d64a893a-3f16-44d2-ab31-1c4a6cd67099" class="bulleted-list"><li style="list-style-type:disc">포그라운드 사용자 수면 정보: 회사는 포그라운드에서의 앱 사용 중에만 매일 1회에 한해 사용자 수면 정보를 수집합니다. 이 사용자 수면 정보는 서비스 이용 시 피로도를 통한 사용량 제한 기능의 피로도 계산에 활용합니다.</li></ul><ul id="53287a2e-d590-4485-afdb-d0a57b34b91d" class="bulleted-list"><li style="list-style-type:disc">데이터 저장 및 보호: 수집된 위치 정보는 회사의 안전한 서버에 저장됩니다. 위치 데이터는 서비스 제공을 위한 목적 이외로는 사용되지 않습니다.</li></ul><ul id="6a31884e-0df1-4d4d-8c7a-7b28e77413af" class="bulleted-list"><li style="list-style-type:disc">제3자 공유: 회사는 수집된 사용자 수면 정보를 제3자와 공유하지 않습니다.</li></ul><p id="8b254a91-2905-4d82-bc55-7bce01f8f175" class="">
+</p><p id="93626128-1b05-4052-9474-d4a45979f0d5" class="">■ 개인정보 수집 및 이용목적</p><p id="82d25c3d-9c4f-408d-a6dd-023b65470322" class="">회사는 수집한 개인정보를 다음의 목적을 위해 활용합니다.</p><p id="90be87e2-495b-4588-9fa7-07864d27d867" class="">1)회원 서비스에 이용에 따른 피로도 계산 서비스에 이용 </p><p id="c66c1e85-0720-4368-9cf5-d84c4ac5a92f" class="">
+</p><p id="b04e33b3-3e12-44f6-8715-edbc623f9e93" class="">■ 개인정보 수집에 대한 동의</p><p id="b0910194-dcda-46bc-b2ec-bb3c16ea46e9" class="">회사는 회원님의 개인정보 수집에 대하여 동의를 받고 있으며, </p><p id="c8369030-2fc3-4068-a2b1-0da61d5308f0" class="">회원가입시 이용약관 및 개인정보취급방침에 개인정보 수집 동의절차를 마련해 두고 있습니다. </p><p id="f57b986d-fdc0-42bf-8206-3f7aeef189a6" class="">회원님께서 ‘회원가입 및 이용약관에 동의하겠습니까’란에 체크하시면 개인정보 수집에 대해 동의한 것으로 봅니다.</p><p id="014c4927-4b81-4dec-8d55-320d104577cb" class="">가입 후 , 설정 메뉴에서도 이용약관 및 개인정보 취급방침 내용을 다시 확인할 수 있습니다.</p><p id="5f1577ff-2545-4b60-aced-5e01c5db2f4c" class="">
+</p><hr id="aec72af0-f32c-4b89-a290-71bad269d007"/><h2 id="493df50c-0b6e-46d2-819e-b13229d4031d" class=""><strong>앱 실행에서 사용되는 권한</strong></h2><p id="769b8419-624a-4c8d-8c1f-374ee6f86888" class="">모바일 앱 실행을 위해서 선택적으로 위치, 저장, 카메라, 파일 및 미디어 권한이 필요합니다.</p><p id="a1c5e414-f971-42a7-8cbd-56c6c0eeb600" class="">[선택 허용 권한]</p><ul id="b5bd8fb7-fd80-4ada-aebf-bb6ea51a946b" class="bulleted-list"><li style="list-style-type:disc"><strong>사용자 수면 정보 접근 권한</strong>: 위의 &quot;사용자 수면 정보 관련 세부 사항&quot;에서 설명한 바와 같이, 사용자의 현 위치 정보를 수집하여 서비스 제공을 위한 목적으로 활용합니다.</li></ul><p id="486f3dcc-ddfc-4c40-975a-876c880c3883" class="">
+</p><hr id="d5771d4d-9c4f-49da-bd20-c3598f0a398a"/><h2 id="ce883b5c-9fe0-468c-a219-661f3dce4100" class=""><strong>개인정보 제3자 제공</strong></h2><p id="cd757cc7-c9eb-4e7c-9ed4-4f567c5d7f1b" class="">■ 개인정보 제3자 제공</p><p id="1b77fb5f-fbbf-45d6-8ed4-b11cca69615f" class="">※회사는 고객님의 동의없이 고객님의 정보를 제3자에게 제공하지 않습니다. </p><p id="efe63c07-a685-4278-9a70-a250d01e8ea0" class="">개인정보를 ‘개인정보의 수집 및 활용 목적, 수집하는 개인정보 항목’에서 고지한 범위 내에서 활용합니다</p><p id="cd7fb3bc-1219-4c3d-b18f-f33bd8b307f4" class="">수탁자에 공유되는 정보는 당해 목적을 달성하기 위하여 필요한 최소한의 정보에 국한됩니다. </p><p id="dc7a3e03-3526-49b2-aac9-072b951ff400" class="">또한 고객의 서비스 요청에 따라 해당하는 업체에 선택적으로 개인 정보가 제공되고 있습니다. </p><p id="b3fbd180-d6ed-48bb-8353-d04c559e6acc" class="">
+</p><hr id="5f76294e-577a-463e-b8a6-a9f1112399bb"/><h2 id="0013f09d-eaa3-45fc-93b1-54a4a8be8543" class=""><strong>개인정보의 보유 및 이용 기간, 개인정보의 파기절차 및 파기방법</strong></h2><ul id="13341c55-be57-40d0-9081-4a42a5fb3f70" class="bulleted-list"><li style="list-style-type:disc">고객의 개인정보는 회원탈퇴 등 수집 및 이용목적이 달성되거나 동의철회 요청이 있는 경우 지체없이 파기됩니다.</li></ul><p id="6d4072d0-065c-40fc-ae11-2e96f0bdb8d6" class="">■ 개인정보 보유 및 이용기간
+회사는 개인정보 수집 및 이용목적이 달성된 후에는 예외 없이 해당 정보를 파기합니다.</p><p id="80c6fc1a-1f0b-4ae9-86c3-64fe52f22103" class="">■ 개인정보 파기절차 및 파기방법
+회사는 개인정보 수집 및 이용목적이 달성된 후에는 예외 없이 해당 정보를 파기합니다.
+파기절차 및 파기방법은 다음과 같습니다.</p><ul id="82b9cbbd-cba9-4cdf-be1a-a7c4c1513f46" class="bulleted-list"><li style="list-style-type:disc">개인정보의 보유 및 이용 기간, 개인정보의 파기절차 및 파기방법
+*파기절차
+회원님이 회원가입 등을 위해 입력하신 정보는 목적이 달성된 후 별도의 DB로 옮겨져(종이의 경우 별도의 서류함) 내부 방침 및 기타 관련 법령에 의한 정보보호 사유에 따라(보유 및 이용기간 참조) 일정 기간 저장된 후 파기되어집니다.
+별도 DB로 옮겨진 개인정보는 법률에 의한 경우가 아니고서는 보유되어지는 이외의 다른 목적으로 이용되지 않습니다.</li></ul><ul id="c79a17d0-7178-4fb9-9290-8f16ecbd0017" class="bulleted-list"><li style="list-style-type:disc">파기방법
+종이에 출력된 개인정보는 분쇄기로 분쇄 또는 소각하여 파기합니다.
+전자적 파일형태로 저장된 개인정보는 기록을 재생할 수 없는 기술적 방법을 사용하여 삭제합니다.</li></ul><p id="5db5643b-4c8d-419b-936b-54eea25fe916" class="">
+</p><hr id="504707cd-0f46-463c-84d5-07e4ec1b6116"/><h2 id="b8b16e73-c648-4157-8b5f-d2b6abc0212c" class=""><strong>개인정보 취급 위탁 및 개인정보 제3자 제공</strong></h2><p id="0b8850e8-90b4-48b7-9860-287e928bc0c4" class="">■ 개인정보 취급 위탁 업체 </p><p id="8fb473f1-b9e1-43a4-a74b-22c209f83c71" class="">회사는 나은 서비스 제공, 고객편의 제공 등 원활한 업무 수행을 위하여 아래와 같이 개인정보를 위탁하고 있으며, 관계 법령에 따라 위탁계약 시 개인정보가 안전하게 관리될 수 있도록 필요한 사항을 규정하고 있습니다. </p><p id="b6373de9-8a67-4157-ae67-615ba8a15aa9" class="">회사의 개인정보 위탁처리 기관 및 위탁업무 내용은 아래와 같습니다.</p><p id="0da0485a-cc36-4800-ae4e-72405a87297b" class="">
+</p><p id="edf93671-ad7c-4102-9ce0-c3c35dc22fca" class="">[위탁업체정보]</p><ul id="edcee131-1c02-411b-ba04-8216cb3542ba" class="bulleted-list"><li style="list-style-type:disc">수탁 업체명: ㈜피날레</li></ul><ul id="3d79fdca-cabb-42b3-a927-c7dad2f7125d" class="bulleted-list"><li style="list-style-type:disc">위탁업무내용 : 전산 시스템 구축 및 유지</li></ul><ul id="cd58a4a1-e148-45be-bdd0-9727fe925d77" class="bulleted-list"><li style="list-style-type:disc">개인정보 보유 및 이용기간 : 회원탈퇴 시 혹은 위탁 계약 종료 시까지</li></ul><p id="629d2818-edc4-404e-be2c-ba3cd2ccf721" class="">
+</p><hr id="923dfd73-3f22-4764-8b1a-71fd99a2c043"/><h2 id="58fd2e9a-816c-4367-be84-eb027193de1d" class=""><strong>이용자 및 법정대리인의 권리와 그 행사방법</strong></h2><p id="c3416158-a010-499f-826c-c3d8d5589838" class="">■ 이용자 및 법정대리인의 권리와 그 행사방법</p><p id="fbcb5e81-3f8b-4cb4-81c0-041ac9e07824" class="">이용자는 언제든지 등록되어 있는 자신의 개인정보를 조회하거나 수정할 수 있으며 가입해지 및 계정삭제를 요청할 수 있습니다.
+이용자의 개인정보 조회, 수정을 위해서는 앱 내 – 설정- 회원정보 수정 메뉴에서 정보 수정이 가능합니다.
+가입 해지는 앱 내 – 설정 - 회원탈퇴’를 선택할 수 있습니다. 
+개인정보관리책임자에게 서면, 전화 또는 이메일로 연락하시면 지체없이 변경된 개인정보에 대하여 정정 및 철회의 조치를 하겠습니다.</p><p id="1f8f273f-592f-45d2-befa-a10944cb8ce1" class="">귀하가 개인정보의 오류에 대한 정정을 요청하신 경우에는 정정을 완료하기 전까지 당해 개인정보를 이용 또는 제공하지 않습니다. 
+또한 잘못된 개인정보를 제3자에게 이미 제공한 경우에는 정정 처리결과를 제3자에게 지체없이 통지하여 정정이 이루어지도록 하겠습니다.</p><p id="626bb5d5-405b-420a-a045-ea7c949b7187" class="">회사는 이용자 혹은 법정 대리인의 요청에 의해 해지 또는 삭제된 개인정보는 회사가 수집하는 “개인정보의 보유 및 이용기간” 에 명시된 바에 따라 처리하고 그 외의 용도로 열람 또는 이용할 수 없도록 처리하고 있습니다.</p><p id="8821c140-2181-4ad4-beb0-e54d65dd6da3" class="">
+</p><hr id="00a472b5-abe9-4e48-926a-95bd0f5b8b9b"/><h2 id="c73d77cf-12a6-41a4-89a0-e291c18c7557" class=""><strong>개인정보 자동수집 장치의 설치·운영 및 거부에 관한 사항</strong></h2><p id="a721a1a7-ab9f-434c-a020-2e378b30c032" class="">■개인정보 자동수집 장치의 설치·운영 및 거부에 관한 사항
+쿠키, 인터넷 서비스 이용 시 자동 생성되는 개인정보를 수집하는 장치를 운영하지 않습니다.</p><p id="074e7f8d-d8c6-4512-b8f8-fa526559215b" class="">
+</p><hr id="bc2637d1-1647-4c4a-9363-cc062f7374ca"/><h2 id="33530a4f-206b-488c-be86-b858466d6eba" class=""><strong>개인정보 보호책임자</strong></h2><p id="015ec48f-822c-45f5-85b3-b009195336e2" class="">■개인정보 보호책임자 
+회원님의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기 위하여 아래와 같이 관련 부서 및 개인정보관리책임자를 지정하고 있습니다. 개인정보와 관련하여 민원이나 문의가 있으시면, 연락주시기 바랍니다. 성심성의껏 응대하겠습니다.</p><ul id="129b241b-4738-4273-b7b6-75fe9c12bcda" class="bulleted-list"><li style="list-style-type:disc">개인정보 책임자: 임성원
+*담당부서: 서비스팀
+*전화번호: 010-8378-3372
+*이메일: <a href="mailto:ancjs369@naver.com">imsw0529@gmail.com</a>
+</li></ul><p id="253d563a-4777-439f-8c53-29db1adec2cc" class="">회사의 서비스를 이용하시며 발생하는 모든 개인정보보호 관련 민원을 개인정보관리책임자 혹은 담당부서로 신고하실 수 있습니다. 
+회사는 이용자들의 신고사항에 대해 신속하게 충분한 답변을 드릴 것입니다.</p><p id="c592e6cb-c553-48b7-8a58-f875e60a96a6" class="">기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.</p><p id="714ca46a-92fe-49c1-80f8-067994bdb710" class="">1.개인분쟁조정위원회 (<a href="http://www.1336.or.kr/1336">www.1336.or.kr/1336</a>)
+2.정보보호마크인증위원회 (<a href="http://www.eprivacy.or.kr/02-580-0533~4">www.eprivacy.or.kr/02-580-0533~4</a>)
+3.대검찰청 인터넷범죄수사센터 (<a href="http://icic.sppo.go.kr/02-3480-3600">http://icic.sppo.go.kr/02-3480-3600</a>)
+4.경찰청 사이버테러대응센터(<a href="http://www.ctrc.go.kr/">www.ctrc.go.kr/</a>)</p><p id="249fb3e3-04b6-4b2f-a574-057eb427ae30" class="">
+</p><hr id="c4dbfba0-c476-4571-b54b-df66b0ae18b3"/><h2 id="c32f3bda-d0c7-40fa-bf72-991766e720b4" class=""><strong>늘해랑 앱 사용자 계정 정보 삭제 방법</strong></h2><p id="07cce2e1-9eac-4823-b81b-1699f0b8f8bb" class="">■ 사용자 계정 삭제 요청 방법
+사용자는 계정 삭제를 관리자에게 요청할 수 있습니다. 
+사용자 아이디, 이름을 기재하여 삭제가 필요한 정보를 메일로 보내주세요
+-담당자 이메일: imsw0529@gmail.com
+담당자가 확인하여 사용자가 요청하는 정보를 삭제할 수 있습니다.</p><p id="6419754f-57aa-4723-af0a-24f83605bd47" class="">
+</p><hr id="4c218934-52ac-4a4f-96b9-f68b7d460ed6"/><h2 id="0fbd5cab-792f-4bc9-b0bb-5df89ab40ae5" class=""><strong>부칙</strong></h2><p id="04fa6ed7-a9eb-49b2-bbe1-d3e7fbe08a07" class="">■ 정책 변경에 따른 공지의무
+이 개인정보보호방침은 2023년 11월 10일에 제정되었으며 법령·정책 또는 보안기술의 변경에 따라 내용의 추가·삭제 및 수정이 있을 시에는 변경되는 개인정보보호정책을 시행하기 최소 7일전에 고지하겠습니다.</p><p id="3e8f709e-af6f-43db-b727-a1208a9fed40" class="">
+</p></div></article></body></html>
