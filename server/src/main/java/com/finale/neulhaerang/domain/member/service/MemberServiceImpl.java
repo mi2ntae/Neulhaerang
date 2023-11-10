@@ -312,6 +312,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	@Transactional
 	public void modifyCharacterInfoByMember(CharacterModifyReqDto characterModifyReqDto) {
 		CharacterInfo characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(
 			authenticationHandler.getLoginMemberId()).orElseThrow(NotExistCharacterInfoException::new
