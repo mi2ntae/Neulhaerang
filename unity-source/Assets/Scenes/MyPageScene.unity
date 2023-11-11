@@ -615,6 +615,7 @@ GameObject:
   - component: {fileID: 78206578}
   - component: {fileID: 78206577}
   - component: {fileID: 78206576}
+  - component: {fileID: 78206579}
   m_Layer: 5
   m_Name: Scarf
   m_TagString: Untagged
@@ -685,7 +686,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 78206577}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2089359973}
+        m_TargetAssemblyTypeName: TopClothesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &78206577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -724,6 +737,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 78206574}
   m_CullTransparentMesh: 1
+--- !u!114 &78206579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78206574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68969fe944cd0a4aa16f15c280c01e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &91747125
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,6 +1022,7 @@ GameObject:
   - component: {fileID: 143856924}
   - component: {fileID: 143856923}
   - component: {fileID: 143856922}
+  - component: {fileID: 143856925}
   m_Layer: 5
   m_Name: Bag
   m_TagString: Untagged
@@ -1067,7 +1093,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 143856923}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2089359973}
+        m_TargetAssemblyTypeName: TopClothesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &143856923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1106,6 +1144,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143856920}
   m_CullTransparentMesh: 1
+--- !u!114 &143856925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143856920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68969fe944cd0a4aa16f15c280c01e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &180690009
 GameObject:
   m_ObjectHideFlags: 0
@@ -7036,6 +7086,7 @@ GameObject:
   - component: {fileID: 1577862608}
   - component: {fileID: 1577862607}
   - component: {fileID: 1577862606}
+  - component: {fileID: 1577862609}
   m_Layer: 5
   m_Name: Glasses
   m_TagString: Untagged
@@ -7106,7 +7157,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1577862607}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2089359973}
+        m_TargetAssemblyTypeName: TopClothesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1577862607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7145,6 +7208,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1577862604}
   m_CullTransparentMesh: 1
+--- !u!114 &1577862609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577862604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68969fe944cd0a4aa16f15c280c01e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1643061769
 GameObject:
   m_ObjectHideFlags: 0
@@ -7976,11 +8051,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4981785565194926, guid: d2b81ffbd14d661488e4662548003a00, type: 3}
       propertyPath: m_LocalScale.x
-      value: 3300
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 4981785565194926, guid: d2b81ffbd14d661488e4662548003a00, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3300
+      value: 3000
       objectReference: {fileID: 0}
     - target: {fileID: 4981785565194926, guid: d2b81ffbd14d661488e4662548003a00, type: 3}
       propertyPath: m_LocalScale.z
@@ -7992,7 +8067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4981785565194926, guid: d2b81ffbd14d661488e4662548003a00, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1000
+      value: -1200
       objectReference: {fileID: 0}
     - target: {fileID: 4981785565194926, guid: d2b81ffbd14d661488e4662548003a00, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8475,6 +8550,7 @@ GameObject:
   - component: {fileID: 1928114416}
   - component: {fileID: 1928114415}
   - component: {fileID: 1928114414}
+  - component: {fileID: 1928114417}
   m_Layer: 5
   m_Name: Minihat
   m_TagString: Untagged
@@ -8545,7 +8621,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1928114415}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2089359973}
+        m_TargetAssemblyTypeName: TopClothesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1928114415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8584,6 +8672,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1928114412}
   m_CullTransparentMesh: 1
+--- !u!114 &1928114417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928114412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68969fe944cd0a4aa16f15c280c01e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1964026216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8798,6 +8898,7 @@ GameObject:
   - component: {fileID: 2089359970}
   - component: {fileID: 2089359972}
   - component: {fileID: 2089359971}
+  - component: {fileID: 2089359973}
   m_Layer: 5
   m_Name: ClothesScene
   m_TagString: Untagged
@@ -8864,6 +8965,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2089359969}
   m_CullTransparentMesh: 1
+--- !u!114 &2089359973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089359969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b8fce20fff14a48895758edcfb24b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tabButtons:
+  - {fileID: 143856925}
+  - {fileID: 1577862609}
+  - {fileID: 1928114417}
+  - {fileID: 78206579}
+  contentsPanels:
+  - {fileID: 958758528}
+  - {fileID: 1643061769}
+  - {fileID: 1644816123}
+  - {fileID: 930029828}
 --- !u!1 &2120399500
 GameObject:
   m_ObjectHideFlags: 0
