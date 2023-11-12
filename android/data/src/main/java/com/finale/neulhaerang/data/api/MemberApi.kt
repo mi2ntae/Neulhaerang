@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.data.api
 
+import com.finale.neulhaerang.data.model.response.MemberStatResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import retrofit2.http.GET
@@ -13,6 +14,9 @@ interface MemberApi {
 
     @POST("$BASE/stat")
     suspend fun recordTiredness(@Query("tiredness") tiredness: Int): ResponseResult<Void>
+
+    @GET("$BASE/stat/{memberId}")
+    suspend fun getMemberStat(@Path("memberId") memberId: Long): ResponseResult<List<MemberStatResDto>>
 
     companion object {
         private const val BASE = "member"
