@@ -25,12 +25,6 @@ public class MainPageDirector : MonoBehaviour
     public GameObject MinihatA3;
     public GameObject MinihatA4;
 
-    // Management of GameObject
-    public List<GameObject> characterBags;
-    public List<GameObject> characterGlasses;
-    public List<GameObject> characterMinihats;
-    public List<GameObject> characterScarfs;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -40,23 +34,23 @@ public class MainPageDirector : MonoBehaviour
         // Init clothes
         Init();
 
+        // TODO
+        // Receive the clothes data from server, update the clothes state.
+        ClothesUpdate();
+
         // characterPosition position
         Vector3 characterPosition = myCharacter.transform.position;
         Debug.Log("characterPrefab 위치: " + characterPosition);
-
-        characterBags = new List<GameObject>();
-        characterGlasses = new List<GameObject>();
-        characterMinihats = new List<GameObject>();
-        characterScarfs = new List<GameObject>();
 
         // active test
         BagA.SetActive(true);
         Debug.Log("가방 상태 : " + BagA.activeSelf);
     }
 
-    // All Clothes Object setActive false
+    
     void Init()
     {
+        // All Clothes Object setActive false
         BagA.SetActive(false);
         BagA2.SetActive(false);
         BagA3.SetActive(false);
@@ -76,6 +70,12 @@ public class MainPageDirector : MonoBehaviour
         MinihatA3.SetActive(false);
         MinihatA4.SetActive(false);
     }
+
+    void ClothesUpdate()
+    {
+
+    }
+
 
     // Update is called once per frame
     void Update()
