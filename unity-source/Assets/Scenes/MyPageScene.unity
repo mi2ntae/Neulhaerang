@@ -936,10 +936,10 @@ RectTransform:
   - {fileID: 1304886898}
   m_Father: {fileID: 930029829}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2120, y: -875.30005}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &130797890
 MonoBehaviour:
@@ -984,7 +984,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 130797891}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 930029833}
+        m_TargetAssemblyTypeName: ScarfPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &130797891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1005,7 +1017,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: aeccf9cad2fa23143b151ccd46ce2217, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e46f3a67dbd76f743a783df75d7b76fb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1362,10 +1374,10 @@ RectTransform:
   - {fileID: 215838489}
   m_Father: {fileID: 1643061770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 920, y: -875.30005}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &213051590
 MonoBehaviour:
@@ -1410,7 +1422,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 213051591}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1643061774}
+        m_TargetAssemblyTypeName: GlassesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &213051591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,7 +1455,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 484fa66059cb6c44ca54c2635d9a8875, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1d708d5cb0759134d9aa9cbb4034518f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2007,7 +2031,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 300372212}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 958758533}
+        m_TargetAssemblyTypeName: BagPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &300372212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2028,7 +2064,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: aeccf9cad2fa23143b151ccd46ce2217, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f3137ca60b4e72b4b8b7c388d6753fad, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2172,10 +2208,10 @@ RectTransform:
   - {fileID: 967941726}
   m_Father: {fileID: 1643061770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 920, y: -2075.3}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &346200496
 MonoBehaviour:
@@ -2220,7 +2256,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 346200497}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1643061774}
+        m_TargetAssemblyTypeName: GlassesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &346200497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2241,7 +2289,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c6d2c686caa36ce439c36bad87553796, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 639834e4e7ceb7b4a9d137d8b7954b09, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2840,10 +2888,10 @@ RectTransform:
   - {fileID: 928260516}
   m_Father: {fileID: 1643061770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2120, y: -2075.3}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &488950562
 MonoBehaviour:
@@ -2888,7 +2936,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 488950563}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1643061774}
+        m_TargetAssemblyTypeName: GlassesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &488950563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2909,7 +2969,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7a8da37a2e0936c49b8b88e3d66f7b44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed9e37c5aec958442b0fa04968a5e9ef, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3910,10 +3970,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1263620764}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 6
+      - m_Target: {fileID: 958758533}
+        m_TargetAssemblyTypeName: BagPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3942,7 +4002,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 22affe86b789541438bc2945e02ab953, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4131147863d3fc94a9d35ba469927243, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4194,13 +4254,14 @@ GameObject:
   - component: {fileID: 930029831}
   - component: {fileID: 930029830}
   - component: {fileID: 930029832}
+  - component: {fileID: 930029833}
   m_Layer: 5
   m_Name: ScarfPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &930029829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4285,6 +4346,26 @@ MonoBehaviour:
   m_Spacing: {x: 400, y: 400}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &930029833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930029828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cff35d61f8ff1849b2f6a565f65d669, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scarfButtons:
+  - {fileID: 1293974444}
+  - {fileID: 130797893}
+  - {fileID: 1300317303}
+  scarfObjects:
+  - {fileID: 467321188}
+  - {fileID: 148965568}
+  - {fileID: 718752609}
 --- !u!1 &944209829
 GameObject:
   m_ObjectHideFlags: 0
@@ -4732,6 +4813,8 @@ MonoBehaviour:
   - {fileID: 1234464092}
   - {fileID: 575858324}
   - {fileID: 185286960}
+  bagOff: []
+  bagOn: []
 --- !u!1 &959139094
 GameObject:
   m_ObjectHideFlags: 0
@@ -4767,10 +4850,10 @@ RectTransform:
   - {fileID: 49150881}
   m_Father: {fileID: 1643061770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2120, y: -875.30005}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &959139096
 MonoBehaviour:
@@ -4815,7 +4898,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 959139097}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1643061774}
+        m_TargetAssemblyTypeName: GlassesPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &959139097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4836,7 +4931,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 51eefa83fcba3224ea26f21c49c5697d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a4f98199ddf96214f9578d8e4b574a5d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5515,10 +5610,10 @@ RectTransform:
   - {fileID: 536291983}
   m_Father: {fileID: 1644816124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2120, y: -875.30005}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1091736412
 MonoBehaviour:
@@ -5563,7 +5658,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1091736413}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1644816128}
+        m_TargetAssemblyTypeName: MinihatPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1091736413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5584,7 +5691,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c6d2c686caa36ce439c36bad87553796, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7026dba0f7fc4f948b8323aabc099536, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5718,10 +5825,10 @@ RectTransform:
   - {fileID: 1286397648}
   m_Father: {fileID: 1644816124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 920, y: -875.30005}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1141639088
 MonoBehaviour:
@@ -5766,7 +5873,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1141639089}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1644816128}
+        m_TargetAssemblyTypeName: MinihatPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1141639089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5787,7 +5906,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 9fa9ab91c58e88b43980c423134fb8fc, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6376,29 +6495,6 @@ MonoBehaviour:
   MinihatA2: {fileID: 1683088754}
   MinihatA3: {fileID: 1359138688}
   MinihatA4: {fileID: 13704299}
-  characterBags: []
-  characterGlasses: []
-  characterMinihats: []
-  characterScarfs: []
-  bagButtons:
-  - {fileID: 896601548}
-  - {fileID: 300372214}
-  - {fileID: 1720004648}
-  - {fileID: 1695386150}
-  glassesButtons:
-  - {fileID: 213051593}
-  - {fileID: 959139099}
-  - {fileID: 346200499}
-  - {fileID: 488950565}
-  minihatButtons:
-  - {fileID: 1141639091}
-  - {fileID: 1091736415}
-  - {fileID: 1290311697}
-  - {fileID: 1282562352}
-  scarfButtons:
-  - {fileID: 1293974444}
-  - {fileID: 130797893}
-  - {fileID: 1300317303}
 --- !u!114 &1263620770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6458,10 +6554,10 @@ RectTransform:
   - {fileID: 1861724025}
   m_Father: {fileID: 1644816124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2120, y: -2075.3}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1282562349
 MonoBehaviour:
@@ -6506,7 +6602,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1282562350}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1644816128}
+        m_TargetAssemblyTypeName: MinihatPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1282562350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6527,7 +6635,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a4fe1c80a49dafb40ada403037c4a432, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e4b4fb4aeade6e64f80acb14cb1880cb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6789,10 +6897,10 @@ RectTransform:
   - {fileID: 37879362}
   m_Father: {fileID: 1644816124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 920, y: -2075.3}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1290311694
 MonoBehaviour:
@@ -6837,7 +6945,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1290311695}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1644816128}
+        m_TargetAssemblyTypeName: MinihatPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1290311695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6858,7 +6978,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: ebe8e11f9fc570747823d721f9088fe8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6923,10 +7043,10 @@ RectTransform:
   - {fileID: 180690010}
   m_Father: {fileID: 930029829}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 920, y: -875.30005}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1293974441
 MonoBehaviour:
@@ -6971,7 +7091,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1293974442}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 930029833}
+        m_TargetAssemblyTypeName: ScarfPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1293974442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6992,7 +7124,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c6d2c686caa36ce439c36bad87553796, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dfb75345648dcee4cbcaaf8aa82f7326, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7057,10 +7189,10 @@ RectTransform:
   - {fileID: 477244991}
   m_Father: {fileID: 930029829}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 920, y: -2075.3}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1300317300
 MonoBehaviour:
@@ -7105,7 +7237,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1300317301}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 930029833}
+        m_TargetAssemblyTypeName: ScarfPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1300317301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7126,7 +7270,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3d29693681072574aa13f942091f8d4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aa42da1601218d74da6924e4161f8d86, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7778,13 +7922,14 @@ GameObject:
   - component: {fileID: 1643061772}
   - component: {fileID: 1643061771}
   - component: {fileID: 1643061773}
+  - component: {fileID: 1643061774}
   m_Layer: 5
   m_Name: GlassesPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1643061770
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7870,6 +8015,28 @@ MonoBehaviour:
   m_Spacing: {x: 400, y: 400}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1643061774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643061769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c719ad92cb956f34a911a13c72e92d84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glassesButtons:
+  - {fileID: 213051593}
+  - {fileID: 959139099}
+  - {fileID: 346200499}
+  - {fileID: 488950565}
+  glassesObjects:
+  - {fileID: 1980667268}
+  - {fileID: 1095130190}
+  - {fileID: 109051342}
+  - {fileID: 239442473}
 --- !u!1 &1644816123
 GameObject:
   m_ObjectHideFlags: 0
@@ -7882,13 +8049,14 @@ GameObject:
   - component: {fileID: 1644816126}
   - component: {fileID: 1644816125}
   - component: {fileID: 1644816127}
+  - component: {fileID: 1644816128}
   m_Layer: 5
   m_Name: MinihatPage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1644816124
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7974,6 +8142,28 @@ MonoBehaviour:
   m_Spacing: {x: 400, y: 400}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1644816128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644816123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2df05270be5df7541bbddb5298f7c316, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minihatButtons:
+  - {fileID: 1141639091}
+  - {fileID: 1091736415}
+  - {fileID: 1290311697}
+  - {fileID: 1282562352}
+  minihatObjects:
+  - {fileID: 1405510466}
+  - {fileID: 1683088754}
+  - {fileID: 1359138688}
+  - {fileID: 13704299}
 --- !u!1 &1683088754 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1529735367244216, guid: abcd370ab1eef084b98dcca0024ecb16,
@@ -8063,7 +8253,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1695386148}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 958758533}
+        m_TargetAssemblyTypeName: BagPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1695386148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8084,7 +8286,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c6d2c686caa36ce439c36bad87553796, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 77532561d56173340afc6bc9a554abf0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8829,7 +9031,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1720004646}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 958758533}
+        m_TargetAssemblyTypeName: BagPanel, Assembly-CSharp
+        m_MethodName: ClickTab
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1720004646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8850,7 +9064,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3d29693681072574aa13f942091f8d4e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 57207faf25696cc4493b87645e015f6e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
