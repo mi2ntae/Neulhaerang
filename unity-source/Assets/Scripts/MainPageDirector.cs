@@ -1,29 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainPageDirector : MonoBehaviour
 {
     public GameObject characterPrefab;
 
-    public GameObject BagA;
-    public GameObject BagA2;
-    public GameObject BagA3;
-    public GameObject BagA4;
+    // Clothes GameObject List
+    public List<GameObject> bagList;
+    public List<GameObject> glassesList;
+    public List<GameObject> minihatList;
+    public List<GameObject> scarfList;
 
-    public GameObject ScarfA;
-    public GameObject ScarfA2;
-    public GameObject ScarfA3;
+    // Clothes Button Image List
+    public List<Sprite> bagOn;
+    public List<Sprite> glassesOn;
+    public List<Sprite> minihatOn;
+    public List<Sprite> scarfOn;
 
-    public GameObject GlassesA;
-    public GameObject GlassesA2;
-    public GameObject GlassesA3;
-    public GameObject GlassesA4;
-
-    public GameObject MinihatA;
-    public GameObject MinihatA2;
-    public GameObject MinihatA3;
-    public GameObject MinihatA4;
+    // Clothes Button List
+    public List<ClothesButton> bagButtons;
+    public List<ClothesButton> glassesButtons;
+    public List<ClothesButton> minihatButtons;
+    public List<ClothesButton> scarfButtons;
 
     // Start is called before the first frame update
     void Start()
@@ -34,46 +34,50 @@ public class MainPageDirector : MonoBehaviour
         // Init clothes
         Init();
 
-        // TODO
-        // Receive the clothes data from server, update the clothes state.
-        ClothesUpdate();
-
         // characterPosition position
         Vector3 characterPosition = myCharacter.transform.position;
         Debug.Log("characterPrefab 위치: " + characterPosition);
 
         // active test
-        BagA.SetActive(true);
-        Debug.Log("가방 상태 : " + BagA.activeSelf);
+        //BagA.SetActive(true);
+        //Debug.Log("가방 상태 : " + BagA.activeSelf);
     }
 
     
     void Init()
     {
         // All Clothes Object setActive false
-        BagA.SetActive(false);
-        BagA2.SetActive(false);
-        BagA3.SetActive(false);
-        BagA4.SetActive(false);
+        foreach (var bag in bagList)
+        {
+            bag.SetActive(false);
+        }
 
-        ScarfA.SetActive(false);
-        ScarfA2.SetActive(false);
-        ScarfA3.SetActive(false);
+        foreach (var glasses in glassesList)
+        {
+            glasses.SetActive(false);
+        }
 
-        GlassesA.SetActive(false);
-        GlassesA2.SetActive(false);
-        GlassesA3.SetActive(false);
-        GlassesA4.SetActive(false);
+        foreach (var minihat in minihatList)
+        {
+            minihat.SetActive(false);
+        }
 
-        MinihatA.SetActive(false);
-        MinihatA2.SetActive(false);
-        MinihatA3.SetActive(false);
-        MinihatA4.SetActive(false);
+        foreach (var scarf in scarfList)
+        {
+            scarf.SetActive(false);
+        }
+
+        // TODO
+        // Receive the clothes data from server, update the clothes state.
+        ClothesUpdate();
     }
 
     void ClothesUpdate()
     {
-
+        // We must update the clothes gameobject and button image
+        // example
+        bagList[0].SetActive(true);
+        bagButtons[0].GetComponent<Image>().sprite = bagOn[0];
     }
 
 
