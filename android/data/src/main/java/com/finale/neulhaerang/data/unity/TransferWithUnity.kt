@@ -56,6 +56,30 @@ class TransferWithUnity {
     }
 
     /*
+    * 유저 상태 정보 조회
+    * */
+    fun getMemberStatus() {
+        runBlocking {
+            GlobalScope.launch {
+                val memberId =
+                    DataStoreApplication.getInstance().getDataStore().getMemberId().firstOrNull() ?: 0
+                MemberApi.instance.getMemberStatus(memberId)
+                    .onSuccess { (_, data) ->
+                        checkNotNull(data)
+                        Log.i("heejeong", data.toString())
+                        sendMemberStatus(data)
+                    }
+            }.join()
+        }
+    }
+    private fun sendMemberStatus(indolence: MemberStatusResDto) {
+        val gson = Gson()
+        val jsonMessage = gson.toJson(indolence)
+        val unityMethod = "ReceiveMessage"
+        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
+    }
+
+    /*
     * 유저 능력치 조회
     * */
     fun getMemberStats() {
