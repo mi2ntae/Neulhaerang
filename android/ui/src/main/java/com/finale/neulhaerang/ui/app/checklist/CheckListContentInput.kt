@@ -50,7 +50,15 @@ fun CheckListContentInput(
 
     Row(verticalAlignment = Alignment.CenterVertically) {
         OutlinedIconButton(onClick = { showDialog = true }) {
-            Icon(imageVector = Icons.Filled.QuestionMark, contentDescription = "icon")
+            when (stat) {
+                Stat.GodSang -> Text(text = stat.emoji)
+                Stat.Survive -> Text(text = stat.emoji)
+                Stat.InSsa -> Text(text = stat.emoji)
+                Stat.Teunteun -> Text(text = stat.emoji)
+                Stat.GoodIdea -> Text(text = stat.emoji)
+                Stat.Love -> Text(text = stat.emoji)
+                else -> Icon(imageVector = Icons.Filled.QuestionMark, contentDescription = "icon")
+            }
         }
         Spacer(modifier = Modifier.width(8.dp))
         TextField(
