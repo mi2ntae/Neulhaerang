@@ -19,8 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.finale.neulhaerang.ui.theme.Pink40
-import com.finale.neulhaerang.ui.theme.Pink80
 import com.finale.neulhaerang.ui.theme.Typography
 
 /**
@@ -133,8 +131,6 @@ fun Level(level: Int, curEx: Int, upEx: Int) {
                 .align(alignment = CenterVertically),
 
             progress = curEx / upEx.toFloat(),
-            color = Pink40,
-            trackColor = Pink80,
         )
 
         // 간격 설정

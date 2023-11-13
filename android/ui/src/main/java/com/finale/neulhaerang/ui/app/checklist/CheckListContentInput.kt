@@ -1,5 +1,6 @@
 package com.finale.neulhaerang.ui.app.checklist
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,14 +11,12 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,8 +28,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.ui.R
 
 @Composable
 fun CheckListContentInput(
@@ -49,9 +50,7 @@ fun CheckListContentInput(
     var showDialog by remember { mutableStateOf(false) }
 
     Row(verticalAlignment = Alignment.CenterVertically) {
-        OutlinedIconButton(onClick = { showDialog = true }) {
-            Icon(imageVector = Icons.Filled.QuestionMark, contentDescription = "icon")
-        }
+        IconButton(onClick = { showDialog = true }) { StatImage(stat = stat) }
         Spacer(modifier = Modifier.width(8.dp))
         TextField(
             value = content,
@@ -115,4 +114,20 @@ fun StatDialog(
             }
         }
     })
+}
+
+/**
+ * 선택된 스탯 이미지 표시하는 composable
+ */
+@Composable
+fun StatImage(stat: Stat) {
+    val id = when (stat) {
+        Stat.GodSang -> R.drawable.godsang
+        Stat.Survive -> R.drawable.survive
+        Stat.InSsa -> R.drawable.inssa
+        Stat.Teunteun -> R.drawable.teunteun
+        Stat.GoodIdea -> R.drawable.goodidea
+        Stat.Love -> R.drawable.love
+    }
+    Image(painter = painterResource(id = id), contentDescription = stat.statName)
 }

@@ -31,14 +31,12 @@ import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.ui.theme.Typography
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
 @Composable
 fun CheckList(
     navController: NavHostController,
-    selectedDate: LocalDate,
     routineList: List<Routine>,
     todoList: List<Todo>,
     checkCheckList: (CheckList) -> Unit,
@@ -49,7 +47,6 @@ fun CheckList(
             .verticalScroll(rememberScrollState(0))
             .padding(16.dp),
     ) {
-        Text(text = selectedDate.toString())
         Routine(routineList, navController, checkCheckList)
         Spacer(modifier = Modifier.height(16.dp))
         TodoList(todoList, navController, checkCheckList)
