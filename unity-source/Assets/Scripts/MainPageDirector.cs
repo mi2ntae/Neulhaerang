@@ -69,16 +69,16 @@ public class MainPageDirector : MonoBehaviour
 
         // TODO
         // Receive the clothes data from server, update the clothes state.
-        ClothesUpdate();
+        //ClothesUpdate();
     }
 
-    void ClothesUpdate()
-    {
-        // We must update the clothes gameobject and button image
-        // example
-        bagList[0].SetActive(true);
-        bagButtons[0].GetComponent<Image>().sprite = bagOn[0];
-    }
+    //void ClothesUpdate()
+    //{
+    //    // We must update the clothes gameobject and button image
+    //    // example
+    //    bagList[0].SetActive(true);
+    //    bagButtons[0].GetComponent<Image>().sprite = bagOn[0];
+    //}
 
 
     // Update is called once per frame
