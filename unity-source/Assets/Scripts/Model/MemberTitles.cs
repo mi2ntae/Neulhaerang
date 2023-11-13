@@ -15,3 +15,8 @@ public class MemberTitle
     public string Name { get => name; }
     public string Content { get => content; }
 }
+
+public class MemberTitles
+{
+    public MemberTitle[] titles;
+}

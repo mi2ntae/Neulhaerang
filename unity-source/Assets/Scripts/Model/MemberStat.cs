@@ -23,4 +23,9 @@ public class MemberStat
     public int Popularity { get => popularity; }
     public int Power { get => power; }
     public int Creative { get => creative; }
+
+    public override string ToString()
+    {
+        return "[Life]" + Life + " [Love]" + Love + " [Survival]" + Survival + " [Popularity]" + Popularity + " [Power]" + Power + " [Creative]" + Creative;
+    }
 }
