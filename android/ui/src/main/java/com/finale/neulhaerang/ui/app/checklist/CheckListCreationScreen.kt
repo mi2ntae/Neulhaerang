@@ -174,7 +174,7 @@ fun CheckListCreationContent(
                 }
             },
             title = {},
-            text = { Text(text = message) }
+            text = { Text(text = message, style = MaterialTheme.typography.bodyLarge) }
         )
     }
 }
