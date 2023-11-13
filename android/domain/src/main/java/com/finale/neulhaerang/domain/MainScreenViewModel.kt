@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
+import com.finale.neulhaerang.common.message.BlockMessage
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.Routine
@@ -51,16 +52,10 @@ class MainScreenViewModel : ViewModel() {
     private val _letterText = mutableStateOf("")
 
     init {
-//        setDataFromDateTime()
         viewModelScope.launch {
             _memberId.longValue =
                 DataStoreApplication.getInstance().getDataStore().getMemberId().firstOrNull() ?: 0
-            MemberApi.instance.getMemberStatus(_memberId.longValue)
-                .onSuccess { (_, data) ->
-                    checkNotNull(data)
-                    _indolence.intValue = data.indolence
-                    _tiredness.intValue = data.tiredness
-                }
+            getMemberStatus()
         }
     }
 
@@ -130,7 +125,7 @@ class MainScreenViewModel : ViewModel() {
         }
     }
 
-    fun setDataFromDateTime() {
+    private fun setDataFromDateTime() {
         viewModelScope.launch {
             // 완료 퍼센트 가져오기
             if (beforeYearMonth != yearMonth) {
@@ -166,19 +161,42 @@ class MainScreenViewModel : ViewModel() {
         }
     }
 
-    fun checkCheckList(checkList: CheckList) {
-        viewModelScope.launch {
-            when (checkList) {
-                is Routine -> RoutineApi.instance.completeRoutine(checkList.dailyRoutineId)
-                is Todo -> TodoApi.instance.completeTodo(checkList.todoId)
-                else -> ResponseResult.Failure(0, "class type error")
-            }.onSuccess {
-                // 체크리스트 체크시 완료도 갱신
-                updateTodoDoneList()
-                setDataFromDateTime()
-            }.onFailure {
-                Log.w(TAG, "checkCheckList: 체크 실패")
-            }
+    suspend fun checkCheckList(checkList: CheckList): String? {
+        if (indolence >= 50) {
+            return BlockMessage.IndolenceBlock.message
         }
+        if (selectedDate != LocalDate.now()) {
+            return BlockMessage.NotTodayBlock.message
+        }
+        when (checkList) {
+            is Routine -> RoutineApi.instance.completeRoutine(checkList.dailyRoutineId)
+            is Todo -> TodoApi.instance.completeTodo(checkList.todoId)
+            else -> ResponseResult.Failure(0, "class type error")
+        }.onSuccess {
+            // 체크리스트 체크시 완료도 갱신
+            updateTodoDoneList()
+            setDataFromDateTime()
+            return null
+        }.onFailure {
+            Log.w(TAG, "checkCheckList: 체크 실패")
+        }
+        return null
+    }
+
+    private fun getMemberStatus() {
+        if (_memberId.longValue == 0L) return
+        viewModelScope.launch {
+            MemberApi.instance.getMemberStatus(_memberId.longValue)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    _indolence.intValue = data.indolence
+                    _tiredness.intValue = data.tiredness
+                }
+        }
+    }
+
+    fun backToMainScreen() {
+        getMemberStatus()
+        setDataFromDateTime()
     }
 }

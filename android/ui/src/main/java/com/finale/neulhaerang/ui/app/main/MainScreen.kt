@@ -48,7 +48,7 @@ fun MainScreen(navController: NavHostController) {
     if (beforeRoute != currentRoute) {
         beforeRoute = currentRoute
         if (currentRoute == AppNavItem.Main.route) {
-            viewModel.setDataFromDateTime()
+            viewModel.backToMainScreen()
         }
     }
 

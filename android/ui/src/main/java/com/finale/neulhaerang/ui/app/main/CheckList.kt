@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,12 +31,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.finale.neulhaerang.common.message.BlockMessage
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.theme.Typography
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -45,25 +48,28 @@ fun CheckList(
     routineList: List<Routine>,
     todoList: List<Todo>,
     selectedDate: LocalDate,
-    checkCheckList: (CheckList) -> Unit,
+    checkCheckList: suspend (CheckList) -> String?,
 ) {
+    val scope = rememberCoroutineScope()
     val (alert, setAlert) = remember { mutableStateOf(false) }
     val (message, setMessage) = remember { mutableStateOf("") }
 
     val modifyCheckList = { type: String, index: Int ->
         if (selectedDate < LocalDate.now()) {
-            setMessage("이전 날짜의 체크리스트는 수정할 수 없습니다.")
+            setMessage(BlockMessage.PastModifyBlock.message)
             setAlert(true)
         } else
             navController.navigate("${AppNavItem.CheckListModify.route}/$type/$index")
     }
 
-    val checkCheckListFun = { checkList: CheckList ->
-        if (selectedDate != LocalDate.now()) {
-            setMessage("오늘이 아닌 날짜의 체크리스트는 완료할 수 없습니다.")
-            setAlert(true)
-        } else
-            checkCheckList(checkList)
+    fun checkCheckListFun(checkList: CheckList) {
+        scope.launch {
+            val msg = checkCheckList(checkList)
+            if (!msg.isNullOrBlank()) {
+                setMessage(msg)
+                setAlert(true)
+            }
+        }
     }
 
     Column(
@@ -72,9 +78,9 @@ fun CheckList(
             .verticalScroll(rememberScrollState(0))
             .padding(16.dp),
     ) {
-        Routine(routineList, modifyCheckList, checkCheckListFun)
+        Routine(routineList, modifyCheckList) { checkCheckListFun(it) }
         Spacer(modifier = Modifier.height(16.dp))
-        TodoList(todoList, modifyCheckList, checkCheckListFun)
+        TodoList(todoList, modifyCheckList) { checkCheckListFun(it) }
     }
 
     if (alert) {
