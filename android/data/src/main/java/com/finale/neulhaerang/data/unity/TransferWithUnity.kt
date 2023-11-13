@@ -40,7 +40,7 @@ class TransferWithUnity {
 
     // 메소드가 static (companion object) 이면 안 됨
     fun receiveMessage(userId: String) {
-        getCharacterItems()
+        defeatLazyMonster()
         Log.i("heejeong", "TransferWithUnity $userId")
         //받은 userId로 작업 진행 예시
         val userData = UserData(userId, "rocketman", "heejeong@gmail.com")
@@ -64,6 +64,24 @@ class TransferWithUnity {
     }
 
     /*
+    * 나태괴물처지
+    * */
+    fun defeatLazyMonster() {
+        runBlocking {
+            GlobalScope.launch {
+                MemberApi.instance.defeatLazyMonster()
+                    .onSuccess { (_, data) ->
+                        checkNotNull(data)
+                        Log.i("heejeong", "$data")
+                    }.onFailure { (_, message, _) ->
+                        Log.e("heejeong", "실패! %n$message")
+                    }
+            }.join()
+        }
+    }
+
+
+    /*
     * 유저 캐릭터 아이템 정보 수정
     * */
     fun modifyCharacterItems(userItems: MemberItemReqDto) {
@@ -71,8 +89,9 @@ class TransferWithUnity {
             GlobalScope.launch {
                 MemberApi.instance.modifyCharacterItems(userItems)
                     .onSuccess { (_, data) ->
-                        checkNotNull(data)
-                        Log.i("heejeong", data.toString())
+//                        checkNotNull(data)
+                        Log.i("heejeong", "$data")
+                        Log.i("heejeong", "ㅇㅕ기냐")
                     }.onFailure { (_, message, _) ->
                         Log.e("heejeong", "실패! %n$message")
                     }
@@ -89,7 +108,7 @@ class TransferWithUnity {
                 MemberApi.instance.getCharacterItems(memberId)
                     .onSuccess { (_, data) ->
                         checkNotNull(data)
-                        Log.i("heejeong", data.toString())
+                        Log.i("heejeong", "$data")
 //                        sendCharacterItems(data)
                     }.onFailure { (_, message, _) ->
                         Log.e("heejeong", "실패! %n$message")
