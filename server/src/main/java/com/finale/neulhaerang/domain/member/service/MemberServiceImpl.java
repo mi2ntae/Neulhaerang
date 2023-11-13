@@ -88,9 +88,6 @@ public class MemberServiceImpl implements MemberService {
 		LocalDateTime now = LocalDateTime.now();
 		int sumOfIndolence = records.stream()
 			.filter(r -> r.getStatType().equals(StatType.나태도))
-			.filter(
-				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-					DateTimeFormatter.ISO_DATE)))
 			.map(record -> record.getWeight()).reduce(0, Integer::sum);
 		int sumOfTiredness = records.stream()
 			.filter(r -> r.getStatType().equals(StatType.피곤도))
@@ -306,7 +303,7 @@ public class MemberServiceImpl implements MemberService {
 			throw new AlreadyExistTirednessException();
 		}
 
-		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now(), StatType.피곤도,
+		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now().plusHours(9), StatType.피곤도,
 			tiredness);
 		memberStatRepository.save(StatRecord.of(statRecordReqDto, memberId));
 	}
