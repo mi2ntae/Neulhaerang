@@ -118,5 +118,6 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
             clearDataStore()
         }
         isLoggedIn.emit(false)
+        MainScreenViewModel.viewModelStore.clear()
     }
 }
