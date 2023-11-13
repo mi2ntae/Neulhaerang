@@ -126,6 +126,9 @@ public class RoutineServiceImpl implements RoutineService {
 			throw new InvalidRepeatedDateException(member.get());
 		}
 		StringBuilder repeated = checkRepeatedDate(routineModifyReqDto.getRepeated());
+		if (repeated.toString().equals("0000000")) {
+			throw new NonRepeatedDateException(member.get());
+		}
 		optionalRoutine.get()
 			.updateContentAndAlarmAndAlarmTimeAndRepeated(routineModifyReqDto, repeated.toString());
 	}
