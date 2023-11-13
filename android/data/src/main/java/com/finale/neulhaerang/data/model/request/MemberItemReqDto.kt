@@ -5,4 +5,5 @@ class MemberItemReqDto (
     val glasses: Int,
     val hat: Int,
     val scarf: Int,
+    val title: Int
 )
