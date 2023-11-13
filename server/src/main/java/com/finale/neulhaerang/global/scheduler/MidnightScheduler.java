@@ -197,23 +197,30 @@ public class MidnightScheduler {
 	}
 
 	public String createReqMessage(Member member, LocalDate date) {
-		StringBuilder reqMessage = new StringBuilder("내 이름은 " + member.getNickname() + "이야. 내가 어제 한 일은 다음과 같아.");
-
 		List<Todo> doneTodoList = todoRepository.findTodosByMemberAndStatusIsFalseAndCheckIsTrueAndTodoDateIsBetween(
 			member, date.atStartOfDay(), date.atTime(LocalTime.MAX)
 		);
 		List<DailyRoutine> doneDailyRoutineList = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalseAndCheckIsTrue(
 			date, member);
 
-		for (Todo todo : doneTodoList) {
-			reqMessage.append(todo.getContent()).append(",");
+		StringBuilder reqMessage = new StringBuilder("너의 이름은 해랑이야. 내 이름은 " + member.getNickname() + "이야.");
+		if(doneTodoList.size()+doneDailyRoutineList.size()==0){
+			reqMessage.append("나는 어제 아무 일도 하지 않았어. 나의 내일을 응원하는 ");
 		}
-		for (DailyRoutine dailyRoutine : doneDailyRoutineList) {
-			reqMessage.append(dailyRoutine.getRoutine().getContent()).append(",");
-		}
-		reqMessage.append(
-			"나의 가상의 캐릭터 '해랑이'가 위의 일을 바탕으로 나에게 주는 편지를 작성해줘. 일기 형식에 긍정적이고 동기부여를 줄 것, 반말로 쓸 것, 이모지를 사용해서 귀엽게 작성할 것. 10문장 이내로 부탁해");
+		else {
+			reqMessage.append("내가 어제 한 일은 다음과 같아.");
 
+			for (Todo todo : doneTodoList) {
+				reqMessage.append(todo.getContent()).append(",");
+			}
+			for (DailyRoutine dailyRoutine : doneDailyRoutineList) {
+				reqMessage.append(dailyRoutine.getRoutine().getContent()).append(",");
+			}
+			reqMessage.append("위의 일을 바탕으로 긍정적이고 동기부여를 주는 ");
+		}
+		reqMessage.append("편지를 작성해줘. 반말로 이모지를 사용해서 귀엽게 부탁해. 시작은 TO.")
+			.append(member.getNickname())
+			.append("으로 시작하고 마무리할 때는 FROM.해랑으로 해줘");
 		return reqMessage.toString();
 	}
 
