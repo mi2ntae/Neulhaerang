@@ -5,7 +5,6 @@ import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.TitleApi
 import com.finale.neulhaerang.data.entity.StatResult
-import com.finale.neulhaerang.data.entity.UserData
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
@@ -14,7 +13,6 @@ import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
 import com.google.gson.Gson
 import com.unity3d.player.UnityPlayer
-import com.unity3d.player.UnityPlayerActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.firstOrNull
@@ -38,26 +36,6 @@ class TransferWithUnity {
             }.join()
         }
         Log.i("heejeong2", memberId.toString())
-    }
-
-    // 메소드가 static (companion object) 이면 안 됨
-    fun receiveMessage(userId: String) {
-        getUserTitles()
-        Log.i("heejeong", "TransferWithUnity $userId")
-        //받은 userId로 작업 진행 예시
-        val userData = UserData(userId, "rocketman", "heejeong@gmail.com")
-        sendMessage(userData)
-    }
-
-    /*
-    * 유니티에 데이터 보내기
-    */
-    private fun sendMessage(userData: UserData) {
-        val gson = Gson()
-        val jsonMessage = gson.toJson(userData)
-        val unityGameObject = "AndroidController"
-        val unityMethod = "ReceiveMessage"
-        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
     /**
