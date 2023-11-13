@@ -12,12 +12,15 @@ public class MemberCharacterResDto {
 	private int glasses;
 	private int hat;
 	private int scarf;
+	private long title;
 
 	public static MemberCharacterResDto from(CharacterInfo character) {
 		return MemberCharacterResDto.builder()
 			.backpack(character.getBackpack())
 			.glasses(character.getGlasses())
 			.hat(character.getHat())
-			.scarf(character.getScarf()).build();
+			.scarf(character.getScarf())
+			.title(character.getTitle())
+			.build();
 	}
 }
