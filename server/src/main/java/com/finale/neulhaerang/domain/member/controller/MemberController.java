@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finale.neulhaerang.domain.member.dto.request.CharacterModifyReqDto;
+import com.finale.neulhaerang.domain.member.dto.request.StatRecordReqDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberCharacterResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberProfileResDto;
 import com.finale.neulhaerang.domain.member.dto.response.MemberStatusResDto;
@@ -93,6 +94,13 @@ public class MemberController {
 	@PostMapping("/stat")
 	public ResponseEntity<Void> recordTiredness(@RequestParam int tiredness) {
 		memberService.recordTiredness(tiredness);
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@ApiOperation(value = "스탯 개발자용 저장", notes = "")
+	@PostMapping("/stat/example")
+	public ResponseEntity<Void> createStat(@RequestBody StatRecordReqDto statRecordReqDto) {
+		memberService.createStat(statRecordReqDto);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 

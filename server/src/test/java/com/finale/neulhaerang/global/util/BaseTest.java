@@ -33,7 +33,6 @@ public class BaseTest {
 		Member member = Member.builder()
 			.nickname("늘해랑")
 			.kakaoId(1234L)
-			.titleId(1L)
 			.build();
 		this.member = memberRepository.save(member);
 		this.characterInfo = characterInfoRepository.save(CharacterInfo.create(this.member));

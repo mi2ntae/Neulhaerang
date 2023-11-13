@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -35,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -87,7 +87,6 @@ fun Calendar(
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 imageVector = Icons.Outlined.CalendarMonth,
-                tint = Color(0xFF343434),
                 contentDescription = null,
                 modifier = modifier.size(20.dp)
             )
@@ -160,7 +159,9 @@ fun DayElement(
 
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(if (isSelected) Color.Gray else Color.Transparent)
+            .background(
+                if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
+            )
             .padding(horizontal = 4.dp),
     ) {
         Text(
@@ -172,7 +173,8 @@ fun DayElement(
                 )
             ), style = if (isSelected) Typography.bodyMedium.merge(
                 TextStyle(
-                    Color(0xFFFFFFFF), fontWeight = FontWeight.Bold
+                    MaterialTheme.colorScheme.onPrimary,
+                    fontWeight = FontWeight.Bold
                 )
             ) else Typography.bodyMedium
         )
@@ -182,11 +184,8 @@ fun DayElement(
                 .size(48.dp)
                 .clip(CircleShape)
                 .background(
-                    Brush.horizontalGradient(
-                        listOf(
-                            Color(0xFF0F9D58), Color(0xF055CA4D)
-                        )
-                    )
+                    if (isSelected) MaterialTheme.colorScheme.onPrimary
+                    else MaterialTheme.colorScheme.secondaryContainer
                 )
                 .clickable {
                     setDateTime(
@@ -210,7 +209,8 @@ fun DayElement(
         Text(
             text = day.toString(), style = if (isSelected) Typography.bodyMedium.merge(
                 TextStyle(
-                    Color(0xFFFFFFFF), fontWeight = FontWeight.Bold
+                    MaterialTheme.colorScheme.onPrimary,
+                    fontWeight = FontWeight.Bold
                 )
             ) else Typography.bodyMedium
         )
