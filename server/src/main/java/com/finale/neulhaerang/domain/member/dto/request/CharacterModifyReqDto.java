@@ -28,4 +28,8 @@ public class CharacterModifyReqDto {
 	@Max(3)
 	@Min(0)
 	private int scarf;
+
+	@Max(31)
+	@Min(0)
+	private long title;
 }
