@@ -41,6 +41,7 @@ public enum ErrorCode {
 	NOT_EXIST_DAILY_ROUTINE(HttpStatus.BAD_REQUEST, "R-006", "해당 id를 가진 데일리 루틴은 존재하지 않습니다."),
 	NOT_EXIST_RELATION_WITH_ROUTINE(HttpStatus.BAD_REQUEST, "R-007", "해당 id를 가진 루틴과 관련이 없습니다."),
 	CAN_NOT_REMOVE_DAILY_ROUTINE_BEFORE_TODAY(HttpStatus.BAD_REQUEST, "R-008", "오늘 날짜 이전의 데일리 루틴은 삭제할 수 없습니다."),
+	NON_REPEATED_DATE(HttpStatus.BAD_REQUEST, "R-009", "반복 하지 않는 루틴은 생성할 수 없습니다."),
 
 	// AR
 	INVALID_TAG(HttpStatus.INTERNAL_SERVER_ERROR, "K-001", "자기 자신은 태그할 수 없습니다"),

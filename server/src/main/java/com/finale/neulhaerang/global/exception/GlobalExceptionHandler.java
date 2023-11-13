@@ -23,6 +23,7 @@ import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutine
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
 import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NonRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
@@ -37,6 +38,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(NonRepeatedDateException.class)
+	protected ResponseEntity<ErrorResponse> nonRepeatedDateException() {
+		log.error("Routine must have a repeat day.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_REPEATED_DATE.getErrorCode(),
+			ErrorCode.NON_REPEATED_DATE.getMessage());
+		return ResponseEntity.status(ErrorCode.NON_REPEATED_DATE.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(AlreadyExistTirednessException.class)
 	protected ResponseEntity<ErrorResponse> alreadyExistTirednessException() {
