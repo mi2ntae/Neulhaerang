@@ -5,7 +5,6 @@ import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.TitleApi
 import com.finale.neulhaerang.data.entity.StatResult
-import com.finale.neulhaerang.data.entity.UserData
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
@@ -14,7 +13,6 @@ import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
 import com.google.gson.Gson
 import com.unity3d.player.UnityPlayer
-import com.unity3d.player.UnityPlayerActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.firstOrNull
@@ -26,7 +24,7 @@ class TransferWithUnity {
     // 데이터를 받을 유니티 스크립트가 컴포넌트로 붙어 있는 게임오브젝트명
     private val unityGameObject = "AndroidController"
     private var memberId: Long = 0
-
+    private val gson = Gson()
     init {
         Log.i("heejeong", "TransferWithUnity Init")
         Log.i("heejeong1", memberId.toString())
@@ -38,26 +36,6 @@ class TransferWithUnity {
             }.join()
         }
         Log.i("heejeong2", memberId.toString())
-    }
-
-    // 메소드가 static (companion object) 이면 안 됨
-    fun receiveMessage(userId: String) {
-        getUserTitles()
-        Log.i("heejeong", "TransferWithUnity $userId")
-        //받은 userId로 작업 진행 예시
-        val userData = UserData(userId, "rocketman", "heejeong@gmail.com")
-        sendMessage(userData)
-    }
-
-    /*
-    * 유니티에 데이터 보내기
-    */
-    private fun sendMessage(userData: UserData) {
-        val gson = Gson()
-        val jsonMessage = gson.toJson(userData)
-        val unityGameObject = "AndroidController"
-        val unityMethod = "ReceiveMessage"
-        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
     /**
@@ -79,7 +57,7 @@ class TransferWithUnity {
     }
 
     /**
-     * 나태괴물처치
+     * 나태 괴물 처치
      */
     private fun defeatLazyMonster() {
         runBlocking {
@@ -98,10 +76,12 @@ class TransferWithUnity {
     /**
      * 유저 캐릭터 아이템 정보 수정
      */
-    fun modifyCharacterItems(userItems: MemberItemReqDto) {
+    fun modifyCharacterItems(jsonMessage: String) {
+        val memberItem = gson.fromJson(jsonMessage, MemberItemReqDto::class.java)
+        Log.i("heejeong", "$memberItem")
         runBlocking {
             GlobalScope.launch {
-                MemberApi.instance.modifyCharacterItems(userItems)
+                MemberApi.instance.modifyCharacterItems(memberItem)
                     .onSuccess { (_, data) ->
 //                        checkNotNull(data)
                         Log.i("heejeong", "$data")
@@ -129,6 +109,7 @@ class TransferWithUnity {
             }.join()
         }
     }
+
 
     /**
      * 유저 상태 정보 조회
@@ -180,7 +161,6 @@ class TransferWithUnity {
      * 보유한 유저 아이템 정보를 유니티로 전송
      */
     private fun sendCharacterItems(userItems: MemberItemResDto) {
-        val gson = Gson()
         val jsonMessage = gson.toJson(userItems)
         val unityMethod = "ReceiveCharacterItems"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
@@ -190,7 +170,6 @@ class TransferWithUnity {
      * 유저 상태 정보를 유니티로 전송
      */
     private fun sendMemberStatus(indolence: MemberStatusResDto) {
-        val gson = Gson()
         val jsonMessage = gson.toJson(indolence)
         val unityMethod = "ReceiveMemberStatus"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
@@ -200,7 +179,6 @@ class TransferWithUnity {
      * 유저 능력치 정보를 유니티로 전송
      */
     private fun sendMemberStats(memberStats: StatResult) {
-        val gson = Gson()
         val jsonMessage = gson.toJson(memberStats)
         val unityMethod = "ReceiveMemberStats"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
@@ -211,10 +189,12 @@ class TransferWithUnity {
      * 보유한 유저 칭호들을 유니티로 전송
      */
     private fun sendUserTitles(titles: List<MemberTitlesResDto>) {
-        val gson = Gson()
-        val jsonMessage = gson.toJson(titles)
+        val jsonTitles = TitlesWrapper(titles)
+        val jsonMessage = gson.toJson(jsonTitles)
+        Log.i("heejeong", "sendUserTitles $jsonMessage")
         val unityMethod = "ReceiveUserTitles"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
+    data class TitlesWrapper(val titles:List<MemberTitlesResDto>)
 }

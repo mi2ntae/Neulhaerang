@@ -25,6 +25,7 @@ import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutine
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
 import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NonRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
@@ -98,6 +99,17 @@ class RoutineServiceTest extends BaseTest {
 		// when // then
 		assertThatThrownBy(() -> routineService.createRoutine(routineCreateReqDto))
 			.isInstanceOf(InvalidRepeatedDateException.class);
+	}
+
+	@DisplayName("루틴을 생성 시, 반복 날짜가 없는 경우 에러가 납니다.")
+	@Test
+	void When_CreateRoutineWithoutRepeatDay_Expect_NonRepeatedDateException() {
+		// given
+		RoutineCreateReqDto routineCreateReqDto = createRoutine("아침밥 챙겨랏 S2", true, LocalTime.of(8, 30, 0),
+			List.of(false, false, false, false, false, false, false), StatType.생존력);
+		// when // then
+		assertThatThrownBy(() -> routineService.createRoutine(routineCreateReqDto))
+			.isInstanceOf(NonRepeatedDateException.class);
 	}
 
 	@DisplayName("오늘 날짜 이전의 루틴을 조회하는 경우 daily_routine을 조회합니다.")
@@ -299,6 +311,22 @@ class RoutineServiceTest extends BaseTest {
 			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(save.getId(),
 				routineModifyReqDto))
 			.isInstanceOf(InvalidRepeatedDateException.class);
+	}
+
+	@DisplayName("루틴을 수정 시, 반복 날짜 정보를 담은 리스트의 크기가 7이 아니면 에러가 납니다.")
+	@Test
+	void When_ModifyRoutineWithoutRepeatedDay_Expect_NonRepeatedDateException() {
+		// given
+		Routine routine = createRoutine(member, "양치하기", "0010000", true, StatType.생존력);
+		Routine save = routineRepository.save(routine);
+		RoutineModifyReqDto routineModifyReqDto = createRoutineModifyDto(false, null, "아침밥",
+			List.of(false, false, false, false, false, false, false));
+
+		// when // then
+		assertThatThrownBy(
+			() -> routineService.modifyRoutineContentAndRepeatedAndAlarmAndAlarmTimeByRoutineId(save.getId(),
+				routineModifyReqDto))
+			.isInstanceOf(NonRepeatedDateException.class);
 	}
 
 	@DisplayName("루틴을 삭제합니다.")

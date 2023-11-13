@@ -11,12 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -71,13 +71,7 @@ fun CustomProgressBar(amount: Int) {
                 modifier = Modifier
                     .clip(RoundedCornerShape(15.dp))
                     .height(30.dp)
-                    .background(
-                        Brush.horizontalGradient(
-                            listOf(
-                                Color(0xFF0F9D58), Color(0xF055CA4D)
-                            )
-                        )
-                    )
+                    .background(MaterialTheme.colorScheme.primary)
                     // on below line we are specifying width for the inner box
 //                    .width(300.dp * progress / 100)
                     .fillMaxWidth(1f * amount / 100)
@@ -88,7 +82,7 @@ fun CustomProgressBar(amount: Int) {
                 modifier = Modifier.align(Alignment.Center),
                 style = Typography.labelLarge,
 //                fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
