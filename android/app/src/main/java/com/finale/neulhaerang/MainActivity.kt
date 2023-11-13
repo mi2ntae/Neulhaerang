@@ -75,55 +75,7 @@ class MainActivity : ComponentActivity() {
 
         checkPermissionsAndRun()
 
-        var longitude = 0.0;
-        var latitude = 0.0;
-
-        val gpsLocationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                val provider: String = location.provider.toString()
-                val longitude: Double = location.longitude
-                val latitude: Double = location.latitude
-                val altitude: Double = location.altitude
-
-                Log.i("Location", provider)
-                Log.i("Location", longitude.toString())
-                Log.i("Location", latitude.toString())
-                Log.i("Location", altitude.toString())
-
-                GlobalScope.launch {
-                    val isLogin = DataStoreApplication.getInstance().getDataStore().getLoginStatus()
-                        .firstOrNull() ?: false
-                    if (!isLogin) {
-                        Log.i("Location", "onLocationChanged: not login")
-                        return@launch
-                    }
-
-                    Log.i("Location", "$latitude / $longitude")
-                    ArApi.instance.changeGeo(
-                        AroundMemberCharacterReqDto(
-                            latitude = latitude,
-                            longitude = longitude
-                        )
-                    ).onSuccess { (_, data) ->
-                        data?.forEach { member ->
-                            Log.i("Geo", member.memberId.toString())
-                        }
-                        Log.i("Geo", "size = 0")
-                    }.onFailure {
-                        Log.i("Geo", "Fail")
-                    }
-                }
-            }
-
-            //아래 3개함수는 형식상 필수부분
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
-        }
-
         val lm = getSystemService(LOCATION_SERVICE) as LocationManager
-        val isGPSEnabled: Boolean = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val isNetworkEnabled: Boolean = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
         Log.i("GPS", "Build Before")
         if (ContextCompat.checkSelfPermission(
@@ -136,31 +88,6 @@ class MainActivity : ComponentActivity() {
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
                 0
             )
-        } else {
-            when { //프로바이더 제공자 활성화 여부 체크
-                isNetworkEnabled -> {
-                    lm.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        5000, //몇초
-                        0F,   //몇미터
-                        gpsLocationListener
-                    )
-                }
-
-                isGPSEnabled -> {
-                    lm.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        5000, //몇초
-                        0F,   //몇미터
-                        gpsLocationListener
-                    )
-                }
-
-                else -> {
-
-                }
-            }
-//            lm.removeUpdates(gpsLocationListener)
         }
 
 //        val token = FirebaseMessaging.getInstance().token.result
