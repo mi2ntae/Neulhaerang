@@ -59,7 +59,7 @@ class MainScreenViewModel : ViewModel() {
                 .onSuccess { (_, data) ->
                     checkNotNull(data)
                     _indolence.intValue = data.indolence
-                    _tiredness.intValue = data.indolence
+                    _tiredness.intValue = data.tiredness
                 }
         }
     }
