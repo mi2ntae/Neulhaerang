@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,13 +25,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.finale.neulhaerang.common.message.BlockMessage
 import com.finale.neulhaerang.common.navigation.AppNavItem
 import com.finale.neulhaerang.domain.MainScreenViewModel
+import com.finale.neulhaerang.ui.R
 import com.finale.neulhaerang.ui.app.navigation.NHLNavigationBar
 import com.finale.neulhaerang.ui.app.navigation.stackNavigate
 import com.finale.neulhaerang.ui.theme.Typography
@@ -38,10 +43,21 @@ import com.finale.neulhaerang.ui.theme.Typography
 fun MainScreen(navController: NavHostController) {
     val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
 
+    var alert by remember { mutableStateOf(false) }
+    var message by remember { mutableStateOf("") }
     var tabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("체크리스트", "우편함")
-//    val currentDate = LocalDate.now()
-//    val (selectedDate, setDateTime) = remember { mutableStateOf(LocalDateTime.now()) }
+
+
+    val handleFAB = {
+        if (viewModel.canIndolence)
+            navController.stackNavigate(AppNavItem.CheckListCreation.route)
+        else {
+            message = BlockMessage.IndolenceBlock.message
+            alert = true
+        }
+    }
+
     var beforeRoute by remember { mutableStateOf("") }
     val currentRoute = navController.currentDestination?.route ?: ""
     // 현재 라우트와 이전 라우트를 비교하여 다른 라우트에서 메인으로 온 경우 갱신
@@ -55,7 +71,7 @@ fun MainScreen(navController: NavHostController) {
     Scaffold(
         bottomBar = { NHLNavigationBar(navController = navController) },
         floatingActionButton = {
-            ChecklistCreationButton(navController = navController)
+            ChecklistCreationButton(handleFAB = handleFAB)
         }
     ) { innerPadding ->
         Column(
@@ -95,11 +111,27 @@ fun MainScreen(navController: NavHostController) {
             }
         }
     }
+
+    if (alert) {
+        AlertDialog(
+            onDismissRequest = { alert = false },
+            confirmButton = {
+                Button(onClick = { alert = false }) {
+                    Text(text = stringResource(id = R.string.ok))
+                }
+            },
+            text = {
+                Text(text = message, style = MaterialTheme.typography.bodyLarge)
+            }
+        )
+    }
 }
 
 @Composable
-fun ChecklistCreationButton(navController: NavHostController) {
-    FloatingActionButton(onClick = { navController.stackNavigate(AppNavItem.CheckListCreation.route) }) {
+fun ChecklistCreationButton(handleFAB: () -> Unit) {
+    FloatingActionButton(
+        onClick = handleFAB
+    ) {
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = AppNavItem.CheckListCreation.description,

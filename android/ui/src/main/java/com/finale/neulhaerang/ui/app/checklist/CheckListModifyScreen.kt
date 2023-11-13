@@ -138,7 +138,7 @@ fun CheckListModifyScreen(navController: NavHostController, type: String?, index
                 }
             },
             title = {},
-            text = { Text(text = message) }
+            text = { Text(text = message, style = MaterialTheme.typography.bodyLarge) }
         )
     }
 }
@@ -269,7 +269,7 @@ fun CheckListDeleteDialog(
             }
         },
         title = {
-            Text(text = "정말로 삭제하시겠습니까?")
+            Text(text = "정말로 삭제하시겠습니까?", style = MaterialTheme.typography.bodyLarge)
         },
         text = {
             if (viewModel.routine) {

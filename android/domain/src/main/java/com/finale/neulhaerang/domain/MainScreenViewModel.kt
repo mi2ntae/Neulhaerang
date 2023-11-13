@@ -79,6 +79,8 @@ class MainScreenViewModel : ViewModel() {
 
     val yearMonth: String
         get() = DateTimeFormatter.ofPattern("yyyy-MM").format(selectedDate)
+    val canIndolence: Boolean
+        get() = indolence < 50
 
     // setter
     private fun updateBeforeYearMonth() {
@@ -162,7 +164,7 @@ class MainScreenViewModel : ViewModel() {
     }
 
     suspend fun checkCheckList(checkList: CheckList): String? {
-        if (indolence >= 50) {
+        if (!canIndolence) {
             return BlockMessage.IndolenceBlock.message
         }
         if (selectedDate != LocalDate.now()) {
