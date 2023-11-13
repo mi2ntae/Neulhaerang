@@ -24,6 +24,7 @@ import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutine
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
 import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NonRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
@@ -53,6 +54,9 @@ public class RoutineServiceImpl implements RoutineService {
 			throw new InvalidRepeatedDateException(member.get());
 		}
 		StringBuilder repeated = checkRepeatedDate(routineCreateReqDto.getRepeated());
+		if (repeated.toString().equals("0000000")) {
+			throw new NonRepeatedDateException(member.get());
+		}
 		Routine routine = Routine.create(routineCreateReqDto, member.get(), repeated.toString());
 		Routine save = routineRepository.save(routine);
 		LocalDate now = LocalDate.now();
@@ -64,17 +68,17 @@ public class RoutineServiceImpl implements RoutineService {
 
 	@Override
 	public List<?> findRoutineByMemberAndDate(LocalDate date) {
+		Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
 		if (date.isAfter(LocalDate.now())) {
 			StringBuilder dayOfVaule = new StringBuilder("_______");
 			int dayOfWeekValue = date.getDayOfWeek().getValue() - 1;
 			dayOfVaule.setCharAt(dayOfWeekValue, '1');
-			List<Routine> routines = routineRepository.findRoutinesByDayOfValue(dayOfVaule.toString(),
-				date);
+			List<Routine> routines = routineRepository.findRoutinesByDayOfValueAndMember(dayOfVaule.toString(),
+				date, member.getId());
 			return routines.stream()
 				.map(r -> RoutineResDto.of(r, changeRepeated(r.getRepeated())))
 				.collect(Collectors.toList());
 		} else {
-			Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
 			List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(
 				date, member);
 			return dailyRoutines.stream()
@@ -122,6 +126,9 @@ public class RoutineServiceImpl implements RoutineService {
 			throw new InvalidRepeatedDateException(member.get());
 		}
 		StringBuilder repeated = checkRepeatedDate(routineModifyReqDto.getRepeated());
+		if (repeated.toString().equals("0000000")) {
+			throw new NonRepeatedDateException(member.get());
+		}
 		optionalRoutine.get()
 			.updateContentAndAlarmAndAlarmTimeAndRepeated(routineModifyReqDto, repeated.toString());
 	}
