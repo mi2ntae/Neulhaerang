@@ -24,6 +24,7 @@ import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutine
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
 import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NonRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
@@ -53,6 +54,9 @@ public class RoutineServiceImpl implements RoutineService {
 			throw new InvalidRepeatedDateException(member.get());
 		}
 		StringBuilder repeated = checkRepeatedDate(routineCreateReqDto.getRepeated());
+		if (repeated.toString().equals("0000000")) {
+			throw new NonRepeatedDateException(member.get());
+		}
 		Routine routine = Routine.create(routineCreateReqDto, member.get(), repeated.toString());
 		Routine save = routineRepository.save(routine);
 		LocalDate now = LocalDate.now();
