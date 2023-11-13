@@ -57,7 +57,7 @@ class TransferWithUnity {
     }
 
     /**
-     * 나태괴물처치
+     * 나태 괴물 처치
      */
     private fun defeatLazyMonster() {
         runBlocking {
@@ -189,9 +189,12 @@ class TransferWithUnity {
      * 보유한 유저 칭호들을 유니티로 전송
      */
     private fun sendUserTitles(titles: List<MemberTitlesResDto>) {
-        val jsonMessage = gson.toJson(titles)
+        val jsonTitles = TitlesWrapper(titles)
+        val jsonMessage = gson.toJson(jsonTitles)
+        Log.i("heejeong", "sendUserTitles $jsonMessage")
         val unityMethod = "ReceiveUserTitles"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
+    data class TitlesWrapper(val titles:List<MemberTitlesResDto>)
 }
