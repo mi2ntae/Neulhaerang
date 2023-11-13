@@ -64,17 +64,17 @@ public class RoutineServiceImpl implements RoutineService {
 
 	@Override
 	public List<?> findRoutineByMemberAndDate(LocalDate date) {
+		Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
 		if (date.isAfter(LocalDate.now())) {
 			StringBuilder dayOfVaule = new StringBuilder("_______");
 			int dayOfWeekValue = date.getDayOfWeek().getValue() - 1;
 			dayOfVaule.setCharAt(dayOfWeekValue, '1');
-			List<Routine> routines = routineRepository.findRoutinesByDayOfValue(dayOfVaule.toString(),
-				date);
+			List<Routine> routines = routineRepository.findRoutinesByDayOfValueAndMember(dayOfVaule.toString(),
+				date, member.getId());
 			return routines.stream()
 				.map(r -> RoutineResDto.of(r, changeRepeated(r.getRepeated())))
 				.collect(Collectors.toList());
 		} else {
-			Member member = memberRepository.getReferenceById(authenticationHandler.getLoginMemberId());
 			List<DailyRoutine> dailyRoutines = dailyRoutineRepository.findDailyRoutinesByRoutineDateAndRoutine_MemberAndStatusIsFalse(
 				date, member);
 			return dailyRoutines.stream()

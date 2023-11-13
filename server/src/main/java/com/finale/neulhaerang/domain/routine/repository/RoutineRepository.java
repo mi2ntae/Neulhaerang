@@ -19,6 +19,15 @@ public interface RoutineRepository extends JpaRepository<Routine, Long> {
 
 	@Query(value = "select * "
 		+ "from routine r "
+		+ "join member m "
+		+ "on r.member_id=m.member_id "
+		+ "where r.repeated like :dayOfValue "
+		+ "and (r.delete_date > :date or r.delete_date is null) "
+		+ "and m.member_id = :memberId", nativeQuery = true)
+	List<Routine> findRoutinesByDayOfValueAndMember(String dayOfValue, LocalDate date, long memberId);
+
+	@Query(value = "select * "
+		+ "from routine r "
 		+ "where r.repeated like :dayOfValue "
 		+ "and (r.delete_date > :date or r.delete_date is null) "
 		+ "and r.alarm=true "
