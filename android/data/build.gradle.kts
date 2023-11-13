@@ -52,4 +52,11 @@ dependencies {
 
     // datastore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // unity
+    implementation(project(":unityLibrary",))
+    implementation(fileTree(mapOf("dir" to "..\\..\\UnityProject\\androidBuild\\unityLibrary\\libs", "include" to listOf("*.jar"))))
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+
 }
