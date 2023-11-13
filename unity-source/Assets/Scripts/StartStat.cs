@@ -21,7 +21,7 @@ public class StartStat : MonoBehaviour
          */        
 
         Stats stats = new Stats(scores[0], scores[1], scores[2], scores[3], scores[4], scores[5]);
-        statsRadarChart.SetStats(stats);
+        //statsRadarChart.SetStats(stats);
     }
 
     private int[] getScore(int[] scores)
