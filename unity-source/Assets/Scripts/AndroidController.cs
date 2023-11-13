@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class AndroidController : MonoBehaviour
@@ -18,9 +19,10 @@ public class AndroidController : MonoBehaviour
     {
         //RequestMemberStats();
         //RequestMemberStatus();
-        RequestDefeatMonster();
-        RequestCharacterItems();
-        ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
+        //RequestDefeatMonster();
+        //RequestCharacterItems();
+        //ModifyCharacterItems(new MemberItem(1,2,1,1,1));
+        RequestUserTitles();
     }
 
     // Update is called once per frame
@@ -98,5 +100,27 @@ public class AndroidController : MonoBehaviour
         Debug.Log("heejeong 유저 아이템 수정 목록::" + item.ToString());
         string androidMethod = "modifyCharacterItems";
         _pluginInstance.Call(androidMethod, datas);
+    }
+
+    /**
+     * 유저 보유 칭호 조회
+     */
+    void RequestUserTitles()
+    {
+        string androidMethod = "getUserTitles";
+        _pluginInstance.Call(androidMethod);
+    }
+
+    void ReceiveUserTitles(string jsonMessage)
+    {
+        Debug.Log("heejeong [ReceiveUserTitles]" + jsonMessage);
+        MemberTitles datas = JsonUtility.FromJson<MemberTitles>(jsonMessage);
+        Debug.Log("heejeong 착장한 사용자 아이템 ::" + datas.ToString());
+
+        foreach (MemberTitle lt in datas.titles)
+        {
+            Debug.Log("heejeong 유저 보유 칭호 목록::" + lt.TitleId);
+            Debug.Log("heejeong 유저 보유 칭호 목록::" + lt.Content);
+        }
     }
 }
