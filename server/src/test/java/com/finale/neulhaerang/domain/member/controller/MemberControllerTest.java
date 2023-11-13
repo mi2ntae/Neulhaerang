@@ -34,6 +34,7 @@ class MemberControllerTest extends BaseTest {
 			.glasses(0)
 			.hat(0)
 			.backpack(0)
+			.title(0)
 			.build();
 
 		// when // then
@@ -54,6 +55,7 @@ class MemberControllerTest extends BaseTest {
 			.glasses(4)
 			.hat(4)
 			.backpack(4)
+			.title(31)
 			.build();
 
 		// when // then
@@ -74,6 +76,7 @@ class MemberControllerTest extends BaseTest {
 			.scarf(4)
 			.hat(1)
 			.backpack(1)
+			.title(31)
 			.build();
 
 		// when // then
@@ -94,6 +97,7 @@ class MemberControllerTest extends BaseTest {
 			.scarf(-1)
 			.hat(1)
 			.backpack(1)
+			.title(31)
 			.build();
 
 		// when // then
@@ -114,6 +118,7 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(5)
 			.hat(1)
+			.title(31)
 			.build();
 
 		// when // then
@@ -134,6 +139,7 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(-1)
 			.hat(1)
+			.title(31)
 			.build();
 
 		// when // then
@@ -154,6 +160,7 @@ class MemberControllerTest extends BaseTest {
 			.glasses(5)
 			.backpack(1)
 			.hat(1)
+			.title(31)
 			.build();
 
 		// when // then
@@ -174,6 +181,7 @@ class MemberControllerTest extends BaseTest {
 			.glasses(-1)
 			.backpack(1)
 			.hat(1)
+			.title(31)
 			.build();
 
 		// when // then
@@ -194,6 +202,7 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(1)
 			.hat(5)
+			.title(31)
 			.build();
 
 		// when // then
@@ -214,6 +223,49 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(1)
 			.hat(-1)
+			.title(31)
+			.build();
+
+		// when // then
+		mockMvc.perform(patch("/member/character")
+				.content(objectMapper.writeValueAsString(characterModifyReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("캐릭터 정보를 수정하는 경우 모자 값은 31이상일 수 없습니다.")
+	@Test
+	void When_ModifyCharacterInfoWithMoreThan32Title_Expect_IsBadRequest() throws Exception {
+		// given
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.scarf(1)
+			.glasses(1)
+			.backpack(1)
+			.hat(4)
+			.title(32)
+			.build();
+
+		// when // then
+		mockMvc.perform(patch("/member/character")
+				.content(objectMapper.writeValueAsString(characterModifyReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("캐릭터 정보를 수정하는 경우 모자 값은 0이하일 수 없습니다.")
+	@Test
+	void When_ModifyCharacterInfoWithLowerThan0Title_Expect_IsBadRequest() throws Exception {
+		// given
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.scarf(1)
+			.glasses(1)
+			.backpack(1)
+			.hat(1)
+			.title(-1)
 			.build();
 
 		// when // then

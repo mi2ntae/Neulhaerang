@@ -22,10 +22,16 @@ import com.finale.neulhaerang.domain.member.entity.CharacterInfo;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
+import com.finale.neulhaerang.domain.title.entity.EarnedTitle;
+import com.finale.neulhaerang.domain.title.entity.Title;
+import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
+import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.global.exception.common.InValidPageIndexException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
+import com.finale.neulhaerang.global.exception.title.NotEarnedTitleException;
+import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.util.BaseTest;
 
 class MemberServiceTest extends BaseTest {
@@ -33,6 +39,10 @@ class MemberServiceTest extends BaseTest {
 	private MemberService memberService;
 	@Autowired
 	private MemberRepository memberRepository;
+	@Autowired
+	private TitleRepository titleRepository;
+	@Autowired
+	private EarnedTitleRepository earnedTitleRepository;
 
 	@DisplayName("회원 캐릭터 정보를 변경한다.")
 	@Test
@@ -43,6 +53,7 @@ class MemberServiceTest extends BaseTest {
 			.backpack(3)
 			.glasses(4)
 			.scarf(2)
+			.title(0)
 			.build();
 		// when
 		memberService.modifyCharacterInfoByMember(characterModifyReqDto);
@@ -50,10 +61,10 @@ class MemberServiceTest extends BaseTest {
 		// then
 		Optional<CharacterInfo> characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(
 			member.getId());
-		assertThat(characterInfo.get().getScarf()).isEqualTo(3);
+		assertThat(characterInfo.get().getScarf()).isEqualTo(2);
 		assertThat(characterInfo.get().getHat()).isEqualTo(3);
 		assertThat(characterInfo.get().getGlasses()).isEqualTo(4);
-		assertThat(characterInfo.get().getBackpack()).isEqualTo(2);
+		assertThat(characterInfo.get().getBackpack()).isEqualTo(3);
 	}
 
 	@Test
@@ -90,6 +101,66 @@ class MemberServiceTest extends BaseTest {
 				.usingRecursiveComparison()
 				.isEqualTo(memberCharacterResDto);
 		});
+	}
+
+	@DisplayName("장착 칭호를 변경합니다.")
+	@Test
+	void When_ModifyEquipTitle_Expect_ChangeEquipTitle() {
+		// given
+		Title title1 = createTitle(1L, "슬늘생2", "슬늘2");
+		Title title = titleRepository.save(title1);
+		EarnedTitle earnedTitle1 = createEarnedTitle(title);
+		earnedTitleRepository.saveAll(List.of(earnedTitle1));
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.hat(3)
+			.backpack(3)
+			.glasses(4)
+			.scarf(2)
+			.title(1)
+			.build();
+
+		// when
+		memberService.modifyCharacterInfoByMember(characterModifyReqDto);
+
+		// then
+		Optional<CharacterInfo> characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(member.getId());
+		assertThat(characterInfo.get().getTitle()).isEqualTo(1);
+	}
+
+	@DisplayName("장착 칭호 변경 시, 해당 칭호가 없다면 에러가 납니다.")
+	@Test
+	void When_ModifyEquipTitleWithNotExistTitle_Expect_NotExistTitleException() {
+		// given
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.hat(3)
+			.backpack(3)
+			.glasses(4)
+			.scarf(2)
+			.title(1)
+			.build();
+
+		// when // then
+		assertThatThrownBy(() -> memberService.modifyCharacterInfoByMember(characterModifyReqDto))
+			.isInstanceOf(NotExistTitleException.class);
+	}
+
+	@DisplayName("장착 칭호 변경 시, 아직 얻지 못한 칭호라면 에러가 납니다.")
+	@Test
+	void When_ModifyEquipTitleWithNotEarnedTitle_Expect_NotEarnedTitleException() {
+		// given
+		Title title = createTitle(1L, "슬늘생1", "슬늘1");
+		Title save = titleRepository.save(title);
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.hat(3)
+			.backpack(3)
+			.glasses(4)
+			.scarf(2)
+			.title(1)
+			.build();
+
+		// when // then
+		assertThatThrownBy(() -> memberService.modifyCharacterInfoByMember(characterModifyReqDto))
+			.isInstanceOf(NotEarnedTitleException.class);
 	}
 
 	@Test
@@ -261,6 +332,21 @@ class MemberServiceTest extends BaseTest {
 			.glasses(0)
 			.scarf(0)
 			.hat(0)
+			.build();
+	}
+
+	private Title createTitle(Long id, String name, String content) {
+		return Title.builder()
+			.id(id)
+			.name(name)
+			.content(content)
+			.build();
+	}
+
+	private EarnedTitle createEarnedTitle(Title title) {
+		return EarnedTitle.builder()
+			.member(member)
+			.title(title)
 			.build();
 	}
 }
