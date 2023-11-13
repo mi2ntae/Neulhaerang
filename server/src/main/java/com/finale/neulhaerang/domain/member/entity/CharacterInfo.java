@@ -38,6 +38,7 @@ public class CharacterInfo {
 	private int hat;
 
 	private int scarf;
+	private long title;
 
 	public static CharacterInfo create(Member member) {
 		return CharacterInfo.builder()
@@ -50,5 +51,6 @@ public class CharacterInfo {
 		this.hat = characterModifyReqDto.getHat();
 		this.scarf = characterModifyReqDto.getScarf();
 		this.glasses = characterModifyReqDto.getGlasses();
+		this.title = characterModifyReqDto.getTitle();
 	}
 }
