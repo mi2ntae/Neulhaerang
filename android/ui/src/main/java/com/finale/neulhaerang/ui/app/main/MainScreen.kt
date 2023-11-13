@@ -84,6 +84,7 @@ fun MainScreen(navController: NavHostController) {
                         navController,
                         viewModel.routineList,
                         viewModel.todoList,
+                        viewModel.selectedDate,
                         viewModel::checkCheckList
                     )
 
