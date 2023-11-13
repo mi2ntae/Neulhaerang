@@ -36,7 +36,16 @@ public class GlassesPanel : MonoBehaviour
             }
         }
 
-        // TODO
         // Update equipment state into server
+        PlayerPrefs.SetInt("Glasses", id);
+
+        int bag = PlayerPrefs.GetInt("Bag");
+        int glasses = PlayerPrefs.GetInt("Glasses");
+        int minihat = PlayerPrefs.GetInt("Minihat");
+        int scarf = PlayerPrefs.GetInt("Scarf");
+        int title = PlayerPrefs.GetInt("Title");
+        MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title);
+        var andController = new AndroidController();
+        andController.ModifyCharacterItems(datas);
     }
 }
