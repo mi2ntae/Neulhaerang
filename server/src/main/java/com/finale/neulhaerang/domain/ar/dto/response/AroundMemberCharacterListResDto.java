@@ -13,6 +13,7 @@ public class AroundMemberCharacterListResDto {
 	private int glasses;
 	private int hat;
 	private int scarf;
+	private long title;
 
 	public static AroundMemberCharacterListResDto from(CharacterInfo character) {
 		return AroundMemberCharacterListResDto.builder()
@@ -20,6 +21,7 @@ public class AroundMemberCharacterListResDto {
 			.backpack(character.getBackpack())
 			.glasses(character.getGlasses())
 			.hat(character.getHat())
-			.scarf(character.getScarf()).build();
+			.scarf(character.getScarf())
+			.title(character.getTitle()).build();
 	}
 }
