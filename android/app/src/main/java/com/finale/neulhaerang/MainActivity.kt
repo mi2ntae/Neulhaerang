@@ -43,6 +43,7 @@ import com.finale.neulhaerang.data.Memo
 import com.finale.neulhaerang.data.SqliteHelper
 import com.finale.neulhaerang.data.api.ArApi
 import com.finale.neulhaerang.data.model.request.AroundMemberCharacterReqDto
+import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.GlobalScope
@@ -107,6 +108,9 @@ class MainActivity : ComponentActivity() {
                         data?.forEach { member ->
                             Log.i("Geo", member.memberId.toString())
                         }
+                        Log.i("Geo", "size = 0")
+                    }.onFailure {
+                        Log.i("Geo", "Fail")
                     }
                 }
             }
@@ -121,8 +125,8 @@ class MainActivity : ComponentActivity() {
         val isGPSEnabled: Boolean = lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
         val isNetworkEnabled: Boolean = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
-        if (Build.VERSION.SDK_INT >= 23 &&
-            ContextCompat.checkSelfPermission(
+        Log.i("GPS", "Build Before")
+        if (ContextCompat.checkSelfPermission(
                 applicationContext,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
@@ -170,7 +174,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             BackOnPressed()
-            App(getResult, this@MainActivity)
+            App(getResult, this@MainActivity, lm)
         }
 
 
@@ -194,7 +198,7 @@ class MainActivity : ComponentActivity() {
         }
         if (availabilityStatus == HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED) {
             val uriString =
-                "market://details?id=${this@MainActivity.packageName}&url=healthconnect%3A%2F%2Fonboarding"
+                "market://details?id=com.google.android.apps.healthdata"
             this@MainActivity.startActivity(
                 Intent(Intent.ACTION_VIEW).apply {
                     setPackage("com.android.vending")
