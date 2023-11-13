@@ -16,8 +16,11 @@ public class AndroidController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        RequestMemberStats();
-        RequestMemberStatus();
+        //RequestMemberStats();
+        //RequestMemberStatus();
+        RequestDefeatMonster();
+        RequestCharacterItems();
+        ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
     }
 
     // Update is called once per frame
@@ -26,59 +29,74 @@ public class AndroidController : MonoBehaviour
 
     }
 
-    //스탯 조회
-
+    // 메소드가 static이면 안 됨
+    /**
+     * 멤버 능력치 조회
+     */
     void RequestMemberStats()
     {
         string androidMethod = "getMemberStats";
         _pluginInstance.Call(androidMethod);
     }
 
-    // 메소드가 static이면 안 됨
     void ReceiveMemberStats(string jsonMessage)
     {
-        Debug.Log("heejeong ReceiveMemberStats");
+        Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
         MemberStat datas = JsonUtility.FromJson<MemberStat>(jsonMessage);
-
-        //수신한 데이터로 작업 예시: 로그 띄우기
-        Debug.Log("heejeong Life" + datas.Life);
-        Debug.Log("heejeong Love" + datas.Love);
-        Debug.Log("heejeong Survival" + datas.Survival);
-        Debug.Log("heejeong Popularity" + datas.Popularity);
-        Debug.Log("heejeong Power" + datas.Power);
-        Debug.Log("heejeong Creative" + datas.Creative);
-
-        //foreach (var data in datas)
-        //{
-        //    Debug.Log("heejeong" + data.ToString());
-        //}
+        Debug.Log("heejeong Life" + datas.ToString());
     }
 
-
-    //스탯 수정
-
-    //상태 조회
-
+    /**
+     * 멤버 상태 조회
+     */
     void RequestMemberStatus()
     {
-        string androidMethod = "getMemberStatus";
+        string androidMethod = "getMemberStats";
         _pluginInstance.Call(androidMethod);
     }
-
-    // 메소드가 static이면 안 됨
     void ReceiveMemberStatus(string jsonMessage)
     {
-        //수신한 JSON 데이터를 UserData객체로 역직렬화 (UnityEngine 라이브러리 사용)
+        Debug.Log("heejeong [ReceiveMemberStatus]" + jsonMessage);
         MemberStatus datas = JsonUtility.FromJson<MemberStatus>(jsonMessage);
 
-        //수신한 데이터로 작업 예시: 로그 띄우기
         Debug.Log("heejeong 나태도" + datas.Indolence);
         Debug.Log("heejeong 피로도" + datas.Tiredness);
     }
 
-    //나태 괴물 처치 완료
 
-    //유저 아이템 조회
+    /**
+     * 나태 괴물 처치 완료
+     */
+    void RequestDefeatMonster()
+    {
+        string androidMethod = "defeatLazyMonster";
+        _pluginInstance.Call(androidMethod);
+    }
 
-    //유저 아이템 수정
+    /**
+     * 유저 장착 아이템 조회
+     */
+    void RequestCharacterItems()
+    {
+        string androidMethod = "getCharacterItems";
+        _pluginInstance.Call(androidMethod);
+    }
+
+    void ReceiveCharacterItems(string jsonMessage)
+    {
+        Debug.Log("heejeong [ReceiveCharacterItems]" + jsonMessage);
+        MemberItem datas = JsonUtility.FromJson<MemberItem>(jsonMessage);
+        Debug.Log("heejeong 착장한 사용자 아이템 ::" + datas.ToString());
+    }
+
+    /**
+     * 유저 장착 아이템 수정
+     */
+    void ModifyCharacterItems(MemberItem item)
+    {
+        string datas = JsonUtility.ToJson(item);
+        Debug.Log("heejeong 유저 아이템 수정 목록::" + item.ToString());
+        string androidMethod = "modifyCharacterItems";
+        _pluginInstance.Call(androidMethod, datas);
+    }
 }
