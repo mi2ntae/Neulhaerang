@@ -24,7 +24,7 @@ class TransferWithUnity {
     // 데이터를 받을 유니티 스크립트가 컴포넌트로 붙어 있는 게임오브젝트명
     private val unityGameObject = "AndroidController"
     private var memberId: Long = 0
-
+    private val gson = Gson()
     init {
         Log.i("heejeong", "TransferWithUnity Init")
         Log.i("heejeong1", memberId.toString())
@@ -76,10 +76,12 @@ class TransferWithUnity {
     /**
      * 유저 캐릭터 아이템 정보 수정
      */
-    fun modifyCharacterItems(userItems: MemberItemReqDto) {
+    fun modifyCharacterItems(jsonMessage: String) {
+        val memberItem = gson.fromJson(jsonMessage, MemberItemReqDto::class.java)
+        Log.i("heejeong", "$memberItem")
         runBlocking {
             GlobalScope.launch {
-                MemberApi.instance.modifyCharacterItems(userItems)
+                MemberApi.instance.modifyCharacterItems(memberItem)
                     .onSuccess { (_, data) ->
 //                        checkNotNull(data)
                         Log.i("heejeong", "$data")
@@ -107,6 +109,7 @@ class TransferWithUnity {
             }.join()
         }
     }
+
 
     /**
      * 유저 상태 정보 조회
@@ -158,7 +161,6 @@ class TransferWithUnity {
      * 보유한 유저 아이템 정보를 유니티로 전송
      */
     private fun sendCharacterItems(userItems: MemberItemResDto) {
-        val gson = Gson()
         val jsonMessage = gson.toJson(userItems)
         val unityMethod = "ReceiveCharacterItems"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
@@ -168,7 +170,6 @@ class TransferWithUnity {
      * 유저 상태 정보를 유니티로 전송
      */
     private fun sendMemberStatus(indolence: MemberStatusResDto) {
-        val gson = Gson()
         val jsonMessage = gson.toJson(indolence)
         val unityMethod = "ReceiveMemberStatus"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
@@ -178,7 +179,6 @@ class TransferWithUnity {
      * 유저 능력치 정보를 유니티로 전송
      */
     private fun sendMemberStats(memberStats: StatResult) {
-        val gson = Gson()
         val jsonMessage = gson.toJson(memberStats)
         val unityMethod = "ReceiveMemberStats"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
@@ -189,7 +189,6 @@ class TransferWithUnity {
      * 보유한 유저 칭호들을 유니티로 전송
      */
     private fun sendUserTitles(titles: List<MemberTitlesResDto>) {
-        val gson = Gson()
         val jsonMessage = gson.toJson(titles)
         val unityMethod = "ReceiveUserTitles"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
