@@ -1,7 +1,6 @@
 package com.finale.neulhaerang.data.api
 
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
-import com.finale.neulhaerang.data.model.request.TodoReqDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
 import com.finale.neulhaerang.data.model.response.MemberStatResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
@@ -31,10 +30,8 @@ interface MemberApi {
         @Body request: MemberItemReqDto,
     ): ResponseResult<Any>
 
-    @POST("/ar/indolence")
-    suspend fun defeatLazyMonster(
-        @Body request: MemberItemReqDto,
-    ): ResponseResult<Any>
+    @POST("ar/indolence")
+    suspend fun defeatLazyMonster(): ResponseResult<Any>
 
     companion object {
         private const val BASE = "member"
