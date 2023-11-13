@@ -15,15 +15,15 @@ EditorBuildSettings:
     path: Assets/Scenes/GameOverScene.unity
     guid: 0b09e8de922a735499066ee760dccd90
   m_configObjects:
-    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 89a6d18d3df8d3e4fa917b0f9a963bc0,
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: d75426839eca34f45826ce2f8fdcbdba,
       type: 2}
-    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: de8a8e4f987434338a4b1062feb8d069,
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 541404a47e1eaf246b6e884074e108fe,
       type: 2}
-    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: d23253ab6bea7c34ca1bdab30524c895,
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 5e0576dbacca34c42953e01df23b84a6,
       type: 2}
-    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 1eb95d77acb39444e8cf44313496a874,
+    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 7d242df670bd9ab43b2ff0aedb2530e8,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 58f40b12bbc864f3c96c6505a9a1e1e3,
       type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: c6dd3c107def7274b8727bfe6ed81a75,
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: dcfca1ccff5cb91448f6eb43c6e2ed56,
       type: 2}
