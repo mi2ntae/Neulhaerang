@@ -31,6 +31,7 @@ import com.finale.neulhaerang.domain.member.repository.MemberRepository;
 import com.finale.neulhaerang.domain.member.repository.MemberStatRepository;
 import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.title.entity.Title;
+import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
 import com.finale.neulhaerang.global.exception.common.InValidPageIndexException;
 import com.finale.neulhaerang.global.exception.member.AlreadyExistTirednessException;
@@ -38,6 +39,8 @@ import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
 import com.finale.neulhaerang.global.exception.member.NotExistCharacterInfoException;
 import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
+import com.finale.neulhaerang.global.exception.title.NotEarnedTitleException;
+import com.finale.neulhaerang.global.exception.title.NotExistTitleException;
 import com.finale.neulhaerang.global.handler.AuthenticationHandler;
 import com.finale.neulhaerang.global.util.RedisUtil;
 
@@ -53,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
 	private final CharacterInfoRepository characterInfoRepository;
 	private final MemberStatRepository memberStatRepository;
 	private final TitleRepository titleRepository;
-
+	private final EarnedTitleRepository earnedTitleRepository;
 	private final RedisUtil redisUtil;
 
 	private final AuthenticationHandler authenticationHandler;
@@ -269,21 +272,11 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		Member member = optionalMember.get();
-		StringBuilder titleBuilder = new StringBuilder();
-		if (member.getTitleId() != 0) {
-			Optional<Title> optionalTitle = titleRepository.findById(member.getTitleId());
-			if (optionalTitle.isEmpty()) {
-				titleBuilder.append("Unknown");
-			} else {
-				titleBuilder.append(optionalTitle.get().getName());
-			}
-		}
 
 		if (level == MAX_LEVEL) {
-			return MemberProfileResDto.of(MAX_LEVEL, 999, 999, titleBuilder.toString(), member.getNickname());
+			return MemberProfileResDto.of(MAX_LEVEL, 999, 999, member.getNickname());
 		}
-		return MemberProfileResDto.of(level, LEVEL_WEIGHT * level, sumExp, titleBuilder.toString(),
-			member.getNickname());
+		return MemberProfileResDto.of(level, LEVEL_WEIGHT * level, sumExp, member.getNickname());
 	}
 
 	@Override
@@ -314,9 +307,21 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	@Transactional
 	public void modifyCharacterInfoByMember(CharacterModifyReqDto characterModifyReqDto) {
+		Member member = memberRepository.findById(authenticationHandler.getLoginMemberId()).get();
+
 		CharacterInfo characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(
 			authenticationHandler.getLoginMemberId()).orElseThrow(NotExistCharacterInfoException::new
 		);
+
+		if (characterModifyReqDto.getTitle() != 0) {
+			Optional<Title> title = titleRepository.findById(characterModifyReqDto.getTitle());
+			if (title.isEmpty()) {
+				throw new NotExistTitleException(member, characterModifyReqDto.getTitle());
+			}
+			if (!earnedTitleRepository.existsByTitle_IdAndMember(characterModifyReqDto.getTitle(), member)) {
+				throw new NotEarnedTitleException(member, characterModifyReqDto.getTitle());
+			}
+		}
 		characterInfo.updateCharacterInfo(characterModifyReqDto);
 	}
 
