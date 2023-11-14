@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,9 +41,15 @@ public class ArController {
 		return ResponseEntity.status(HttpStatus.OK).body(arService.repelIndolenceMonster());
 	}
 
-	@ApiOperation(value = "주변 사용자 찾기", notes = "AR에서 주변 사용자를 보여주기 위한 프로필 조회")
+	@ApiOperation(value = "위치 갱신 및 주변 사용자 찾기", notes = "특정 주기로 반복해서 위치를 갱신하고 주변 사용자를 반환")
 	@PatchMapping("/around")
-	public ResponseEntity<List<AroundMemberCharacterListResDto>> findAroundMemberByLocation(@RequestBody AroundMemberCharacterReqDto aroundMemberCharacterReqDto) {
-		return ResponseEntity.status(HttpStatus.OK).body(arService.findAroundMemberByLocation(aroundMemberCharacterReqDto));
+	public ResponseEntity<List<AroundMemberCharacterListResDto>> updateLocation(@RequestBody AroundMemberCharacterReqDto aroundMemberCharacterReqDto) {
+		return ResponseEntity.status(HttpStatus.OK).body(arService.updateLocation(aroundMemberCharacterReqDto));
+	}
+
+	@ApiOperation(value = "주변 사용자 찾기", notes = "AR에서 주변 사용자를 보여주기 위한 프로필 조회")
+	@GetMapping("/social")
+	public ResponseEntity<List<AroundMemberCharacterListResDto>> findAroundMemberByLocation() {
+		return ResponseEntity.status(HttpStatus.OK).body(arService.findAroundMemberByLocation());
 	}
 }
