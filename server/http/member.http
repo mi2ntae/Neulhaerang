@@ -1,7 +1,7 @@
 ### 캐릭터 장착 정보 변경
-POST localhost:8080/member/character
+POST {{back_addr}}member/character
 Content-Type: application/json
-Authorization: Bearer {accessToken}
+Authorization: Bearer {{access_token}}
 
 {
   "hat": 1,
