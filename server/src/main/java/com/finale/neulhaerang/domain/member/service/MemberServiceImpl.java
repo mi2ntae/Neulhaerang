@@ -173,12 +173,8 @@ public class MemberServiceImpl implements MemberService {
 		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes,
 			memberId);
 
-		LocalDateTime now = LocalDateTime.now();
 		int[] stats = new int[VALID_STAT_NUMS];
 		records.stream()
-			.filter(
-				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-					DateTimeFormatter.ISO_DATE)))
 			.forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
 
 		List<StatListResDto> statListResDtos = new ArrayList<>();
