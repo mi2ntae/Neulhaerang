@@ -7,6 +7,7 @@ import com.finale.neulhaerang.data.api.TitleApi
 import com.finale.neulhaerang.data.entity.StatResult
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
+import com.finale.neulhaerang.data.model.response.MemberStatResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
 import com.finale.neulhaerang.data.model.response.MemberTitlesResDto
 import com.finale.neulhaerang.data.util.onFailure
@@ -139,16 +140,17 @@ class TransferWithUnity {
                     .onSuccess { (_, data) ->
                         checkNotNull(data)
                         Log.i("heejeong", "$data")
-                        val statInfo = StatResult(
-                            life = data[0].score,
-                            survival = data[1].score,
-                            popularity = data[2].score,
-                            power = data[3].score,
-                            creative = data[4].score,
-                            love = data[5].score,
-                        )
-                        Log.i("heejeong", "$statInfo")
-                        sendMemberStats(statInfo)
+                        sendMemberStats(data)
+//                        val statInfo = StatResult(
+//                            life = data[0].score,
+//                            survival = data[1].score,
+//                            popularity = data[2].score,
+//                            power = data[3].score,
+//                            creative = data[4].score,
+//                            love = data[5].score,
+//                        )
+//                        Log.i("heejeong", "$statInfo")
+//                        sendMemberStats(statInfo)
                     }.onFailure { (_, message, _) ->
                         Log.e("heejeong", "실패! %n$message")
                     }
@@ -184,7 +186,13 @@ class TransferWithUnity {
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
-
+    private fun sendMemberStats(stats: List<MemberStatResDto>) {
+        val jsonTitles = StatsWrapper(stats)
+        val jsonMessage = gson.toJson(jsonTitles)
+        Log.i("heejeong", "sendMemberStats $jsonMessage")
+        val unityMethod = "ReceiveMemberStats"
+        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
+    }
     /**
      * 보유한 유저 칭호들을 유니티로 전송
      */
@@ -197,4 +205,5 @@ class TransferWithUnity {
     }
 
     data class TitlesWrapper(val titles:List<MemberTitlesResDto>)
+    data class StatsWrapper(val stats:List<MemberStatResDto>)
 }

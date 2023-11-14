@@ -73,32 +73,40 @@ public class AndroidController : MonoBehaviour
 
     void ReceiveMemberStats(string jsonMessage)
     {
+        //Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
+        //MemberStat datas = JsonUtility.FromJson<MemberStat>(jsonMessage);
+        //Debug.Log("heejeong Life" + datas.ToString());
+
+        //// StartStat
+
+        //int[] scores = new int[6];
+
+        //scores[0] = datas.Life;
+        //scores[1] = datas.Survival;
+        //scores[2] = datas.Popularity;
+        //scores[3] = datas.Power;
+        //scores[4] = datas.Creative;
+        //scores[5] = datas.Love;
+
+        //scores = changeValue(scores);
+        ///*
+        // * A+ => 2500
+        // * A  => 2000
+        // * B+ => 1500
+        // * B  => 1000
+        // * C+ => 500
+        // */
+
+        //Stats stats = new Stats(scores[0], scores[1], scores[2], scores[3], scores[4], scores[5]);
+        //statsRadarChart.SetStats(stats);
+
         Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
-        MemberStat datas = JsonUtility.FromJson<MemberStat>(jsonMessage);
-        Debug.Log("heejeong Life" + datas.ToString());
-
-        // StartStat
-
-        int[] scores = new int[6];
-
-        scores[0] = datas.Life;
-        scores[1] = datas.Survival;
-        scores[2] = datas.Popularity;
-        scores[3] = datas.Power;
-        scores[4] = datas.Creative;
-        scores[5] = datas.Love;
-
-        scores = changeValue(scores);
-        /*
-         * A+ => 2500
-         * A  => 2000
-         * B+ => 1500
-         * B  => 1000
-         * C+ => 500
-         */
-
-        Stats stats = new Stats(scores[0], scores[1], scores[2], scores[3], scores[4], scores[5]);
-        statsRadarChart.SetStats(stats);
+        MemberStats datas = JsonUtility.FromJson<MemberStats>(jsonMessage);
+        foreach (MemberStatItem lt in datas.stats)
+        {
+            Debug.Log("heejeong 유저 스탯 점수::" + lt.Score);
+            Debug.Log("heejeong 유저 스탯 레벨::" + lt.Level);
+        }
     }
 
     /*
