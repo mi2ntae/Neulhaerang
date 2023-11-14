@@ -26,6 +26,7 @@ class TransferWithUnity {
     private val unityGameObject = "AndroidController"
     private var memberId: Long = 0
     private val gson = Gson()
+
     init {
         Log.i("heejeong", "TransferWithUnity Init")
         Log.i("heejeong1", memberId.toString())
@@ -158,6 +159,19 @@ class TransferWithUnity {
         }
     }
 
+    /**
+     * 유저 근처 다른 사용자 정보 조회
+     */
+    fun getNearByUsers() {
+        runBlocking {
+            GlobalScope.launch {
+                /**
+                 *  TODO: 근처 사용자 불러오는 API 실행
+                 *  Unity로 데이터 보내는 함수 실행 - sendNearByUsers(data)
+                 */
+            }.join()
+        }
+    }
 
     /**
      * 보유한 유저 아이템 정보를 유니티로 전송
@@ -180,12 +194,6 @@ class TransferWithUnity {
     /**
      * 유저 능력치 정보를 유니티로 전송
      */
-    private fun sendMemberStats(memberStats: StatResult) {
-        val jsonMessage = gson.toJson(memberStats)
-        val unityMethod = "ReceiveMemberStats"
-        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
-    }
-
     private fun sendMemberStats(stats: List<MemberStatResDto>) {
         val jsonTitles = StatsWrapper(stats)
         val jsonMessage = gson.toJson(jsonTitles)
@@ -193,6 +201,12 @@ class TransferWithUnity {
         val unityMethod = "ReceiveMemberStats"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
+//    private fun sendMemberStats(memberStats: StatResult) {
+//        val jsonMessage = gson.toJson(memberStats)
+//        val unityMethod = "ReceiveMemberStats"
+//        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
+//    }
+
     /**
      * 보유한 유저 칭호들을 유니티로 전송
      */
@@ -204,6 +218,21 @@ class TransferWithUnity {
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
-    data class TitlesWrapper(val titles:List<MemberTitlesResDto>)
-    data class StatsWrapper(val stats:List<MemberStatResDto>)
+    /**
+     * 근처 다른 유저 정보들을 유니티로 전송
+     */
+    private fun sendNearByUsers() {
+        /**
+         * TODO: 유저 정보 JSON으로 변환 후 유니티로 전송
+         *   val jsonTitles = TitlesWrapper(titles)
+         *   val jsonMessage = gson.toJson(jsonTitles)
+         *   Log.i("heejeong", "sendUserTitles $jsonMessage")
+         */
+        val jsonMessage = gson.toJson("example")
+        val unityMethod = "ReceiveNearByUsers"
+        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
+    }
+
+    data class TitlesWrapper(val titles: List<MemberTitlesResDto>)
+    data class StatsWrapper(val stats: List<MemberStatResDto>)
 }
