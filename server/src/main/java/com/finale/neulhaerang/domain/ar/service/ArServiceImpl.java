@@ -3,8 +3,11 @@ package com.finale.neulhaerang.domain.ar.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.geo.Point;
@@ -114,12 +117,31 @@ public class ArServiceImpl implements ArService {
 	}
 
 	@Override
-	public List<AroundMemberCharacterListResDto> findAroundMemberByLocation(
+	public List<AroundMemberCharacterListResDto> updateLocation(
 		AroundMemberCharacterReqDto aroundMemberCharacterReqDto) {
 		List<String> deviceIds = redisUtil.changeGeo(new Point(aroundMemberCharacterReqDto.getLongitude(), aroundMemberCharacterReqDto.getLatitude())
 			, authenticationHandler.getLoginDeviceId());
+		Set<AroundMemberCharacterListResDto> aroundMemberCharacterListResDtos = new HashSet<>();
+		deviceIds.forEach(deviceId -> {
+			Optional<Device> device = deviceRepository.findDeviceByDeviceToken(deviceId);
+			if(device.isEmpty()) {
+				throw new NotExistDeviceException();
+			}
+			long memberId = device.get().getMember().getId();
+			if(memberId != authenticationHandler.getLoginMemberId()) {
+				Optional<CharacterInfo> characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(memberId);
+				aroundMemberCharacterListResDtos.add(AroundMemberCharacterListResDto.from(characterInfo.get()));
+			}
+		});
+		return aroundMemberCharacterListResDtos.stream().collect(Collectors.toList());
+	}
+
+	@Override
+	public List<AroundMemberCharacterListResDto> findAroundMemberByLocation() {
+		List<String> deviceIds = redisUtil.getAroundMember(authenticationHandler.getLoginDeviceId());
 		List<AroundMemberCharacterListResDto> aroundMemberCharacterListResDtos = new ArrayList<>();
 		deviceIds.forEach(deviceId -> {
+			System.out.println(deviceId);
 			Optional<Device> device = deviceRepository.findDeviceByDeviceToken(deviceId);
 			if(device.isEmpty()) {
 				throw new NotExistDeviceException();

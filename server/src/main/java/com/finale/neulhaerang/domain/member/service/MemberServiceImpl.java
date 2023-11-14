@@ -174,8 +174,7 @@ public class MemberServiceImpl implements MemberService {
 			memberId);
 
 		int[] stats = new int[VALID_STAT_NUMS];
-		records.stream()
-			.forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
+		records.stream().forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
 
 		List<StatListResDto> statListResDtos = new ArrayList<>();
 		Arrays.stream(stats).forEach(stat -> statListResDtos.add(StatListResDto.of(stat, getLevelByScore(stat))));
@@ -292,7 +291,7 @@ public class MemberServiceImpl implements MemberService {
 			throw new AlreadyExistTirednessException();
 		}
 
-		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now().plusHours(9), StatType.피곤도,
+		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now(), StatType.피곤도,
 			tiredness);
 		memberStatRepository.save(StatRecord.of(statRecordReqDto, memberId));
 	}

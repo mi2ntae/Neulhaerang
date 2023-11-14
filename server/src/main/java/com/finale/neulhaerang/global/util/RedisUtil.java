@@ -28,6 +28,10 @@ public class RedisUtil {
 
 	public List<String> changeGeo(Point point, String deviceId) {
 		redisTemplate.opsForGeo().add(geoKey, point, deviceId);
+		return getAroundMember(deviceId);
+	}
+
+	public List<String> getAroundMember(String deviceId) {
 		Metric metric = RedisGeoCommands.DistanceUnit.METERS;
 		GeoResults<RedisGeoCommands.GeoLocation<String>> members = redisTemplate.opsForGeo().radius(geoKey, deviceId, new Distance(100, metric));
 		List<String> deviceIds = new ArrayList<>();

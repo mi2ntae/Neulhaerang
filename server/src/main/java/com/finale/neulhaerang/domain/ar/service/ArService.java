@@ -10,5 +10,7 @@ public interface ArService {
 
 	boolean repelIndolenceMonster();
 
-	List<AroundMemberCharacterListResDto> findAroundMemberByLocation(AroundMemberCharacterReqDto aroundMemberCharacterReqDto);
+	List<AroundMemberCharacterListResDto> updateLocation(AroundMemberCharacterReqDto aroundMemberCharacterReqDto);
+
+	List<AroundMemberCharacterListResDto> findAroundMemberByLocation();
 }
