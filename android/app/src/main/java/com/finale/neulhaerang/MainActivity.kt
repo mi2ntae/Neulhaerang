@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        startService(Intent(this, DestroyService::class.java))
         checkPermissionsAndRun()
 
         val lm = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -252,44 +253,46 @@ class MainActivity : ComponentActivity() {
         return 0
     }
 
-    private suspend fun readDailyRecords(client: HealthConnectClient) {
-        val today = ZonedDateTime.now()
-        val startOfDay = today.truncatedTo(ChronoUnit.DAYS)
-        val timeRangeFilter = TimeRangeFilter.between(
-            startOfDay.toLocalDateTime(),
-            today.toLocalDateTime()
-        )
+    // 걸음 수 조회
+//    private suspend fun readDailyRecords(client: HealthConnectClient) {
+//        val today = ZonedDateTime.now()
+//        val startOfDay = today.truncatedTo(ChronoUnit.DAYS)
+//        val timeRangeFilter = TimeRangeFilter.between(
+//            startOfDay.toLocalDateTime(),
+//            today.toLocalDateTime()
+//        )
+//
+//        val stepsRecordRequest = ReadRecordsRequest(StepsRecord::class, timeRangeFilter)
+//        val numberOfStepsToday = client.readRecords(stepsRecordRequest)
+//            .records.sumOf { it.count }
+//
+//        Log.i("mintae", "Steps ${numberOfStepsToday}")
+//
+//    }
 
-        val stepsRecordRequest = ReadRecordsRequest(StepsRecord::class, timeRangeFilter)
-        val numberOfStepsToday = client.readRecords(stepsRecordRequest)
-            .records.sumOf { it.count }
-
-        Log.i("mintae", "Steps ${numberOfStepsToday}")
-
-    }
-
-    private fun insertData(client: HealthConnectClient, steps: Long) {
-        // 1
-        val startTime = ZonedDateTime.now().minusSeconds(1).toInstant()
-        val endTime = ZonedDateTime.now().toInstant()
-
-        // 2
-        val records = listOf(
-            StepsRecord(
-                count = steps,
-                startTime = startTime,
-                endTime = endTime,
-                startZoneOffset = null,
-                endZoneOffset = null,
-            ),
-        )
-
-        // 3
-        lifecycleScope.launch {
-            client.insertRecords(records)
-            Log.i("mintae", "Insert Success")
-        }
-    }
+    // 헬스 데이터 임의 입력
+//    private fun insertData(client: HealthConnectClient, steps: Long) {
+//        // 1
+//        val startTime = ZonedDateTime.now().minusSeconds(1).toInstant()
+//        val endTime = ZonedDateTime.now().toInstant()
+//
+//        // 2
+//        val records = listOf(
+//            StepsRecord(
+//                count = steps,
+//                startTime = startTime,
+//                endTime = endTime,
+//                startZoneOffset = null,
+//                endZoneOffset = null,
+//            ),
+//        )
+//
+//        // 3
+//        lifecycleScope.launch {
+//            client.insertRecords(records)
+//            Log.i("mintae", "Insert Success")
+//        }
+//    }
 }
 
 /*
