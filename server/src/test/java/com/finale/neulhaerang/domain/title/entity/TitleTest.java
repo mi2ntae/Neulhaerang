@@ -17,9 +17,9 @@ class TitleTest {
 		assertThat(title).isNotNull();
 	}
 
-	@DisplayName("Routine Entity Bean 주입 Test")
+	@DisplayName("Title Entity Bean 주입 Test")
 	@Test
-	void When_RoutineDI_Expect_isEqualTo() {
+	void When_TitleDI_Expect_isEqualTo() {
 		// given // when
 		Title title = createTitle();
 
