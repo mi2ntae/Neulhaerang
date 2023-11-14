@@ -268,4 +268,24 @@ public class AndroidController : MonoBehaviour
 
         /*TODO*/
     }
+
+    /**
+     * 주위 사용자 조회
+     */
+    void RequestNearByUsers()
+    {
+        string androidMethod = "getNearByUsers";
+        _pluginInstance.Call(androidMethod);
+    }
+
+    void ReceiveNearByUsers(string jsonMessage)
+    {
+        /*
+         * TODO: JsonMessage 넘어오는지 확인
+         */
+        Debug.Log("heejeong [ReceiveNearByUsers]" + jsonMessage);
+        /*
+         * 사용자 리스트 받아서 역직렬화 후 Unity에서 사용 필요
+         */
+    }
 }
