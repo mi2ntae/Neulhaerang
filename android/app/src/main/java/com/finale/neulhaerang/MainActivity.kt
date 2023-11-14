@@ -3,11 +3,8 @@ package com.finale.neulhaerang
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -41,13 +38,7 @@ import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.ui.app.App
 import com.finale.neulhaerang.data.Memo
 import com.finale.neulhaerang.data.SqliteHelper
-import com.finale.neulhaerang.data.api.ArApi
-import com.finale.neulhaerang.data.model.request.AroundMemberCharacterReqDto
-import com.finale.neulhaerang.data.util.onFailure
-import com.finale.neulhaerang.data.util.onSuccess
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -174,17 +165,21 @@ class MainActivity : ComponentActivity() {
         val sqliteHelper = SqliteHelper(this, "memo", null, 1)
 //        insertData(healthConnectClient, 17);      // 헬스 커넥트에 데이터 삽입 예시
 //        readDailyRecords(healthConnectClient)       // 걸음수 받아오기
-        sqliteHelper.deleteMemo(LocalDateTime.now().toLocalDate().toString())
         var memo = sqliteHelper.selectMemo(LocalDateTime.now().toLocalDate().toString())
         Log.i("SQLITE", memo.size.toString())
 
         if (memo.size == 0) {
-            sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
             val sleepTime = readSleepSessions(healthConnectClient)      // 수면량 받아오기
-            val dataStore = DataStoreApplication.getInstance().getDataStore()
-            val tiredness = getScoreOfIndolence(sleepTime)
-            Log.i("Tiredness", tiredness.toString())
-            dataStore.setTiredness(tiredness)
+            if(sleepTime != 0L) {
+                Log.i("sleeptime zero", sleepTime.toString())
+                sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
+                val dataStore = DataStoreApplication.getInstance().getDataStore()
+                val tiredness = getScoreOfTiredness(sleepTime)
+                Log.i("Tiredness", tiredness.toString())
+                dataStore.setTiredness(tiredness)
+            } else {
+                Log.i("sleeptime", sleepTime.toString())
+            }
         } else {
             Log.i("SQLITE", memo.get(0).date)
         }
@@ -201,6 +196,7 @@ class MainActivity : ComponentActivity() {
 //            ascendingOrder = false,
         )
         val sleepSessions = healthConnectClient.readRecords(sleepSessionRequest)
+        Log.i("sleep list", sleepSessions.records.size.toString())
         sleepSessions.records.forEach { session ->
             val sessionTimeFilter = TimeRangeFilter.between(session.startTime, session.endTime)
             val durationAggregateRequest = AggregateRequest(
@@ -246,10 +242,10 @@ class MainActivity : ComponentActivity() {
             Log.i("Cal", TimeUnit.MILLISECONDS.toMinutes(diff).toString())
             return TimeUnit.MILLISECONDS.toMinutes(diff)
         }
-        return 840;
+        return 0;
     }
 
-    private fun getScoreOfIndolence(sleepTime: Long): Int {
+    private fun getScoreOfTiredness(sleepTime: Long): Int {
         for (i: Int in 0..9 step (1)) {
             if (sleepTime < (1 + i) * 60) return 100 - (10 * i)
         }
