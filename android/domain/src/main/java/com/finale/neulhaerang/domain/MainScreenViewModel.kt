@@ -80,7 +80,7 @@ class MainScreenViewModel : ViewModel() {
     val yearMonth: String
         get() = DateTimeFormatter.ofPattern("yyyy-MM").format(selectedDate)
     val canIndolence: Boolean
-        get() = indolence < 50
+        get() = indolence < 70
 
     // setter
     private fun updateBeforeYearMonth() {
@@ -144,17 +144,6 @@ class MainScreenViewModel : ViewModel() {
                 .onFailure {
                     Log.w(TAG, "setDataFromDateTime: fail ${it.code} ${it.message}")
                 }
-//            initCheckList(
-//                listOf(
-//                    CheckList("안녕", true),
-//                    CheckList("물 8잔 마시기", false),
-//                ), listOf(
-//                    CheckList("CS 스터디 - JAVASCRIPT", false),
-//                    CheckList("현대오토에버 이력서 작성", false),
-//                    CheckList("CS 스터디 - React", false),
-//                    CheckList("CS 스터디 - Kotlin", false),
-//                )
-//            )
             // 오늘의 편지
             LetterApi.instance.getLetter(selectedDate).onSuccess {
                 setLetterText(it.data ?: "")
@@ -194,6 +183,16 @@ class MainScreenViewModel : ViewModel() {
                     _indolence.intValue = data.indolence
                     _tiredness.intValue = data.tiredness
                 }
+            val tiredCount = tiredness.let {
+                when {
+                    it > 70 -> 0
+                    it > 50 -> 1
+                    it > 30 -> 2
+                    else -> 3
+                }
+            }
+            Log.d(TAG, "tiredCount: $tiredCount")
+            DataStoreApplication.getInstance().getDataStore().setTiredCount(tiredCount)
         }
     }
 
