@@ -46,8 +46,10 @@ import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
 import com.finale.neulhaerang.ui.app.social.SocialScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 
 /**
@@ -68,9 +70,11 @@ fun App(getResult: ActivityResultLauncher<Intent>, context: Context, lm: Locatio
         if (sqliteHelper.selectMemo(LocalDateTime.now().toLocalDate().toString()).size == 1) {
             Log.i("mintaeApp", "data size okay")
             sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
-            scope.launch {
-                MemberApi.instance.recordTiredness(dataStore.getTiredness().firstOrNull() ?: 1)
+            runBlocking {
+               MemberApi.instance.recordTiredness(dataStore.getTiredness().firstOrNull() ?: 1)
+                Log.d("blocking", "App: before")
             }
+            Log.d("blocking", "App: after")
         }
 
         var longitude = 0.0;
