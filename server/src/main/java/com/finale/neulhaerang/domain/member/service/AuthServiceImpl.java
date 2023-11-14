@@ -55,9 +55,6 @@ public class AuthServiceImpl implements AuthService {
 	@Value("${spring.jwt.token.access-expiration-time}")
 	private long accessExpirationTime;
 
-	@Value("${spring.jwt.token.refresh-expiration-time}")
-	private long refreshExpirationTime;
-
 	@Override
 	public LoginResDto login(LoginReqDto loginReqDto) {
 		Member member = null;
@@ -73,9 +70,10 @@ public class AuthServiceImpl implements AuthService {
 		}
 		String accessToken = jwtTokenProvider.createAccessToken(loginReqDto.getDeviceToken(), member.getId());
 		String refreshToken = jwtTokenProvider.createRefreshToken(loginReqDto.getDeviceToken());
-		LocalDateTime expire_time = LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS);
-		log.info(expire_time.toString());
-		return LoginResDto.of(member, TokenResDto.of(accessToken, refreshToken, expire_time));
+		LocalDateTime expireTime = LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS);
+		log.info("login() -> " +
+			member.getNickname() + "님이 access token을 발급 하셨습니다. access_token=" + accessToken);
+		return LoginResDto.of(member, TokenResDto.of(accessToken, refreshToken, expireTime));
 	}
 
 	@Override
@@ -99,6 +97,8 @@ public class AuthServiceImpl implements AuthService {
 			throw new ExpiredAuthException();
 		}
 		String accessToken = jwtTokenProvider.createAccessToken(deviceToken, optionalDevice.get().getMember().getId());
+		log.info("reissueAccessToken() -> " +
+			optionalDevice.get().getMember().getNickname() + "님이 access token을 재발급 하셨습니다. access_token=" + accessToken);
 		return TokenResDto.of(accessToken, tokenReqDto.getRefreshToken(),
 			LocalDateTime.now().plus(accessExpirationTime, ChronoUnit.MILLIS));
 	}
