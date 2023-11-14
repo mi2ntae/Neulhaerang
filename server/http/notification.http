@@ -1,5 +1,5 @@
 ### 알림 보내기 ver.편지보내기
-POST localhost:8080/notification/1
+POST {{back_addr}}notification/{{member_id}}
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### 알림 보내기 ver.편지보냄
-POST localhost:8080/notification/1
+POST {{back_addr}}notification/{{member_id}}
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### 알림 보내기 ver.다른 사용자 발견
-POST localhost:8080/notification/1
+POST {{back_addr}}notification/{{member_id}}
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### 알림 보내기 ver.기타
-POST localhost:8080/notification/1
+POST {{back_addr}}notification/{{member_id}}
 Content-Type: application/json
 
 {
