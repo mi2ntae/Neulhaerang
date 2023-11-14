@@ -32,6 +32,7 @@ class DataStoreModule(
     private val _loginStatus = booleanPreferencesKey("login_status") // int 저장 키값
     private val _memberid = longPreferencesKey("member_id") // int
     private val _tiredness = intPreferencesKey("tiredness") // int
+    private val _tiredCount = intPreferencesKey("tiredCount") // int
 
     //DataStore에서 값 읽기
     suspend fun getToken(): Flow<List<String>> {
@@ -147,6 +148,21 @@ class DataStoreModule(
             }
     }
 
+    suspend fun getTiredCount(): Flow<Int> {
+        return context.dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map { preferences ->
+                preferences[_tiredCount] ?: 0
+            }
+    }
+
     //DataStore에서 값 저장
     suspend fun saveToken(token: List<String>) {
         context.dataStore.edit { prefs ->
@@ -201,6 +217,12 @@ class DataStoreModule(
         }
     }
 
+    suspend fun setTiredCount(value: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[_tiredCount] = value
+        }
+    }
+    
 
     suspend fun clearDataStore() {
         context.dataStore.edit {
