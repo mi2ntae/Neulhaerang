@@ -21,6 +21,7 @@ import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
+import com.finale.neulhaerang.global.exception.routine.CanNotCreateDailyRoutineBeforeToday;
 import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NonRepeatedDateException;
@@ -38,6 +39,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(CanNotCreateDailyRoutineBeforeToday.class)
+	protected ResponseEntity<ErrorResponse> canNotCreateDailyRoutineBeforeToday() {
+		log.error("Can not create daily routine before today.");
+		ErrorResponse errorResponse = ErrorResponse.of(
+			ErrorCode.CAN_NOT_CREATE_DAILY_ROUTINE_BEFORE_TODAY.getErrorCode(),
+			ErrorCode.CAN_NOT_CREATE_DAILY_ROUTINE_BEFORE_TODAY.getMessage());
+		return ResponseEntity.status(ErrorCode.CAN_NOT_CREATE_DAILY_ROUTINE_BEFORE_TODAY.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(NonRepeatedDateException.class)
 	protected ResponseEntity<ErrorResponse> nonRepeatedDateException() {
