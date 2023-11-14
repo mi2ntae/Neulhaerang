@@ -49,7 +49,7 @@ public class AndroidController : MonoBehaviour
     {
         RequestMemberStats();
         RequestMemberStatus();
-        RequestDefeatMonster();
+        //RequestDefeatMonster();
         RequestCharacterItems();
         //ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
         //RequestUserTitles();
