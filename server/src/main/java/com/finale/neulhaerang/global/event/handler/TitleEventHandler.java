@@ -38,8 +38,12 @@ public class TitleEventHandler {
 		}
 		if (!earnedTitleRepository.existsByTitle_IdAndMember(titleId, member)) {
 			earnedTitleRepository.save(EarnedTitle.create(member, optionalTitle.get()));
-			notificationService.sendNotificationByToken(member.getId(),
-				TitleNotificationReqDto.create(member, optionalTitle.get()));
+			try {
+				notificationService.sendNotificationByToken(member.getId(),
+					TitleNotificationReqDto.create(member, optionalTitle.get()));
+			} catch (Exception e) {
+				log.warn("알림을 보내는데 문제가 발생했습니다. 확인바랍니다.");
+			}
 		} else {
 			log.info(member.getNickname() + "님이 이미 획득한 칭호(title_id=" + titleId + ")이기 때문에 발급하지 않습니다.");
 		}
