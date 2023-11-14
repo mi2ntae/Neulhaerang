@@ -164,11 +164,11 @@ class MainScreenViewModel : ViewModel() {
     }
 
     suspend fun checkCheckList(checkList: CheckList): String? {
-        if (!canIndolence) {
-            return BlockMessage.IndolenceBlock.message
-        }
         if (selectedDate != LocalDate.now()) {
             return BlockMessage.NotTodayBlock.message
+        }
+        if (!canIndolence) {
+            return BlockMessage.IndolenceBlock.message
         }
         when (checkList) {
             is Routine -> RoutineApi.instance.completeRoutine(checkList.dailyRoutineId)
