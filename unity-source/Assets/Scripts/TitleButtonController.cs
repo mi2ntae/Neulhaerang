@@ -21,7 +21,7 @@ public class TitleButtonController : MonoBehaviour
         titleObject.GetComponent<Image>().sprite = titleSprites[id];
 
         // Update equipment state into server
-        PlayerPrefs.SetInt("Title", id);
+        PlayerPrefs.SetInt("Title", id+1);
 
         int bag = PlayerPrefs.GetInt("Bag");
         int glasses = PlayerPrefs.GetInt("Glasses");
@@ -29,7 +29,9 @@ public class TitleButtonController : MonoBehaviour
         int scarf = PlayerPrefs.GetInt("Scarf");
         int title = PlayerPrefs.GetInt("Title");
         MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title);
-        var andController = new AndroidController();
-        andController.ModifyCharacterItems(datas);
+        //var andController = new AndroidController();
+        //andController.ModifyCharacterItems(datas);
+
+        AndroidController.instance.ModifyCharacterItems(datas);
     }
 }
