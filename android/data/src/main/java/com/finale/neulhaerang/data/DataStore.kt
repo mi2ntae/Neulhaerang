@@ -30,7 +30,7 @@ class DataStoreModule(
     private val _refreshToken = stringPreferencesKey("refresh_token") // int 저장 키값
     private val _deviceToken = stringPreferencesKey("deviceToken") // int 저장 키값
     private val _loginStatus = booleanPreferencesKey("login_status") // int 저장 키값
-    private val _memberid = longPreferencesKey("member_id") // int
+    private val _memberId = longPreferencesKey("member_id") // int
     private val _tiredness = intPreferencesKey("tiredness") // int
     private val _tiredCount = intPreferencesKey("tiredCount") // int
 
@@ -129,7 +129,7 @@ class DataStoreModule(
                 }
             }
             .map { preferences ->
-                preferences[_memberid] ?: 0L
+                preferences[_memberId] ?: 0L
             }
     }
 
@@ -207,7 +207,7 @@ class DataStoreModule(
 
     suspend fun setMemberId(value: Long) {
         context.dataStore.edit { preferences ->
-            preferences[_memberid] = value
+            preferences[_memberId] = value
         }
     }
 
@@ -222,14 +222,14 @@ class DataStoreModule(
             preferences[_tiredCount] = value
         }
     }
-    
+
 
     suspend fun clearDataStore() {
         context.dataStore.edit {
             it.remove(_accessToken)
             it.remove(_refreshToken)
             it.remove(_loginStatus)
-            it.remove(_memberid)
+            it.remove(_memberId)
         }
     }
 }
