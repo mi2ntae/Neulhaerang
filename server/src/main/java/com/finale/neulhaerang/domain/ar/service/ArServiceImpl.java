@@ -117,7 +117,7 @@ public class ArServiceImpl implements ArService {
 	}
 
 	@Override
-	public List<AroundMemberCharacterListResDto> updateLocation(
+	public List<AroundMemberCharacterListResDto> modifyLocation(
 		AroundMemberCharacterReqDto aroundMemberCharacterReqDto) {
 		List<String> deviceIds = redisUtil.changeGeo(new Point(aroundMemberCharacterReqDto.getLongitude(), aroundMemberCharacterReqDto.getLatitude())
 			, authenticationHandler.getLoginDeviceId());
