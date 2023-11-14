@@ -102,7 +102,7 @@ public class ArServiceImpl implements ArService {
 			.map(StatRecord::getWeight)
 			.reduce(0, Integer::sum);
 
-		if (indolenceSum > 50) {
+		if (indolenceSum >= 50) {
 			StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("나태 괴물 처치!", now, StatType.나태도, -50);
 			memberStatRepository.save(StatRecord.of(statRecordReqDto, loginMemberId));
 		}
@@ -153,5 +153,11 @@ public class ArServiceImpl implements ArService {
 			}
 		});
 		return aroundMemberCharacterListResDtos;
+	}
+
+	@Override
+	public void deleteLocation() {
+		String deviceId = authenticationHandler.getLoginDeviceId();
+		redisUtil.deleteGeo(deviceId);
 	}
 }
