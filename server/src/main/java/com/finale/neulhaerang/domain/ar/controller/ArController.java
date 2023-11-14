@@ -42,9 +42,9 @@ public class ArController {
 	}
 
 	@ApiOperation(value = "위치 갱신 및 주변 사용자 찾기", notes = "특정 주기로 반복해서 위치를 갱신하고 주변 사용자를 반환")
-	@PatchMapping("/around")
-	public ResponseEntity<List<AroundMemberCharacterListResDto>> updateLocation(@RequestBody AroundMemberCharacterReqDto aroundMemberCharacterReqDto) {
-		return ResponseEntity.status(HttpStatus.OK).body(arService.updateLocation(aroundMemberCharacterReqDto));
+	@PatchMapping("/around") 
+	public ResponseEntity<List<AroundMemberCharacterListResDto>> modifyLocation(@RequestBody AroundMemberCharacterReqDto aroundMemberCharacterReqDto) {
+		return ResponseEntity.status(HttpStatus.OK).body(arService.modifyLocation(aroundMemberCharacterReqDto));
 	}
 
 	@ApiOperation(value = "주변 사용자 찾기", notes = "AR에서 주변 사용자를 보여주기 위한 프로필 조회")
