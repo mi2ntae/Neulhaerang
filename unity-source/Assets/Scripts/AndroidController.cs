@@ -82,7 +82,7 @@ public class AndroidController : MonoBehaviour
 
         //// StartStat
 
-        //int[] scores = new int[6];
+        int[] scores = new int[6];
 
         //scores[0] = datas.Life;
         //scores[1] = datas.Survival;
@@ -91,40 +91,42 @@ public class AndroidController : MonoBehaviour
         //scores[4] = datas.Creative;
         //scores[5] = datas.Love;
 
-        //scores = changeValue(scores);
-        ///*
-        // * A+ => 2500
-        // * A  => 2000
-        // * B+ => 1500
-        // * B  => 1000
-        // * C+ => 500
-        // */
-
-        //Stats stats = new Stats(scores[0], scores[1], scores[2], scores[3], scores[4], scores[5]);
-        //statsRadarChart.SetStats(stats);
-
         Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
         MemberStats datas = JsonUtility.FromJson<MemberStats>(jsonMessage);
+
+        int index = 0;
         foreach (MemberStatItem lt in datas.stats)
         {
             Debug.Log("heejeong 유저 스탯 점수::" + lt.Score);
             Debug.Log("heejeong 유저 스탯 레벨::" + lt.Level);
+            scores[index++] = lt.Score;
+            /*TODO*/
+            // Level UI 생성 및 값 표시 작업 필요
         }
+        scores = changeValue(scores);
+        Stats stats = new Stats(scores[0], scores[1], scores[2], scores[3], scores[4], scores[5]);
+        statsRadarChart.SetStats(stats);
     }
 
     /*
-     * Radar chart 에 맞게 수치 조정
-     */
+    * Radar chart 에 맞게 수치 조정
+    * A+ => 2500       150
+    * A  => 2100       120
+    * B+ => 1700       90
+    * B  => 1300       60
+    * C+ => 900        30
+    * C  => 500        0
+    */
     private int[] changeValue(int[] scores)
     {
         for (int i = 0; i < 6; i++)
         {
-            if (scores[i] >= 150) scores[i] = 2500;
+            if (scores[i] >= 150) scores[i] = 2000;
             else
             {
-                scores[i] = scores[i] * 2500 / 150;
+                scores[i] = scores[i] * 2000 / 150;
             }
-
+            scores[i] += 500;
             Debug.Log("change score value - index : " + i + "  value : " + scores[i]);
         }
         return scores;
