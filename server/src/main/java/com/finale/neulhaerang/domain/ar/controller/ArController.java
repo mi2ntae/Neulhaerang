@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,5 +52,12 @@ public class ArController {
 	@GetMapping("/social")
 	public ResponseEntity<List<AroundMemberCharacterListResDto>> findAroundMemberByLocation() {
 		return ResponseEntity.status(HttpStatus.OK).body(arService.findAroundMemberByLocation());
+	}
+
+	@ApiOperation(value = "위치 정보 삭제", notes = "앱 종료에 따른 위치 정보 삭제")
+	@DeleteMapping("/around")
+	public ResponseEntity<Void> deleteLocation() {
+		arService.deleteLocation();
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }

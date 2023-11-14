@@ -50,6 +50,10 @@ public class RedisUtil {
 
 	public void deleteData(String deviceToken){
 		redisTemplate.delete(deviceToken);
+		deleteGeo(deviceToken);
+	}
+
+	public void deleteGeo(String deviceToken) {
 		redisTemplate.opsForGeo().remove(geoKey, deviceToken);
 	}
 }

@@ -13,4 +13,6 @@ public interface ArService {
 	List<AroundMemberCharacterListResDto> modifyLocation(AroundMemberCharacterReqDto aroundMemberCharacterReqDto);
 
 	List<AroundMemberCharacterListResDto> findAroundMemberByLocation();
+
+	void deleteLocation();
 }
