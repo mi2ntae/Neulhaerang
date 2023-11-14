@@ -1,10 +1,13 @@
 package com.finale.neulhaerang.domain
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.finale.neulhaerang.common.Stat
+import com.finale.neulhaerang.common.message.BlockMessage
 import com.finale.neulhaerang.common.message.ErrorMessage
 import com.finale.neulhaerang.common.message.ValidationMessage
+import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.api.RoutineApi
 import com.finale.neulhaerang.data.api.TodoApi
 import com.finale.neulhaerang.data.model.request.RoutineReqDto
@@ -12,7 +15,9 @@ import com.finale.neulhaerang.data.model.request.TodoReqDto
 import com.finale.neulhaerang.data.util.ResponseResult
 import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
+import kotlinx.coroutines.flow.firstOrNull
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -109,6 +114,22 @@ class CheckListCreationViewModel() : ViewModel() {
     }
 
     suspend fun registerCheckList(): String? {
+        val maxCount = 3
+        // 피로도와 투두 갯수 확인
+        var count = 0
+        TodoApi.instance.getTodo(dateTime.toLocalDate()).onSuccess {
+            count = it.data?.size ?: 0
+        }
+        val tiredCount =
+            DataStoreApplication.getInstance().getDataStore().getTiredCount().firstOrNull() ?: 0
+        Log.d(TAG, "tiredCount: today: ${maxCount + tiredCount}")
+        Log.d(TAG, "tiredCount: not today $maxCount")
+        if (dateTime.toLocalDate() == LocalDate.now()) {
+            if (count >= maxCount + tiredCount)
+                return BlockMessage.TirednessBlock.message
+        } else if (count >= maxCount) {
+            return BlockMessage.DailyCountBlock.message
+        }
         // 값 확인
         validateValues().let { if (it !== null) return it }
         // api 통신
