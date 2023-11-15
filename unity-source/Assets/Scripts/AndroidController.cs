@@ -29,11 +29,11 @@ public class AndroidController : MonoBehaviour
     public List<Sprite> scarfOn;
     public List<Sprite> titleSprites;
 
-    public List<ClothesButton> bagButtons;
-    public List<ClothesButton> glassesButtons;
-    public List<ClothesButton> minihatButtons;
-    public List<ClothesButton> scarfButtons;
-    public List<TitleButton> titleButtons;
+    public List<Button> bagButtons;
+    public List<Button> glassesButtons;
+    public List<Button> minihatButtons;
+    public List<Button> scarfButtons;
+    public List<Button> titleButtons;
 
     void Awake()
     {
@@ -285,12 +285,11 @@ public class AndroidController : MonoBehaviour
 
     void ReceiveNearByUsers(string jsonMessage)
     {
-        /*
-         * TODO: JsonMessage 넘어오는지 확인
-         */
         Debug.Log("heejeong [ReceiveNearByUsers]" + jsonMessage);
-        /*
-         * 사용자 리스트 받아서 역직렬화 후 Unity에서 사용 필요
-         */
+        AroundMembers datas = JsonUtility.FromJson<AroundMembers>(jsonMessage);
+        foreach (AroundMember lt in datas.members)
+        {
+            Debug.Log("heejeong 근처 사용자::" + lt.ToString());
+        }
     }
 }

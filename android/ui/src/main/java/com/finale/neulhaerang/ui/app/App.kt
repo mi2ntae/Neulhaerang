@@ -1,6 +1,5 @@
 package com.finale.neulhaerang.ui.app
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -10,17 +9,14 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -45,8 +41,8 @@ import com.finale.neulhaerang.ui.app.main.MainScreen
 import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
 import com.finale.neulhaerang.ui.app.social.SocialScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -55,11 +51,9 @@ import java.time.LocalDateTime
 /**
  * 메인 앱
  */
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun App(getResult: ActivityResultLauncher<Intent>, context: Context, lm: LocationManager) {
     val viewModel = viewModel<KakaoAuthViewModel>()
-    val scope = rememberCoroutineScope()
     val isLoggedIn = viewModel.isLoggedIn.collectAsState()
     Log.i("KakaoAuthViewModel", "로그인 되었나요? " + isLoggedIn.value)
 
@@ -71,14 +65,11 @@ fun App(getResult: ActivityResultLauncher<Intent>, context: Context, lm: Locatio
             Log.i("mintaeApp", "data size okay")
             sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
             runBlocking {
-               MemberApi.instance.recordTiredness(dataStore.getTiredness().firstOrNull() ?: 1)
+                MemberApi.instance.recordTiredness(dataStore.getTiredness().firstOrNull() ?: 1)
                 Log.d("blocking", "App: before")
             }
             Log.d("blocking", "App: after")
         }
-
-        var longitude = 0.0;
-        var latitude = 0.0;
 
         val gpsLocationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
@@ -92,7 +83,7 @@ fun App(getResult: ActivityResultLauncher<Intent>, context: Context, lm: Locatio
                 Log.i("Location", latitude.toString())
                 Log.i("Location", altitude.toString())
 
-                GlobalScope.launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     val isLogin = DataStoreApplication.getInstance().getDataStore().getLoginStatus()
                         .firstOrNull() ?: false
                     if (!isLogin) {

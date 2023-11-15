@@ -2,10 +2,11 @@ package com.finale.neulhaerang.data.unity
 
 import android.util.Log
 import com.finale.neulhaerang.data.DataStoreApplication
+import com.finale.neulhaerang.data.api.ArApi
 import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.TitleApi
-import com.finale.neulhaerang.data.entity.StatResult
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
+import com.finale.neulhaerang.data.model.response.AroundMemberCharacterResDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
 import com.finale.neulhaerang.data.model.response.MemberStatResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
@@ -14,13 +15,12 @@ import com.finale.neulhaerang.data.util.onFailure
 import com.finale.neulhaerang.data.util.onSuccess
 import com.google.gson.Gson
 import com.unity3d.player.UnityPlayer
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-@OptIn(DelicateCoroutinesApi::class)
 class TransferWithUnity {
     // 데이터를 받을 유니티 스크립트가 컴포넌트로 붙어 있는 게임오브젝트명
     private val unityGameObject = "AndroidController"
@@ -31,7 +31,7 @@ class TransferWithUnity {
         Log.i("heejeong", "TransferWithUnity Init")
         Log.i("heejeong1", memberId.toString())
         runBlocking {
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 memberId =
                     DataStoreApplication.getInstance().getDataStore().getMemberId().firstOrNull()
                         ?: 0
@@ -45,16 +45,14 @@ class TransferWithUnity {
      */
     private fun getUserTitles() {
         runBlocking {
-            GlobalScope.launch {
-                TitleApi.instance.getTitles()
-                    .onSuccess { (_, data) ->
-                        checkNotNull(data)
-                        Log.i("heejeong", "$data")
-                        sendUserTitles(data)
-                    }.onFailure { (_, message, _) ->
-                        Log.e("heejeong", "실패! %n$message")
-                    }
-            }.join()
+            TitleApi.instance.getTitles()
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", "$data")
+                    sendUserTitles(data)
+                }.onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
@@ -63,15 +61,13 @@ class TransferWithUnity {
      */
     private fun defeatLazyMonster() {
         runBlocking {
-            GlobalScope.launch {
-                MemberApi.instance.defeatLazyMonster()
-                    .onSuccess { (_, data) ->
-                        checkNotNull(data)
-                        Log.i("heejeong", "$data")
-                    }.onFailure { (_, message, _) ->
-                        Log.e("heejeong", "실패! %n$message")
-                    }
-            }.join()
+            MemberApi.instance.defeatLazyMonster()
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", "$data")
+                }.onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
@@ -82,15 +78,13 @@ class TransferWithUnity {
         val memberItem = gson.fromJson(jsonMessage, MemberItemReqDto::class.java)
         Log.i("heejeong", "$memberItem")
         runBlocking {
-            GlobalScope.launch {
-                MemberApi.instance.modifyCharacterItems(memberItem)
-                    .onSuccess { (_, data) ->
+            MemberApi.instance.modifyCharacterItems(memberItem)
+                .onSuccess { (_, data) ->
 //                        checkNotNull(data)
-                        Log.i("heejeong", "$data")
-                    }.onFailure { (_, message, _) ->
-                        Log.e("heejeong", "실패! %n$message")
-                    }
-            }.join()
+                    Log.i("heejeong", "$data")
+                }.onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
@@ -99,16 +93,14 @@ class TransferWithUnity {
      */
     private fun getCharacterItems() {
         runBlocking {
-            GlobalScope.launch {
-                MemberApi.instance.getCharacterItems(memberId)
-                    .onSuccess { (_, data) ->
-                        checkNotNull(data)
-                        Log.i("heejeong", "$data")
-                        sendCharacterItems(data)
-                    }.onFailure { (_, message, _) ->
-                        Log.e("heejeong", "실패! %n$message")
-                    }
-            }.join()
+            MemberApi.instance.getCharacterItems(memberId)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", "$data")
+                    sendCharacterItems(data)
+                }.onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
@@ -118,16 +110,14 @@ class TransferWithUnity {
      */
     fun getMemberStatus() {
         runBlocking {
-            GlobalScope.launch {
-                MemberApi.instance.getMemberStatus(memberId)
-                    .onSuccess { (_, data) ->
-                        checkNotNull(data)
-                        Log.i("heejeong", data.toString())
-                        sendMemberStatus(data)
-                    }.onFailure { (_, message, _) ->
-                        Log.e("heejeong", "실패! %n$message")
-                    }
-            }.join()
+            MemberApi.instance.getMemberStatus(memberId)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", data.toString())
+                    sendMemberStatus(data)
+                }.onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
@@ -136,12 +126,11 @@ class TransferWithUnity {
      */
     fun getMemberStats() {
         runBlocking {
-            GlobalScope.launch {
-                MemberApi.instance.getMemberStat(memberId)
-                    .onSuccess { (_, data) ->
-                        checkNotNull(data)
-                        Log.i("heejeong", "$data")
-                        sendMemberStats(data)
+            MemberApi.instance.getMemberStat(memberId)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", "$data")
+                    sendMemberStats(data)
 //                        val statInfo = StatResult(
 //                            life = data[0].score,
 //                            survival = data[1].score,
@@ -152,10 +141,9 @@ class TransferWithUnity {
 //                        )
 //                        Log.i("heejeong", "$statInfo")
 //                        sendMemberStats(statInfo)
-                    }.onFailure { (_, message, _) ->
-                        Log.e("heejeong", "실패! %n$message")
-                    }
-            }.join()
+                }.onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
@@ -164,12 +152,15 @@ class TransferWithUnity {
      */
     fun getNearByUsers() {
         runBlocking {
-            GlobalScope.launch {
-                /**
-                 *  TODO: 근처 사용자 불러오는 API 실행
-                 *  Unity로 데이터 보내는 함수 실행 - sendNearByUsers(data)
-                 */
-            }.join()
+            ArApi.instance.getAroundMembers()
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", "getAroundMembers $data")
+                    sendNearByUsers(data)
+                }
+                .onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
@@ -221,18 +212,15 @@ class TransferWithUnity {
     /**
      * 근처 다른 유저 정보들을 유니티로 전송
      */
-    private fun sendNearByUsers() {
-        /**
-         * TODO: 유저 정보 JSON으로 변환 후 유니티로 전송
-         *   val jsonTitles = TitlesWrapper(titles)
-         *   val jsonMessage = gson.toJson(jsonTitles)
-         *   Log.i("heejeong", "sendUserTitles $jsonMessage")
-         */
-        val jsonMessage = gson.toJson("example")
+    private fun sendNearByUsers(members: List<AroundMemberCharacterResDto>) {
+        val jsonMembers = MemberWrapper(members)
+        val jsonMessage = gson.toJson(jsonMembers)
+        Log.i("heejeong", "sendNearByUsers $jsonMessage")
         val unityMethod = "ReceiveNearByUsers"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
     data class TitlesWrapper(val titles: List<MemberTitlesResDto>)
     data class StatsWrapper(val stats: List<MemberStatResDto>)
+    data class MemberWrapper(val members: List<AroundMemberCharacterResDto>)
 }

@@ -5,8 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import com.finale.neulhaerang.data.api.ArApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 
@@ -30,7 +28,7 @@ class DestroyService : Service() {
         Log.e(TAG, "onTaskRemoved()")
         Log.e(TAG, "This task removed from task list!")
         runBlocking {
-            ArApi.instance.deleteGeo();
+            ArApi.instance.deleteGeo()
         }
         stopSelf()
     }

@@ -18,4 +18,9 @@ public class GoSceneManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
