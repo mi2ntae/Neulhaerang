@@ -29,11 +29,11 @@ public class AndroidController : MonoBehaviour
     public List<Sprite> scarfOn;
     public List<Sprite> titleSprites;
 
-    public List<ClothesButton> bagButtons;
-    public List<ClothesButton> glassesButtons;
-    public List<ClothesButton> minihatButtons;
-    public List<ClothesButton> scarfButtons;
-    public List<TitleButton> titleButtons;
+    public List<Button> bagButtons;
+    public List<Button> glassesButtons;
+    public List<Button> minihatButtons;
+    public List<Button> scarfButtons;
+    public List<Button> titleButtons;
 
     void Awake()
     {

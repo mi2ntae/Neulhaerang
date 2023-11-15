@@ -19,7 +19,7 @@
 <a href="https://play.google.com/store/apps/details?id=com.finale.neulhaerang"><img src="https://img.shields.io/badge/다운로드%20하러가기-3DDC84?style=flat-square&logo=android&logoColor=white" /></a>
 </p>
 
-[프로젝트 소개](#🌞-프로젝트-소개) • [주요 기능](#☁-기능-소개)• [프로젝트 차별점](#🔧-기술-스택) • [기술 스택](#🔧-기술-스택)• [인프라 구조](#⚙️-인프라-구조)• [개발 일지](#📚-팀-ashe-개발-일지)• [팀원 소개](#👩‍💻-팀원-소개)
+[프로젝트 소개](#🌞-프로젝트-소개) • [주요 기능](#☁-기능-소개)• [프로젝트 차별점](#⛅-프로젝트-차별점-및-기술-특이점) • [기술 스택](#🔧-기술-스택)• [인프라 구조](#🎇-시스템-아키텍처)• [산출물](#📂-기획-및-설계-산출물)• [팀원 소개](#💗-팀원-소개)
 
 </div>
  
@@ -33,7 +33,128 @@
 
 
 ## ☁ 기능 소개
-
+<div align="center">
+ <table>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">로그인 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">카카오 소셜 로그인 후 자동으로 메인 화면으로 접속합니다.<br>
+	  로그인 정보가 자동으로 저장되어 한번 로그인하면 다시 로그인하지 않습니다.
+	  </td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">메인 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">상단에 나태도와 피로도를 나타냅니다.<br>
+	  나태도와 피로도가 높으면 TODO와 루틴을 수행하는데 제약이 생깁니다.
+	  </td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">TODO/루틴 등록 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">왼쪽 아이콘을 통해 올릴 스탯을 지정할 수 있습니다<br>
+	  루틴을 선택하면 날짜 선택이 사라지고 반복 날짜를 선택할 수 있습니다<br>
+	  알림 여부와 알림 시간을 지정할 수 있습니다</td>
+    </tr>
+	<tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">TODO 수정 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">TODO의 알림 여부, 날짜, 시간, 스탯 정보를 수정할 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">루틴 수정페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+        <tr>
+      <td align="center">루틴의 반복 날짜와 알람 여부, 알람 시간을 수정할 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">루틴 삭제</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+      <td align="center">사용자는 루틴을 제거할 수 있습니다.<br>이때 앞으로의 루틴도 제거가 가능합니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">우편함</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">생성형 AI인 챗 GPT를 통해 사용자가 전날 완료한 TODO/루틴을 토대로 편지를 작성해줍니다.</td>
+    </tr>
+   <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(스탯)</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">그래프를 통해 사용자의 현재 스탯 정보를 알 수 있습니다.</td>
+    </tr> 
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(의상실)</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">사용자는 목도리, 모자, 안경, 가방을 통해 캐릭터를 커스터마이징 할 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(칭호)</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">사용자는 얻은 칭호 중 하나를 선택해 캐릭터에 장착할 수 있습니다.<br>
+	  얻지 못한 칭호는 회색으로 나타납니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">나태괴물 처치</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">마이페이지를 통해 진입할 수 있습니다<br>
+	  사용자는 나태도가 70이상인 경우 나태괴물을 처치하지 않으면 TODO와 루틴을 수행/생성할 수 없습니다.
+	  <br>
+	  나태괴물을 처치하면 나태도가 50 내려갑니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">소셜(주위사용자 태그)</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">반경 100m에 로그인된 앱에 접속중인 주변 사용자들의 캐릭터 정보를 조회할 수 있습니다.<br>
+	  캐릭터를 클릭하여 스탯을 올릴 수 있습니다.</td>
+    </tr>
+ </table>
+</div>
 
 ## ⛅ 프로젝트 차별점 및 기술 특이점
 
@@ -69,10 +190,10 @@
 ![Gradle](https://img.shields.io/badge/Gradle%208.3-02303A?style=for-the-badge&logo=Gradle&logoColor=white)
 ![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F.svg?&style=for-the-badge&logo=Spring%20Security&logoColor=white)
 ![JPA](https://img.shields.io/badge/Spring%20data%20JPA-85EA2D?style=for-the-badge&logo=JPA&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT%200.9.1-000000?style=for-the-badge&logo=JWT&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT%200.9.1-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white)
 ![Lombok](https://img.shields.io/badge/Lombok%201.18.30-FF5722?style=for-the-badge&logoColor=white)
-![JUnit](https://img.shields.io/badge/JUnit%204.13.1-grey?style=for-the-badge&logoColor=white)
+![JUnit](https://img.shields.io/badge/JUnit%204.13.1-grey?style=for-the-badge&logoColor=white&logo=junit4)
 
 **Frontend**
 
@@ -117,31 +238,32 @@
 
 ![Firebase](https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white)
 ![Kakao Login](https://img.shields.io/badge/Kakao%20Login-FFCD00?style=for-the-badge&logo=KakaoTalk&logoColor=white)
+![Chat GPT](https://img.shields.io/badge/Ghat%20GPT-00a495?style=for-the-badge&logoColor=white)
 
 ## 🎇 시스템 아키텍처
 
-<img src="https://user-images.githubusercontent.com/33210124/194321053-3df8a037-3e79-4702-8469-fdffaf657527.png" alt="시스템 아키텍처" width="80%">
+![아키텍처](https://github.com/2023-finale/.github/assets/101235186/59fec2d2-b742-4363-ab53-b66b26a883f8)
 
 
 ## 📂 기획 및 설계 산출물
 
-### [💭 요구사항 정의 및 기능 명세](https://young-bonsai-e9c.notion.site/ef5025fb4f4d4083b2a3c26cb7a85efc?pvs=4)
+### [💭 요구사항 정의 및 기능 명세](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
 
 ### [🎨 화면 설계서](https://www.figma.com/file/WMeAanpQhVT7a05kSzpagk/A502?type=design&node-id=485-165&mode=design&t=J3HZlBmWB3l69f7y-0)
 
 ![화면설계서](https://github.com/2023-finale/.github/assets/101235186/803ea51b-acf8-4a8b-a308-e63267e4e954)
 
 
-### [🐾 API 명세서](https://young-bonsai-e9c.notion.site/API-46a28707d2a6405183c9ed0ebf34c627?pvs=4)
+### [🐾 API 명세서](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/API%20%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
 
 ### ✨ ER Diagram
 
 ![늘해랑 ERD](https://github.com/2023-finale/.github/assets/101235186/a3afa78d-f914-43ce-8663-9b38bf8dbafc)
 
-### [🐛 버그 리포트](https://young-bonsai-e9c.notion.site/API-46a28707d2a6405183c9ed0ebf34c627?pvs=4)
+### [🐛 버그 리포트](https://young-bonsai-e9c.notion.site/efbc4c1a09ff494c881d0ad2c8b712d0?pvs=4)
 
 ## 🤙🏻 Conventions
-FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://www.notion.so/MR-PR-48eeb2cb70d2449fb4611b5b452c479b),[ Commit 컨벤션](https://www.notion.so/Git-Commit-b454384df80e4894bd3b879a164522e3), [ JAVA 컨벤션](https://www.notion.so/Java-c4b5d639436943eab0b37e65afe4f6ac), [ Kotlin 컨벤션✨](https://www.notion.so/Kotlin-FE-2936c2479dbf4d649ec24bfffd5c10a8)  입니다 😎
+FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://young-bonsai-e9c.notion.site/MR-PR-48eeb2cb70d2449fb4611b5b452c479b?pvs=4),[ Commit 컨벤션](https://young-bonsai-e9c.notion.site/Git-Commit-b454384df80e4894bd3b879a164522e3?pvs=4), [ JAVA 컨벤션](https://young-bonsai-e9c.notion.site/Java-c4b5d639436943eab0b37e65afe4f6ac?pvs=4), [ Kotlin 컨벤션✨](https://young-bonsai-e9c.notion.site/Kotlin-FE-2936c2479dbf4d649ec24bfffd5c10a8?pvs=4)  입니다 😎
 
 
 
@@ -151,7 +273,7 @@ FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://www.not
 ![팀원소개](https://github.com/2023-finale/.github/assets/101235186/d065cdf5-24fc-4e04-96dd-a6c408f9b728)
 
 
-|**[이희정](https://github.com/heejeong13)**|**[강준영](https://github.com/Judgement9882)**|**[김민태](https://github.com/LeeHwayeon)**|**[김유진](https://github.com/Yujin830)**|**[박정은](https://github.com/jungeunevepark)**|**[임성원](https://github.com/imsw0529)** |
+|**[이희정](https://github.com/heejeong13)**|**[강준영](https://github.com/Judgement9882)**|**[김민태](https://github.com/mi2ntae)**|**[김유진](https://github.com/Yujin830)**|**[박정은](https://github.com/jungeunevepark)**|**[임성원](https://github.com/imsw0529)** |
 | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://avatars.githubusercontent.com/u/18045556?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/79979086?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/73164347?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/96433955?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/101235186?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/37894963?v=4" width="800"> |
 |Leader & Frontend|Frontend|Backend & Infra|Frontend & Backend|Backend|Frontend|
