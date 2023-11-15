@@ -242,25 +242,24 @@
 
 ## 🎇 시스템 아키텍처
 
-![아키텍처](https://github.com/2023-finale/.github/assets/101235186/59fec2d2-b742-4363-ab53-b66b26a883f8)
+<img src="https://github.com/2023-finale/.github/assets/101235186/59fec2d2-b742-4363-ab53-b66b26a883f8" width="80%">
 
 
 ## 📂 기획 및 설계 산출물
 
-### [💭 요구사항 정의 및 기능 명세](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
+[**💭 요구사항 정의 및 기능 명세**](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
 
-### [🎨 화면 설계서](https://www.figma.com/file/WMeAanpQhVT7a05kSzpagk/A502?type=design&node-id=485-165&mode=design&t=J3HZlBmWB3l69f7y-0)
+[**🎨 화면 설계서**](https://www.figma.com/file/WMeAanpQhVT7a05kSzpagk/A502?type=design&node-id=485-165&mode=design&t=J3HZlBmWB3l69f7y-0)
 
-![화면설계서](https://github.com/2023-finale/.github/assets/101235186/803ea51b-acf8-4a8b-a308-e63267e4e954)
+<img src="https://github.com/2023-finale/.github/assets/101235186/803ea51b-acf8-4a8b-a308-e63267e4e954" width="80%">
 
+[**🐾 API 명세서**](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/API%20%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
 
-### [🐾 API 명세서](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/API%20%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
+**✨ ER Diagram**
 
-### ✨ ER Diagram
+<img src="https://github.com/2023-finale/.github/assets/101235186/a3afa78d-f914-43ce-8663-9b38bf8dbafc" width="80%">
 
-![늘해랑 ERD](https://github.com/2023-finale/.github/assets/101235186/a3afa78d-f914-43ce-8663-9b38bf8dbafc)
-
-### [🐛 버그 리포트](https://young-bonsai-e9c.notion.site/efbc4c1a09ff494c881d0ad2c8b712d0?pvs=4)
+[**🐛 버그 리포트**](https://young-bonsai-e9c.notion.site/efbc4c1a09ff494c881d0ad2c8b712d0?pvs=4)
 
 ## 🤙🏻 Conventions
 FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://young-bonsai-e9c.notion.site/MR-PR-48eeb2cb70d2449fb4611b5b452c479b?pvs=4),[ Commit 컨벤션](https://young-bonsai-e9c.notion.site/Git-Commit-b454384df80e4894bd3b879a164522e3?pvs=4), [ JAVA 컨벤션](https://young-bonsai-e9c.notion.site/Java-c4b5d639436943eab0b37e65afe4f6ac?pvs=4), [ Kotlin 컨벤션✨](https://young-bonsai-e9c.notion.site/Kotlin-FE-2936c2479dbf4d649ec24bfffd5c10a8?pvs=4)  입니다 😎
