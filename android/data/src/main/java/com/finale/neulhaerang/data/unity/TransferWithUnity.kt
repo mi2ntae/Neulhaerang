@@ -2,9 +2,11 @@ package com.finale.neulhaerang.data.unity
 
 import android.util.Log
 import com.finale.neulhaerang.data.DataStoreApplication
+import com.finale.neulhaerang.data.api.ArApi
 import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.TitleApi
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
+import com.finale.neulhaerang.data.model.response.AroundMemberCharacterResDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
 import com.finale.neulhaerang.data.model.response.MemberStatResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
@@ -150,10 +152,17 @@ class TransferWithUnity {
      */
     fun getNearByUsers() {
         runBlocking {
-            /**
-             *  TODO: 근처 사용자 불러오는 API 실행
-             *  Unity로 데이터 보내는 함수 실행 - sendNearByUsers(data)
-             */
+            GlobalScope.launch {
+                ArApi.instance.getAroundMembers()
+                    .onSuccess { (_, data) ->
+                        checkNotNull(data)
+                        Log.i("heejeong", "$data")
+                        sendNearByUsers(data)
+                    }
+                    .onFailure { (_, message, _) ->
+                        Log.e("heejeong", "실패! %n$message")
+                    }
+            }.join()
         }
     }
 
@@ -205,18 +214,15 @@ class TransferWithUnity {
     /**
      * 근처 다른 유저 정보들을 유니티로 전송
      */
-    private fun sendNearByUsers() {
-        /**
-         * TODO: 유저 정보 JSON으로 변환 후 유니티로 전송
-         *   val jsonTitles = TitlesWrapper(titles)
-         *   val jsonMessage = gson.toJson(jsonTitles)
-         *   Log.i("heejeong", "sendUserTitles $jsonMessage")
-         */
-        val jsonMessage = gson.toJson("example")
+    private fun sendNearByUsers(members: List<AroundMemberCharacterResDto>) {
+        val jsonMembers = MemberWrapper(members)
+        val jsonMessage = gson.toJson(jsonMembers)
+        Log.i("heejeong", "sendNearByUsers $jsonMessage")
         val unityMethod = "ReceiveNearByUsers"
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
     data class TitlesWrapper(val titles: List<MemberTitlesResDto>)
     data class StatsWrapper(val stats: List<MemberStatResDto>)
+    data class MemberWrapper(val members: List<AroundMemberCharacterResDto>)
 }
