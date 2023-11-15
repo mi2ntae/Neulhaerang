@@ -9417,6 +9417,24 @@ GameObject:
   - component: {fileID: 1151928552}
   m_Layer: 5
   m_Name: Sliding Area
+  m_GameObject: {fileID: 1141639086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1147908fc90a0b741884174c4d0fdaa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1144445833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1144445834}
+  - component: {fileID: 1144445835}
+  m_Layer: 0
+  m_Name: AndroidController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9424,6 +9442,8 @@ GameObject:
   m_IsActive: 1
 --- !u!224 &1151928552
 RectTransform:
+--- !u!4 &1144445834
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9442,6 +9462,151 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+  m_GameObject: {fileID: 1144445833}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 521.0636, y: 2001.1871, z: -644.03955}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1144445835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1144445833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89afbb09995f2742aef6334fa06f236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsRadarChart: {fileID: 0}
+  monsterButton: {fileID: 0}
+  bagList:
+  - {fileID: 874831493}
+  - {fileID: 1234464092}
+  - {fileID: 575858324}
+  - {fileID: 185286960}
+  glassesList:
+  - {fileID: 1980667268}
+  - {fileID: 1095130190}
+  - {fileID: 109051342}
+  - {fileID: 239442473}
+  minihatList:
+  - {fileID: 1405510466}
+  - {fileID: 1683088754}
+  - {fileID: 1359138688}
+  - {fileID: 13704299}
+  scarfList:
+  - {fileID: 467321188}
+  - {fileID: 148965568}
+  - {fileID: 718752609}
+  titleObject: {fileID: 527062696}
+  bagOn:
+  - {fileID: 21300000, guid: 2ef1d7a004b11764d83fc088e478a11d, type: 3}
+  - {fileID: 21300000, guid: 4dbf2e928088c6d48bc36ad9d55975e8, type: 3}
+  - {fileID: 21300000, guid: b4b4ba083f73e2440b8024ea01f69d21, type: 3}
+  - {fileID: 21300000, guid: 130b19bc074d8b54bae43ef5364d8bcd, type: 3}
+  glassesOn:
+  - {fileID: 21300000, guid: d82fd72dd9ba5e540b6817283724da32, type: 3}
+  - {fileID: 21300000, guid: b50a8fddd09ea1e4f91ad8501fc2cd81, type: 3}
+  - {fileID: 21300000, guid: 51f456c48db8ae14ba89dcec00ef3ef3, type: 3}
+  - {fileID: 21300000, guid: 7764a75dfbd91b54a8f1f2933b034698, type: 3}
+  minihatOn:
+  - {fileID: 21300000, guid: 7bd7d7c342f2430448708223fb643c0c, type: 3}
+  - {fileID: 21300000, guid: d96deae2ccf34984d9974ed4e2237d87, type: 3}
+  - {fileID: 21300000, guid: 0ae375b0f22fcf343b671efbf0ef13ba, type: 3}
+  - {fileID: 21300000, guid: cb8e04f8916124f4ca7dda261a4d3953, type: 3}
+  scarfOn:
+  - {fileID: 21300000, guid: 5d758ffb0315c9d46a692670b51983bd, type: 3}
+  - {fileID: 21300000, guid: 6c003c4fc8785e8459178772bd2dc9f7, type: 3}
+  - {fileID: 21300000, guid: e802d4733ef9f674c9126b5733b9f9f8, type: 3}
+  titleSprites:
+  - {fileID: 21300000, guid: bb44e75c3f99bf245a870f015b327f19, type: 3}
+  - {fileID: 21300000, guid: 6e21202dd975fa349bb0e8f9557c9ae7, type: 3}
+  - {fileID: 21300000, guid: cf904f72e6d8d24469b43790f72155c2, type: 3}
+  - {fileID: 21300000, guid: cd4f9bdce2e4344438ccece086ebd0a4, type: 3}
+  - {fileID: 21300000, guid: 4db0c4ea0ad621e458008a1447268de4, type: 3}
+  - {fileID: 21300000, guid: d2513ef3de6999143898da6e96d00238, type: 3}
+  - {fileID: 21300000, guid: 9b767a1f69a2cd846991c7212b5837fb, type: 3}
+  - {fileID: 21300000, guid: 44c38c39089de0044b510bc752384328, type: 3}
+  - {fileID: 21300000, guid: dcfd32c1e3981664a90b2a47f7dccd1c, type: 3}
+  - {fileID: 21300000, guid: dd00c0be03656d0499b358a4d4da740f, type: 3}
+  - {fileID: 21300000, guid: 5325bccf5771ed24db852a482e498c82, type: 3}
+  - {fileID: 21300000, guid: d4fb4996981ef9c43b180019982c1209, type: 3}
+  - {fileID: 21300000, guid: 39f20369f9f55464a8efe2615a06875a, type: 3}
+  - {fileID: 21300000, guid: 189c2302b0c76d44c81c15676a83cc92, type: 3}
+  - {fileID: 21300000, guid: 76d317da25cb564449c705cc8e52a023, type: 3}
+  - {fileID: 21300000, guid: 17d5f90490b73104d8099f87a62c6948, type: 3}
+  - {fileID: 21300000, guid: d7f337e7362a7054fbfa2fa18dc85bcf, type: 3}
+  - {fileID: 21300000, guid: 7b2ea07c4bebcb94598086b00cbab776, type: 3}
+  - {fileID: 21300000, guid: bfb1f3cb2a6a8e24586cf9ee7c26d10e, type: 3}
+  - {fileID: 21300000, guid: 69f78f4c0cf32cd41b3691ba75aa127a, type: 3}
+  - {fileID: 21300000, guid: 2329748ec6f49f044b6f95295c1c93a4, type: 3}
+  - {fileID: 21300000, guid: 12ef9ef1f661c2b479173bfab4dc05ec, type: 3}
+  - {fileID: 21300000, guid: e0ed5174c19a07941b7ebef8f14c852e, type: 3}
+  - {fileID: 21300000, guid: 751546f092c7217458c0dd5ae0b11cd0, type: 3}
+  - {fileID: 21300000, guid: 2742290a760fd9f418f7350399f6f1c7, type: 3}
+  - {fileID: 21300000, guid: ffbd79a055ba32e4db30b881571e7cf0, type: 3}
+  - {fileID: 21300000, guid: 7fd12436c789f17469f95e75f59c0e39, type: 3}
+  - {fileID: 21300000, guid: f90909277e1f516458230d470ec6976b, type: 3}
+  - {fileID: 21300000, guid: 77188d407e01d9144b41eb58319b69c1, type: 3}
+  - {fileID: 21300000, guid: 18e84e0dc8e5e8246afea75d947114c1, type: 3}
+  - {fileID: 21300000, guid: edd8c5d645fe9624c9a1e203e950b392, type: 3}
+  bagButtons:
+  - {fileID: 896601548}
+  - {fileID: 300372214}
+  - {fileID: 1720004648}
+  - {fileID: 1695386150}
+  glassesButtons:
+  - {fileID: 213051593}
+  - {fileID: 959139099}
+  - {fileID: 346200499}
+  - {fileID: 488950565}
+  minihatButtons:
+  - {fileID: 1141639091}
+  - {fileID: 1091736415}
+  - {fileID: 1290311697}
+  - {fileID: 1282562352}
+  scarfButtons:
+  - {fileID: 1293974444}
+  - {fileID: 130797893}
+  - {fileID: 1300317303}
+  titleButtons:
+  - {fileID: 881852714}
+  - {fileID: 1532333577}
+  - {fileID: 2079001670}
+  - {fileID: 1975264042}
+  - {fileID: 2051300385}
+  - {fileID: 1825664972}
+  - {fileID: 46832891}
+  - {fileID: 565866271}
+  - {fileID: 1116830615}
+  - {fileID: 1505638675}
+  - {fileID: 1757379389}
+  - {fileID: 1830031260}
+  - {fileID: 1876715948}
+  - {fileID: 2009932329}
+  - {fileID: 1642820652}
+  - {fileID: 119950387}
+  - {fileID: 1979761087}
+  - {fileID: 2114793297}
+  - {fileID: 739813893}
+  - {fileID: 35512946}
+  - {fileID: 234418526}
+  - {fileID: 1332431576}
+  - {fileID: 1433943940}
+  - {fileID: 599508743}
+  - {fileID: 765317603}
+  - {fileID: 1497636414}
+  - {fileID: 1912182204}
+  - {fileID: 615379410}
+  - {fileID: 1437635238}
+  - {fileID: 1395479262}
+  - {fileID: 1268415866}
 --- !u!1 &1152818605
 GameObject:
   m_ObjectHideFlags: 0
@@ -18341,3 +18506,4 @@ SceneRoots:
   - {fileID: 946681008}
   - {fileID: 1263620768}
   - {fileID: 831467031}
+  - {fileID: 1144445834}

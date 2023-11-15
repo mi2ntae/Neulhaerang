@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.finale.neulhaerang.global.exception.routine.CanNotCreateDailyRoutineBeforeToday;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +43,9 @@ public class DailyRoutine {
 	private boolean status;
 
 	public static DailyRoutine create(Routine routine, LocalDate date) {
+		if (date.isBefore(LocalDate.now())) {
+			throw new CanNotCreateDailyRoutineBeforeToday();
+		}
 		return DailyRoutine.builder()
 			.routine(routine)
 			.check(false)

@@ -1,7 +1,7 @@
 ### 루틴 신규 생성
-POST localhost:8080/routine
+POST {{back_addr}}routine
 Content-Type: application/json
-Authorization: Bearer {accessToken}
+Authorization: Bearer {{access_token}}
 
 {
   "content": "인생 똑바로 살아",
@@ -20,9 +20,9 @@ Authorization: Bearer {accessToken}
 }
 
 ### 루틴 수정
-PATCH localhost:8080/routine
+PATCH {{back_addr}}routine
 Content-Type: application/json
-Authorization: Bearer {accessToken}
+Authorization: Bearer {{access_token}}
 
 {
   "alarm": false,

@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -88,7 +89,7 @@ fun StatDialog(
 //    val changeStat = viewModel::changeStat
 
     AlertDialog(onDismissRequest = onDismiss, confirmButton = {}, title = {
-        Text(text = "스탯을 골라주세요")
+        Text(text = "스탯을 골라주세요", style = MaterialTheme.typography.bodyLarge)
     }, text = {
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),// contentPadding = PaddingValues(8.dp)

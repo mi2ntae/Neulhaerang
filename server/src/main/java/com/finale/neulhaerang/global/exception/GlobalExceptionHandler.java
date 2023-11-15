@@ -21,8 +21,10 @@ import com.finale.neulhaerang.global.exception.member.NotExistDeviceException;
 import com.finale.neulhaerang.global.exception.member.NotExistMemberException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.AlreadyRemoveRoutineException;
+import com.finale.neulhaerang.global.exception.routine.CanNotCreateDailyRoutineBeforeToday;
 import com.finale.neulhaerang.global.exception.routine.CanNotRemoveBeforeTodayException;
 import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NonRepeatedDateException;
 import com.finale.neulhaerang.global.exception.routine.NotExistAlarmTimeException;
 import com.finale.neulhaerang.global.exception.routine.NotExistDailyRoutineException;
 import com.finale.neulhaerang.global.exception.routine.NotExistRelationWithRoutineException;
@@ -37,6 +39,25 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(CanNotCreateDailyRoutineBeforeToday.class)
+	protected ResponseEntity<ErrorResponse> canNotCreateDailyRoutineBeforeToday() {
+		log.error("Can not create daily routine before today.");
+		ErrorResponse errorResponse = ErrorResponse.of(
+			ErrorCode.CAN_NOT_CREATE_DAILY_ROUTINE_BEFORE_TODAY.getErrorCode(),
+			ErrorCode.CAN_NOT_CREATE_DAILY_ROUTINE_BEFORE_TODAY.getMessage());
+		return ResponseEntity.status(ErrorCode.CAN_NOT_CREATE_DAILY_ROUTINE_BEFORE_TODAY.getHttpStatus())
+			.body(errorResponse);
+	}
+
+	@ExceptionHandler(NonRepeatedDateException.class)
+	protected ResponseEntity<ErrorResponse> nonRepeatedDateException() {
+		log.error("Routine must have a repeat day.");
+		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NON_REPEATED_DATE.getErrorCode(),
+			ErrorCode.NON_REPEATED_DATE.getMessage());
+		return ResponseEntity.status(ErrorCode.NON_REPEATED_DATE.getHttpStatus())
+			.body(errorResponse);
+	}
 
 	@ExceptionHandler(AlreadyExistTirednessException.class)
 	protected ResponseEntity<ErrorResponse> alreadyExistTirednessException() {

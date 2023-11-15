@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewModelScope
+import com.finale.neulhaerang.common.message.BlockMessage
 import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.DataStoreApplication
 import com.finale.neulhaerang.data.Routine
@@ -51,16 +52,10 @@ class MainScreenViewModel : ViewModel() {
     private val _letterText = mutableStateOf("")
 
     init {
-//        setDataFromDateTime()
         viewModelScope.launch {
             _memberId.longValue =
                 DataStoreApplication.getInstance().getDataStore().getMemberId().firstOrNull() ?: 0
-            MemberApi.instance.getMemberStatus(_memberId.longValue)
-                .onSuccess { (_, data) ->
-                    checkNotNull(data)
-                    _indolence.intValue = data.indolence
-                    _tiredness.intValue = data.indolence
-                }
+            getMemberStatus()
         }
     }
 
@@ -84,6 +79,8 @@ class MainScreenViewModel : ViewModel() {
 
     val yearMonth: String
         get() = DateTimeFormatter.ofPattern("yyyy-MM").format(selectedDate)
+    val canIndolence: Boolean
+        get() = indolence < 70
 
     // setter
     private fun updateBeforeYearMonth() {
@@ -130,7 +127,7 @@ class MainScreenViewModel : ViewModel() {
         }
     }
 
-    fun setDataFromDateTime() {
+    private fun setDataFromDateTime() {
         viewModelScope.launch {
             // 완료 퍼센트 가져오기
             if (beforeYearMonth != yearMonth) {
@@ -147,17 +144,6 @@ class MainScreenViewModel : ViewModel() {
                 .onFailure {
                     Log.w(TAG, "setDataFromDateTime: fail ${it.code} ${it.message}")
                 }
-//            initCheckList(
-//                listOf(
-//                    CheckList("안녕", true),
-//                    CheckList("물 8잔 마시기", false),
-//                ), listOf(
-//                    CheckList("CS 스터디 - JAVASCRIPT", false),
-//                    CheckList("현대오토에버 이력서 작성", false),
-//                    CheckList("CS 스터디 - React", false),
-//                    CheckList("CS 스터디 - Kotlin", false),
-//                )
-//            )
             // 오늘의 편지
             LetterApi.instance.getLetter(selectedDate).onSuccess {
                 setLetterText(it.data ?: "")
@@ -166,19 +152,52 @@ class MainScreenViewModel : ViewModel() {
         }
     }
 
-    fun checkCheckList(checkList: CheckList) {
-        viewModelScope.launch {
-            when (checkList) {
-                is Routine -> RoutineApi.instance.completeRoutine(checkList.dailyRoutineId)
-                is Todo -> TodoApi.instance.completeTodo(checkList.todoId)
-                else -> ResponseResult.Failure(0, "class type error")
-            }.onSuccess {
-                // 체크리스트 체크시 완료도 갱신
-                updateTodoDoneList()
-                setDataFromDateTime()
-            }.onFailure {
-                Log.w(TAG, "checkCheckList: 체크 실패")
-            }
+    suspend fun checkCheckList(checkList: CheckList): String? {
+        if (selectedDate != LocalDate.now()) {
+            return BlockMessage.NotTodayBlock.message
         }
+        if (!canIndolence) {
+            return BlockMessage.IndolenceBlock.message
+        }
+        when (checkList) {
+            is Routine -> RoutineApi.instance.completeRoutine(checkList.dailyRoutineId)
+            is Todo -> TodoApi.instance.completeTodo(checkList.todoId)
+            else -> ResponseResult.Failure(0, "class type error")
+        }.onSuccess {
+            // 체크리스트 체크시 완료도 갱신
+            updateTodoDoneList()
+            setDataFromDateTime()
+            return null
+        }.onFailure {
+            Log.w(TAG, "checkCheckList: 체크 실패")
+        }
+        return null
+    }
+
+    private fun getMemberStatus() {
+        if (_memberId.longValue == 0L) return
+        viewModelScope.launch {
+            MemberApi.instance.getMemberStatus(_memberId.longValue)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    _indolence.intValue = data.indolence
+                    _tiredness.intValue = data.tiredness
+                }
+            val tiredCount = tiredness.let {
+                when {
+                    it > 70 -> 0
+                    it > 50 -> 1
+                    it > 30 -> 2
+                    else -> 3
+                }
+            }
+            Log.d(TAG, "tiredCount: $tiredCount")
+            DataStoreApplication.getInstance().getDataStore().setTiredCount(tiredCount)
+        }
+    }
+
+    fun backToMainScreen() {
+        getMemberStatus()
+        setDataFromDateTime()
     }
 }

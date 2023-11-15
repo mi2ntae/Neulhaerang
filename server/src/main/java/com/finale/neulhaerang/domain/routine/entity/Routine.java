@@ -19,6 +19,8 @@ import org.hibernate.annotations.ColumnDefault;
 import com.finale.neulhaerang.domain.member.entity.Member;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineCreateReqDto;
 import com.finale.neulhaerang.domain.routine.dto.request.RoutineModifyReqDto;
+import com.finale.neulhaerang.global.exception.routine.InvalidRepeatedDateException;
+import com.finale.neulhaerang.global.exception.routine.NonRepeatedDateException;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -59,6 +61,12 @@ public class Routine {
 	private StatType statType;
 
 	public static Routine create(RoutineCreateReqDto routineCreateReqDto, Member member, String repeated) {
+		if (repeated.equals("0000000")) {
+			throw new NonRepeatedDateException();
+		}
+		if (repeated.length() != 7) {
+			throw new InvalidRepeatedDateException();
+		}
 		return Routine.builder()
 			.member(member)
 			.repeated(repeated)
@@ -70,6 +78,12 @@ public class Routine {
 	}
 
 	public void updateContentAndAlarmAndAlarmTimeAndRepeated(RoutineModifyReqDto routineModifyReqDto, String repeated) {
+		if (repeated.equals("0000000")) {
+			throw new NonRepeatedDateException();
+		}
+		if (repeated.length() != 7) {
+			throw new InvalidRepeatedDateException();
+		}
 		this.repeated = repeated;
 		this.content = routineModifyReqDto.getContent();
 		this.alarm = routineModifyReqDto.isAlarm();

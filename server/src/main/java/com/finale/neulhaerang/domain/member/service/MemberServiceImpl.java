@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ import com.finale.neulhaerang.domain.routine.entity.StatType;
 import com.finale.neulhaerang.domain.title.entity.Title;
 import com.finale.neulhaerang.domain.title.repository.EarnedTitleRepository;
 import com.finale.neulhaerang.domain.title.repository.TitleRepository;
+import com.finale.neulhaerang.global.event.TirednessEvent;
 import com.finale.neulhaerang.global.exception.common.InValidPageIndexException;
 import com.finale.neulhaerang.global.exception.member.AlreadyExistTirednessException;
 import com.finale.neulhaerang.global.exception.member.InvalidStatKindException;
@@ -58,7 +60,7 @@ public class MemberServiceImpl implements MemberService {
 	private final TitleRepository titleRepository;
 	private final EarnedTitleRepository earnedTitleRepository;
 	private final RedisUtil redisUtil;
-
+	private final ApplicationEventPublisher applicationEventPublisher;
 	private final AuthenticationHandler authenticationHandler;
 
 	private static final int PAGE_SIZE = 6;
@@ -173,13 +175,8 @@ public class MemberServiceImpl implements MemberService {
 		List<StatRecord> records = memberStatRepository.findStatRecordsByStatTypeIsNotInAndMemberId(ignoreTypes,
 			memberId);
 
-		LocalDateTime now = LocalDateTime.now();
 		int[] stats = new int[VALID_STAT_NUMS];
-		records.stream()
-			.filter(
-				record -> record.getRecordedDate().minusHours(9).format(DateTimeFormatter.ISO_DATE).equals(now.format(
-					DateTimeFormatter.ISO_DATE)))
-			.forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
+		records.stream().forEach(record -> stats[record.getStatType().ordinal()] += record.getWeight());
 
 		List<StatListResDto> statListResDtos = new ArrayList<>();
 		Arrays.stream(stats).forEach(stat -> statListResDtos.add(StatListResDto.of(stat, getLevelByScore(stat))));
@@ -296,9 +293,12 @@ public class MemberServiceImpl implements MemberService {
 			throw new AlreadyExistTirednessException();
 		}
 
-		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now().plusHours(9), StatType.피곤도,
+		StatRecordReqDto statRecordReqDto = StatRecordReqDto.of("수면량 측정에 따른 피로도 누적", LocalDateTime.now(), StatType.피곤도,
 			tiredness);
 		memberStatRepository.save(StatRecord.of(statRecordReqDto, memberId));
+		if (tiredness == 100) {
+			applicationEventPublisher.publishEvent(new TirednessEvent(optionalMember.get()));
+		}
 	}
 
 	@Override
