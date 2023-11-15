@@ -117,6 +117,7 @@
 
 ![Firebase](https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white)
 ![Kakao Login](https://img.shields.io/badge/Kakao%20Login-FFCD00?style=for-the-badge&logo=KakaoTalk&logoColor=white)
+![Chat GPT](https://img.shields.io/badge/Ghat%20GPT-00a495?style=for-the-badge&logoColor=white)
 
 ## 🎇 시스템 아키텍처
 
