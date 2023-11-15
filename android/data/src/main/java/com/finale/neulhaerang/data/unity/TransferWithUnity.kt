@@ -152,17 +152,15 @@ class TransferWithUnity {
      */
     fun getNearByUsers() {
         runBlocking {
-            GlobalScope.launch {
-                ArApi.instance.getAroundMembers()
-                    .onSuccess { (_, data) ->
-                        checkNotNull(data)
-                        Log.i("heejeong", "$data")
-                        sendNearByUsers(data)
-                    }
-                    .onFailure { (_, message, _) ->
-                        Log.e("heejeong", "실패! %n$message")
-                    }
-            }.join()
+            ArApi.instance.getAroundMembers()
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", "getAroundMembers $data")
+                    sendNearByUsers(data)
+                }
+                .onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
         }
     }
 
