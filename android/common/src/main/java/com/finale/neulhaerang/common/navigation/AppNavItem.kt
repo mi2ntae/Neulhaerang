@@ -17,7 +17,6 @@ enum class AppNavItem(
     val route: String,
     val icon: ImageVector?,
 ) {
-    Login("로그인", "login", null),
     Main("메인", "main", Icons.Rounded.Home),
     MyPage("마이페이지", "mypage", Icons.Rounded.Person),
     Social("소셜", "social", Icons.Rounded.LocationOn),
@@ -30,4 +29,4 @@ enum class AppNavItem(
  * 하단 네비게이션 아이템을 위한 리스트
  * 메인, 마이페이지, 소셜(AR)의 3가지
  */
-val AppBottomAppNavItems = listOf<AppNavItem>(AppNavItem.Main, AppNavItem.MyPage, AppNavItem.Social)
+val AppBottomAppNavItems = listOf<AppNavItem>(AppNavItem.Main, AppNavItem.MyPage)
