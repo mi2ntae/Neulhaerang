@@ -41,6 +41,7 @@ fun CheckListContentInput(
     clearContent: () -> Unit,
     stat: Stat,
     changeStat: (Stat) -> Unit,
+    canModifyStat: Boolean = true,
 ) {
 //    val viewModel = viewModel<CheckListCreationViewModel>()
 //
@@ -71,7 +72,7 @@ fun CheckListContentInput(
                 unfocusedContainerColor = Color.Transparent
             )
         )
-        if (showDialog) {
+        if (showDialog && canModifyStat) {
             StatDialog(onDismiss = { showDialog = false }, stat = stat, changeStat = changeStat)
         }
     }

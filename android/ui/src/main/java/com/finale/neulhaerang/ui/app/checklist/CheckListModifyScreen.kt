@@ -57,8 +57,12 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CheckListModifyScreen(navController: NavHostController, type: String?, index: Int?) {
-    val viewModel = viewModel<MainScreenViewModel>(MainScreenViewModel.storeOwner)
+fun CheckListModifyScreen(
+    navController: NavHostController,
+    type: String?,
+    index: Int?,
+    viewModel:MainScreenViewModel = viewModel(MainScreenViewModel.storeOwner)
+) {
     val defaultVal = Routine(0, 0, false, null, false, "dd", Stat.GodSang, List(7) { false })
     val checkList = when (type) {
         "routine" -> viewModel.routineList
@@ -164,6 +168,7 @@ fun CheckListModifyContent(
             clearContent = viewModel::clearContent,
             stat = viewModel.stat,
             changeStat = viewModel::changeStat,
+            canModifyStat = !viewModel.routine
         )
         Spacer(modifier = Modifier.height(8.dp))
         if (viewModel.routine)
