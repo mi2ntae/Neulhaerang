@@ -75,7 +75,7 @@
       <td align="center"><img src="" /></td>
     </tr>
     <tr>
-      <td align="center">TODO의 알림 여부, 날짜, 시간, 스탯 정보를 수정할 수 있습니다.</td>
+      <td align="center">목록에서 롱프레스를 하여 접근할 수 있습니다<br>TODO의 알림 여부, 날짜, 시간, 스탯 정보를 수정할 수 있습니다.</td>
     </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">루틴 수정페이지</td>
@@ -84,7 +84,7 @@
       <td align="center"><img src="" /></td>
     </tr>
         <tr>
-      <td align="center">루틴의 반복 날짜와 알람 여부, 알람 시간을 수정할 수 있습니다.</td>
+      <td align="center">목록에서 롱프레스를 하여 접근할 수 있습니다<br>루틴의 반복 날짜와 알람 여부, 알람 시간을 수정할 수 있습니다.</td>
     </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">루틴 삭제</td>
@@ -191,6 +191,7 @@
 ![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F.svg?&style=for-the-badge&logo=Spring%20Security&logoColor=white)
 ![JPA](https://img.shields.io/badge/Spring%20data%20JPA-85EA2D?style=for-the-badge&logo=JPA&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT%200.9.1-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+![Spring Cloud OpenFeign](https://img.shields.io/badge/Spring%20Cloud%20OpenFeign-85EA2D?style=for-the-badge&logo=JPA&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white)
 ![Lombok](https://img.shields.io/badge/Lombok%201.18.30-FF5722?style=for-the-badge&logoColor=white)
 ![JUnit](https://img.shields.io/badge/JUnit%204.13.1-grey?style=for-the-badge&logoColor=white&logo=junit4)
