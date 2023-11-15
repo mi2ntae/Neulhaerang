@@ -6946,7 +6946,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1976504010}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cb0e7f037bb2714ba1bb14d92c8aaff, type: 3}
+  m_Script: {fileID: 11500000, guid: 354dba6b11ef04e49a2d491d60623371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ElementalSuperDemonDark: {fileID: 1976504010}
@@ -7123,7 +7123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2015117120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e35e3991dd109b84488d5d6fd7380607, type: 3}
+  m_Script: {fileID: 11500000, guid: abf93dcd3ecc74e49bcadc1f7a67275f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ElementalSuperDemonFire: {fileID: 2015117120}
@@ -7265,7 +7265,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2069228098}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 305d11b6db94f3541bea1ac05c960b5f, type: 3}
+  m_Script: {fileID: 11500000, guid: 20237145ef127604390a57e03bd98643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ElementalSuperDemonWater: {fileID: 2069228098}
