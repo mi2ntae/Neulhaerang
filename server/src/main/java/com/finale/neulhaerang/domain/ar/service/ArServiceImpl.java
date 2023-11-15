@@ -2,7 +2,6 @@ package com.finale.neulhaerang.domain.ar.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +52,7 @@ public class ArServiceImpl implements ArService {
 	private final ApplicationEventPublisher publisher;
 	private final long SOCIAL_FIRST_TAG = 31;
 	private final long REPEL_INDOLENCE_MONSTER = 20;
+	private final int maxAroundMember = 5;
 
 	@Override
 	public boolean tagOtherMember(long memberId) throws NotExistMemberException, InvalidTagException {
@@ -133,13 +133,13 @@ public class ArServiceImpl implements ArService {
 				aroundMemberCharacterListResDtos.add(AroundMemberCharacterListResDto.from(characterInfo.get()));
 			}
 		});
-		return aroundMemberCharacterListResDtos.stream().collect(Collectors.toList());
+		return aroundMemberCharacterListResDtos.stream().collect(Collectors.toList()).subList(0 ,maxAroundMember);
 	}
 
 	@Override
 	public List<AroundMemberCharacterListResDto> findAroundMemberByLocation() {
 		List<String> deviceIds = redisUtil.getAroundMember(authenticationHandler.getLoginDeviceId());
-		List<AroundMemberCharacterListResDto> aroundMemberCharacterListResDtos = new ArrayList<>();
+		Set<AroundMemberCharacterListResDto> aroundMemberCharacterListResDtos = new HashSet<>();
 		deviceIds.forEach(deviceId -> {
 			System.out.println(deviceId);
 			Optional<Device> device = deviceRepository.findDeviceByDeviceToken(deviceId);
@@ -152,7 +152,7 @@ public class ArServiceImpl implements ArService {
 				aroundMemberCharacterListResDtos.add(AroundMemberCharacterListResDto.from(characterInfo.get()));
 			}
 		});
-		return aroundMemberCharacterListResDtos;
+		return aroundMemberCharacterListResDtos.stream().collect(Collectors.toList()).subList(0, maxAroundMember);
 	}
 
 	@Override
