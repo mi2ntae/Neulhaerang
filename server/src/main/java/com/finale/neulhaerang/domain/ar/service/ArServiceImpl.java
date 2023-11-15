@@ -2,6 +2,7 @@ package com.finale.neulhaerang.domain.ar.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class ArServiceImpl implements ArService {
 	private final ApplicationEventPublisher publisher;
 	private final long SOCIAL_FIRST_TAG = 31;
 	private final long REPEL_INDOLENCE_MONSTER = 20;
-	private final int maxAroundMember = 5;
+	private final int maxAroundMember = 3;
 
 	@Override
 	public boolean tagOtherMember(long memberId) throws NotExistMemberException, InvalidTagException {
@@ -121,24 +122,16 @@ public class ArServiceImpl implements ArService {
 		AroundMemberCharacterReqDto aroundMemberCharacterReqDto) {
 		List<String> deviceIds = redisUtil.changeGeo(new Point(aroundMemberCharacterReqDto.getLongitude(), aroundMemberCharacterReqDto.getLatitude())
 			, authenticationHandler.getLoginDeviceId());
-		Set<AroundMemberCharacterListResDto> aroundMemberCharacterListResDtos = new HashSet<>();
-		deviceIds.forEach(deviceId -> {
-			Optional<Device> device = deviceRepository.findDeviceByDeviceToken(deviceId);
-			if(device.isEmpty()) {
-				throw new NotExistDeviceException();
-			}
-			long memberId = device.get().getMember().getId();
-			if(memberId != authenticationHandler.getLoginMemberId()) {
-				Optional<CharacterInfo> characterInfo = characterInfoRepository.findCharacterInfoByMember_Id(memberId);
-				aroundMemberCharacterListResDtos.add(AroundMemberCharacterListResDto.from(characterInfo.get()));
-			}
-		});
-		return aroundMemberCharacterListResDtos.stream().collect(Collectors.toList()).subList(0 ,maxAroundMember);
+		return getAroundMemberCharacterListResDtos(deviceIds);
 	}
 
 	@Override
 	public List<AroundMemberCharacterListResDto> findAroundMemberByLocation() {
 		List<String> deviceIds = redisUtil.getAroundMember(authenticationHandler.getLoginDeviceId());
+		return getAroundMemberCharacterListResDtos(deviceIds);
+	}
+
+	private List<AroundMemberCharacterListResDto> getAroundMemberCharacterListResDtos(List<String> deviceIds) {
 		Set<AroundMemberCharacterListResDto> aroundMemberCharacterListResDtos = new HashSet<>();
 		deviceIds.forEach(deviceId -> {
 			System.out.println(deviceId);
@@ -152,7 +145,12 @@ public class ArServiceImpl implements ArService {
 				aroundMemberCharacterListResDtos.add(AroundMemberCharacterListResDto.from(characterInfo.get()));
 			}
 		});
-		return aroundMemberCharacterListResDtos.stream().collect(Collectors.toList()).subList(0, maxAroundMember);
+		List<AroundMemberCharacterListResDto> tmpList = aroundMemberCharacterListResDtos.stream().collect(Collectors.toList());
+		List<AroundMemberCharacterListResDto> resList = new ArrayList<>();
+		for(int i = 0; i < maxAroundMember && i < tmpList.size(); i++) {
+			resList.add(tmpList.get(i));
+		}
+		return resList;
 	}
 
 	@Override
