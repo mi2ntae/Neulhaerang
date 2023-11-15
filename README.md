@@ -33,7 +33,176 @@
 
 
 ## ☁ 기능 소개
-
+<div align="center">
+ <table>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">로그인 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">로그인 후 자동으로 메인 화면으로 접속합니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">메인 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">아이디가 유효할 경우 해당 회원의 이메일로 인증코드를 보내<br/> 비밀번호를 재설정 할 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">TODO/루틴 등록 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">이메일 인증, ID/PW 유효성 검사 등을 통해 회원가입을 합니다.</td>
+    </tr> 
+   <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">마이페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">회원가입, 비밀번호 찾기를 하면 등록한 메일로 인증번호가 전달됩니다.</td>
+    </tr> 
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">나태괴물 처치</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">공지사항과 지역은 Swiper로 자동 슬라이드 되며, <br/>이용 방법 옆 물음표를 누를 시 사이트의 이용 방법이 나옵니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">소셜(주위사용자 확인)</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">여행 제목과 여행 기간을 입력받습니다.<br>
+초대하기에서 유저의 닉네임으로 검색이 가능합니다.<br>
+'+' 버튼을 통해 여행에 초대할 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">여행 계획 세우기 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">찜한 장소 목록에서 드로그 앤 드랍으로 장소를 넣을 수 있습니다.<br>
+또는 검색 탭에서 장소를 검색하여 원하는 일자에 넣을 수 있습니다.<br>
+날짜 추가 버튼과 날짜 삭제 버튼을 통해 자유롭게 일정을 조정할 수 있습니다.<br>
+하나의 일정의 MORE 버튼으로 해당 장소의 상세 정보를 볼 수 있고 여행지별 메모를 남길수 있습니다.<br>
+Day에 일정이 추가되면 각 여행지 간의 거리가 보이고 소요 시간이 나타납니다.<br>
+연결 색을 다르게 하여 쉽게 구분할 수 있습니다.<br>
+여행 계획이 완료되었다면 계획 완료 버튼을 통해 계획을 저장합니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">여행 계획 완성 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">지도에 여행 일정동안 방문하는 곳이 나타납니다.<br>
+지도 아래로 방문 지정한 방문 시간이 나타납니다.<br>
+'+' 버튼을 누르면 해당 장소의 상세 정보가 나타납니다.<br>
+태그 표시가 있는 곳은 메모가 있는 장소입니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">여행 계획 공유</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">카카오톡 공유하기로 내가 만든 여행 계획에 친구를 초대할 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">우편함</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+        <tr>
+      <td align="center">
+첫번째 탭에서 시/도 정보를 선택합니다.<br>
+그에 따른 상세 지역을 선택합니다.<br>
+여행지 분류를 선택합니다.<br>
+Search에서 여행지 명을 검색할 수 있습니다.<br>
+검색 버튼을 누르면 해당 되는 여행지 정보가 리스트로 나타납니다.<br>
+지도에 마커와 해당 위치 정보를 나타내는 네이버 지도 페이지로 이동합니다.<br>
+여행지를 누르면 모달로 상세 정보가 주어집니다.<br>
+자동차 버튼을 누르면 나만의 장소에 추가되고 상단 우측에 개수가 표시됩니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(의상실)</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+      <td align="center">여행 검색 페이지에서 나만의 장소에 등록한 장소들이 리스트 형식으로 나타납니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(캘린더)</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">캘린더에서 자신이 속한 모든 여행이 나타납니다.<br>날짜를 클릭하면 해당 날짜가 속한 여행이 리스트 형식으로 나타납니다.</td>
+    </tr>
+   <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">핫플레이스 리스트</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">우리나라의 각 시 별로 회원들이 공유한 핫 플레이스 장소를 확인할 수 있습니다.</td>
+    </tr>
+   <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">핫플레이스 등록하기</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">핫 플레이스로 등록할 장소를 검색하면 해당 위치가 왼쪽 지도에 표시됩니다. <br/>
+      제목과 내용을 입력한 후 이미지 1개를 업로드 하면 핫 플레이스로 게시물이 등록됩니다. <br/>
+      회원들은 게시물에 좋아요와 댓글을 남길 수 있습니다. </td>
+    </tr>
+   <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">공지사항 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">관리자의 공지사항과 회원들의 QnA를 확인할 수 있습니다. <br/> 
+      카테고리에 따른 검색이 가능하며 카테고리를 클릭할 시 게시글이 정렬됩니다. </td>
+    </tr>
+   <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">공지사항 상세 페이지</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="" /></td>
+    </tr>
+    <tr>
+      <td align="center">각 게시물에는 댓글을 남길 수 있으며 비밀댓글(댓글 작성자, 게시글 작성자만 확인 가능)도 가능합니다. <br/> 
+      댓글은 게시글 작성자와 댓글을 작성한 본인만 삭제 가능합니다.</td>
+    </tr>
+ </table>
+</div>
 
 ## ⛅ 프로젝트 차별점 및 기술 특이점
 
@@ -69,10 +238,10 @@
 ![Gradle](https://img.shields.io/badge/Gradle%208.3-02303A?style=for-the-badge&logo=Gradle&logoColor=white)
 ![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F.svg?&style=for-the-badge&logo=Spring%20Security&logoColor=white)
 ![JPA](https://img.shields.io/badge/Spring%20data%20JPA-85EA2D?style=for-the-badge&logo=JPA&logoColor=white)
-![JWT](https://img.shields.io/badge/JWT%200.9.1-000000?style=for-the-badge&logo=JWT&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT%200.9.1-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white)
 ![Lombok](https://img.shields.io/badge/Lombok%201.18.30-FF5722?style=for-the-badge&logoColor=white)
-![JUnit](https://img.shields.io/badge/JUnit%204.13.1-grey?style=for-the-badge&logoColor=white)
+![JUnit](https://img.shields.io/badge/JUnit%204.13.1-grey?style=for-the-badge&logoColor=white&logo=junit4)
 
 **Frontend**
 
