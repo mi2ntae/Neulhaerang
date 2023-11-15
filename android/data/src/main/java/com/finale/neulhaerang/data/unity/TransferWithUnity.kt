@@ -38,8 +38,6 @@ class TransferWithUnity {
             }.join()
         }
         Log.i("heejeong2", memberId.toString())
-        getNearByUsers()
-        getUserTitles()
     }
 
     /**
@@ -157,7 +155,7 @@ class TransferWithUnity {
             ArApi.instance.getAroundMembers()
                 .onSuccess { (_, data) ->
                     checkNotNull(data)
-                    Log.i("heejeong", "$data")
+                    Log.i("heejeong", "getAroundMembers $data")
                     sendNearByUsers(data)
                 }
                 .onFailure { (_, message, _) ->
