@@ -292,4 +292,15 @@ public class AndroidController : MonoBehaviour
             Debug.Log("heejeong 근처 사용자::" + lt.ToString());
         }
     }
+
+
+    /**
+     * 주위 사용자 클릭 시
+     */
+    void RequestClickOtherUser(long memberId)
+    {
+        Debug.Log("heejeong [RequestClickOtherUser]" + memberId);
+        string androidMethod = "clickOtherUser";
+        _pluginInstance.Call(androidMethod, memberId);
+    }
 }
