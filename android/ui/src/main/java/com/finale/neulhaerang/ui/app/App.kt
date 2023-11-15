@@ -191,8 +191,8 @@ fun AppMain(getResult: ActivityResultLauncher<Intent>) {
                 )) { entry ->
                 CheckListModifyScreen(
                     navController = navController,
-                    entry.arguments?.getString("type"),
-                    entry.arguments?.getInt("index")
+                    type = entry.arguments?.getString("type"),
+                    index = entry.arguments?.getInt("index")
                 )
             }
             composable(route = AppNavItem.Setting.route) {

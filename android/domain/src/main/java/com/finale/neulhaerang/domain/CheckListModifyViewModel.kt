@@ -59,9 +59,7 @@ class CheckListModifyViewModel(checkList: CheckList, selectedDate: LocalDate) : 
         } else if (checkList is Todo) {
             todoId = checkList.todoId
         }
-        if (_alarm.value) {
-            _dateTime.value = checkList.alarmTime?.atDate(selectedDate)
-        }
+        _dateTime.value = checkList.alarmTime?.atDate(selectedDate) ?: LocalDateTime.now()
     }
 
     val content: String
