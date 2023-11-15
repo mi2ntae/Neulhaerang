@@ -18,7 +18,7 @@
 
     <!-- 메인의 상태 관련 문자열 -->
     <string name="main_tired">피로도</string>
-    <string name="main_lazy">나태함</string>
+    <string name="main_lazy">나태도</string>
 
     <!-- 요일을 나타내는 영어 축약형 -->
     <string name="sunday">SUN</string>
