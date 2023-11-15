@@ -142,7 +142,7 @@
 ### [🐛 버그 리포트](https://young-bonsai-e9c.notion.site/efbc4c1a09ff494c881d0ad2c8b712d0?pvs=4)
 
 ## 🤙🏻 Conventions
-FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://www.notion.so/MR-PR-48eeb2cb70d2449fb4611b5b452c479b),[ Commit 컨벤션](https://www.notion.so/Git-Commit-b454384df80e4894bd3b879a164522e3), [ JAVA 컨벤션](https://www.notion.so/Java-c4b5d639436943eab0b37e65afe4f6ac), [ Kotlin 컨벤션✨](https://www.notion.so/Kotlin-FE-2936c2479dbf4d649ec24bfffd5c10a8)  입니다 😎
+FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://young-bonsai-e9c.notion.site/MR-PR-48eeb2cb70d2449fb4611b5b452c479b?pvs=4),[ Commit 컨벤션](https://young-bonsai-e9c.notion.site/Git-Commit-b454384df80e4894bd3b879a164522e3?pvs=4), [ JAVA 컨벤션](https://young-bonsai-e9c.notion.site/Java-c4b5d639436943eab0b37e65afe4f6ac?pvs=4), [ Kotlin 컨벤션✨](https://young-bonsai-e9c.notion.site/Kotlin-FE-2936c2479dbf4d649ec24bfffd5c10a8?pvs=4)  입니다 😎
 
 
 
@@ -152,7 +152,7 @@ FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://www.not
 ![팀원소개](https://github.com/2023-finale/.github/assets/101235186/d065cdf5-24fc-4e04-96dd-a6c408f9b728)
 
 
-|**[이희정](https://github.com/heejeong13)**|**[강준영](https://github.com/Judgement9882)**|**[김민태](https://github.com/LeeHwayeon)**|**[김유진](https://github.com/Yujin830)**|**[박정은](https://github.com/jungeunevepark)**|**[임성원](https://github.com/imsw0529)** |
+|**[이희정](https://github.com/heejeong13)**|**[강준영](https://github.com/Judgement9882)**|**[김민태](https://github.com/mi2ntae)**|**[김유진](https://github.com/Yujin830)**|**[박정은](https://github.com/jungeunevepark)**|**[임성원](https://github.com/imsw0529)** |
 | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------: |
 | <img src="https://avatars.githubusercontent.com/u/18045556?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/79979086?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/73164347?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/96433955?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/101235186?v=4" width="800"> | <img src="https://avatars.githubusercontent.com/u/37894963?v=4" width="800"> |
 |Leader & Frontend|Frontend|Backend & Infra|Frontend & Backend|Backend|Frontend|
