@@ -76,7 +76,7 @@ public class MainPageDirector : MonoBehaviour
     {
         // We must update the clothes gameobject and button image
         // example
-        bagList[0].SetActive(true);
-        bagButtons[0].GetComponent<Image>().sprite = bagOn[0];
+        // bagList[0].SetActive(true);
+        // bagButtons[0].GetComponent<Image>().sprite = bagOn[0];
     }
 }

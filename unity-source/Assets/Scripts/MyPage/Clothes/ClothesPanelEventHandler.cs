@@ -13,8 +13,8 @@ public class ClothesPanelEventHandler : MonoBehaviour
 
     private void Start()
     {
-        tabButtons[0].image.color = selectedColor;
-        contentsPanels[0].SetActive(true);
+        ShowPanel(contentsPanels[0], tabButtons[0]);
+
         for (int i = 0; i < tabButtons.Count; i++)
         {
             int index = i;
