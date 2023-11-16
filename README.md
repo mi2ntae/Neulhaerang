@@ -19,7 +19,7 @@
 <a href="https://play.google.com/store/apps/details?id=com.finale.neulhaerang"><img src="https://img.shields.io/badge/다운로드%20하러가기-3DDC84?style=flat-square&logo=android&logoColor=white" /></a>
 </p>
 
-[프로젝트 소개](#🌞-프로젝트-소개) • [주요 기능](#☁-기능-소개)• [프로젝트 차별점](#⛅-프로젝트-차별점-및-기술-특이점) • [기술 스택](#🔧-기술-스택)• [인프라 구조](#🎇-시스템-아키텍처)• [산출물](#📂-기획-및-설계-산출물)• [팀원 소개](#💗-팀원-소개)
+[프로젝트 소개](#-프로젝트-소개) • [주요 기능](#-기능-소개)• [프로젝트 차별점](#-프로젝트-차별점-및-기술-특이점) • [기술 스택](#-기술-스택)• [인프라 구조](#-시스템-아키텍처)• [산출물](#-기획-및-설계-산출물)• [팀원 소개](#-팀원-소개)
 
 </div>
  
@@ -185,7 +185,7 @@
       <td align="center" style="font-weight: bold; font-size: 18;">칭호 리스트</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/5e45ad9c-40fc-4fae-aa0f-b3601392c9ed" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/18b07248-0810-440e-8e1e-4647664fa890" /></td>
     </tr>
  </table>
 </div>
