@@ -55,6 +55,14 @@ public class AndroidController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Level UI 추가
+        statLevelList.Add(GameObject.Find("GodsangLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("SurviveLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("InssaLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("TeunteunLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("GoodideaLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("LoveLevel").GetComponent<TextMeshProUGUI>());
+
         RequestMemberStats();
         RequestMemberStatus();
         //RequestDefeatMonster();
@@ -86,13 +94,6 @@ public class AndroidController : MonoBehaviour
 
         int[] scores = new int[6];
 
-        statLevelList.Add(GameObject.Find("GodsangLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("SurviveLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("InssaLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("TeunteunLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("GoodideaLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("LoveLevel").GetComponent<TextMeshProUGUI>());
-
         Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
         MemberStats datas = JsonUtility.FromJson<MemberStats>(jsonMessage);
 
@@ -101,9 +102,9 @@ public class AndroidController : MonoBehaviour
             Debug.Log("heejeong 유저 스탯 점수::" + datas.stats[i].Score);
             Debug.Log("stat type : " + datas.stats[i].Score.GetType().Name);
             Debug.Log("heejeong 유저 스탯 레벨::" + datas.stats[i].Level);
-            Debug.Log("level type : " + datas.stats[i].Level.GetType().Name);
+            Debug.Log("level type : " + datas.stats[i].Level.GetType().Name); 
             scores[i] = datas.stats[i].Score;
-            statLevelList[i].text = datas.stats[i].Level;
+            statLevelList[i].text = datas.stats[i].Level.ToString();
         }
 
         scores = changeValue(scores);
