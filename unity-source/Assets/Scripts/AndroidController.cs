@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,6 +37,9 @@ public class AndroidController : MonoBehaviour
     public List<Button> scarfButtons;
     public List<Button> titleButtons;
 
+    // 스텟의 레벨을 표시하는 텍스트
+    public List<TextMeshProUGUI> statLevelList;
+
     void Awake()
     {
         // 데이터를 받을 안드로이드 플러그인의 클래스 주소
@@ -57,6 +62,15 @@ public class AndroidController : MonoBehaviour
         //ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
         //RequestUserTitles();
         RequestGetUserProfile();
+
+        //Debug.Log("stat Level : " + statLevelList[0].text);
+
+        statLevelList.Add(GameObject.Find("GodsangLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("SurviveLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("InssaLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("TeunteunLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("GoodideaLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("LoveLevel").GetComponent<TextMeshProUGUI>());
     }
 
     // Update is called once per frame
@@ -77,20 +91,9 @@ public class AndroidController : MonoBehaviour
 
     void ReceiveMemberStats(string jsonMessage)
     {
-        //Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
-        //MemberStat datas = JsonUtility.FromJson<MemberStat>(jsonMessage);
-        //Debug.Log("heejeong Life" + datas.ToString());
-
         //// StartStat
 
         int[] scores = new int[6];
-
-        //scores[0] = datas.Life;
-        //scores[1] = datas.Survival;
-        //scores[2] = datas.Popularity;
-        //scores[3] = datas.Power;
-        //scores[4] = datas.Creative;
-        //scores[5] = datas.Love;
 
         Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
         MemberStats datas = JsonUtility.FromJson<MemberStats>(jsonMessage);
@@ -100,11 +103,34 @@ public class AndroidController : MonoBehaviour
         {
             Debug.Log("heejeong 유저 스탯 점수::" + lt.Score);
             Debug.Log("heejeong 유저 스탯 레벨::" + lt.Level);
-            scores[index++] = lt.Score;
+            scores[index] = lt.Score;
+            statLevelList[index++].text = lt.Level;
+            Debug.Log("stat Level : " + statLevelList[index - 1].text);
             /*TODO*/
             // Level UI 생성 및 값 표시 작업 필요
         }
         scores = changeValue(scores);
+
+        //// godsang
+        //scores[0] = 2500;
+        //// survive
+        //scores[1] = 2000;
+        //// inssa
+        //scores[2] = 1500;
+        //// teunteun
+        //scores[3] = 2000;
+        //// goodidea
+        //scores[4] = 2500;
+        //// love
+        //scores[5] = 1500;
+
+        Debug.Log("score 0 : " + scores[0]);
+        Debug.Log("score 1 : " + scores[1]);
+        Debug.Log("score 2 : " + scores[2]);
+        Debug.Log("score 3 : " + scores[3]);
+        Debug.Log("score 4 : " + scores[4]);
+        Debug.Log("score 5 : " + scores[5]);
+
         Stats stats = new Stats(scores[0], scores[1], scores[2], scores[3], scores[4], scores[5]);
         statsRadarChart.SetStats(stats);
     }
