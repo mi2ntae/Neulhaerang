@@ -30,14 +30,12 @@ public class CharacterInfo {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
-
 	private int backpack;
-
 	private int glasses;
-
 	private int hat;
-
 	private int scarf;
+	private int skin;
+	private int hand;
 	private long title;
 
 	public static CharacterInfo create(Member member) {
@@ -51,6 +49,8 @@ public class CharacterInfo {
 		this.hat = characterModifyReqDto.getHat();
 		this.scarf = characterModifyReqDto.getScarf();
 		this.glasses = characterModifyReqDto.getGlasses();
+		this.hand = characterModifyReqDto.getHand();
+		this.skin = characterModifyReqDto.getSkin();
 		this.title = characterModifyReqDto.getTitle();
 	}
 }
