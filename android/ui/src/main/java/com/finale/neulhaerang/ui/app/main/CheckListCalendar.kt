@@ -133,8 +133,7 @@ fun DaysRow(
         items(items = days, key = { it }) { item ->
             DayElement(
                 daysOfWeek = selectedDate.withDayOfMonth(item).dayOfWeek,
-                progressDegree = ((viewModel.todoDoneList.getOrNull(item - 1)?.ratio
-                    ?: 0.0F) * 100).toInt(),
+                progressDegree = ((viewModel.todoDoneList.getOrNull(item - 1)?.let { (it.ratio * 100).toInt() })),
                 day = item,
                 selectedDate = selectedDate,
                 setDateTime = setDateTime
@@ -147,7 +146,7 @@ fun DaysRow(
 fun DayElement(
     modifier: Modifier = Modifier,
     daysOfWeek: DayOfWeek,
-    progressDegree: Int,
+    progressDegree: Int?,
     day: Int,
     selectedDate: LocalDate,
     setDateTime: (LocalDateTime) -> Unit,
@@ -196,21 +195,21 @@ fun DayElement(
                 },
             contentAlignment = Alignment.Center,
         ) {
-            Image(
-                painter = painterResource(weather(progressDegree)),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(Color.Transparent)
-            )
+            if (progressDegree != null)
+                Image(
+                    painter = painterResource(weather(progressDegree)),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(Color.Transparent)
+                )
         }
         Text(
             text = day.toString(), style = if (isSelected) Typography.bodyMedium.merge(
                 TextStyle(
-                    MaterialTheme.colorScheme.onPrimary,
-                    fontWeight = FontWeight.Bold
+                    MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold
                 )
             ) else Typography.bodyMedium
         )
