@@ -39,6 +39,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.domain.KakaoAuthViewModel
 import com.finale.neulhaerang.ui.R
+import com.finale.neulhaerang.ui.app.fragment.LoadingScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import kotlinx.coroutines.launch
 
@@ -50,6 +51,7 @@ fun SettingScreen(
 ) {
     var alarmSetting by remember { mutableStateOf(true) }
     val scope = rememberCoroutineScope()
+    var loading by remember { mutableStateOf(false) }
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         TopAppBar(title = {
@@ -80,7 +82,12 @@ fun SettingScreen(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
                 TextButton(
-                    onClick = { scope.launch { kakaoAuthViewModel.handleLogout() } }
+                    onClick = {
+                        scope.launch {
+                            loading = true
+                            kakaoAuthViewModel.handleLogout()
+                        }
+                    }
                 ) {
                     Text(
                         text = "로그아웃", style = MaterialTheme.typography.labelLarge.plus(
@@ -93,6 +100,9 @@ fun SettingScreen(
             }
         }
     }
+
+    if (loading)
+        LoadingScreen()
 }
 
 @Composable
