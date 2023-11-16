@@ -133,7 +133,7 @@
       <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(의상실)</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/66be742c-7808-409e-bb7c-b6d4d8acb0b7" /></td>
     </tr>
     <tr>
       <td align="center">사용자는 목도리, 모자, 안경, 가방을 통해 캐릭터를 커스터마이징 할 수 있습니다.</td>
@@ -155,10 +155,11 @@
       <td align="center"><img src="" /></td>
     </tr>
     <tr>
-      <td align="center">마이페이지를 통해 진입할 수 있습니다<br>
-	  사용자는 나태도가 70이상인 경우 나태괴물을 처치하지 않으면 TODO와 루틴을 수행/생성할 수 없습니다.
-	  <br>
-	  나태괴물을 처치하면 나태도가 50 내려갑니다.</td>
+      <td align="center">마이페이지에서 캐릭터 왼쪽의 나태괴물을 클릭하여 진입할 수 있습니다<br>
+	  사용자는 나태도가 70이상인 경우 나태괴물을 처치하지 않으면<br>
+    TODO와 루틴을 수행/생성할 수 없습니다.<br>
+    나태괴물을 클릭하면 나태괴물의 hp가 감소합니다.<br>
+    3마리를 물리치면 나태도를 50 포인트 감소합니다.
     </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">소셜(주위사용자 태그)</td>
@@ -169,6 +170,12 @@
     <tr>
       <td align="center">반경 100m에 로그인된 앱에 접속중인 주변 사용자들의 캐릭터 정보를 조회할 수 있습니다.<br>
 	  캐릭터를 클릭하여 스탯을 올릴 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">칭호 리스트</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/5e45ad9c-40fc-4fae-aa0f-b3601392c9ed" /></td>
     </tr>
  </table>
 </div>
