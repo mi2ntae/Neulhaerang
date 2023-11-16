@@ -165,6 +165,39 @@ class TransferWithUnity {
     }
 
     /**
+     * 소셜 사용자 클릭 시
+     */
+    fun clickOtherUser(memberId: Long) {
+//        val memberId = gson.fromJson(jsonMessage)
+        Log.i("heejeong", "clickOtherUser memberId $memberId")
+        runBlocking {
+            ArApi.instance.sendClickedMember(memberId)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("heejeong", "clickOtherUser Result $data")
+                }
+                .onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
+        }
+    }
+
+    /**
+     * 유저 프로필 조회 (레벨, 경험치)
+     */
+    fun getUserProfile() {
+        runBlocking {
+            MemberApi.instance.getMemberProfile(memberId)
+                .onSuccess { (_, data) ->
+                    checkNotNull(data)
+                    Log.i("junyeong", data.toString())
+                }.onFailure { (_, message, _) ->
+                    Log.e("heejeong", "실패! %n$message")
+                }
+        }
+    }
+
+    /**
      * 보유한 유저 아이템 정보를 유니티로 전송
      */
     private fun sendCharacterItems(userItems: MemberItemResDto) {

@@ -56,6 +56,7 @@ public class AndroidController : MonoBehaviour
         RequestCharacterItems();
         //ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
         //RequestUserTitles();
+        RequestGetUserProfile();
     }
 
     // Update is called once per frame
@@ -291,5 +292,37 @@ public class AndroidController : MonoBehaviour
         {
             Debug.Log("heejeong 근처 사용자::" +it.ToString());
         }
+    }
+
+
+    /**
+     * 주위 사용자 클릭 시
+     */
+    void RequestClickOtherUser(long memberId)
+    {
+        Debug.Log("heejeong [RequestClickOtherUser]" + memberId);
+        string androidMethod = "clickOtherUser";
+        _pluginInstance.Call(androidMethod, memberId);
+    }
+
+    /**
+    * 유저 프로필 조회 (레벨, 경험치, 닉네임)
+    */
+    void RequestGetUserProfile()
+    {
+        string androidMethod = "getUserProfile";
+        _pluginInstance.Call(androidMethod);
+    }
+
+    void ReceiveGetUserProfile(string jsonMessage)
+    {
+        Debug.Log("junyeong [ReceiveGetUserProfile]" + jsonMessage);
+        MemberProfile datas = JsonUtility.FromJson<MemberProfile>(jsonMessage);
+        Debug.Log("junyeong 사용자 레벨과 경험치 ::" + datas.ToString());
+
+        Debug.Log("junyeong 사용자 레벨" + datas.Level);
+        Debug.Log("junyeong 사용자 다음 경험치" + datas.NxtExp);
+        Debug.Log("junyeong 사용자 현재 경험치" + datas.CurExp);
+        Debug.Log("junyeong 사용자 닉네임" + datas.Nickname);
     }
 }

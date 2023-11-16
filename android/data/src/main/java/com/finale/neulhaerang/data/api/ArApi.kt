@@ -7,6 +7,8 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ArApi {
     @PATCH("$BASE/around")
@@ -17,6 +19,9 @@ interface ArApi {
 
     @DELETE("$BASE/around")
     suspend fun deleteGeo(): ResponseResult<Void>
+
+    @POST("$BASE/tag/{memberId}")
+    suspend fun sendClickedMember(@Path("memberId") memberId: Long): ResponseResult<Any>
 
     companion object {
         private const val BASE = "ar"

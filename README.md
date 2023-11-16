@@ -39,7 +39,7 @@
       <td align="center" style="font-weight: bold; font-size: 18;">로그인 페이지</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/8aa4f2dc-1f06-42cf-a98a-b7de0cf6ba2f" /></td>
     </tr>
     <tr>
       <td align="center">카카오 소셜 로그인 후 자동으로 메인 화면으로 접속합니다.<br>
@@ -50,21 +50,38 @@
       <td align="center" style="font-weight: bold; font-size: 18;">메인 페이지</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center">
+	  	<img src="https://github.com/2023-finale/.github/assets/101235186/6306b3be-2979-4806-a9d2-f293b051f4bb" />
+	  </td>
     </tr>
     <tr>
       <td align="center">상단에 나태도와 피로도를 나타냅니다.<br>
 	  나태도와 피로도가 높으면 TODO와 루틴을 수행하는데 제약이 생깁니다.
 	  </td>
     </tr>
+	<tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">TODO/루틴 활용 제약 조건</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/c89610a6-c7df-4f6f-a0e2-b121e894bb51" /></td>
+    </tr>
+    <tr>
+      <td align="center">
+	  	나태도가 70을 넘으면 생성과 활용을 할 수 없습니다.<br>
+		피로도와 관계없이 하루에 3개의 TODO/루틴을 생성할 수 있으며<br>
+		피로도가 낮을 수록 추가적으로 생성 가능합니다.
+	  </td>
+    </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">TODO/루틴 등록 페이지</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      	<td align="center">
+	  		<img src="https://github.com/2023-finale/.github/assets/101235186/3c6d67a1-47af-445c-aca0-448048979d4f" />
+		</td>
     </tr>
     <tr>
-      <td align="center">왼쪽 아이콘을 통해 올릴 스탯을 지정할 수 있습니다<br>
+      <td align="center">메인의 '+'를 통해 진입할 수 있습니다.<br>왼쪽 아이콘을 통해 올릴 스탯을 지정할 수 있습니다<br>
 	  루틴을 선택하면 날짜 선택이 사라지고 반복 날짜를 선택할 수 있습니다<br>
 	  알림 여부와 알림 시간을 지정할 수 있습니다</td>
     </tr>
@@ -72,25 +89,25 @@
       <td align="center" style="font-weight: bold; font-size: 18;">TODO 수정 페이지</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/ae9963bc-8fbf-4ab4-9dd1-af303598fdb1" /></td>
     </tr>
     <tr>
-      <td align="center">TODO의 알림 여부, 날짜, 시간, 스탯 정보를 수정할 수 있습니다.</td>
+      <td align="center">목록에서 롱프레스를 하여 접근할 수 있습니다<br>TODO의 알림 여부, 날짜, 시간, 스탯 정보를 수정할 수 있습니다.</td>
     </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">루틴 수정페이지</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/44efba5b-4187-4fde-8122-b9198c9379a7" /></td>
     </tr>
         <tr>
-      <td align="center">루틴의 반복 날짜와 알람 여부, 알람 시간을 수정할 수 있습니다.</td>
+      <td align="center">목록에서 롱프레스를 하여 접근할 수 있습니다<br>루틴의 반복 날짜와 알람 여부, 알람 시간을 수정할 수 있습니다.</td>
     </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">루틴 삭제</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/04164570-af42-4026-98b3-fb0ca91c57cf" /></td>
     </tr>
       <td align="center">사용자는 루틴을 제거할 수 있습니다.<br>이때 앞으로의 루틴도 제거가 가능합니다.</td>
     </tr>
@@ -98,7 +115,7 @@
       <td align="center" style="font-weight: bold; font-size: 18;">우편함</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/633854ff-823b-4c95-acf9-3960217a8d21" /></td>
     </tr>
     <tr>
       <td align="center">생성형 AI인 챗 GPT를 통해 사용자가 전날 완료한 TODO/루틴을 토대로 편지를 작성해줍니다.</td>
@@ -191,6 +208,7 @@
 ![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F.svg?&style=for-the-badge&logo=Spring%20Security&logoColor=white)
 ![JPA](https://img.shields.io/badge/Spring%20data%20JPA-85EA2D?style=for-the-badge&logo=JPA&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT%200.9.1-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+![Spring Cloud OpenFeign](https://img.shields.io/badge/Spring%20Cloud%20OpenFeign-85EA2D?style=for-the-badge&logo=JPA&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white)
 ![Lombok](https://img.shields.io/badge/Lombok%201.18.30-FF5722?style=for-the-badge&logoColor=white)
 ![JUnit](https://img.shields.io/badge/JUnit%204.13.1-grey?style=for-the-badge&logoColor=white&logo=junit4)
@@ -242,25 +260,24 @@
 
 ## 🎇 시스템 아키텍처
 
-![아키텍처](https://github.com/2023-finale/.github/assets/101235186/59fec2d2-b742-4363-ab53-b66b26a883f8)
+<img src="https://github.com/2023-finale/.github/assets/101235186/59fec2d2-b742-4363-ab53-b66b26a883f8" width="80%">
 
 
 ## 📂 기획 및 설계 산출물
 
-### [💭 요구사항 정의 및 기능 명세](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
+[**💭 요구사항 정의 및 기능 명세**](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/%EA%B8%B0%EB%8A%A5%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
 
-### [🎨 화면 설계서](https://www.figma.com/file/WMeAanpQhVT7a05kSzpagk/A502?type=design&node-id=485-165&mode=design&t=J3HZlBmWB3l69f7y-0)
+[**🎨 화면 설계서**](https://www.figma.com/file/WMeAanpQhVT7a05kSzpagk/A502?type=design&node-id=485-165&mode=design&t=J3HZlBmWB3l69f7y-0)
 
-![화면설계서](https://github.com/2023-finale/.github/assets/101235186/803ea51b-acf8-4a8b-a308-e63267e4e954)
+<img src="https://github.com/2023-finale/.github/assets/101235186/803ea51b-acf8-4a8b-a308-e63267e4e954" width="80%">
 
+[**🐾 API 명세서**](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/API%20%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
 
-### [🐾 API 명세서](https://lab.ssafy.com/s09-final/S09P31A502/-/blob/develop/exec/API%20%EB%AA%85%EC%84%B8%EC%84%9C.pdf?ref_type=heads)
+**✨ ER Diagram**
 
-### ✨ ER Diagram
+<img src="https://github.com/2023-finale/.github/assets/101235186/a3afa78d-f914-43ce-8663-9b38bf8dbafc" width="80%">
 
-![늘해랑 ERD](https://github.com/2023-finale/.github/assets/101235186/a3afa78d-f914-43ce-8663-9b38bf8dbafc)
-
-### [🐛 버그 리포트](https://young-bonsai-e9c.notion.site/efbc4c1a09ff494c881d0ad2c8b712d0?pvs=4)
+[**🐛 버그 리포트**](https://young-bonsai-e9c.notion.site/efbc4c1a09ff494c881d0ad2c8b712d0?pvs=4)
 
 ## 🤙🏻 Conventions
 FINALE 팀원들의 원활한 소통을 위한 [✨MR 컨벤션](https://young-bonsai-e9c.notion.site/MR-PR-48eeb2cb70d2449fb4611b5b452c479b?pvs=4),[ Commit 컨벤션](https://young-bonsai-e9c.notion.site/Git-Commit-b454384df80e4894bd3b879a164522e3?pvs=4), [ JAVA 컨벤션](https://young-bonsai-e9c.notion.site/Java-c4b5d639436943eab0b37e65afe4f6ac?pvs=4), [ Kotlin 컨벤션✨](https://young-bonsai-e9c.notion.site/Kotlin-FE-2936c2479dbf4d649ec24bfffd5c10a8?pvs=4)  입니다 😎
