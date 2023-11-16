@@ -8,10 +8,6 @@ public class GoSceneManager : MonoBehaviour
     public void GotoSceneSingle(string sceneName)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
-
-        // 서버로 잡았다고 전송
-        var andController = new AndroidController();
-        andController.RequestDefeatMonster();
     }
 
     public void GotoSceneAdditive(string sceneName)

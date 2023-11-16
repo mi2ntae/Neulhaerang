@@ -277,19 +277,19 @@ public class AndroidController : MonoBehaviour
     /**
      * 주위 사용자 조회
      */
-    void RequestNearByUsers()
+    public void RequestNearByUsers()
     {
         string androidMethod = "getNearByUsers";
         _pluginInstance.Call(androidMethod);
     }
 
-    void ReceiveNearByUsers(string jsonMessage)
+    public void ReceiveNearByUsers(string jsonMessage)
     {
         Debug.Log("heejeong [ReceiveNearByUsers]" + jsonMessage);
         AroundMembers datas = JsonUtility.FromJson<AroundMembers>(jsonMessage);
-        foreach (AroundMember lt in datas.members)
+        foreach (AroundMember it in datas.members)
         {
-            Debug.Log("heejeong 근처 사용자::" + lt.ToString());
+            Debug.Log("heejeong 근처 사용자::" +it.ToString());
         }
     }
 }
