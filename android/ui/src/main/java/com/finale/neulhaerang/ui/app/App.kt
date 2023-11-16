@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -42,7 +41,6 @@ import com.finale.neulhaerang.ui.app.main.MainScreen
 import com.finale.neulhaerang.ui.app.mypage.MyPageScreen
 import com.finale.neulhaerang.ui.app.social.SocialScreen
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
-import com.unity3d.player.UnityPlayerActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
@@ -177,9 +175,7 @@ fun AppMain(getResult: ActivityResultLauncher<Intent>) {
                 MainScreen(navController)
             }
             composable(route = AppNavItem.MyPage.route) {
-//                MyPageScreen(navController = navController, getResult)
-                getResult.launch(Intent(LocalContext.current, UnityPlayerActivity::class.java))
-                MainScreen(navController = navController)
+                MyPageScreen(navController = navController, getResult)
             }
             composable(route = AppNavItem.Social.route) {
                 SocialScreen()
