@@ -8462,7 +8462,7 @@ GameObject:
   - component: {fileID: 1702983433}
   - component: {fileID: 1702983432}
   m_Layer: 0
-  m_Name: AroundPeopleManager
+  m_Name: SocialController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9213,6 +9213,6 @@ SceneRoots:
   - {fileID: 1647404423}
   - {fileID: 522900694}
   - {fileID: 1725755621}
+  - {fileID: 1914792624}
   - {fileID: 1702983433}
   - {fileID: 1817112857}
-  - {fileID: 1914792624}
