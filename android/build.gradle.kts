@@ -1,6 +1,6 @@
 buildscript {
-    val versionCode by extra(2)
-    val versionName by extra("1.0.1")
+    val versionCode by extra(3)
+    val versionName by extra("1.1.0")
     val compileSDKVersion by extra(34)
     val targetSDKVersion by extra(33)
     val minimumSDKVersion by extra(30)
