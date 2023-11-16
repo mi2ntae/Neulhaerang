@@ -29,7 +29,7 @@ public class AndroidController : MonoBehaviour
     public List<Sprite> glassesOn;
     public List<Sprite> minihatOn;
     public List<Sprite> scarfOn;
-    public List<Sprite> titleSprites;
+    //public List<Sprite> titleSprites;
 
     public List<Button> bagButtons;
     public List<Button> glassesButtons;
@@ -62,15 +62,6 @@ public class AndroidController : MonoBehaviour
         //ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
         //RequestUserTitles();
         RequestGetUserProfile();
-
-        //Debug.Log("stat Level : " + statLevelList[0].text);
-
-        statLevelList.Add(GameObject.Find("GodsangLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("SurviveLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("InssaLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("TeunteunLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("GoodideaLevel").GetComponent<TextMeshProUGUI>());
-        statLevelList.Add(GameObject.Find("LoveLevel").GetComponent<TextMeshProUGUI>());
     }
 
     // Update is called once per frame
@@ -95,42 +86,27 @@ public class AndroidController : MonoBehaviour
 
         int[] scores = new int[6];
 
+        statLevelList.Add(GameObject.Find("GodsangLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("SurviveLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("InssaLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("TeunteunLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("GoodideaLevel").GetComponent<TextMeshProUGUI>());
+        statLevelList.Add(GameObject.Find("LoveLevel").GetComponent<TextMeshProUGUI>());
+
         Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
         MemberStats datas = JsonUtility.FromJson<MemberStats>(jsonMessage);
 
-        int index = 0;
-        foreach (MemberStatItem lt in datas.stats)
+        for(var i = 0; i  < scores.Length; i++)
         {
-            Debug.Log("heejeong 유저 스탯 점수::" + lt.Score);
-            Debug.Log("heejeong 유저 스탯 레벨::" + lt.Level);
-            scores[index] = lt.Score;
-            statLevelList[index++].text = lt.Level;
-            Debug.Log("stat Level : " + statLevelList[index - 1].text);
-            /*TODO*/
-            // Level UI 생성 및 값 표시 작업 필요
+            Debug.Log("heejeong 유저 스탯 점수::" + datas.stats[i].Score);
+            Debug.Log("stat type : " + datas.stats[i].Score.GetType().Name);
+            Debug.Log("heejeong 유저 스탯 레벨::" + datas.stats[i].Level);
+            Debug.Log("level type : " + datas.stats[i].Level.GetType().Name);
+            scores[i] = datas.stats[i].Score;
+            statLevelList[i].text = datas.stats[i].Level;
         }
+
         scores = changeValue(scores);
-
-        //// godsang
-        //scores[0] = 2500;
-        //// survive
-        //scores[1] = 2000;
-        //// inssa
-        //scores[2] = 1500;
-        //// teunteun
-        //scores[3] = 2000;
-        //// goodidea
-        //scores[4] = 2500;
-        //// love
-        //scores[5] = 1500;
-
-        Debug.Log("score 0 : " + scores[0]);
-        Debug.Log("score 1 : " + scores[1]);
-        Debug.Log("score 2 : " + scores[2]);
-        Debug.Log("score 3 : " + scores[3]);
-        Debug.Log("score 4 : " + scores[4]);
-        Debug.Log("score 5 : " + scores[5]);
-
         Stats stats = new Stats(scores[0], scores[1], scores[2], scores[3], scores[4], scores[5]);
         statsRadarChart.SetStats(stats);
     }
@@ -255,7 +231,7 @@ public class AndroidController : MonoBehaviour
             newColor.a = 1.0f;
             buttonImage.color = newColor;
             Debug.Log("color : " + newColor);
-            titleObject.GetComponent<Image>().sprite = titleSprites[datas.Title];
+            //titleObject.GetComponent<Image>().sprite = titleSprites[datas.Title];
         }
 
         // 아이템 전역 저장
