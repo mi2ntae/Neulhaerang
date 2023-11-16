@@ -1483,8 +1483,9 @@ GameObject:
   - component: {fileID: 1612324777}
   - component: {fileID: 1612324776}
   - component: {fileID: 1612324778}
+  - component: {fileID: 1612324779}
   m_Layer: 0
-  m_Name: EndSceneManager
+  m_Name: MonsterController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1527,6 +1528,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57348d39d06349a4d9a9cff2f39d791e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1612324779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612324775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4abfabb196c2f94e89c7c9b07e65a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1691011363

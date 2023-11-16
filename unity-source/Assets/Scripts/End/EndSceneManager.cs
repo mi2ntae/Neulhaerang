@@ -14,7 +14,7 @@ public class EndSceneManager : MonoBehaviour
     void Start()
     {
         // 서버로 잡았다고 전송
-        AndroidController.instance.RequestDefeatMonster();
+        MonsterController.instance.RequestDefeatMonster();
 
         SparkObject1 = GameObject.Find("SparkExplosionEpic1");
         SparkParticle1 = SparkObject1.GetComponent<ParticleSystem>();
