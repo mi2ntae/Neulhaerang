@@ -8559,31 +8559,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1091573209}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1065698657}
-        m_TargetAssemblyTypeName: TopPanel, Assembly-CSharp
-        m_MethodName: ClickTab
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1065698653}
-        m_TargetAssemblyTypeName: TopPanel, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1091573209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9769,19 +9745,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1182035510}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1065698657}
-        m_TargetAssemblyTypeName: TopPanel, Assembly-CSharp
-        m_MethodName: ClickTab
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1182035510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12107,7 +12071,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 0.5882353}
+  m_Color: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13386,8 +13350,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 826570913}
   m_HandleRect: {fileID: 826570912}
   m_Direction: 3
-  m_Value: 1
-  m_Size: 0.7858858
+  m_Value: 1.0000013
+  m_Size: 0.7858859
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -16167,19 +16131,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1915035925}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1065698657}
-        m_TargetAssemblyTypeName: TopPanel, Assembly-CSharp
-        m_MethodName: ClickTab
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1915035925
 MonoBehaviour:
   m_ObjectHideFlags: 0
