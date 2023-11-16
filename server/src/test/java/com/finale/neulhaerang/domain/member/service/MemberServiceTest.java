@@ -48,12 +48,19 @@ class MemberServiceTest extends BaseTest {
 	@Test
 	void When_ModifyCharacterInfo_Expect_ChangeCharacterInfo() {
 		// given
+		Title title = Title.builder()
+			.content("test")
+			.name("test")
+			.build();
+		Title save = titleRepository.save(title);
 		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
 			.hat(3)
 			.backpack(3)
 			.glasses(4)
 			.scarf(2)
-			.title(0)
+			.skin(1)
+			.hand(1)
+			.title(save.getId())
 			.build();
 		// when
 		memberService.modifyCharacterInfoByMember(characterModifyReqDto);
@@ -65,6 +72,9 @@ class MemberServiceTest extends BaseTest {
 		assertThat(characterInfo.get().getHat()).isEqualTo(3);
 		assertThat(characterInfo.get().getGlasses()).isEqualTo(4);
 		assertThat(characterInfo.get().getBackpack()).isEqualTo(3);
+		assertThat(characterInfo.get().getTitle()).isEqualTo(save.getId());
+		assertThat(characterInfo.get().getSkin()).isEqualTo(1);
+		assertThat(characterInfo.get().getHand()).isEqualTo(1);
 	}
 
 	@Test
