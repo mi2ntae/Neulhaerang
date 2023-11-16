@@ -139,7 +139,7 @@ public class AndroidController : MonoBehaviour
      */
     void RequestMemberStatus()
     {
-        string androidMethod = "getMemberStats";
+        string androidMethod = "getMemberStatus";
         _pluginInstance.Call(androidMethod);
     }
     void ReceiveMemberStatus(string jsonMessage)
