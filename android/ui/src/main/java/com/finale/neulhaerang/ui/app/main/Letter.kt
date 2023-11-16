@@ -10,10 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.finale.neulhaerang.ui.app.fragment.LoadingBar
 
 @Composable
 fun Letter(
     modifier: Modifier = Modifier,
+    loading: Boolean,
     letterText: String,
 ) {
     Column(
@@ -22,7 +24,9 @@ fun Letter(
             .verticalScroll(rememberScrollState(0))
     ) {
         Spacer(modifier = Modifier.height(16.dp)) //편지 위아래 여백
-        if (letterText.isEmpty()) {
+        if (loading) {
+            LoadingBar()
+        } else if (letterText.isEmpty()) {
             Text(
                 text = "아직 편지가 오지 않았어요\n" + "편지는 매일 밤 12시에 도착해요"
             )

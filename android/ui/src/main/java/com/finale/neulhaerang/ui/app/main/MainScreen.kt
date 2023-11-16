@@ -98,6 +98,7 @@ fun MainScreen(navController: NavHostController) {
                 when (tabIndex) {
                     0 -> CheckList(
                         navController,
+                        viewModel.loading,
                         viewModel.routineList,
                         viewModel.todoList,
                         viewModel.selectedDate,
@@ -105,6 +106,7 @@ fun MainScreen(navController: NavHostController) {
                     )
 
                     1 -> Letter(
+                        loading = viewModel.loading,
                         letterText = viewModel.letterText,
                     )
                 }
