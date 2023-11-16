@@ -13,7 +13,7 @@ import kotlinx.coroutines.runBlocking
 
 class SocialWithUnity {
     // 데이터를 받을 유니티 스크립트가 컴포넌트로 붙어 있는 게임오브젝트명
-    private val unityGameObject = "AroundPeopleManager"
+    private val unityGameObject = "SocialController"
     private val gson = Gson()
 
     init {

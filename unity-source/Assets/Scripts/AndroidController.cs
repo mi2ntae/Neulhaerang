@@ -163,16 +163,6 @@ public class AndroidController : MonoBehaviour
 
     }
 
-
-    /**
-     * 나태 괴물 처치 완료
-     */
-    public void RequestDefeatMonster()
-    {
-        string androidMethod = "defeatLazyMonster";
-        _pluginInstance.Call(androidMethod);
-    }
-
     /**
      * 유저 장착 아이템 조회
      */
