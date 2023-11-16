@@ -74,6 +74,7 @@ fun CheckListModifyScreen(
         CheckListDeleteDialog(
             navController = navController,
             onDismissRequest = { showAlertDialog = false },
+            setLoading = setLoading,
             setAlert = setAlert,
             setMessage = setMessage
         )
@@ -111,6 +112,7 @@ fun CheckListModifyScreen(
                 .imePadding()
                 .fillMaxSize(),
             navController = navController,
+            setLoading = setLoading,
             setAlert = setAlert,
             setMessage = setMessage,
             viewModel = viewModel(
@@ -134,6 +136,7 @@ fun CheckListModifyScreen(
 fun CheckListModifyContent(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    setLoading:(Boolean) -> Unit,
     setAlert: (Boolean) -> Unit,
     setMessage: (String) -> Unit,
     viewModel: CheckListModifyViewModel = viewModel(),
@@ -186,12 +189,14 @@ fun CheckListModifyContent(
         CompleteButton {
             // 값 확인 통과 실패 또는 등록 실패 시 alert
             scope.launch {
+                setLoading(true)
                 val message = viewModel.modifyCheckList() ?: ""
                 setMessage(message)
                 if (message.isBlank()) {
                     navController.popBackStack()
                 } else {
                     setAlert(true)
+                    setLoading(false)
                 }
             }
         }

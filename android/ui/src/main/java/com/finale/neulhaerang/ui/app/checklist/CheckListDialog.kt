@@ -45,6 +45,7 @@ fun CheckListAlertDialog(onDismissRequest: () -> Unit, message: String) {
 fun CheckListDeleteDialog(
     navController: NavHostController,
     onDismissRequest: () -> Unit,
+    setLoading: (Boolean) -> Unit,
     setAlert: (Boolean) -> Unit,
     setMessage: (String) -> Unit,
     viewModel: CheckListModifyViewModel = viewModel(),
@@ -57,6 +58,7 @@ fun CheckListDeleteDialog(
             Button(
                 onClick = {
                     scope.launch {
+                        setLoading(true)
                         val message = viewModel.deleteCheckList() ?: ""
                         setMessage(message)
                         if (message.isBlank()) {
@@ -64,6 +66,7 @@ fun CheckListDeleteDialog(
                             navController.popBackStack()
                         } else {
                             setAlert(true)
+                            setLoading(false)
                         }
                     }
                 }, colors = ButtonDefaults.buttonColors(
