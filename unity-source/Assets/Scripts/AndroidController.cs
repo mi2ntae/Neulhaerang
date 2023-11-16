@@ -15,7 +15,7 @@ public class AndroidController : MonoBehaviour
     [SerializeField] private StatsRadarChart statsRadarChart;
 
     // Monster button
-    public Button monsterButton;
+    public GameObject monsterButton;
 
     // Mypage Status
     public List<GameObject> bagList;
@@ -65,9 +65,7 @@ public class AndroidController : MonoBehaviour
 
         RequestMemberStats();
         RequestMemberStatus();
-        //RequestDefeatMonster();
         RequestCharacterItems();
-        //ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
         //RequestUserTitles();
         RequestGetUserProfile();
     }
@@ -97,12 +95,12 @@ public class AndroidController : MonoBehaviour
         Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
         MemberStats datas = JsonUtility.FromJson<MemberStats>(jsonMessage);
 
-        for(var i = 0; i  < scores.Length; i++)
+        for (var i = 0; i < scores.Length; i++)
         {
             Debug.Log("heejeong 유저 스탯 점수::" + datas.stats[i].Score);
             Debug.Log("stat type : " + datas.stats[i].Score.GetType().Name);
             Debug.Log("heejeong 유저 스탯 레벨::" + datas.stats[i].Level);
-            Debug.Log("level type : " + datas.stats[i].Level.GetType().Name); 
+            Debug.Log("level type : " + datas.stats[i].Level.GetType().Name);
             scores[i] = datas.stats[i].Score;
             statLevelList[i].text = datas.stats[i].Level.ToString();
         }
@@ -152,13 +150,17 @@ public class AndroidController : MonoBehaviour
         Debug.Log("heejeong 나태도" + datas.Indolence);
         Debug.Log("heejeong 피로도" + datas.Tiredness);
 
+
+        if (monsterButton == null) Debug.Log("junyeong 몬스터 버튼 null 확인" + monsterButton);
         // 나태도가 50 이하면 나태괴물 안나타나게
         if (monsterButton != null && datas.Indolence < 50)
         {
-            Image buttonImage = monsterButton.GetComponent<Image>();
-            Color newColor = buttonImage.color;
-            newColor.a = 0.0f;
-            buttonImage.color = newColor;
+            //Image buttonImage = monsterButton.GetComponent<Image>();
+            //Color newColor = buttonImage.color;
+            //newColor.a = 0.0f;
+            //buttonImage.color = newColor;
+
+            monsterButton.SetActive(false);
         }
 
     }
@@ -283,7 +285,7 @@ public class AndroidController : MonoBehaviour
         AroundMembers datas = JsonUtility.FromJson<AroundMembers>(jsonMessage);
         foreach (AroundMember it in datas.members)
         {
-            Debug.Log("heejeong 근처 사용자::" +it.ToString());
+            Debug.Log("heejeong 근처 사용자::" + it.ToString());
         }
     }
 
