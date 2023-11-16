@@ -36,7 +36,7 @@ public class Letter extends BaseTimeEntity {
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@Column(nullable = false, length = 2048)
+	@Column(nullable = false, length = 16376)
 	private String content;
 
 	@ColumnDefault("false")
