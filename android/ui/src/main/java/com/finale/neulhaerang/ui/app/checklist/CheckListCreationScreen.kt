@@ -12,8 +12,6 @@ import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -160,16 +158,7 @@ fun CheckListCreationContent(
 
     // 값 확인 실패 또는 통신 에러 경고창
     if (alert) {
-        AlertDialog(
-            onDismissRequest = { alert = false },
-            confirmButton = {
-                Button(onClick = { alert = false }) {
-                    Text(text = stringResource(id = R.string.ok))
-                }
-            },
-            title = {},
-            text = { Text(text = message, style = MaterialTheme.typography.bodyLarge) }
-        )
+        CheckListAlertDialog(onDismissRequest = { alert = false }, message = message)
     }
 
     if (loading) {

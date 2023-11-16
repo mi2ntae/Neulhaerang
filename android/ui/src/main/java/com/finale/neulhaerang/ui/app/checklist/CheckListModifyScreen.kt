@@ -1,9 +1,7 @@
 package com.finale.neulhaerang.ui.app.checklist
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -13,10 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,7 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,37 +79,31 @@ fun CheckListModifyScreen(
         )
     }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "체크리스트 수정"
-                    )
-                }, navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = stringResource(id = R.string.go_back)
-                        )
-                    }
-                }, colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
-                actions = {
-                    TextButton(onClick = { showAlertDialog = true }) {
-                        Text(
-                            text = stringResource(id = R.string.delete),
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                }
+    Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+        TopAppBar(title = {
+            Text(
+                text = "체크리스트 수정"
             )
-        }
-    ) {
+        }, navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(id = R.string.go_back)
+                )
+            }
+        }, colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ), actions = {
+            TextButton(onClick = { showAlertDialog = true }) {
+                Text(
+                    text = stringResource(id = R.string.delete),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        })
+    }) {
         CheckListModifyContent(
             modifier = Modifier
                 .padding(paddingValues = it)
@@ -134,16 +121,7 @@ fun CheckListModifyScreen(
 
     // 값 확인 실패 또는 통신 에러 경고창
     if (alert) {
-        AlertDialog(
-            onDismissRequest = { setAlert(false) },
-            confirmButton = {
-                Button(onClick = { setAlert(false) }) {
-                    Text(text = stringResource(id = R.string.ok))
-                }
-            },
-            title = {},
-            text = { Text(text = message, style = MaterialTheme.typography.bodyLarge) }
-        )
+        CheckListAlertDialog(onDismissRequest = { setAlert(false) }, message = message)
     }
 
     if (loading) {
@@ -163,8 +141,7 @@ fun CheckListModifyContent(
     val scope = rememberCoroutineScope()
 
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         CheckListContentInput(
             content = viewModel.content,
@@ -175,15 +152,11 @@ fun CheckListModifyContent(
             canModifyStat = !viewModel.routine
         )
         Spacer(modifier = Modifier.height(8.dp))
-        if (viewModel.routine)
-            RoutineCreation(
-                repeat = viewModel.repeat,
-                changeRepeat = viewModel::changeRepeat
-            ) else
-            TodoCreation(
-                dateTime = viewModel.dateTime,
-                changeDate = viewModel::changeDate
-            )
+        if (viewModel.routine) RoutineCreation(
+            repeat = viewModel.repeat, changeRepeat = viewModel::changeRepeat
+        ) else TodoCreation(
+            dateTime = viewModel.dateTime, changeDate = viewModel::changeDate
+        )
         CheckListItem(
             name = stringResource(id = R.string.checklist_category_time),
             icon = Icons.Filled.Schedule
@@ -223,71 +196,6 @@ fun CheckListModifyContent(
             }
         }
     }
-}
-
-@Composable
-fun CheckListDeleteDialog(
-    navController: NavHostController,
-    onDismissRequest: () -> Unit,
-    setAlert: (Boolean) -> Unit,
-    setMessage: (String) -> Unit,
-    viewModel: CheckListModifyViewModel = viewModel(),
-) {
-    val scope = rememberCoroutineScope()
-
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        confirmButton = {
-            Button(
-                onClick = {
-                    scope.launch {
-                        val message = viewModel.deleteCheckList() ?: ""
-                        setMessage(message)
-                        if (message.isBlank()) {
-                            onDismissRequest()
-                            navController.popBackStack()
-                        } else {
-                            setAlert(true)
-                        }
-                    }
-                }, colors = ButtonDefaults.buttonColors(
-                    contentColor = MaterialTheme.colorScheme.onError,
-                    containerColor = MaterialTheme.colorScheme.error
-                )
-            ) {
-                Text(text = stringResource(id = R.string.delete))
-            }
-        },
-        dismissButton = {
-            Button(
-                onClick = {
-                    onDismissRequest()
-                }, colors = ButtonDefaults.buttonColors(
-                    contentColor = MaterialTheme.colorScheme.onSecondary,
-                    containerColor = MaterialTheme.colorScheme.secondary
-                )
-            ) {
-                Text(text = stringResource(id = R.string.cancel))
-            }
-        },
-        title = {
-            Text(text = "정말로 삭제하시겠습니까?", style = MaterialTheme.typography.bodyLarge)
-        },
-        text = {
-            if (viewModel.routine) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Checkbox(
-                        checked = viewModel.stopRoutine,
-                        onCheckedChange = { viewModel.setStopRoutine(it) })
-                    Text(text = "앞으로 반복하지 않기",
-                        modifier = Modifier.clickable { viewModel.setStopRoutine(!viewModel.stopRoutine) })
-                }
-            }
-        }
-    )
 }
 
 @Preview
