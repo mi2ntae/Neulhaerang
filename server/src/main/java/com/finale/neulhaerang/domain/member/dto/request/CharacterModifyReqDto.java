@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CharacterModifyReqDto {
-	@Max(4)
+	@Max(8)
 	@Min(0)
 	private int backpack;
 
@@ -28,6 +28,14 @@ public class CharacterModifyReqDto {
 	@Max(3)
 	@Min(0)
 	private int scarf;
+
+	@Max(8)
+	@Min(0)
+	private int hand;
+
+	@Max(15)
+	@Min(0)
+	private int skin;
 
 	@Max(31)
 	@Min(0)

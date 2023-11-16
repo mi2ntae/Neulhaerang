@@ -12,6 +12,8 @@ public class MemberCharacterResDto {
 	private int glasses;
 	private int hat;
 	private int scarf;
+	private int skin;
+	private int hand;
 	private long title;
 
 	public static MemberCharacterResDto from(CharacterInfo character) {
@@ -19,6 +21,8 @@ public class MemberCharacterResDto {
 			.backpack(character.getBackpack())
 			.glasses(character.getGlasses())
 			.hat(character.getHat())
+			.skin(character.getSkin())
+			.hand(character.getHand())
 			.scarf(character.getScarf())
 			.title(character.getTitle())
 			.build();
