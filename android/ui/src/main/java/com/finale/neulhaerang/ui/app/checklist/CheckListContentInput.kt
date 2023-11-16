@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -110,7 +111,12 @@ fun StatDialog(
                         border = border,
                         contentPadding = PaddingValues(0.dp)
                     ) {
-                        Text(text = it.statName)
+                        Text(text = it.statName, style = MaterialTheme.typography.bodyLarge)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        StatImage(
+                            stat = it,
+                            modifier = Modifier.size(MaterialTheme.typography.titleLarge.fontSize.value.dp)
+                        )
                     }
                 }
             }
@@ -122,7 +128,7 @@ fun StatDialog(
  * 선택된 스탯 이미지 표시하는 composable
  */
 @Composable
-fun StatImage(stat: Stat) {
+fun StatImage(stat: Stat, modifier: Modifier = Modifier) {
     val id = when (stat) {
         Stat.GodSang -> R.drawable.godsang
         Stat.Survive -> R.drawable.survive
@@ -131,5 +137,5 @@ fun StatImage(stat: Stat) {
         Stat.GoodIdea -> R.drawable.goodidea
         Stat.Love -> R.drawable.love
     }
-    Image(painter = painterResource(id = id), contentDescription = stat.statName)
+    Image(painter = painterResource(id = id), contentDescription = stat.statName, modifier)
 }
