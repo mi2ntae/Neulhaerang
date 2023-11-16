@@ -2,6 +2,7 @@ package com.finale.neulhaerang.data.api
 
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
+import com.finale.neulhaerang.data.model.response.MemberProfileResDto
 import com.finale.neulhaerang.data.model.response.MemberStatResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
 import com.finale.neulhaerang.data.util.ResponseResult
@@ -32,6 +33,9 @@ interface MemberApi {
 
     @POST("ar/indolence")
     suspend fun defeatLazyMonster(): ResponseResult<Any>
+
+    @GET("$BASE/{memberId}")
+    suspend fun getMemberProfile(@Path("memberId") memberId: Long): ResponseResult<MemberProfileResDto>
 
     companion object {
         private const val BASE = "member"
