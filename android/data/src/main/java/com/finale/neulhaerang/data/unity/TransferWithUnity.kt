@@ -2,11 +2,9 @@ package com.finale.neulhaerang.data.unity
 
 import android.util.Log
 import com.finale.neulhaerang.data.DataStoreApplication
-import com.finale.neulhaerang.data.api.ArApi
 import com.finale.neulhaerang.data.api.MemberApi
 import com.finale.neulhaerang.data.api.TitleApi
 import com.finale.neulhaerang.data.model.request.MemberItemReqDto
-import com.finale.neulhaerang.data.model.response.AroundMemberCharacterResDto
 import com.finale.neulhaerang.data.model.response.MemberItemResDto
 import com.finale.neulhaerang.data.model.response.MemberStatResDto
 import com.finale.neulhaerang.data.model.response.MemberStatusResDto
@@ -56,20 +54,6 @@ class TransferWithUnity {
         }
     }
 
-    /**
-     * 나태 괴물 처치
-     */
-    private fun defeatLazyMonster() {
-        runBlocking {
-            MemberApi.instance.defeatLazyMonster()
-                .onSuccess { (_, data) ->
-                    checkNotNull(data)
-                    Log.i("heejeong", "$data")
-                }.onFailure { (_, message, _) ->
-                    Log.e("heejeong", "실패! %n$message")
-                }
-        }
-    }
 
     /**
      * 유저 캐릭터 아이템 정보 수정
@@ -104,7 +88,6 @@ class TransferWithUnity {
         }
     }
 
-
     /**
      * 유저 상태 정보 조회
      */
@@ -131,52 +114,7 @@ class TransferWithUnity {
                     checkNotNull(data)
                     Log.i("heejeong", "$data")
                     sendMemberStats(data)
-//                        val statInfo = StatResult(
-//                            life = data[0].score,
-//                            survival = data[1].score,
-//                            popularity = data[2].score,
-//                            power = data[3].score,
-//                            creative = data[4].score,
-//                            love = data[5].score,
-//                        )
-//                        Log.i("heejeong", "$statInfo")
-//                        sendMemberStats(statInfo)
                 }.onFailure { (_, message, _) ->
-                    Log.e("heejeong", "실패! %n$message")
-                }
-        }
-    }
-
-    /**
-     * 유저 근처 다른 사용자 정보 조회
-     */
-    fun getNearByUsers() {
-        runBlocking {
-            ArApi.instance.getAroundMembers()
-                .onSuccess { (_, data) ->
-                    checkNotNull(data)
-                    Log.i("heejeong", "getAroundMembers $data")
-                    sendNearByUsers(data)
-                }
-                .onFailure { (_, message, _) ->
-                    Log.e("heejeong", "실패! %n$message")
-                }
-        }
-    }
-
-    /**
-     * 소셜 사용자 클릭 시
-     */
-    fun clickOtherUser(memberId: Long) {
-//        val memberId = gson.fromJson(jsonMessage)
-        Log.i("heejeong", "clickOtherUser memberId $memberId")
-        runBlocking {
-            ArApi.instance.sendClickedMember(memberId)
-                .onSuccess { (_, data) ->
-                    checkNotNull(data)
-                    Log.i("heejeong", "clickOtherUser Result $data")
-                }
-                .onFailure { (_, message, _) ->
                     Log.e("heejeong", "실패! %n$message")
                 }
         }
@@ -242,18 +180,6 @@ class TransferWithUnity {
         UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
     }
 
-    /**
-     * 근처 다른 유저 정보들을 유니티로 전송
-     */
-    private fun sendNearByUsers(members: List<AroundMemberCharacterResDto>) {
-        val jsonMembers = MemberWrapper(members)
-        val jsonMessage = gson.toJson(jsonMembers)
-        Log.i("heejeong", "sendNearByUsers $jsonMessage")
-        val unityMethod = "ReceiveNearByUsers"
-        UnityPlayer.UnitySendMessage(unityGameObject, unityMethod, jsonMessage)
-    }
-
     data class TitlesWrapper(val titles: List<MemberTitlesResDto>)
     data class StatsWrapper(val stats: List<MemberStatResDto>)
-    data class MemberWrapper(val members: List<AroundMemberCharacterResDto>)
 }
