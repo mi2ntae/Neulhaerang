@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Stats : MonoBehaviour
+public class Stats
 {
     public event EventHandler OnStatsChanged;
     public static int STAT_MIN = 0;
