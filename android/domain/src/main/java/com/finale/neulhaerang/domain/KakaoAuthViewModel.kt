@@ -38,11 +38,11 @@ class KakaoAuthViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    fun kakaoLogin() {
+    suspend fun kakaoLogin() {
         viewModelScope.launch {
             isLoggedIn.emit(handleKakaoLogin())
             Log.i("heejeong", "!!!" + isLoggedIn.value)
-        }
+        }.join()
     }
 
     private suspend fun handleKakaoLogin(): Boolean = suspendCoroutine { continuation ->
