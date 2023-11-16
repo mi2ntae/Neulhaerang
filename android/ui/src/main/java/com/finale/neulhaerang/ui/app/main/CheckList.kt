@@ -38,6 +38,7 @@ import com.finale.neulhaerang.data.CheckList
 import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.data.Todo
 import com.finale.neulhaerang.ui.R
+import com.finale.neulhaerang.ui.app.fragment.LoadingBar
 import com.finale.neulhaerang.ui.theme.Typography
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -46,6 +47,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun CheckList(
     navController: NavHostController,
+    loading: Boolean,
     routineList: List<Routine>,
     todoList: List<Todo>,
     selectedDate: LocalDate,
@@ -59,8 +61,7 @@ fun CheckList(
         if (selectedDate < LocalDate.now()) {
             setMessage(BlockMessage.PastModifyBlock.message)
             setAlert(true)
-        } else
-            navController.navigate("${AppNavItem.CheckListModify.route}/$type/$index")
+        } else navController.navigate("${AppNavItem.CheckListModify.route}/$type/$index")
     }
 
     fun checkCheckListFun(checkList: CheckList) {
@@ -79,23 +80,19 @@ fun CheckList(
             .verticalScroll(rememberScrollState(0))
             .padding(16.dp),
     ) {
-        Routine(routineList, modifyCheckList) { checkCheckListFun(it) }
+        Routine(routineList, loading, modifyCheckList) { checkCheckListFun(it) }
         Spacer(modifier = Modifier.height(16.dp))
-        TodoList(todoList, modifyCheckList) { checkCheckListFun(it) }
+        TodoList(todoList, loading, modifyCheckList) { checkCheckListFun(it) }
     }
 
     if (alert) {
-        AlertDialog(
-            onDismissRequest = { setAlert(false) },
-            confirmButton = {
-                Button(onClick = { setAlert(false) }) {
-                    Text(text = stringResource(id = R.string.ok))
-                }
-            },
-            text = {
-                Text(text = message, style = MaterialTheme.typography.bodyLarge)
+        AlertDialog(onDismissRequest = { setAlert(false) }, confirmButton = {
+            Button(onClick = { setAlert(false) }) {
+                Text(text = stringResource(id = R.string.ok))
             }
-        )
+        }, text = {
+            Text(text = message, style = MaterialTheme.typography.bodyLarge)
+        })
     }
 }
 
@@ -103,11 +100,14 @@ fun CheckList(
 @Composable
 fun Routine(
     routines: List<CheckList>,
+    loading: Boolean,
     modifyCheckList: (String, Int) -> Unit,
     checkCheckList: (CheckList) -> Unit,
 ) {
     Text(text = "Routine", style = Typography.bodyLarge)
-    if (routines.isEmpty()) {
+    if (loading) {
+        LoadingBar()
+    } else if (routines.isEmpty()) {
         Text(text = "오늘 할 루틴이 없어요", modifier = Modifier.padding(8.dp))
     } else {
         Column(
@@ -124,11 +124,14 @@ fun Routine(
 @Composable
 fun TodoList(
     todolist: List<CheckList>,
+    loading: Boolean,
     modifyCheckList: (String, Int) -> Unit,
     checkCheckList: (CheckList) -> Unit,
 ) {
     Text(text = "To do", style = Typography.bodyLarge)
-    if (todolist.isEmpty()) {
+    if (loading) {
+        LoadingBar()
+    } else if (todolist.isEmpty()) {
         Text(text = "오늘의 할 일이 없어요", modifier = Modifier.padding(8.dp))
     } else {
         Column(
@@ -154,13 +157,11 @@ fun CheckListItem(
     val type = if (item is Routine) "routine" else "todo"
 
     Row(
-        modifier = Modifier.combinedClickable(
-            interactionSource = MutableInteractionSource(),
+        modifier = Modifier.combinedClickable(interactionSource = MutableInteractionSource(),
             indication = null,
             // 길게 누르면 수정
             onLongClick = { modifyCheckList(type, index) },
-            onClick = {}),
-        verticalAlignment = Alignment.CenterVertically
+            onClick = {}), verticalAlignment = Alignment.CenterVertically
     ) {
         // 체크 박스
         Checkbox(
@@ -181,8 +182,7 @@ fun CheckListItem(
                     color = if (item.check) Color.Gray else TextStyle.Default.color,
                     textDecoration = if (item.check) TextDecoration.LineThrough else null
                 )
-            ),
-            modifier = Modifier.weight(1f)
+            ), modifier = Modifier.weight(1f)
         )
         // 알림 여부
         if (item.alarm && item.alarmTime != null) {
