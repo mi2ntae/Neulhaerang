@@ -34,6 +34,8 @@ public class ThirdMemberController : MonoBehaviour
             }
 
             ThirdMemberInfo.transform.localScale = initialScale;
+
+            SocialController.instance.RequestFriendStats(long.Parse(PlayerPrefs.GetString("MemberId3")));
         }
         else
         {

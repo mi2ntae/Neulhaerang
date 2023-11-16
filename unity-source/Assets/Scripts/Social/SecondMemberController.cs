@@ -34,6 +34,8 @@ public class SecondMemberController : MonoBehaviour
             }
 
             SecondMemberInfo.transform.localScale = initialScale;
+
+            SocialController.instance.RequestFriendStats(long.Parse(PlayerPrefs.GetString("MemberId2")));
         }
         else
         {
