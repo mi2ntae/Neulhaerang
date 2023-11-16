@@ -76,7 +76,7 @@ fun Calendar(
     val lastDay = selectedDate.lengthOfMonth()
     val days = IntRange(1, lastDay).toList()
     Row(
-        modifier = modifier.padding(start = 8.dp, end = 16.dp, top = 4.dp, bottom = 4.dp),
+        modifier = modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextButton(onClick = { showSheet = true }) {
@@ -104,6 +104,13 @@ fun Calendar(
 //                lastDay = selectedDate.atStartOfDay().with(inputDate).toLocalDate().lengthOfMonth()
 //                days = IntRange(1, lastDay).toList()
             })
+        Spacer(modifier = Modifier.weight(1f))
+        TextButton(
+            onClick = { setDateTime(LocalDateTime.now()) },
+            enabled = selectedDate != LocalDate.now()
+        ) {
+            Text(text = "오늘")
+        }
     }
     DaysRow(days = days, selectedDate = selectedDate, setDateTime = setDateTime)
 }
@@ -133,7 +140,8 @@ fun DaysRow(
         items(items = days, key = { it }) { item ->
             DayElement(
                 daysOfWeek = selectedDate.withDayOfMonth(item).dayOfWeek,
-                progressDegree = ((viewModel.todoDoneList.getOrNull(item - 1)?.let { (it.ratio * 100).toInt() })),
+                progressDegree = ((viewModel.todoDoneList.getOrNull(item - 1)
+                    ?.let { (it.ratio * 100).toInt() })),
                 day = item,
                 selectedDate = selectedDate,
                 setDateTime = setDateTime
@@ -172,8 +180,7 @@ fun DayElement(
                 )
             ), style = if (isSelected) Typography.bodyMedium.merge(
                 TextStyle(
-                    MaterialTheme.colorScheme.onPrimary,
-                    fontWeight = FontWeight.Bold
+                    MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold
                 )
             ) else Typography.bodyMedium
         )
@@ -195,16 +202,15 @@ fun DayElement(
                 },
             contentAlignment = Alignment.Center,
         ) {
-            if (progressDegree != null)
-                Image(
-                    painter = painterResource(weather(progressDegree)),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(Color.Transparent)
-                )
+            if (progressDegree != null) Image(
+                painter = painterResource(weather(progressDegree)),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(Color.Transparent)
+            )
         }
         Text(
             text = day.toString(), style = if (isSelected) Typography.bodyMedium.merge(
