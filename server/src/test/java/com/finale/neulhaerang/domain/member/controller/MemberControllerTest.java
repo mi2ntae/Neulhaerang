@@ -34,6 +34,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(0)
 			.hat(0)
 			.backpack(0)
+			.skin(0)
+			.hand(0)
 			.title(0)
 			.build();
 
@@ -54,8 +56,12 @@ class MemberControllerTest extends BaseTest {
 			.scarf(3)
 			.glasses(4)
 			.hat(4)
+			.skin(15)
+			.hand(8)
+			.skin(1)
+			.hand(1)
 			.backpack(4)
-			.title(31)
+			.title(0)
 			.build();
 
 		// when // then
@@ -75,6 +81,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.scarf(4)
 			.hat(1)
+			.skin(1)
+			.hand(1)
 			.backpack(1)
 			.title(31)
 			.build();
@@ -96,6 +104,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.scarf(-1)
 			.hat(1)
+			.skin(1)
+			.hand(1)
 			.backpack(1)
 			.title(31)
 			.build();
@@ -109,15 +119,17 @@ class MemberControllerTest extends BaseTest {
 			.andExpect(status().isBadRequest());
 	}
 
-	@DisplayName("캐릭터 정보를 수정하는 경우 가방 값은 4이상일 수 없습니다.")
+	@DisplayName("캐릭터 정보를 수정하는 경우 가방 값은 8이상일 수 없습니다.")
 	@Test
-	void When_ModifyCharacterInfoWithMoreThan4BackPack_Expect_IsBadRequest() throws Exception {
+	void When_ModifyCharacterInfoWithMoreThan8BackPack_Expect_IsBadRequest() throws Exception {
 		// given
 		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
 			.scarf(1)
 			.glasses(1)
-			.backpack(5)
+			.backpack(9)
 			.hat(1)
+			.skin(1)
+			.hand(1)
 			.title(31)
 			.build();
 
@@ -139,6 +151,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(-1)
 			.hat(1)
+			.skin(1)
+			.hand(1)
 			.title(31)
 			.build();
 
@@ -160,6 +174,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(5)
 			.backpack(1)
 			.hat(1)
+			.skin(1)
+			.hand(1)
 			.title(31)
 			.build();
 
@@ -172,7 +188,7 @@ class MemberControllerTest extends BaseTest {
 			.andExpect(status().isBadRequest());
 	}
 
-	@DisplayName("캐릭터 정보를 수정하는 경우 가방 값은 0이하일 수 없습니다.")
+	@DisplayName("캐릭터 정보를 수정하는 경우 안경 값은 0이하일 수 없습니다.")
 	@Test
 	void When_ModifyCharacterInfoWithLowerThan0Glasses_Expect_IsBadRequest() throws Exception {
 		// given
@@ -181,6 +197,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(-1)
 			.backpack(1)
 			.hat(1)
+			.skin(1)
+			.hand(1)
 			.title(31)
 			.build();
 
@@ -202,6 +220,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(1)
 			.hat(5)
+			.skin(1)
+			.hand(1)
 			.title(31)
 			.build();
 
@@ -223,6 +243,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(1)
 			.hat(-1)
+			.skin(1)
+			.hand(1)
 			.title(31)
 			.build();
 
@@ -235,7 +257,99 @@ class MemberControllerTest extends BaseTest {
 			.andExpect(status().isBadRequest());
 	}
 
-	@DisplayName("캐릭터 정보를 수정하는 경우 모자 값은 31이상일 수 없습니다.")
+	@DisplayName("캐릭터 정보를 수정하는 경우 스킨 값은 15이상일 수 없습니다.")
+	@Test
+	void When_ModifyCharacterInfoWithMoreThan8Skin_Expect_IsBadRequest() throws Exception {
+		// given
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.scarf(1)
+			.glasses(1)
+			.backpack(1)
+			.hat(4)
+			.skin(16)
+			.hand(1)
+			.title(31)
+			.build();
+
+		// when // then
+		mockMvc.perform(patch("/member/character")
+				.content(objectMapper.writeValueAsString(characterModifyReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("캐릭터 정보를 수정하는 경우 스킨 값은 0이하일 수 없습니다.")
+	@Test
+	void When_ModifyCharacterInfoWithLowerThan0Skin_Expect_IsBadRequest() throws Exception {
+		// given
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.scarf(1)
+			.glasses(1)
+			.backpack(1)
+			.hat(1)
+			.hand(1)
+			.title(1)
+			.skin(-1)
+			.build();
+
+		// when // then
+		mockMvc.perform(patch("/member/character")
+				.content(objectMapper.writeValueAsString(characterModifyReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("캐릭터 정보를 수정하는 경우 무기 값은 8이상일 수 없습니다.")
+	@Test
+	void When_ModifyCharacterInfoWithMoreThan8Hank_Expect_IsBadRequest() throws Exception {
+		// given
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.scarf(1)
+			.glasses(1)
+			.backpack(1)
+			.hat(4)
+			.skin(1)
+			.hand(9)
+			.title(31)
+			.build();
+
+		// when // then
+		mockMvc.perform(patch("/member/character")
+				.content(objectMapper.writeValueAsString(characterModifyReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("캐릭터 정보를 수정하는 경우 무기 값은 0이하일 수 없습니다.")
+	@Test
+	void When_ModifyCharacterInfoWithLowerThan0Hand_Expect_IsBadRequest() throws Exception {
+		// given
+		CharacterModifyReqDto characterModifyReqDto = CharacterModifyReqDto.builder()
+			.scarf(1)
+			.glasses(1)
+			.backpack(1)
+			.hat(1)
+			.hand(-1)
+			.title(1)
+			.skin(1)
+			.build();
+
+		// when // then
+		mockMvc.perform(patch("/member/character")
+				.content(objectMapper.writeValueAsString(characterModifyReqDto))
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@DisplayName("캐릭터 정보를 수정하는 경우 칭호 값은 31이상일 수 없습니다.")
 	@Test
 	void When_ModifyCharacterInfoWithMoreThan32Title_Expect_IsBadRequest() throws Exception {
 		// given
@@ -244,6 +358,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(1)
 			.hat(4)
+			.skin(1)
+			.hand(1)
 			.title(32)
 			.build();
 
@@ -256,7 +372,7 @@ class MemberControllerTest extends BaseTest {
 			.andExpect(status().isBadRequest());
 	}
 
-	@DisplayName("캐릭터 정보를 수정하는 경우 모자 값은 0이하일 수 없습니다.")
+	@DisplayName("캐릭터 정보를 수정하는 경우 칭호 값은 0이하일 수 없습니다.")
 	@Test
 	void When_ModifyCharacterInfoWithLowerThan0Title_Expect_IsBadRequest() throws Exception {
 		// given
@@ -265,6 +381,8 @@ class MemberControllerTest extends BaseTest {
 			.glasses(1)
 			.backpack(1)
 			.hat(1)
+			.skin(1)
+			.hand(1)
 			.title(-1)
 			.build();
 
