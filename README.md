@@ -152,14 +152,15 @@
       <td align="center" style="font-weight: bold; font-size: 18;">나태괴물 처치</td>
     </tr>
     <tr>
-      <td align="center"><img src="" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/89fed59c-2c41-4b97-92b8-b9a865456db6" /><img src="https://github.com/2023-finale/.github/assets/101235186/d5861b5a-217e-471d-9394-04be18e3c3ec" /></td>
     </tr>
     <tr>
       <td align="center">마이페이지에서 캐릭터 왼쪽의 나태괴물을 클릭하여 진입할 수 있습니다<br>
 	  사용자는 나태도가 70이상인 경우 나태괴물을 처치하지 않으면<br>
     TODO와 루틴을 수행/생성할 수 없습니다.<br>
     나태괴물을 클릭하면 나태괴물의 hp가 감소합니다.<br>
-    3마리를 물리치면 나태도를 50 포인트 감소합니다.
+    3마리를 물리치면 나태도를 50 포인트 감소합니다.<br>
+    처치 후, `My Room` 버튼을 통해 마이페이지로 이동할 수 있습니다.
     </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">소셜(주위사용자 태그)</td>
@@ -170,6 +171,15 @@
     <tr>
       <td align="center">반경 100m에 로그인된 앱에 접속중인 주변 사용자들의 캐릭터 정보를 조회할 수 있습니다.<br>
 	  캐릭터를 클릭하여 스탯을 올릴 수 있습니다.</td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight: bold; font-size: 18;">알림</td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/af6cdda1-1245-43f7-b021-9dcb6ce84812" /></td>
+    </tr>
+    <tr>
+      <td align="center">사용자의 활동에 따라 알림을 보냅니다.</td>
     </tr>
     <tr>
       <td align="center" style="font-weight: bold; font-size: 18;">칭호 리스트</td>
