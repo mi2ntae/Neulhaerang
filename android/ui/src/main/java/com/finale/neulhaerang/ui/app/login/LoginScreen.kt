@@ -70,9 +70,8 @@ fun LoginScreen(
                 })
     }
 
-    if (loading) {
-        LoadingScreen()
-    }
+    if (!loading) return
+    LoadingScreen()
 }
 
 @Preview(showSystemUi = true)

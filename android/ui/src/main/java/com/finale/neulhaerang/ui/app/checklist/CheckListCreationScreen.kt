@@ -4,11 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
@@ -42,6 +40,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.finale.neulhaerang.domain.CheckListCreationViewModel
 import com.finale.neulhaerang.ui.R
+import com.finale.neulhaerang.ui.app.fragment.LoadingScreen
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import kotlinx.coroutines.launch
@@ -88,6 +87,7 @@ fun CheckListCreationContent(
     viewModel: CheckListCreationViewModel = viewModel(),
 ) {
     val scope = rememberCoroutineScope()
+    var loading by remember { mutableStateOf(false) }
     var alert by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf("") }
 
@@ -144,23 +144,17 @@ fun CheckListCreationContent(
             Switch(checked = viewModel.alarm, onCheckedChange = viewModel::changeAlarm)
         }
         Spacer(modifier = Modifier.weight(weight = 1f))
-        Button(
-            onClick = {
-                // 값 확인 통과 실패 또는 등록 실패 시 alert
-                scope.launch {
-                    message = viewModel.registerCheckList() ?: ""
-                    if (message.isBlank()) {
-                        navController.popBackStack()
-                    } else {
-                        alert = true
-                    }
+        CompleteButton {
+            // 값 확인 통과 실패 또는 등록 실패 시 alert
+            scope.launch {
+                message = viewModel.registerCheckList() ?: ""
+                if (message.isBlank()) {
+                    navController.popBackStack()
+                } else {
+                    alert = true
+                    loading = false
                 }
-            }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.complete),
-                style = MaterialTheme.typography.bodyLarge
-            )
+            }
         }
     }
 
@@ -176,6 +170,10 @@ fun CheckListCreationContent(
             title = {},
             text = { Text(text = message, style = MaterialTheme.typography.bodyLarge) }
         )
+    }
+
+    if (loading) {
+        LoadingScreen()
     }
 }
 

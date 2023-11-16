@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowBack
@@ -50,6 +48,7 @@ import com.finale.neulhaerang.data.Routine
 import com.finale.neulhaerang.domain.CheckListModifyViewModel
 import com.finale.neulhaerang.domain.MainScreenViewModel
 import com.finale.neulhaerang.ui.R
+import com.finale.neulhaerang.ui.app.fragment.LoadingScreen
 import com.finale.neulhaerang.ui.app.fragment.NHLTimePicker
 import com.finale.neulhaerang.ui.theme.NeulHaeRangTheme
 import kotlinx.coroutines.launch
@@ -61,7 +60,7 @@ fun CheckListModifyScreen(
     navController: NavHostController,
     type: String?,
     index: Int?,
-    viewModel:MainScreenViewModel = viewModel(MainScreenViewModel.storeOwner)
+    viewModel: MainScreenViewModel = viewModel(MainScreenViewModel.storeOwner),
 ) {
     val defaultVal = Routine(0, 0, false, null, false, "dd", Stat.GodSang, List(7) { false })
     val checkList = when (type) {
@@ -74,6 +73,7 @@ fun CheckListModifyScreen(
     val selectedDate = viewModel.selectedDate
 
     var showAlertDialog by remember { mutableStateOf(false) }
+    val (loading, setLoading) = remember { mutableStateOf(false) }
     val (alert, setAlert) = remember { mutableStateOf(false) }
     val (message, setMessage) = remember { mutableStateOf("") }
 
@@ -145,6 +145,10 @@ fun CheckListModifyScreen(
             text = { Text(text = message, style = MaterialTheme.typography.bodyLarge) }
         )
     }
+
+    if (loading) {
+        LoadingScreen()
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -206,24 +210,17 @@ fun CheckListModifyContent(
             Switch(checked = viewModel.alarm, onCheckedChange = viewModel::changeAlarm)
         }
         Spacer(modifier = Modifier.weight(weight = 1f))
-        Button(
-            onClick = {
-                // 값 확인 통과 실패 또는 등록 실패 시 alert
-                scope.launch {
-                    val message = viewModel.modifyCheckList() ?: ""
-                    setMessage(message)
-                    if (message.isBlank()) {
-                        navController.popBackStack()
-                    } else {
-                        setAlert(true)
-                    }
+        CompleteButton {
+            // 값 확인 통과 실패 또는 등록 실패 시 alert
+            scope.launch {
+                val message = viewModel.modifyCheckList() ?: ""
+                setMessage(message)
+                if (message.isBlank()) {
+                    navController.popBackStack()
+                } else {
+                    setAlert(true)
                 }
-            }, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.complete),
-                style = MaterialTheme.typography.bodyLarge
-            )
+            }
         }
     }
 }
