@@ -185,7 +185,7 @@
       <td align="center" style="font-weight: bold; font-size: 18;">칭호 리스트</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/5e45ad9c-40fc-4fae-aa0f-b3601392c9ed" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/18b07248-0810-440e-8e1e-4647664fa890" /></td>
     </tr>
  </table>
 </div>
