@@ -98,10 +98,8 @@ dependencies {
     implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
 
     // unity
-    implementation(project(":unityLibrary"))
-//    implementation(fileTree(mapOf("dir" to "../UnityProject/androidBuild/unityLibrary/libs", "include" to listOf("*.jar"))))
-    implementation(fileTree(mapOf("dir" to "..\\UnityProject\\androidBuild\\unityLibrary\\libs", "include" to listOf("*.jar"))))
-
+    implementation(project(":unityLibrary",))
+    implementation(fileTree(mapOf("dir" to "..\\..\\UnityProject\\androidBuild\\unityLibrary\\libs", "include" to listOf("*.jar"))))
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))

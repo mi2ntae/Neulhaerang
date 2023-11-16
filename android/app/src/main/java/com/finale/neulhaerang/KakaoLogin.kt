@@ -2,6 +2,7 @@ package com.finale.neulhaerang
 
 import android.util.Log
 import com.finale.neulhaerang.data.DataStoreApplication
+import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kakao.sdk.common.KakaoSdk
 import kotlinx.coroutines.CoroutineScope
@@ -14,6 +15,7 @@ class MainApplication : DataStoreApplication() {
     override fun onCreate() {
         super.onCreate()
         // 다른 초기화 코드들
+        FirebaseApp.initializeApp(this)
         setDeivceToken()
         //Kakao SDK 초기화
         KakaoSdk.init(this, BuildConfig.NATIVE_APP_KEY)
