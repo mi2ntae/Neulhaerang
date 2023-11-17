@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -30,6 +31,28 @@ public class TitleClickEventHandler : MonoBehaviour
         if (buttonImageName.StartsWith("on_"))
         {
             titleObject.GetComponent<Image>().sprite = clickedImage.sprite;
+
+            // "on_" 다음의 숫자 추출
+            string numberPart = buttonImageName.Substring(3);
+
+            // 숫자를 int로 변환
+            if (int.TryParse(numberPart, out int number))
+            {
+                PlayerPrefs.SetInt("Title", number);
+                int bag = PlayerPrefs.GetInt("Bag");
+                int glasses = PlayerPrefs.GetInt("Glasses");
+                int minihat = PlayerPrefs.GetInt("Minihat");
+                int scarf = PlayerPrefs.GetInt("Scarf");
+                int title = PlayerPrefs.GetInt("Title");
+                int skin = PlayerPrefs.GetInt("Skin");
+                int hand = PlayerPrefs.GetInt("Hand");
+                MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title, skin, hand);
+                AndroidController.instance.ModifyCharacterItems(datas);
+            }
+            else
+            {
+                Debug.Log("junyeong 숫자 변환 실패");
+            }
         }
     }
 }
