@@ -18,6 +18,7 @@ public class BagPanel : MonoBehaviour
         {
             bagObjects[id].SetActive(false);
             bagButtons[id].GetComponent<Image>().sprite = bagOff[id];
+            PlayerPrefs.SetInt("Bag", 0);
         }
         else // not active -> all off -> activate
         {
@@ -34,12 +35,10 @@ public class BagPanel : MonoBehaviour
                     bagButtons[i].GetComponent<Image>().sprite = bagOff[i];
                 }
             }
+            PlayerPrefs.SetInt("Bag", id + 1);
         }
 
-        // TODO
         // Update equipment state into server
-        // Update equipment state into server
-        PlayerPrefs.SetInt("Bag", id+1);
 
         int bag = PlayerPrefs.GetInt("Bag");
         int glasses = PlayerPrefs.GetInt("Glasses");

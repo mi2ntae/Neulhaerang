@@ -18,6 +18,7 @@ public class ScarfPanel : MonoBehaviour
         {
             scarfObjects[id].SetActive(false);
             scarfButtons[id].GetComponent<Image>().sprite = scarfOff[id];
+            PlayerPrefs.SetInt("Scarf", 0);
         }
         else // not active -> all off -> activate
         {
@@ -34,12 +35,10 @@ public class ScarfPanel : MonoBehaviour
                     scarfButtons[i].GetComponent<Image>().sprite = scarfOff[i];
                 }
             }
+            PlayerPrefs.SetInt("Scarf", id + 1);
         }
 
-        // TODO
         // Update equipment state into server
-        PlayerPrefs.SetInt("Scarf", id + 1);
-
         int bag = PlayerPrefs.GetInt("Bag");
         int glasses = PlayerPrefs.GetInt("Glasses");
         int minihat = PlayerPrefs.GetInt("Minihat");

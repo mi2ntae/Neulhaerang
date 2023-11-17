@@ -18,6 +18,7 @@ public class HandPanel : MonoBehaviour
         {
             handObjects[id].SetActive(false);
             handButtons[id].GetComponent<Image>().sprite = handOff[id];
+            PlayerPrefs.SetInt("Hand", 0);
         }
         else // not active -> all off -> activate
         {
@@ -34,12 +35,10 @@ public class HandPanel : MonoBehaviour
                     handButtons[i].GetComponent<Image>().sprite = handOff[i];
                 }
             }
+            PlayerPrefs.SetInt("Hand", id + 1);
         }
 
-        // TODO
         // Update equipment state into server
-        PlayerPrefs.SetInt("Hand", id + 1);
-
         int bag = PlayerPrefs.GetInt("Bag");
         int glasses = PlayerPrefs.GetInt("Glasses");
         int minihat = PlayerPrefs.GetInt("Minihat");
