@@ -1,0 +1,11 @@
+### 캐릭터 장착 정보 변경
+POST {{back_addr}}member/character
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "hat": 1,
+  "scarf": 1,
+  "glasses": 1,
+  "backpack": 1
+}

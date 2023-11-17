@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MyPageScene.unity
+    guid: 755b3443fe4f34c40891941ea0cade9f
+  - enabled: 1
+    path: Assets/Scenes/MonsterScene.unity
+    guid: 7c7aaec4f46f05c4ab6555edd4c1253c
+  - enabled: 1
+    path: Assets/Scenes/GameOverScene.unity
+    guid: 0b09e8de922a735499066ee760dccd90
+  - enabled: 1
+    path: Assets/Scenes/SocialScene.unity
+    guid: 9c76ce07ff9725442aad680c386a18b1
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: d75426839eca34f45826ce2f8fdcbdba,
+      type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 541404a47e1eaf246b6e884074e108fe,
+      type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 5e0576dbacca34c42953e01df23b84a6,
+      type: 2}
+    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 7d242df670bd9ab43b2ff0aedb2530e8,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ccb003dfd4421744ea2400ce032de79f,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: dcfca1ccff5cb91448f6eb43c6e2ed56,
+      type: 2}

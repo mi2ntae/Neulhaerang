@@ -1,0 +1,67 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: 'jdbc:h2:mem:~/testdb'
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: false
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: never
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+
+  jwt:
+    secret: ${JWT_KEY}
+    token:
+      access-expiration-time: 1800000   # 30min
+      refresh-expiration-time: 604800000 # 7day
+  data:
+    mongodb:
+      host: ${MONGO_HOST}
+      port: 27017
+      authentication-database: admin
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+      database: ${MONGO_DATABASE}
+
+oauth2:
+  config:
+    activate:
+      on-profile: common
+  kakao:
+    infoUrl: https://kapi.kakao.com
+
+schedules:
+  cron:
+    daily-routine: "0 0 0 * * *" # 매일 정각
+
+gpt:
+  key: ${GPT_KEY}
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 160000000
+        read-timeout: 160000000
+fcm:
+  secret:
+    key: ${FCM_SECRET_KEY}

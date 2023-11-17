@@ -8,8 +8,8 @@ android {
     compileSdkVersion(rootProject.extra["compileSDKVersion"] as Int)
 
     defaultConfig {
-        minSdk = 24
 
+        minSdkVersion(rootProject.extra["minimumSDKVersion"] as Int)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -24,11 +24,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -36,7 +36,8 @@ dependencies {
 
     // android
     implementation("androidx.core:core-ktx:${rootProject.extra["coreKtxVersion"]}")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:${rootProject.extra["lifecycleVersion"]}")
+    implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

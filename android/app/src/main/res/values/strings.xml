@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">늘해랑</string>
+    <string name="game_view_content_description">Game View</string>
 </resources>

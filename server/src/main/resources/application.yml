@@ -1,0 +1,106 @@
+spring:
+  profiles:
+    active: local
+    group:
+      local:
+        - common
+      prod:
+        - common
+---
+
+spring:
+  config:
+    activate:
+      on-profile: common
+    import: optional:file:.env[.properties]
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: never
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASSWORD}
+  jwt:
+    secret: ${JWT_KEY}
+    token:
+      access-expiration-time: 1800000   # 30min
+      refresh-expiration-time: 604800000 # 7day
+  data:
+    mongodb:
+      host: ${MONGO_HOST}
+      port: 27017
+      authentication-database: admin
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+      database: ${MONGO_DATABASE}
+
+logging:
+  config:
+    activate:
+      on-profile: common
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: DEBUG
+        sql: DEBUG
+
+oauth2:
+  config:
+    activate:
+      on-profile: common
+  kakao:
+    infoUrl: https://kapi.kakao.com
+
+gpt:
+  config:
+    activate:
+      on-profile: common
+  key: ${GPT_KEY}
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 160000000
+        read-timeout: 160000000
+fcm:
+  secret:
+    key: ${FCM_SECRET_KEY}
+
+---
+
+schedules:
+  config:
+    activate:
+      on-profile: local
+  cron:
+    daily-routine: "0 0 0 * * *" # 매일 정각
+
+---
+
+schedules:
+  config:
+    activate:
+      on-profile: prod
+  cron:
+    daily-routine: "0 0 0 * * *" # 배포 기준 시각
+
+---

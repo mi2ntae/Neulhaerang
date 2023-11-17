@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 사용자 인디케이터 항목용 문자열-->
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
+    <string name="complete">완료</string>
+    <string name="delete">삭제</string>
+    <string name="go_back">뒤로 가기</string>
+
+    <!-- 6가지 능력치에 관한 문자열 -->
+    <string name="ui_god_sang">갓생력</string>
+    <string name="ui_survive">생존력</string>
+    <string name="ui_in_ssa">인싸력</string>
+    <string name="ui_teunteun">튼튼력</string>
+    <string name="ui_good_idea">창의력</string>
+    <string name="ui_love">최애력</string>
+
+
+    <!-- 메인의 상태 관련 문자열 -->
+    <string name="main_tired">피로도</string>
+    <string name="main_lazy">나태도</string>
+
+    <!-- 요일을 나타내는 영어 축약형 -->
+    <string name="sunday">SUN</string>
+    <string name="monday">MON</string>
+    <string name="tuesday">TUE</string>
+    <string name="wednesday">WED</string>
+    <string name="thursday">THU</string>
+    <string name="friday">FRI</string>
+    <string name="saturday">SAT</string>
+
+
+    <!-- 월을 나타내는 문자열 -->
+    <string name="month_january">January</string>
+    <string name="month_february">February</string>
+    <string name="month_march">March</string>
+    <string name="month_april">April</string>
+    <string name="month_may">May</string>
+    <string name="month_june">June</string>
+    <string name="month_july">July</string>
+    <string name="month_august">August</string>
+    <string name="month_september">September</string>
+    <string name="month_october">October</string>
+    <string name="month_november">November</string>
+    <string name="month_december">December</string>
+
+    <!-- 요일을 나타내는 문자열 배열 -->
+    <string-array name="day_of_week_array_short_kr">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </string-array>
+
+    <!-- 체크리스트 항목용 문자열-->
+    <string name="checklist_category_name">체크리스트 이름</string>
+    <string name="checklist_category_routine">루틴</string>
+    <string name="checklist_category_repeat">반복주기</string>
+    <string name="checklist_category_date">날짜</string>
+    <string name="checklist_category_time">시간</string>
+    <string name="checklist_category_notice">알림</string>
+
+</resources>
