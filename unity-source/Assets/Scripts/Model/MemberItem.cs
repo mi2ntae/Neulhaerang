@@ -24,8 +24,8 @@ public class MemberItem
     public int Hat { get => hat; }
     public int Scarf { get => scarf; }
     public int Title { get => title; }
-    public int Skin { get => title; }
-    public int Hand { get => title; }
+    public int Skin { get => skin; }
+    public int Hand { get => hand; }
 
     public MemberItem(int backpack, int glasses, int hat, int scarf, int title, int skin, int hand)
     {
