@@ -133,7 +133,7 @@ fun App(getResult: ActivityResultLauncher<Intent>, context: Context, lm: Locatio
                 isNetworkEnabled -> {
                     lm.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
-                        60000, //몇초
+                        5000, //몇초
                         0F,   //몇미터
                         gpsLocationListener
                     )
@@ -142,7 +142,7 @@ fun App(getResult: ActivityResultLauncher<Intent>, context: Context, lm: Locatio
                 isGPSEnabled -> {
                     lm.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
-                        60000, //몇초
+                        5000, //몇초
                         0F,   //몇미터
                         gpsLocationListener
                     )
