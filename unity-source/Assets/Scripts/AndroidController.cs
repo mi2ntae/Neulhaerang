@@ -23,6 +23,8 @@ public class AndroidController : MonoBehaviour
     public List<GameObject> minihatList;
     public List<GameObject> scarfList;
     public Button titleObject;
+    //public List<GameObject> skinList;
+    public List<GameObject> handList;
 
     // Clothes Button Image List
     public List<Sprite> bagOn;
@@ -30,12 +32,16 @@ public class AndroidController : MonoBehaviour
     public List<Sprite> minihatOn;
     public List<Sprite> scarfOn;
     //public List<Sprite> titleSprites;
+    //public List<Sprite> skinOn;
+    public List<Sprite> handOn;
 
     public List<Button> bagButtons;
     public List<Button> glassesButtons;
     public List<Button> minihatButtons;
     public List<Button> scarfButtons;
     public List<Button> titleButtons;
+    //public List<Button> skinButtons;
+    public List<Button> handButtons;
 
     // 스텟의 레벨을 표시하는 텍스트
     public List<TextMeshProUGUI> statLevelList;
@@ -188,6 +194,8 @@ public class AndroidController : MonoBehaviour
          * hat;
          * scarf;
          * title;
+         * skin;
+         * hand;
          */
 
         // 아이템을 장착했다면 Active
@@ -227,12 +235,27 @@ public class AndroidController : MonoBehaviour
             //titleObject.GetComponent<Image>().sprite = titleSprites[datas.Title];
         }
 
+        //if (datas.Skin != 0)
+        //{
+        //    scarfList[datas.Skin].SetActive(true);
+        //    scarfButtons[datas.Skin].GetComponent<Image>().sprite = scarfOn[datas.Skin];
+        //}
+
+        if (datas.Hand != 0)
+        {
+            scarfList[datas.Hand].SetActive(true);
+            scarfButtons[datas.Hand].GetComponent<Image>().sprite = scarfOn[datas.Hand];
+        }
+
         // 아이템 전역 저장
         PlayerPrefs.SetInt("Bag", datas.Backpack);
         PlayerPrefs.SetInt("Glasses", datas.Glasses);
         PlayerPrefs.SetInt("Minihat", datas.Hat);
         PlayerPrefs.SetInt("Scarf", datas.Scarf);
         PlayerPrefs.SetInt("Title", datas.Title);
+        PlayerPrefs.SetInt("Skin", datas.Skin);
+        PlayerPrefs.SetInt("Hand", datas.Hand);
+        PlayerPrefs.Save();
     }
 
     /**
