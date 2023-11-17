@@ -46,7 +46,9 @@ public class BagPanel : MonoBehaviour
         int minihat = PlayerPrefs.GetInt("Minihat");
         int scarf = PlayerPrefs.GetInt("Scarf");
         int title = PlayerPrefs.GetInt("Title");
-        MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title);
+        int skin = PlayerPrefs.GetInt("Skin");
+        int hand = PlayerPrefs.GetInt("Hand");
+        MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title, skin, hand);
         //var andController = new AndroidController();
         //andController.ModifyCharacterItems(datas);
 
