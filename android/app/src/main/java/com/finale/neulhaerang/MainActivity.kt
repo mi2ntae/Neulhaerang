@@ -35,9 +35,10 @@ import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.lifecycle.lifecycleScope
 import com.finale.neulhaerang.data.DataStoreApplication
-import com.finale.neulhaerang.ui.app.App
 import com.finale.neulhaerang.data.Memo
 import com.finale.neulhaerang.data.SqliteHelper
+import com.finale.neulhaerang.domain.MyPageController
+import com.finale.neulhaerang.ui.app.App
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -62,6 +63,7 @@ class MainActivity : ComponentActivity() {
             if (it.resultCode == RESULT_OK) {
                 pageCode = it.data?.getStringExtra("pageCode")?.toInt() ?: 0
             }
+            MyPageController.back()
         }
 
         startService(Intent(this, DestroyService::class.java))
@@ -171,7 +173,7 @@ class MainActivity : ComponentActivity() {
 
         if (memo.size == 0) {
             val sleepTime = readSleepSessions(healthConnectClient)      // 수면량 받아오기
-            if(sleepTime != 0L) {
+            if (sleepTime != 0L) {
                 Log.i("sleeptime zero", sleepTime.toString())
                 sqliteHelper.insertMemo(Memo(LocalDateTime.now().toLocalDate().toString()))
                 val dataStore = DataStoreApplication.getInstance().getDataStore()
@@ -243,7 +245,7 @@ class MainActivity : ComponentActivity() {
             Log.i("Cal", TimeUnit.MILLISECONDS.toMinutes(diff).toString())
             return TimeUnit.MILLISECONDS.toMinutes(diff)
         }
-        return 0;
+        return 0
     }
 
     private fun getScoreOfTiredness(sleepTime: Long): Int {

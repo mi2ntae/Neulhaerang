@@ -1,11 +1,13 @@
 package com.finale.neulhaerang.ui.app.mypage
-import com.unity3d.player.UnityPlayerActivity
+
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import com.finale.neulhaerang.domain.MyPageController
+import com.unity3d.player.UnityPlayerActivity
 
 /**
  *  MyPageScreen
@@ -17,7 +19,8 @@ import androidx.navigation.NavHostController
 fun MyPageScreen(navController: NavHostController, getResult: ActivityResultLauncher<Intent>) {
     val mContext = LocalContext.current
     LaunchedEffect(key1 = true) {
+        MyPageController.setNavController(navController)
         getResult.launch(Intent(mContext, UnityPlayerActivity::class.java))
-        navController.popBackStack()
+//        navController.popBackStack()
     }
 }
