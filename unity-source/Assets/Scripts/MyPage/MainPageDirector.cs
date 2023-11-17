@@ -12,18 +12,21 @@ public class MainPageDirector : MonoBehaviour
     public List<GameObject> glassesList;
     public List<GameObject> minihatList;
     public List<GameObject> scarfList;
+    public List<GameObject> handList;
 
     // Clothes Button Image List
     public List<Sprite> bagOn;
     public List<Sprite> glassesOn;
     public List<Sprite> minihatOn;
     public List<Sprite> scarfOn;
+    public List<Sprite> handOn;
 
     // Clothes Button List
     public List<Button> bagButtons;
     public List<Button> glassesButtons;
     public List<Button> minihatButtons;
     public List<Button> scarfButtons;
+    public List<Button> handButtons;
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +70,10 @@ public class MainPageDirector : MonoBehaviour
             scarf.SetActive(false);
         }
 
+        foreach (var hand in handList)
+        {
+            hand.SetActive(false);
+        }
         // TODO
         // Receive the clothes data from server, update the clothes state.
         ClothesUpdate();

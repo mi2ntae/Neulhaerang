@@ -3,39 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScarfPanel : MonoBehaviour
+public class HandPanel : MonoBehaviour
 {
-    public List<Button> scarfButtons;
-    public List<GameObject> scarfObjects;
+    public List<Button> handButtons;
+    public List<GameObject> handObjects;
 
-    public List<Sprite> scarfOff;
-    public List<Sprite> scarfOn;
+    public List<Sprite> handOff;
+    public List<Sprite> handOn;
 
     public void ClickTab(int id)
     {
         // active -> not active
-        if (scarfObjects[id].activeSelf)
+        if (handObjects[id].activeSelf)
         {
-            scarfObjects[id].SetActive(false);
-            scarfButtons[id].GetComponent<Image>().sprite = scarfOff[id];
-            PlayerPrefs.SetInt("Scarf", 0);
+            handObjects[id].SetActive(false);
+            handButtons[id].GetComponent<Image>().sprite = handOff[id];
+            PlayerPrefs.SetInt("Hand", 0);
         }
         else // not active -> all off -> activate
         {
-            for (int i = 0; i < scarfObjects.Count; i++)
+            for (int i = 0; i < handObjects.Count; i++)
             {
                 if (i == id)
                 {
-                    scarfObjects[i].SetActive(true);
-                    scarfButtons[i].GetComponent<Image>().sprite = scarfOn[i];
+                    handObjects[i].SetActive(true);
+                    handButtons[i].GetComponent<Image>().sprite = handOn[i];
                 }
                 else
                 {
-                    scarfObjects[i].SetActive(false);
-                    scarfButtons[i].GetComponent<Image>().sprite = scarfOff[i];
+                    handObjects[i].SetActive(false);
+                    handButtons[i].GetComponent<Image>().sprite = handOff[i];
                 }
             }
-            PlayerPrefs.SetInt("Scarf", id + 1);
+            PlayerPrefs.SetInt("Hand", id + 1);
         }
 
         // Update equipment state into server

@@ -15,7 +15,7 @@ public class AndroidController : MonoBehaviour
     [SerializeField] private StatsRadarChart statsRadarChart;
 
     // Monster button
-    public Button monsterButton;
+    public GameObject monsterButton;
 
     // Mypage Status
     public List<GameObject> bagList;
@@ -23,6 +23,8 @@ public class AndroidController : MonoBehaviour
     public List<GameObject> minihatList;
     public List<GameObject> scarfList;
     public Button titleObject;
+    //public List<GameObject> skinList;
+    public List<GameObject> handList;
 
     // Clothes Button Image List
     public List<Sprite> bagOn;
@@ -30,12 +32,16 @@ public class AndroidController : MonoBehaviour
     public List<Sprite> minihatOn;
     public List<Sprite> scarfOn;
     //public List<Sprite> titleSprites;
+    //public List<Sprite> skinOn;
+    public List<Sprite> handOn;
 
     public List<Button> bagButtons;
     public List<Button> glassesButtons;
     public List<Button> minihatButtons;
     public List<Button> scarfButtons;
     public List<Button> titleButtons;
+    //public List<Button> skinButtons;
+    public List<Button> handButtons;
 
     // 스텟의 레벨을 표시하는 텍스트
     public List<TextMeshProUGUI> statLevelList;
@@ -65,9 +71,7 @@ public class AndroidController : MonoBehaviour
 
         RequestMemberStats();
         RequestMemberStatus();
-        //RequestDefeatMonster();
         RequestCharacterItems();
-        //ModifyCharacterItems(new MemberItem(1, 2, 1, 1, 1));
         //RequestUserTitles();
         RequestGetUserProfile();
     }
@@ -97,12 +101,12 @@ public class AndroidController : MonoBehaviour
         Debug.Log("heejeong [ReceiveMemberStats]" + jsonMessage);
         MemberStats datas = JsonUtility.FromJson<MemberStats>(jsonMessage);
 
-        for(var i = 0; i  < scores.Length; i++)
+        for (var i = 0; i < scores.Length; i++)
         {
             Debug.Log("heejeong 유저 스탯 점수::" + datas.stats[i].Score);
             Debug.Log("stat type : " + datas.stats[i].Score.GetType().Name);
             Debug.Log("heejeong 유저 스탯 레벨::" + datas.stats[i].Level);
-            Debug.Log("level type : " + datas.stats[i].Level.GetType().Name); 
+            Debug.Log("level type : " + datas.stats[i].Level.GetType().Name);
             scores[i] = datas.stats[i].Score;
             statLevelList[i].text = datas.stats[i].Level.ToString();
         }
@@ -141,7 +145,7 @@ public class AndroidController : MonoBehaviour
      */
     void RequestMemberStatus()
     {
-        string androidMethod = "getMemberStats";
+        string androidMethod = "getMemberStatus";
         _pluginInstance.Call(androidMethod);
     }
     void ReceiveMemberStatus(string jsonMessage)
@@ -152,13 +156,17 @@ public class AndroidController : MonoBehaviour
         Debug.Log("heejeong 나태도" + datas.Indolence);
         Debug.Log("heejeong 피로도" + datas.Tiredness);
 
+
+        if (monsterButton == null) Debug.Log("junyeong 몬스터 버튼 null 확인" + monsterButton);
         // 나태도가 50 이하면 나태괴물 안나타나게
         if (monsterButton != null && datas.Indolence < 50)
         {
-            Image buttonImage = monsterButton.GetComponent<Image>();
-            Color newColor = buttonImage.color;
-            newColor.a = 0.0f;
-            buttonImage.color = newColor;
+            //Image buttonImage = monsterButton.GetComponent<Image>();
+            //Color newColor = buttonImage.color;
+            //newColor.a = 0.0f;
+            //buttonImage.color = newColor;
+
+            monsterButton.SetActive(false);
         }
 
     }
@@ -186,6 +194,8 @@ public class AndroidController : MonoBehaviour
          * hat;
          * scarf;
          * title;
+         * skin;
+         * hand;
          */
 
         // 아이템을 장착했다면 Active
@@ -225,12 +235,27 @@ public class AndroidController : MonoBehaviour
             //titleObject.GetComponent<Image>().sprite = titleSprites[datas.Title];
         }
 
+        //if (datas.Skin != 0)
+        //{
+        //    scarfList[datas.Skin].SetActive(true);
+        //    scarfButtons[datas.Skin].GetComponent<Image>().sprite = scarfOn[datas.Skin];
+        //}
+
+        if (datas.Hand != 0)
+        {
+            handList[datas.Hand].SetActive(true);
+            handButtons[datas.Hand].GetComponent<Image>().sprite = handOn[datas.Hand];
+        }
+
         // 아이템 전역 저장
         PlayerPrefs.SetInt("Bag", datas.Backpack);
         PlayerPrefs.SetInt("Glasses", datas.Glasses);
         PlayerPrefs.SetInt("Minihat", datas.Hat);
         PlayerPrefs.SetInt("Scarf", datas.Scarf);
         PlayerPrefs.SetInt("Title", datas.Title);
+        PlayerPrefs.SetInt("Skin", datas.Skin);
+        PlayerPrefs.SetInt("Hand", datas.Hand);
+        PlayerPrefs.Save();
     }
 
     /**
@@ -283,7 +308,7 @@ public class AndroidController : MonoBehaviour
         AroundMembers datas = JsonUtility.FromJson<AroundMembers>(jsonMessage);
         foreach (AroundMember it in datas.members)
         {
-            Debug.Log("heejeong 근처 사용자::" +it.ToString());
+            Debug.Log("heejeong 근처 사용자::" + it.ToString());
         }
     }
 

@@ -18,6 +18,7 @@ public class GlassesPanel : MonoBehaviour
         {
             glassesObjects[id].SetActive(false);
             glassesButtons[id].GetComponent<Image>().sprite = glassesOff[id];
+            PlayerPrefs.SetInt("Glasses", 0);
         }
         else // not active -> all off -> activate
         {
@@ -34,17 +35,18 @@ public class GlassesPanel : MonoBehaviour
                     glassesButtons[i].GetComponent<Image>().sprite = glassesOff[i];
                 }
             }
+            PlayerPrefs.SetInt("Glasses", id + 1);
         }
 
         // Update equipment state into server
-        PlayerPrefs.SetInt("Glasses", id+1);
-
         int bag = PlayerPrefs.GetInt("Bag");
         int glasses = PlayerPrefs.GetInt("Glasses");
         int minihat = PlayerPrefs.GetInt("Minihat");
         int scarf = PlayerPrefs.GetInt("Scarf");
         int title = PlayerPrefs.GetInt("Title");
-        MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title);
+        int skin = PlayerPrefs.GetInt("Skin");
+        int hand = PlayerPrefs.GetInt("Hand");
+        MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title, skin, hand);
         //var andController = new AndroidController();
         //andController.ModifyCharacterItems(datas);
 

@@ -18,6 +18,7 @@ public class BagPanel : MonoBehaviour
         {
             bagObjects[id].SetActive(false);
             bagButtons[id].GetComponent<Image>().sprite = bagOff[id];
+            PlayerPrefs.SetInt("Bag", 0);
         }
         else // not active -> all off -> activate
         {
@@ -34,19 +35,19 @@ public class BagPanel : MonoBehaviour
                     bagButtons[i].GetComponent<Image>().sprite = bagOff[i];
                 }
             }
+            PlayerPrefs.SetInt("Bag", id + 1);
         }
 
-        // TODO
         // Update equipment state into server
-        // Update equipment state into server
-        PlayerPrefs.SetInt("Bag", id+1);
 
         int bag = PlayerPrefs.GetInt("Bag");
         int glasses = PlayerPrefs.GetInt("Glasses");
         int minihat = PlayerPrefs.GetInt("Minihat");
         int scarf = PlayerPrefs.GetInt("Scarf");
         int title = PlayerPrefs.GetInt("Title");
-        MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title);
+        int skin = PlayerPrefs.GetInt("Skin");
+        int hand = PlayerPrefs.GetInt("Hand");
+        MemberItem datas = new MemberItem(bag, glasses, minihat, scarf, title, skin, hand);
         //var andController = new AndroidController();
         //andController.ModifyCharacterItems(datas);
 
