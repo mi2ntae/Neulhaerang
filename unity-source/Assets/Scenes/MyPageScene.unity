@@ -15191,7 +15191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statsRadarChart: {fileID: 475580994}
-  monsterButton: {fileID: 0}
+  monsterButton: {fileID: 843084226}
   bagList:
   - {fileID: 874831493}
   - {fileID: 1234464092}
