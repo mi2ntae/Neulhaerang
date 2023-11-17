@@ -61,11 +61,13 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.ui:ui-tooling-preview:${rootProject.extra["composeUiVersion"]}")
     implementation("androidx.compose.material3:material3:${rootProject.extra["material3Version"]}")
+    // navigation
+    implementation("androidx.navigation:navigation-compose:${rootProject.extra["composeNavVersion"]}")
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //kakao login
-    implementation ("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
+    implementation("com.kakao.sdk:v2-user:2.17.0") // 카카오 로그인
 }
