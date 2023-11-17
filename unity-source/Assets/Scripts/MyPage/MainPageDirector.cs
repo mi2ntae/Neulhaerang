@@ -35,7 +35,7 @@ public class MainPageDirector : MonoBehaviour
         myCharacter.SetActive(true);
 
         // Init clothes
-        Init();
+        //Init();
 
         // characterPosition position
         Vector3 characterPosition = myCharacter.transform.position;
