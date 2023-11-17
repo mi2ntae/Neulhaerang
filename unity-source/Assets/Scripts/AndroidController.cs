@@ -243,8 +243,8 @@ public class AndroidController : MonoBehaviour
 
         if (datas.Hand != 0)
         {
-            scarfList[datas.Hand].SetActive(true);
-            scarfButtons[datas.Hand].GetComponent<Image>().sprite = scarfOn[datas.Hand];
+            handList[datas.Hand].SetActive(true);
+            handButtons[datas.Hand].GetComponent<Image>().sprite = handOn[datas.Hand];
         }
 
         // 아이템 전역 저장
