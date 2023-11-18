@@ -23,7 +23,7 @@ public class AndroidController : MonoBehaviour
     public List<GameObject> minihatList;
     public List<GameObject> scarfList;
     public Button titleObject;
-    //public List<GameObject> skinList;
+    public Material[] skinList;
     public List<GameObject> handList;
 
     // Clothes Button Image List
@@ -32,7 +32,7 @@ public class AndroidController : MonoBehaviour
     public List<Sprite> minihatOn;
     public List<Sprite> scarfOn;
     public List<Sprite> titleOn;
-    //public List<Sprite> skinOn;
+    public List<Sprite> skinOn;
     public List<Sprite> handOn;
 
     public List<Button> bagButtons;
@@ -40,11 +40,14 @@ public class AndroidController : MonoBehaviour
     public List<Button> minihatButtons;
     public List<Button> scarfButtons;
     public List<Button> titleButtons;
-    //public List<Button> skinButtons;
+    public List<Button> skinButtons;
     public List<Button> handButtons;
-
+    
     // 스텟의 레벨을 표시하는 텍스트
     public List<TextMeshProUGUI> statLevelList;
+
+    // 캐릭터 GameObject
+    public GameObject character;
 
     void Awake()
     {
@@ -241,11 +244,25 @@ public class AndroidController : MonoBehaviour
             titleObject.GetComponent<Image>().sprite = titleOn[index];
         }
 
-        //if (datas.Skin != 0)
-        //{
-        //    scarfList[datas.Skin].SetActive(true);
-        //    scarfButtons[datas.Skin].GetComponent<Image>().sprite = scarfOn[datas.Skin];
-        //}
+        /*
+         *  skin의 경우 없는 경우가 없으므로 0번도 바로 처리
+         */
+        
+        if (character != null)
+        {
+            // "Cat" GameObject에서 SkinnedMeshRenderer 컴포넌트를 찾음
+            SkinnedMeshRenderer skinnedMeshRenderer = character.GetComponent<SkinnedMeshRenderer>();
+
+            if (skinnedMeshRenderer != null && skinList != null && skinList.Length > 0)
+            {
+                Material newMaterialInstance = new Material(skinList[datas.Skin]);
+                // Materials 배열을 새로운 배열로 교체
+                //skinnedMeshRenderer.materials[0] = skinMaterials[id];
+                skinnedMeshRenderer.materials[0].CopyPropertiesFromMaterial(newMaterialInstance);
+            }
+        }
+        skinButtons[datas.Skin].GetComponent<Image>().sprite = skinOn[datas.Skin];
+        
 
         if (datas.Hand != 0)
         {
