@@ -69,7 +69,7 @@ public class MidnightScheduler {
 
 	@Async
 	@Transactional(readOnly = true)
-	@Scheduled(cron = "${schedules.cron.daily-routine}", zone = "Asia/Seoul")
+	@Scheduled(cron = "0 41 9 * * *", zone = "Asia/Seoul")
 	public void createLetterTrigger() {
 		log.info("---------- 자정 스케줄러 : 편지를 전송합니다 ----------");
 		List<Member> memberList = memberRepository.findAllByWithdrawalDateIsNull();
