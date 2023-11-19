@@ -191,7 +191,6 @@ public class MidnightScheduler {
 			publisher.publishEvent(new LetterEvent(member));
 		} catch (Exception e) {
 			log.error("-----------  편지를 " + member.getNickname() + "님께 전송할 때 에러가 발생했습니다 --------");
-			entityManager.clear();
 		}
 
 	}
