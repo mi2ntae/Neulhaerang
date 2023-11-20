@@ -33,7 +33,7 @@ public class RedisUtil {
 
 	public List<String> getAroundMember(String deviceId) {
 		Metric metric = RedisGeoCommands.DistanceUnit.METERS;
-		GeoResults<RedisGeoCommands.GeoLocation<String>> members = redisTemplate.opsForGeo().radius(geoKey, deviceId, new Distance(100, metric));
+		GeoResults<RedisGeoCommands.GeoLocation<String>> members = redisTemplate.opsForGeo().radius(geoKey, deviceId, new Distance(1000, metric));
 		List<String> deviceIds = new ArrayList<>();
 		members.forEach(geoLocationGeoResult -> {
 			RedisGeoCommands.GeoLocation<String> content = geoLocationGeoResult.getContent();
