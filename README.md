@@ -147,7 +147,7 @@
       <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(칭호)</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/c7baa9fb-f443-4efb-8b28-a7f99bae0983" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/5a34526e-7d31-4795-aa46-284bf2d5ec4b" /></td>
     </tr>
     <tr>
       <td align="center">사용자는 얻은 칭호 중 하나를 선택해 캐릭터에 장착할 수 있습니다.<br>
