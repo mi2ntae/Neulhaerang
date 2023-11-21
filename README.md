@@ -15,7 +15,7 @@
 🎧모두 늘해랑과 함께하세요🌞
 </p>
 <p>
-<a href="https://play.google.com/store/apps/details?id=com.finale.neulhaerang"> <img src="https://img.shields.io/badge/Notion%20 보러가기-000000?style=flat-square&logo=notion&logoColor=white" /></a>
+<a href="https://young-bonsai-e9c.notion.site/PROJECT-6b388df2f1644339b618e088ba317554?pvs=4"> <img src="https://img.shields.io/badge/Notion%20 보러가기-000000?style=flat-square&logo=notion&logoColor=white" /></a>
 <a href="https://play.google.com/store/apps/details?id=com.finale.neulhaerang"><img src="https://img.shields.io/badge/다운로드%20하러가기-3DDC84?style=flat-square&logo=android&logoColor=white" /></a>
 </p>
 
@@ -124,7 +124,7 @@
       <td align="center" style="font-weight: bold; font-size: 18;">마이페이지(스탯)</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/765b5e15-fa91-4418-b665-bf7233dba943" /></td>
+      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/765b5e15-fa91-4418-b665-bf7233dba943" width="30%"/></td>
     </tr>
     <tr>
       <td align="center">그래프를 통해 사용자의 현재 스탯 정보를 알 수 있습니다.
@@ -157,7 +157,10 @@
       <td align="center" style="font-weight: bold; font-size: 18;">나태괴물 처치</td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/2023-finale/.github/assets/101235186/89fed59c-2c41-4b97-92b8-b9a865456db6" /><img src="https://github.com/2023-finale/.github/assets/101235186/d5861b5a-217e-471d-9394-04be18e3c3ec" /></td>
+      <td align="center">
+        <img src="https://github.com/2023-finale/.github/assets/101235186/89fed59c-2c41-4b97-92b8-b9a865456db6" width="30%"/>
+        <img src="https://github.com/2023-finale/.github/assets/101235186/d5861b5a-217e-471d-9394-04be18e3c3ec" width="30%" />
+      </td>
     </tr>
     <tr>
       <td align="center">마이페이지에서 캐릭터 왼쪽의 나태괴물을 클릭하여 진입할 수 있습니다<br>
@@ -172,8 +175,8 @@
     </tr>
     <tr>
       <td align="center">
-        <img src="https://github.com/2023-finale/.github/assets/101235186/7cb6121a-8db3-4fde-8c7a-3e70ec3d9673" />
-        <img src="https://github.com/2023-finale/.github/assets/101235186/8a340ae3-bb29-4c45-89b0-7869317c049a" />
+        <img src="https://github.com/2023-finale/.github/assets/101235186/7cb6121a-8db3-4fde-8c7a-3e70ec3d9673" width="30%"/>
+        <img src="https://github.com/2023-finale/.github/assets/101235186/8a340ae3-bb29-4c45-89b0-7869317c049a" width="30%"/>
       </td>
     </tr>
     <tr>
